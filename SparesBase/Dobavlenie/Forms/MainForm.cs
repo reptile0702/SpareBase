@@ -178,19 +178,19 @@ namespace SparesBase
         // Возвращает массив категорий сформированный по полному пути выделенного нода в TreeView
         private int[] FormCategories()
         {
-            List <int> categories = new List<int>();
+            int[] categories = new int[5];
             TreeNode parent = treeView.SelectedNode;
-            
-            
+
+            int counter = 0;
             do
             {
-                categories.Add(int.Parse(parent.Tag.ToString()));
+                categories[counter++] = int.Parse(parent.Tag.ToString());
                 parent = parent.Parent;
             }
             while (parent != null);
 
-            categories.Reverse();
-            return categories.ToArray();
+            Array.Reverse(categories);
+            return categories;
         }
 
         #endregion Вспомогательные методы
