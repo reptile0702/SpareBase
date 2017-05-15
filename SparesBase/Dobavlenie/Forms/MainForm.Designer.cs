@@ -242,7 +242,6 @@
             this.treeView.Size = new System.Drawing.Size(170, 662);
             this.treeView.TabIndex = 0;
             this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
-            this.treeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView_NodeMouseClick);
             // 
             // cmsMainCategory
             // 
@@ -309,7 +308,6 @@
             this.dgv.Size = new System.Drawing.Size(1180, 411);
             this.dgv.TabIndex = 0;
             this.dgv.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellClick);
-            this.dgv.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellContentClick);
             this.dgv.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.EditItem_Click);
             // 
             // cmsItem
@@ -416,7 +414,6 @@
             this.lstorage.Size = new System.Drawing.Size(56, 13);
             this.lstorage.TabIndex = 12;
             this.lstorage.Text = "Хранение";
-            this.lstorage.Click += new System.EventHandler(this.label13_Click);
             // 
             // lfirm
             // 
@@ -498,7 +495,6 @@
             this.lsub3.Size = new System.Drawing.Size(85, 13);
             this.lsub3.TabIndex = 3;
             this.lsub3.Text = "Подкатегория3";
-            this.lsub3.Click += new System.EventHandler(this.label4_Click);
             // 
             // lsub2
             // 
