@@ -7,10 +7,10 @@ namespace SparesBase
     public partial class EditForm : Form
     {
         int itemId;
-        string[] categories;
+        int[] categories;
 
         // Конструктор для добавления
-        public EditForm(string[] categories)
+        public EditForm(int[] categories)
         {
             InitializeComponent();
 
@@ -21,7 +21,7 @@ namespace SparesBase
         }
 
         // Конструктор для изменения
-        public EditForm(int itemId, string[] categories)
+        public EditForm(int itemId, int[] categories)
         {
             InitializeComponent();
             this.itemId = itemId;
@@ -63,20 +63,7 @@ namespace SparesBase
                     int id = int.Parse(cbSeller.SelectedValue.ToString());
                     string query = "";
 
-                    string mainCategoryId = "0";
-                    string subCategory1Id = "0";
-                    string subCategory2Id = "0";
-                    string subCategory3Id = "0";
-                    string subCategory4Id = "0";
-
-                    for (int i = 0; i < categories.Length; i++)
-                    {
-                        if (i == 0) mainCategoryId = DatabaseWorker.SqlScalarQuery("SELECT id FROM Main_Category WHERE(Name = '" + categories[0] + "')").ToString();
-                        if (i == 1) subCategory1Id = DatabaseWorker.SqlScalarQuery("SELECT id FROM Sub_Category_1 WHERE(Name = '" + categories[1] + "')").ToString();
-                        if (i == 2) subCategory2Id = DatabaseWorker.SqlScalarQuery("SELECT id FROM Sub_Category_2 WHERE(Name = '" + categories[2] + "')").ToString();
-                        if (i == 3) subCategory3Id = DatabaseWorker.SqlScalarQuery("SELECT id FROM Sub_Category_3 WHERE(Name = '" + categories[3] + "')").ToString();
-                        if (i == 4) subCategory4Id = DatabaseWorker.SqlScalarQuery("SELECT id FROM Sub_Category_4 WHERE(Name = '" + categories[4] + "')").ToString();
-                    }
+                    
 
                     if (operation == "INSERT")
                         query = "INSERT INTO Items VALUES('', {0}, {1}, {2}, {3}, {4}, '{5}', {6}, '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', {14}, NOW(), {15})";
@@ -90,11 +77,11 @@ namespace SparesBase
                     int residue = int.Parse(tbQuantity.Text) - (defect + sold + inOrder);
 
                     query = string.Format(query,
-                        mainCategoryId,
-                        subCategory1Id,
-                        subCategory2Id,
-                        subCategory3Id,
-                        subCategory4Id,
+                        categories[0],
+                        categories[1],
+                        categories[2],
+                        categories[3],
+                        categories[4],
                         tbItemName.Text,
                         DatabaseWorker.SqlScalarQuery("SELECT id FROM Sellers WHERE(id=" + id + ")"),
                         tbPurchasePrice.Text,

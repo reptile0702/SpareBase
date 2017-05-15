@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
 
@@ -137,17 +138,17 @@ namespace SparesBase
         // Заполнение DataGridView предметами по выделенным категориям в TreeView
         public void FillDataGridView()
         {
-            string[] selectedCategories = FormCategories();
+            int[] selectedCategories = FormCategories();
 
             // Формирование условия WHERE
             string where = "WHERE (";
             for (int i = 0; i < selectedCategories.Length; i++)
             {
-                if (i == 0) where += "Main_Category_Id=(SELECT id FROM Main_Category WHERE(Name='" + selectedCategories[i] + "'))";
-                if (i == 1) where += " AND Sub_Category_1_Id=(SELECT id FROM Sub_Category_1 WHERE(Name='" + selectedCategories[i] + "'))";
-                if (i == 2) where += " AND Sub_Category_2_Id=(SELECT id FROM Sub_Category_2 WHERE(Name='" + selectedCategories[i] + "'))";
-                if (i == 3) where += " AND Sub_Category_3_Id=(SELECT id FROM Sub_Category_3 WHERE(Name='" + selectedCategories[i] + "'))";
-                if (i == 4) where += " AND Sub_Category_4_Id=(SELECT id FROM Sub_Category_4 WHERE(Name='" + selectedCategories[i] + "'))";
+                if (i == 0) where += "Main_Category_Id=(SELECT id FROM Main_Category WHERE(id=" + selectedCategories[i] + "))";
+                if (i == 1) where += " AND Sub_Category_1_Id=(SELECT id FROM Sub_Category_1 WHERE(id=" + selectedCategories[i] + "))";
+                if (i == 2) where += " AND Sub_Category_2_Id=(SELECT id FROM Sub_Category_2 WHERE(id=" + selectedCategories[i] + "))";
+                if (i == 3) where += " AND Sub_Category_3_Id=(SELECT id FROM Sub_Category_3 WHERE(id=" + selectedCategories[i] + "))";
+                if (i == 4) where += " AND Sub_Category_4_Id=(SELECT id FROM Sub_Category_4 WHERE(id=" + selectedCategories[i] + "))";
             }
             where += ")";
 
@@ -175,9 +176,21 @@ namespace SparesBase
         }
 
         // Возвращает массив категорий сформированный по полному пути выделенного нода в TreeView
-        private string[] FormCategories()
+        private int[] FormCategories()
         {
-            return treeView.SelectedNode.FullPath.Split('\\');
+            List <int> categories = new List<int>();
+            TreeNode parent = treeView.SelectedNode;
+            
+            
+            do
+            {
+                categories.Add(int.Parse(parent.Tag.ToString()));
+                parent = parent.Parent;
+            }
+            while (parent != null);
+
+            categories.Reverse();
+            return categories.ToArray();
         }
 
         #endregion Вспомогательные методы
