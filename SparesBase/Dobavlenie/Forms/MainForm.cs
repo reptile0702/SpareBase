@@ -23,9 +23,11 @@ namespace SparesBase
         // Заполнение TreeView категориями из базы
         private void FillTreeView()
         {
-            string path = "";
+             string path = "";
+            TreeNode selectedNode = null;
             if (treeView.SelectedNode != null)
                 path = treeView.SelectedNode.FullPath.ToUpper();
+                //selectedNode = treeView.SelectedNode;
 
             treeView.Nodes.Clear();
             TreeNode root = new TreeNode();
@@ -109,7 +111,26 @@ namespace SparesBase
                 foreach (TreeNode node in root.Nodes)
                     treeView.Nodes.Add(node);
 
-                //SelectNodeByPath(treeView.Nodes, path);
+                Find(treeView.Nodes, path);
+                //if (selectedNode != null)               
+                   // treeView.SelectedNode = treeView.Nodes[selectedNode.Name];
+
+                
+                
+            }
+        }
+
+        // Поиск нода по пути
+        private void Find(TreeNodeCollection nodes, string path)
+        {
+            foreach (TreeNode item in nodes)
+            {
+                if (item.FullPath == path)
+                {
+                    treeView.SelectedNode = item;
+                    return;
+                }
+                Find(item.Nodes, path);
             }
         }
 
@@ -131,7 +152,7 @@ namespace SparesBase
             where += ")";
 
             // Выполнение запроса
-            DataTable items = DatabaseWorker.SqlSelectQuery("SELECT Items.id, Item_Name, Sellers.name, Purchase_Price, Retail_Price, Wholesale_Price, Service_Price, Storage, Note, Quantity, Upload_Date, Residue FROM Items INNER JOIN Sellers ON Items.Seller_Id = Sellers.id " + where);
+            DataTable items = DatabaseWorker.SqlSelectQuery("SELECT Items.id, Item_Name, Sellers.name, Purchase_Price, Retail_Price, Wholesale_Price, Service_Price, Storage, Quantity, Upload_Date, Residue FROM Items INNER JOIN Sellers ON Items.Seller_Id = Sellers.id " + where);
 
             DataTable dt = new DataTable();
             dt.Columns.Add("ID");
@@ -142,7 +163,7 @@ namespace SparesBase
             dt.Columns.Add("Мелкий опт");
             dt.Columns.Add("Сервисы");
             dt.Columns.Add("Хранение");
-            dt.Columns.Add("Примечание");
+            //dt.Columns.Add("Примечание");
             dt.Columns.Add("Количество");
             dt.Columns.Add("Дата добавления");           
             dt.Columns.Add("Остаток");
@@ -238,8 +259,23 @@ namespace SparesBase
         // Добавляет новую категорию
         public void AddCategory(int nodeCount, int selectedIdNode, string category)
         {
-            if (nodeCount == 0) DatabaseWorker.SqlQuery("INSERT INTO Main_Category VALUES('', '" + category + "')");
-            else DatabaseWorker.SqlQuery("INSERT INTO Sub_Category_" + nodeCount + " VALUES('', '" + category + "', " + selectedIdNode + ")");
+            string id = "";
+            if (nodeCount == 0)
+            {
+                DatabaseWorker.SqlQuery("INSERT INTO Main_Category VALUES('', '" + category + "')");
+                id = DatabaseWorker.SqlScalarQuery("SELECT id FROM Main_Category WHERE(id=LAST_INSERT_ID())").ToString();
+                treeView.Nodes.Add(new TreeNode() { Text = category, Tag = id, ContextMenuStrip = cmsCategory });
+                
+            }
+            else
+            {
+                DatabaseWorker.SqlQuery("INSERT INTO Sub_Category_" + nodeCount + " VALUES('', '" + category + "', " + selectedIdNode + ")");
+                id = DatabaseWorker.SqlScalarQuery("SELECT id FROM Sub_Category_" + nodeCount + " WHERE(id=LAST_INSERT_ID())").ToString();
+                treeView.SelectedNode.Nodes.Add(new TreeNode() { Text = category, Tag = id, ContextMenuStrip = cmsCategory });
+            }
+
+            
+
         }
 
         // Переименовать категорию
@@ -247,6 +283,7 @@ namespace SparesBase
         {
             if (nodeCount == 1) DatabaseWorker.SqlQuery("UPDATE Main_Category SET Name = '" + newName + "' WHERE(id = " + selectedIdNode + ")");
             else DatabaseWorker.SqlQuery("UPDATE Sub_Category_" + (nodeCount - 1) + " SET Name = '" + newName + "' WHERE(id = " + selectedIdNode + ")");
+            treeView.SelectedNode.Text = newName;
         }
 
         // Удалить категорию
@@ -254,6 +291,7 @@ namespace SparesBase
         {
             if (nodeCount == 1) DatabaseWorker.SqlQuery("DELETE FROM Main_Category WHERE(id = " + selectedIdNode + ")");
             else DatabaseWorker.SqlQuery("DELETE FROM Sub_Category_" + (nodeCount - 1) + " WHERE(id = " + selectedIdNode + ")");
+            treeView.SelectedNode.Remove();
         }
 
         #endregion Категории
@@ -279,8 +317,9 @@ namespace SparesBase
         private void AddMainCategory_Click(object sender, EventArgs e)
         {
             EditCategory ecf = new EditCategory(this);
-            if (ecf.ShowDialog() == DialogResult.OK)
-                FillTreeView();
+            //if (ecf.ShowDialog() == DialogResult.OK)
+                ecf.ShowDialog();
+               // FillTreeView();
         }
 
         // Клик на кнопку "Добавить подкатегорию"
@@ -289,8 +328,9 @@ namespace SparesBase
             if (treeView.SelectedNode.FullPath.Split('\\').Length < 5)
             {
                 EditCategory ecf = new EditCategory(this, int.Parse(treeView.SelectedNode.Tag.ToString()), treeView.SelectedNode.FullPath.Split('\\').Length, false);
-                if (ecf.ShowDialog() == DialogResult.OK)
-                    FillTreeView();
+                // if (ecf.ShowDialog() == DialogResult.OK)
+                    ecf.ShowDialog();
+                    //FillTreeView();
             }
             else
                 MessageBox.Show("Невозможно создать новую категорию");
@@ -300,15 +340,16 @@ namespace SparesBase
         private void RenameCategory_Click(object sender, EventArgs e)
         {
             EditCategory ecf = new EditCategory(this, int.Parse(treeView.SelectedNode.Tag.ToString()), treeView.SelectedNode.FullPath.Split('\\').Length, true);
-            if (ecf.ShowDialog() == DialogResult.OK)
-                FillTreeView();
+            //if (ecf.ShowDialog() == DialogResult.OK)
+            ecf.ShowDialog();
+            //    FillTreeView();
         }
 
         // Клик на кнопку "Удалить категорию"
         private void DeleteCategory_Click(object sender, EventArgs e)
         {
             DeleteCategory(treeView.SelectedNode.FullPath.Split('\\').Length, int.Parse(treeView.SelectedNode.Tag.ToString()));
-            FillTreeView();
+           // FillTreeView();
         }
 
 

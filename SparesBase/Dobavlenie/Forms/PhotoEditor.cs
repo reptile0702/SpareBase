@@ -12,7 +12,7 @@ namespace SparesBase
         // Данные об FTP сервере
         int timeout = 30000;
         int port = 21;
-        string server = "host3.statushost.ru";
+        string server = "status.nvhost.ru";
         string username = "sh61018001";
         string password = "lfybkrf";
         string remotePath = "Photos/";
