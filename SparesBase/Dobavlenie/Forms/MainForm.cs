@@ -7,12 +7,16 @@ namespace SparesBase
 {
     public partial class MainForm : Form
     {
-        // TODO: При обновлении TreeView записывать новый, выделенный ранее нод, и после обновления, его выделять
-        // TODO: Когда удаляются все фотографии из предмета, то превьюшка не удаляется         
+        // TODO: Когда удаляются все фотографии из предмета, то превьюшка не удаляется     
         // TODO: отобразть превью после назначения фотографии
+
         // TODO: Сделать вход в программу
         // TODO: Сделать регистрацию организации
         // TODO: Создать ID организации в Items
+
+        // TODO: Выключить кнопки когда они не нужны
+
+        // TODO: Сосчитать остаток (Время школьной математики)
 
         public MainForm()
         {
@@ -24,12 +28,6 @@ namespace SparesBase
         // Заполнение TreeView категориями из базы
         private void FillTreeView()
         {
-             string path = "";
-            TreeNode selectedNode = null;
-            if (treeView.SelectedNode != null)
-                path = treeView.SelectedNode.FullPath.ToUpper();
-                //selectedNode = treeView.SelectedNode;
-
             treeView.Nodes.Clear();
             TreeNode root = new TreeNode();
 
@@ -111,13 +109,6 @@ namespace SparesBase
                 // Добавление нодов в TreeView
                 foreach (TreeNode node in root.Nodes)
                     treeView.Nodes.Add(node);
-
-                Find(treeView.Nodes, path);
-                //if (selectedNode != null)               
-                   // treeView.SelectedNode = treeView.Nodes[selectedNode.Name];
-
-                
-                
             }
         }
 
@@ -142,7 +133,7 @@ namespace SparesBase
 
             // Формирование условия WHERE
             string where = "WHERE (";
-            for (int i = 0; i < selectedCategories.Length; i++)
+            for (int i = 0; i < treeView.SelectedNode.FullPath.Split('\\').Length; i++)
             {
                 if (i == 0) where += "Main_Category_Id=(SELECT id FROM Main_Category WHERE(id=" + selectedCategories[i] + "))";
                 if (i == 1) where += " AND Sub_Category_1_Id=(SELECT id FROM Sub_Category_1 WHERE(id=" + selectedCategories[i] + "))";
@@ -179,17 +170,25 @@ namespace SparesBase
         private int[] FormCategories()
         {
             int[] categories = new int[5];
+            List<int> cats = new List<int>();
             TreeNode parent = treeView.SelectedNode;
 
-            int counter = 0;
             do
             {
-                categories[counter++] = int.Parse(parent.Tag.ToString());
+                cats.Add(int.Parse(parent.Tag.ToString()));
                 parent = parent.Parent;
             }
             while (parent != null);
 
-            Array.Reverse(categories);
+            cats.Reverse();
+            for (int i = 0; i < categories.Length; i++)
+            {
+                if (i > cats.Count - 1)
+                    break;
+                else
+                    categories[i] = cats[i];
+            }
+            
             return categories;
         }
 

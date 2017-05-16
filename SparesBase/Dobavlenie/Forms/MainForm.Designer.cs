@@ -401,6 +401,7 @@
             // 
             this.lnote.AutoSize = true;
             this.lnote.Location = new System.Drawing.Point(190, 102);
+            this.lnote.MaximumSize = new System.Drawing.Size(150, 0);
             this.lnote.Name = "lnote";
             this.lnote.Size = new System.Drawing.Size(57, 13);
             this.lnote.TabIndex = 13;
@@ -410,6 +411,7 @@
             // 
             this.lstorage.AutoSize = true;
             this.lstorage.Location = new System.Drawing.Point(190, 53);
+            this.lstorage.MaximumSize = new System.Drawing.Size(150, 0);
             this.lstorage.Name = "lstorage";
             this.lstorage.Size = new System.Drawing.Size(56, 13);
             this.lstorage.TabIndex = 12;
