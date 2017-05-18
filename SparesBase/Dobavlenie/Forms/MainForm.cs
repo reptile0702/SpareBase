@@ -160,10 +160,33 @@ namespace SparesBase
             dt.Columns.Add("Дата добавления");           
             dt.Columns.Add("Остаток");
 
+            
+
             for (int i = 0; i < items.Rows.Count; i++)
                 dt.Rows.Add().ItemArray = items.Rows[i].ItemArray;
 
+            if (dt.Rows.Count == 0)
+            {
+                cmsDeleteItem.Enabled = false;
+                cmsEditItem.Enabled = false;
+            }
+            else
+            {
+                cmsEditItem.Enabled = true;
+                cmsDeleteItem.Enabled = true;
+            }
+
             dgv.DataSource = dt;
+            dgv.Columns[0].Width = 90;
+            dgv.Columns[1].Width = 90;
+            dgv.Columns[2].Width = 90;
+            dgv.Columns[3].Width = 90;
+            dgv.Columns[4].Width = 90;
+            dgv.Columns[5].Width = 90;
+            dgv.Columns[6].Width = 90;
+            dgv.Columns[7].Width = 90;
+            dgv.Columns[8].Width = 90;
+            dgv.Columns[9].Width = 90;
         }
 
         // Возвращает массив категорий сформированный по полному пути выделенного нода в TreeView

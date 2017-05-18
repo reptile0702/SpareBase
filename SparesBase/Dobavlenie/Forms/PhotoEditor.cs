@@ -16,7 +16,7 @@ namespace SparesBase
         string username = "sh61018001";
         string password = "lfybkrf";
         string remotePath = "Photos/";
-        
+
         // Фотографии
         Image[] images;
 
@@ -105,7 +105,8 @@ namespace SparesBase
             {
                 string[] files = GetFilesFromServer(folder);
                 for (int i = 0; i < files.Length; i++)
-                    client.DeleteFile(timeout, remotePath + "item_" + id + "/" + files[i]);
+                    if (files[i] != "." && files[i] != "..")
+                        client.DeleteFile(timeout, remotePath + "item_" + id + "/" + files[i]);
 
                 client.DeleteDirectory(timeout, remotePath + "item_" + id);
             }
@@ -214,7 +215,7 @@ namespace SparesBase
 
                 for (int i = 0; i < imgName.Length; i++)
                 {
-                    if (imgName[i] != "preview.jpg")
+                    if (imgName[i] == "preview.jpg")
                     {
                         byte[] imageBytes = client.GetFile(timeout, remotePath + folderName + "/" + imgName[i]);
                         MemoryStream memoryStream = new MemoryStream(imageBytes);
@@ -336,7 +337,7 @@ namespace SparesBase
         {
             Close();
         }
-        
+
         // Смена изображения в ListBox
         private void lbImages_SelectedIndexChanged(object sender, EventArgs e)
         {
