@@ -12,7 +12,7 @@ namespace SparesBase
 
         // TODO: Сделать вход в программу
         // TODO: Сделать регистрацию организации
-        // TODO: Создать ID организации в Items
+    
 
         // TODO: Выключить кнопки когда они не нужны
 
@@ -274,14 +274,14 @@ namespace SparesBase
             string id = "";
             if (nodeCount == 0)
             {
-                DatabaseWorker.SqlQuery("INSERT INTO Main_Category VALUES('', '" + category + "')");
+                DatabaseWorker.SqlQuery("INSERT INTO Main_Category VALUES('', '" + category + "', 0)");
                 id = DatabaseWorker.SqlScalarQuery("SELECT id FROM Main_Category WHERE(id=LAST_INSERT_ID())").ToString();
                 treeView.Nodes.Add(new TreeNode() { Text = category, Tag = id, ContextMenuStrip = cmsCategory });
                 
             }
             else
             {
-                DatabaseWorker.SqlQuery("INSERT INTO Sub_Category_" + nodeCount + " VALUES('', '" + category + "', " + selectedIdNode + ")");
+                DatabaseWorker.SqlQuery("INSERT INTO Sub_Category_" + nodeCount + " VALUES('', '" + category + "', " + selectedIdNode + ", 0)");
                 id = DatabaseWorker.SqlScalarQuery("SELECT id FROM Sub_Category_" + nodeCount + " WHERE(id=LAST_INSERT_ID())").ToString();
                 treeView.SelectedNode.Nodes.Add(new TreeNode() { Text = category, Tag = id, ContextMenuStrip = cmsCategory });
             }

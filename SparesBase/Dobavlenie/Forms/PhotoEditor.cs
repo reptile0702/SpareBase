@@ -127,11 +127,6 @@ namespace SparesBase
 
             if (imagesCounter != 0)
             {
-                // Удаление всех фоток до загрузки новых
-                string[] photos = GetFilesFromServer("item_" + id);
-                for (int i = 0; i < photos.Length; i++)
-                    client.DeleteFile(timeout, remotePath + "item_" + id + "/" + photos[i]);
-
                 // Поиск папки с предметом, если ее нет, то создать
                 string[] folders = GetFilesFromServer("");
                 string createFolder = "";
@@ -141,6 +136,13 @@ namespace SparesBase
 
                 if (createFolder == "")
                     client.CreateDirectory(timeout, remotePath + "item_" + id);
+                else
+                {
+                    // Удаление всех фоток до загрузки новых
+                    string[] photos = GetFilesFromServer("item_" + id);
+                    for (int i = 0; i < photos.Length; i++)
+                        client.DeleteFile(timeout, remotePath + "item_" + id + "/" + photos[i]);
+                }
 
                 // Cоздание временной папки 
                 Directory.CreateDirectory(Application.StartupPath + "/Temp/");
