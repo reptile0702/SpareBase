@@ -9,18 +9,13 @@ namespace SparesBase
     {
         // TODO: Когда удаляются все фотографии из предмета, то превьюшка не удаляется     
         // TODO: отобразть превью после назначения фотографии
-
-        // TODO: Сделать вход в программу
-        // TODO: Сделать регистрацию организации
-    
-
-        // TODO: Выключить кнопки когда они не нужны
-
         // TODO: Сосчитать остаток (Время школьной математики)
 
         public MainForm()
         {
             InitializeComponent();
+            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT LastName, FirstName, SecondName FROM Accounts WHERE(id=" + EnteredUser.id + ")");
+            Text = "База запчастей - " + dt.Rows[0].ItemArray[0] + " " + dt.Rows[0].ItemArray[1] + " " + dt.Rows[0].ItemArray[2];
         }
         
         #region Вспомогательные методы
@@ -438,5 +433,10 @@ namespace SparesBase
         }
 
         #endregion События
+
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

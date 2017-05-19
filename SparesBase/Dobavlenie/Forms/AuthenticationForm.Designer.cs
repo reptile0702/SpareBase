@@ -34,7 +34,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnEnter = new System.Windows.Forms.Button();
             this.btnRegistration = new System.Windows.Forms.Button();
-            this.btnRegOrg = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // tbLogIn
@@ -50,6 +49,7 @@
             this.tbPassword.Name = "tbPassword";
             this.tbPassword.Size = new System.Drawing.Size(183, 20);
             this.tbPassword.TabIndex = 1;
+            this.tbPassword.UseSystemPasswordChar = true;
             // 
             // label1
             // 
@@ -71,12 +71,13 @@
             // 
             // btnEnter
             // 
-            this.btnEnter.Location = new System.Drawing.Point(103, 90);
+            this.btnEnter.Location = new System.Drawing.Point(51, 90);
             this.btnEnter.Name = "btnEnter";
-            this.btnEnter.Size = new System.Drawing.Size(78, 23);
+            this.btnEnter.Size = new System.Drawing.Size(183, 23);
             this.btnEnter.TabIndex = 4;
             this.btnEnter.Text = "Вход";
             this.btnEnter.UseVisualStyleBackColor = true;
+            this.btnEnter.Click += new System.EventHandler(this.btnEnter_Click);
             // 
             // btnRegistration
             // 
@@ -86,22 +87,13 @@
             this.btnRegistration.TabIndex = 5;
             this.btnRegistration.Text = "Регистрация";
             this.btnRegistration.UseVisualStyleBackColor = true;
-            // 
-            // btnRegOrg
-            // 
-            this.btnRegOrg.Location = new System.Drawing.Point(51, 201);
-            this.btnRegOrg.Name = "btnRegOrg";
-            this.btnRegOrg.Size = new System.Drawing.Size(183, 23);
-            this.btnRegOrg.TabIndex = 6;
-            this.btnRegOrg.Text = "Зарегистрировать органзацию";
-            this.btnRegOrg.UseVisualStyleBackColor = true;
+            this.btnRegistration.Click += new System.EventHandler(this.btnRegistration_Click);
             // 
             // AuthenticationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 236);
-            this.Controls.Add(this.btnRegOrg);
+            this.ClientSize = new System.Drawing.Size(284, 152);
             this.Controls.Add(this.btnRegistration);
             this.Controls.Add(this.btnEnter);
             this.Controls.Add(this.label2);
@@ -126,6 +118,5 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnEnter;
         private System.Windows.Forms.Button btnRegistration;
-        private System.Windows.Forms.Button btnRegOrg;
     }
 }

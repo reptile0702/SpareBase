@@ -19,19 +19,36 @@ namespace SparesBase.Forms
 
         private void RegistrationForm_Load(object sender, EventArgs e)
         {
+            DataTable organizations = new DataTable();
+            organizations.Columns.Add("id");
+            organizations.Columns.Add("Name");
+            organizations.Rows.Add("0", "Без организации");
+            DataRowCollection drc = DatabaseWorker.SqlSelectQuery("SELECT id, Name From Organizations").Rows;
+            foreach (DataRow row in drc)            
+                organizations.Rows.Add(row.ItemArray[0], row.ItemArray[1]);
 
+            cbOrganization.DataSource = organizations;
+            cbOrganization.ValueMember = "id";
+            cbOrganization.DisplayMember = "Name";
+
+            DataTable cities = DatabaseWorker.SqlSelectQuery("SELECT City FROM Cities");
+            foreach (DataRow row in cities.Rows)            
+                cbCity.Items.Add(row.ItemArray[0]);
+
+            cbCity.SelectedIndex = 0;
+            
         }
-        
+
         private void ToRegister()
         {
-            
+
 
             if (tbName.Text == "" ||
-                tbSecondName.Text == "" ||
                 tbLastName.Text == "" ||
+                tbSecondName.Text == "" ||
                 tbLogIn.Text == "" ||
                 tbPassword.Text == "" ||
-                tbSecondPassword.Text == "")                
+                tbSecondPassword.Text == "")
             {
                 MessageBox.Show("Не все поля были заполнены");
                 return;
@@ -43,25 +60,33 @@ namespace SparesBase.Forms
                 return;
             }
 
-           
+
             if (DatabaseWorker.SqlScalarQuery("SELECT Login FROM Accounts WHERE(Login='" + tbLogIn.Text + "')") != null)
             {
                 MessageBox.Show("Пользователь с таким логином уже зарегистрирован");
                 return;
             }
 
-            DatabaseWorker.SqlQuery("INSERT INTO Accounts VALUES('','" + tbName.Text + "', '" + tbSecondName.Text + "', '" + tbLastName.Text + "', '" + tbLogIn.Text + "', '" + tbPassword.Text + "', 0)");
+            DatabaseWorker.SqlQuery("INSERT INTO Accounts VALUES('','" + tbName.Text + "', '" + tbLastName.Text + "', '" + tbSecondName.Text + "', '" + tbLogIn.Text + "', '" + tbPassword.Text + "', " + cbOrganization.SelectedValue + ", " + (cbCity.SelectedIndex + 1) + ", '" + tbPhone.Text + "', '" + tbMail.Text + "', 0)");
         }
+
+        
 
 
 
         private void btnFinishRegistration_Click(object sender, EventArgs e)
         {
             ToRegister();
-            
+            Close();
+
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void cbCity_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
