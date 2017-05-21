@@ -9,12 +9,15 @@ namespace SparesBase
         int itemId;
         int[] categories;
 
+
+        int residue = 0;
+
         // Конструктор для добавления
         public EditForm(int[] categories)
         {
             InitializeComponent();
 
-            this.categories = categories;          
+            this.categories = categories;
             btnInOrder.Enabled = false;
             btnDefect.Enabled = false;
             btnSell.Enabled = false;
@@ -56,14 +59,14 @@ namespace SparesBase
                 tbPurchasePrice.Text != "" &&
                 tbRetailPrice.Text != "" &&
                 tbServicePrice.Text != "" &&
-                tbQuantity.Text != "")            
+                tbQuantity.Text != "")
             {
                 try
                 {
                     int id = int.Parse(cbSeller.SelectedValue.ToString());
                     string query = "";
 
-                    
+
 
                     if (operation == "INSERT")
                         query = "INSERT INTO Items VALUES('', {0}, {1}, {2}, {3}, {4}, '{5}', {6}, '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', {14}, NOW(), {15}, 0)";
@@ -71,10 +74,8 @@ namespace SparesBase
                         query = "UPDATE Items SET Item_Name='{5}', Seller_Id={6}, Purchase_Price='{7}', Retail_Price='{8}', Wholesale_Price='{9}', Service_Price='{10}', FirmPrice='{11}', Storage='{12}', Note='{13}', Quantity={14}, Residue={15} WHERE id = " + updateId;
 
                     // Подсчет остатка
-                    int sold = 0;//int.Parse(cbSold.Text.Remove(0, cbSold.Text.IndexOf(':')+2));
-                    int defect = 0;
-                    int inOrder = 0;
-                    int residue = int.Parse(tbQuantity.Text) - (defect + sold + inOrder);
+                    CalcResidue();
+
 
                     query = string.Format(query,
                         categories[0],
@@ -165,7 +166,7 @@ namespace SparesBase
                 cbSeller.SelectedValue = selectedId;
             else
                 cbSeller.SelectedIndex = 0;
-            
+
         }
 
         // Вставляет в Seller ComboBox текст
@@ -203,6 +204,21 @@ namespace SparesBase
             pbPhoto.Image = pe.DownloadPreviewImage();
         }
 
+        private void CalcResidue()
+        {
+            if (tbQuantity.Text != "")
+            {
+                DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT p.Quantity, s.Quantity, d.QuantityOfDefect FROM Items i LEFT JOIN Purchase p ON i.id=p.ItemId LEFT JOIN Selling s ON i.id=s.ItemId LEFT JOIN Defect d ON i.id=d.ItemId WHERE(i.id=" + itemId + ")");
+                int purchase = dt.Rows[0].ItemArray[0].ToString() != "" ? int.Parse(dt.Rows[0].ItemArray[0].ToString()) : 0;
+                int selling = dt.Rows[0].ItemArray[1].ToString() != "" ? int.Parse(dt.Rows[0].ItemArray[1].ToString()) : 0;
+                int defect = dt.Rows[0].ItemArray[2].ToString() != "" ? int.Parse(dt.Rows[0].ItemArray[2].ToString()) : 0;
+
+
+                residue = int.Parse(tbQuantity.Text) - (purchase + selling + defect);
+            }
+
+        }
+
         #endregion Вспомогательные методы  
 
 
@@ -226,11 +242,13 @@ namespace SparesBase
             }
 
             DownloadPreviewImage(itemId);
+            CalcResidue();
+
         }
 
         // Смена выделенного индекса поставщика
         private void cbSeller_SelectedIndexChanged(object sender, EventArgs e)
-        {  
+        {
             if (cbSeller.Text == "Добавить нового поставщика...")
             {
                 SellerForm sf = new SellerForm(this);
@@ -257,35 +275,59 @@ namespace SparesBase
             if (itemId == 0)
                 AddItem();
             else
-                UpdateItem(itemId);   
+                UpdateItem(itemId);
         }
 
         #endregion Разные события
 
         private void btnSell_Click(object sender, EventArgs e)
         {
-            SellingForm selling = new SellingForm(int.Parse(tbQuantity.Text), int.Parse(tbRetailPrice.Text), int.Parse(tbWholesalePrice.Text), int.Parse(tbServicePrice.Text), itemId);
-            selling.ShowDialog();
+
+
+            if (residue > 0)
+            {
+                SellingForm selling = new SellingForm(residue, int.Parse(tbRetailPrice.Text), int.Parse(tbWholesalePrice.Text), int.Parse(tbServicePrice.Text), itemId);
+                selling.ShowDialog();
+                CalcResidue();
+            }
+            else
+            {
+                MessageBox.Show("Остаток данного предмета равен нулю");
+            }
+
+
+
         }
 
         private void btnDefect_Click(object sender, EventArgs e)
         {
-            DefectForm defect = new DefectForm(int.Parse(tbQuantity.Text), itemId);
-            defect.ShowDialog();
+            if (residue > 0)
+            {
+                DefectForm defect = new DefectForm(residue, itemId);
+                defect.ShowDialog();
+                CalcResidue();
+            }
+            else
+            {
+                MessageBox.Show("Остаток данного предмета равен нулю");
+            }
+
         }
 
         private void btnInOrder_Click(object sender, EventArgs e)
         {
-            if (tbFirmPrice.Text != "")
+
+            if (residue > 0)
             {
-                InOrder InOrder = new InOrder(itemId, int.Parse(tbQuantity.Text), int.Parse(tbFirmPrice.Text));
+                InOrder InOrder = new InOrder(itemId, residue, int.Parse(tbFirmPrice.Text));
                 InOrder.ShowDialog();
+                CalcResidue();
             }
             else
             {
-                MessageBox.Show("Поле 'Собственная цена' не имеет никаких данных");    
+                MessageBox.Show("Остаток данного предмета равен нулю");
             }
-           
+
         }
     }
 }

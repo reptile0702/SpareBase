@@ -31,9 +31,11 @@ namespace SparesBase
             for (int i = 0; i < quant; i++)         
                 cbQuantity.Items.Add(i+1);
 
+            cbQuantity.SelectedIndex = 0;
+
             tbPrice.Text = price.ToString();
 
-            tbTotal.Text = (quant * price).ToString();      
+            tbTotal.Text = (int.Parse(cbQuantity.Text) * price).ToString();      
         }
 
         // Клик на OK
@@ -47,6 +49,17 @@ namespace SparesBase
         private void btnCancel_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void tbPrice_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbQuantity_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbQuantity.Text != "")          
+            tbTotal.Text = (int.Parse(cbQuantity.Text) * price).ToString();
         }
     }
 }

@@ -254,7 +254,7 @@ namespace SparesBase
         // Обновляет информацию о выделенном предмете в панели информации
         private void InsertInfoAboutItem(int itemId)
         {
-            string query = "SELECT i.*, p.*, s.*, d.* FROM Items i LEFT JOIN Purchase p ON i.id = p.Item_Id LEFT JOIN Selling s ON i.id = s.ItemId LEFT JOIN Defect d ON i.id = d.ItemId WHERE i.id =" + itemId;
+            string query = "SELECT i.*, p.*, s.*, d.* FROM Items i LEFT JOIN Purchase p ON i.id = p.ItemId LEFT JOIN Selling s ON i.id = s.ItemId LEFT JOIN Defect d ON i.id = d.ItemId WHERE i.id =" + itemId;
 
             DataTable dt = DatabaseWorker.SqlSelectQuery(query);
             lMain.Text = "Главная категория: " + DatabaseWorker.SqlScalarQuery("SELECT Name FROM Main_Category WHERE(id=" + dt.Rows[0].ItemArray[1].ToString() + ")");

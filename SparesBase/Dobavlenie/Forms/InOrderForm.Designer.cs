@@ -48,18 +48,22 @@
             this.cbQuantity.Name = "cbQuantity";
             this.cbQuantity.Size = new System.Drawing.Size(156, 21);
             this.cbQuantity.TabIndex = 0;
+            this.cbQuantity.SelectedIndexChanged += new System.EventHandler(this.cbQuantity_SelectedIndexChanged);
             // 
             // tbPrice
             // 
             this.tbPrice.Location = new System.Drawing.Point(13, 99);
             this.tbPrice.Name = "tbPrice";
+            this.tbPrice.ReadOnly = true;
             this.tbPrice.Size = new System.Drawing.Size(155, 20);
             this.tbPrice.TabIndex = 1;
+            this.tbPrice.TextChanged += new System.EventHandler(this.tbPrice_TextChanged);
             // 
             // tbTotal
             // 
             this.tbTotal.Location = new System.Drawing.Point(13, 142);
             this.tbTotal.Name = "tbTotal";
+            this.tbTotal.ReadOnly = true;
             this.tbTotal.Size = new System.Drawing.Size(155, 20);
             this.tbTotal.TabIndex = 2;
             // 
