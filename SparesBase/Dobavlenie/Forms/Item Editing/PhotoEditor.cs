@@ -23,7 +23,7 @@ namespace SparesBase
         // ID предмета
         private int id;
 
-         #region Конструкторы
+        #region Конструкторы
 
         public PhotoEditor(int id, bool preview)
         {

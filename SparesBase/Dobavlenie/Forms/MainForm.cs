@@ -9,7 +9,6 @@ namespace SparesBase
     {
         // TODO: Когда удаляются все фотографии из предмета, то превьюшка не удаляется     
         // TODO: отобразть превью после назначения фотографии
-        // TODO: Сосчитать остаток (Время школьной математики)
 
         // TODO: Загружать фотки предмета только при его добавлении или изменении
 
@@ -158,12 +157,9 @@ namespace SparesBase
             dt.Columns.Add("Мелкий опт");
             dt.Columns.Add("Сервисы");
             dt.Columns.Add("Хранение");
-            //dt.Columns.Add("Примечание");
             dt.Columns.Add("Количество");
             dt.Columns.Add("Дата добавления");           
             dt.Columns.Add("Остаток");
-
-            
 
             for (int i = 0; i < items.Rows.Count; i++)
                 dt.Rows.Add().ItemArray = items.Rows[i].ItemArray;
@@ -302,8 +298,7 @@ namespace SparesBase
             {
                 DatabaseWorker.SqlQuery("INSERT INTO Main_Category VALUES('', '" + category + "', 0)");
                 id = DatabaseWorker.SqlScalarQuery("SELECT id FROM Main_Category WHERE(id=LAST_INSERT_ID())").ToString();
-                treeView.Nodes.Add(new TreeNode() { Text = category, Tag = id, ContextMenuStrip = cmsCategory });
-                
+                treeView.Nodes.Add(new TreeNode() { Text = category, Tag = id, ContextMenuStrip = cmsCategory }); 
             }
             else
             {
@@ -311,9 +306,6 @@ namespace SparesBase
                 id = DatabaseWorker.SqlScalarQuery("SELECT id FROM Sub_Category_" + nodeCount + " WHERE(id=LAST_INSERT_ID())").ToString();
                 treeView.SelectedNode.Nodes.Add(new TreeNode() { Text = category, Tag = id, ContextMenuStrip = cmsCategory });
             }
-
-            
-
         }
 
         // Переименовать категорию
@@ -355,9 +347,7 @@ namespace SparesBase
         private void AddMainCategory_Click(object sender, EventArgs e)
         {
             EditCategory ecf = new EditCategory(this);
-            //if (ecf.ShowDialog() == DialogResult.OK)
-                ecf.ShowDialog();
-               // FillTreeView();
+            ecf.ShowDialog();
         }
 
         // Клик на кнопку "Добавить подкатегорию"
@@ -366,9 +356,7 @@ namespace SparesBase
             if (treeView.SelectedNode.FullPath.Split('\\').Length < 5)
             {
                 EditCategory ecf = new EditCategory(this, int.Parse(treeView.SelectedNode.Tag.ToString()), treeView.SelectedNode.FullPath.Split('\\').Length, false);
-                // if (ecf.ShowDialog() == DialogResult.OK)
-                    ecf.ShowDialog();
-                    //FillTreeView();
+                ecf.ShowDialog();
             }
             else
                 MessageBox.Show("Невозможно создать новую категорию");
@@ -378,16 +366,13 @@ namespace SparesBase
         private void RenameCategory_Click(object sender, EventArgs e)
         {
             EditCategory ecf = new EditCategory(this, int.Parse(treeView.SelectedNode.Tag.ToString()), treeView.SelectedNode.FullPath.Split('\\').Length, true);
-            //if (ecf.ShowDialog() == DialogResult.OK)
             ecf.ShowDialog();
-            //    FillTreeView();
         }
 
         // Клик на кнопку "Удалить категорию"
         private void DeleteCategory_Click(object sender, EventArgs e)
         {
             DeleteCategory(treeView.SelectedNode.FullPath.Split('\\').Length, int.Parse(treeView.SelectedNode.Tag.ToString()));
-           // FillTreeView();
         }
 
 
@@ -440,11 +425,12 @@ namespace SparesBase
             InsertInfoAboutItem(int.Parse(dgv.CurrentRow.Cells[0].Value.ToString()));
         }
 
-        #endregion События
-
+        // Закрытие формы
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Application.Exit();
         }
+
+        #endregion События
     }
 }

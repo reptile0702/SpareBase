@@ -9,8 +9,10 @@ namespace SparesBase
         int itemId;
         int[] categories;
 
-
+        // Остаток
         int residue = 0;
+
+        #region Конструкторы
 
         // Конструктор для добавления
         public EditForm(int[] categories)
@@ -27,6 +29,7 @@ namespace SparesBase
         public EditForm(int itemId, int[] categories)
         {
             InitializeComponent();
+
             this.itemId = itemId;
             this.categories = categories;
             tbQuantity.Enabled = false;
@@ -36,6 +39,10 @@ namespace SparesBase
             tbFirmPrice.Enabled = false;
             tbWholesalePrice.Enabled = false;
         }
+
+        #endregion Конструкторы
+
+
 
         #region Предметы
 
@@ -51,7 +58,7 @@ namespace SparesBase
             ItemOperation("UPDATE", updateId);
         }
 
-        //Операция над предметом(INSERT/UPDATE)
+        //Операция над предметом (INSERT/UPDATE)
         private void ItemOperation(string operation, int updateId = 0)
         {
             if (tbItemName.Text != "" &&
@@ -66,8 +73,6 @@ namespace SparesBase
                     int id = int.Parse(cbSeller.SelectedValue.ToString());
                     string query = "";
 
-
-
                     if (operation == "INSERT")
                         query = "INSERT INTO Items VALUES('', {0}, {1}, {2}, {3}, {4}, '{5}', {6}, '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', {14}, NOW(), {15}, 0)";
                     else
@@ -75,7 +80,6 @@ namespace SparesBase
 
                     // Подсчет остатка
                     CalcResidue();
-
 
                     query = string.Format(query,
                         categories[0],
@@ -166,7 +170,6 @@ namespace SparesBase
                 cbSeller.SelectedValue = selectedId;
             else
                 cbSeller.SelectedIndex = 0;
-
         }
 
         // Вставляет в Seller ComboBox текст
@@ -204,19 +207,27 @@ namespace SparesBase
             pbPhoto.Image = pe.DownloadPreviewImage();
         }
 
+        // Подсчет остатка
         private void CalcResidue()
         {
             if (tbQuantity.Text != "")
             {
-                DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT p.Quantity, s.Quantity, d.QuantityOfDefect FROM Items i LEFT JOIN Purchase p ON i.id=p.ItemId LEFT JOIN Selling s ON i.id=s.ItemId LEFT JOIN Defect d ON i.id=d.ItemId WHERE(i.id=" + itemId + ")");
-                int purchase = dt.Rows[0].ItemArray[0].ToString() != "" ? int.Parse(dt.Rows[0].ItemArray[0].ToString()) : 0;
-                int selling = dt.Rows[0].ItemArray[1].ToString() != "" ? int.Parse(dt.Rows[0].ItemArray[1].ToString()) : 0;
-                int defect = dt.Rows[0].ItemArray[2].ToString() != "" ? int.Parse(dt.Rows[0].ItemArray[2].ToString()) : 0;
+                int purchase = 0;
+                int selling = 0;
+                int defect = 0;
 
+                DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT p.Quantity, s.Quantity, d.QuantityOfDefect FROM Items i LEFT JOIN Purchase p ON i.id=p.ItemId LEFT JOIN Selling s ON i.id=s.ItemId LEFT JOIN Defect d ON i.id=d.ItemId WHERE(i.id=" + itemId + ")");
+                // Подсчет всех строк
+                // TODO: сделать три запроса на разные таблицы
+                foreach (DataRow row in dt.Rows)
+                {
+                    purchase += row.ItemArray[0].ToString() != "" ? int.Parse(row.ItemArray[0].ToString()) : 0;
+                    selling += row.ItemArray[1].ToString() != "" ? int.Parse(row.ItemArray[1].ToString()) : 0;
+                    defect += row.ItemArray[2].ToString() != "" ? int.Parse(row.ItemArray[2].ToString()) : 0;
+                }
 
                 residue = int.Parse(tbQuantity.Text) - (purchase + selling + defect);
             }
-
         }
 
         #endregion Вспомогательные методы  
@@ -243,7 +254,6 @@ namespace SparesBase
 
             DownloadPreviewImage(itemId);
             CalcResidue();
-
         }
 
         // Смена выделенного индекса поставщика
@@ -278,12 +288,9 @@ namespace SparesBase
                 UpdateItem(itemId);
         }
 
-        #endregion Разные события
-
+        // Продажа
         private void btnSell_Click(object sender, EventArgs e)
         {
-
-
             if (residue > 0)
             {
                 SellingForm selling = new SellingForm(residue, int.Parse(tbRetailPrice.Text), int.Parse(tbWholesalePrice.Text), int.Parse(tbServicePrice.Text), itemId);
@@ -291,14 +298,10 @@ namespace SparesBase
                 CalcResidue();
             }
             else
-            {
                 MessageBox.Show("Остаток данного предмета равен нулю");
-            }
-
-
-
         }
 
+        // Брак
         private void btnDefect_Click(object sender, EventArgs e)
         {
             if (residue > 0)
@@ -308,15 +311,12 @@ namespace SparesBase
                 CalcResidue();
             }
             else
-            {
                 MessageBox.Show("Остаток данного предмета равен нулю");
-            }
-
         }
 
+        // В заказ
         private void btnInOrder_Click(object sender, EventArgs e)
         {
-
             if (residue > 0)
             {
                 InOrder InOrder = new InOrder(itemId, residue, int.Parse(tbFirmPrice.Text));
@@ -324,10 +324,9 @@ namespace SparesBase
                 CalcResidue();
             }
             else
-            {
                 MessageBox.Show("Остаток данного предмета равен нулю");
-            }
-
         }
+
+        #endregion Разные события
     }
 }

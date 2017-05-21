@@ -23,26 +23,20 @@ namespace SparesBase
             this.wholesalePrice = wholesalePrice;
             this.servicePrice = servicePrice;
             this.id = id;
-            
-
         }
 
         private void FillQuantity()
         {
             for (int i = 0; i < quantity; i++)
-            {
                 cbQuantity.Items.Add(i + 1);
-                
-            }
+
             cbQuantity.SelectedIndex = 0;
         }
 
         private void SellingForm_Load(object sender, EventArgs e)
         {
-
             FillPrices();
             FillQuantity();
-
         }
 
         private void FillPrices()

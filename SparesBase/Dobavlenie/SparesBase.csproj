@@ -69,16 +69,16 @@
   <ItemGroup>
     <Compile Include="DatabaseWorker.cs" />
     <Compile Include="EnteredUser.cs" />
-    <Compile Include="Forms\AuthenticationForm.cs">
+    <Compile Include="Forms\Account\AuthenticationForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\AuthenticationForm.Designer.cs">
+    <Compile Include="Forms\Account\AuthenticationForm.Designer.cs">
       <DependentUpon>AuthenticationForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\DefectForm.cs">
+    <Compile Include="Forms\NewFolder1\DefectForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\DefectForm.Designer.cs">
+    <Compile Include="Forms\NewFolder1\DefectForm.Designer.cs">
       <DependentUpon>DefectForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\EditCategory.cs">
@@ -87,40 +87,40 @@
     <Compile Include="Forms\EditCategory.Designer.cs">
       <DependentUpon>EditCategory.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\EditForm.cs">
+    <Compile Include="Forms\Item Editing\EditForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\EditForm.Designer.cs">
+    <Compile Include="Forms\Item Editing\EditForm.Designer.cs">
       <DependentUpon>EditForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\InOrderForm.cs">
+    <Compile Include="Forms\NewFolder1\InOrderForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\InOrderForm.Designer.cs">
+    <Compile Include="Forms\NewFolder1\InOrderForm.Designer.cs">
       <DependentUpon>InOrderForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\PhotoEditor.cs">
+    <Compile Include="Forms\Item Editing\PhotoEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\PhotoEditor.Designer.cs">
+    <Compile Include="Forms\Item Editing\PhotoEditor.Designer.cs">
       <DependentUpon>PhotoEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\RegistrationForm.cs">
+    <Compile Include="Forms\Account\RegistrationForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\RegistrationForm.Designer.cs">
+    <Compile Include="Forms\Account\RegistrationForm.Designer.cs">
       <DependentUpon>RegistrationForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\SellerEdit.cs">
+    <Compile Include="Forms\Item Editing\SellerEdit.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\SellerEdit.Designer.cs">
+    <Compile Include="Forms\Item Editing\SellerEdit.Designer.cs">
       <DependentUpon>SellerEdit.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\SellingForm.cs">
+    <Compile Include="Forms\NewFolder1\SellingForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\SellingForm.Designer.cs">
+    <Compile Include="Forms\NewFolder1\SellingForm.Designer.cs">
       <DependentUpon>SellingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Item.cs" />
@@ -132,40 +132,40 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Forms\SellerForm.cs">
+    <Compile Include="Forms\Item Editing\SellerForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\SellerForm.Designer.cs">
+    <Compile Include="Forms\Item Editing\SellerForm.Designer.cs">
       <DependentUpon>SellerForm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Forms\AuthenticationForm.resx">
+    <EmbeddedResource Include="Forms\Account\AuthenticationForm.resx">
       <DependentUpon>AuthenticationForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\DefectForm.resx">
+    <EmbeddedResource Include="Forms\NewFolder1\DefectForm.resx">
       <DependentUpon>DefectForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EditCategory.resx">
       <DependentUpon>EditCategory.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\EditForm.resx">
+    <EmbeddedResource Include="Forms\Item Editing\EditForm.resx">
       <DependentUpon>EditForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\InOrderForm.resx">
+    <EmbeddedResource Include="Forms\NewFolder1\InOrderForm.resx">
       <DependentUpon>InOrderForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\PhotoEditor.resx">
+    <EmbeddedResource Include="Forms\Item Editing\PhotoEditor.resx">
       <DependentUpon>PhotoEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\RegistrationForm.resx">
+    <EmbeddedResource Include="Forms\Account\RegistrationForm.resx">
       <DependentUpon>RegistrationForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SellerEdit.resx">
+    <EmbeddedResource Include="Forms\Item Editing\SellerEdit.resx">
       <DependentUpon>SellerEdit.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SellingForm.resx">
+    <EmbeddedResource Include="Forms\NewFolder1\SellingForm.resx">
       <DependentUpon>SellingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -178,7 +178,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Forms\SellerForm.resx">
+    <EmbeddedResource Include="Forms\Item Editing\SellerForm.resx">
       <DependentUpon>SellerForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">

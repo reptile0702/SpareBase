@@ -38,6 +38,7 @@
             // 
             // cbQuantity
             // 
+            this.cbQuantity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbQuantity.FormattingEnabled = true;
             this.cbQuantity.Location = new System.Drawing.Point(12, 27);
             this.cbQuantity.Name = "cbQuantity";
@@ -46,6 +47,7 @@
             // 
             // cbPrice
             // 
+            this.cbPrice.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPrice.FormattingEnabled = true;
             this.cbPrice.Location = new System.Drawing.Point(13, 70);
             this.cbPrice.Name = "cbPrice";
@@ -94,14 +96,16 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(212, 138);
+            this.ClientSize = new System.Drawing.Size(190, 134);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.cbPrice);
             this.Controls.Add(this.cbQuantity);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "SellingForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Продажа";
             this.Load += new System.EventHandler(this.SellingForm_Load);
             this.ResumeLayout(false);

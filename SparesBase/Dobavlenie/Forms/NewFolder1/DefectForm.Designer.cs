@@ -40,6 +40,7 @@
             // 
             // cbQuantityOfDefect
             // 
+            this.cbQuantityOfDefect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbQuantityOfDefect.FormattingEnabled = true;
             this.cbQuantityOfDefect.Location = new System.Drawing.Point(13, 26);
             this.cbQuantityOfDefect.Name = "cbQuantityOfDefect";
@@ -121,8 +122,10 @@
             this.Controls.Add(this.tbNote);
             this.Controls.Add(this.tbWhoIdentified);
             this.Controls.Add(this.cbQuantityOfDefect);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "DefectForm";
-            this.Text = "Defect";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Дефект";
             this.Load += new System.EventHandler(this.DefectForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
