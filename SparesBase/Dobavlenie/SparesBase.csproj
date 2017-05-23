@@ -75,10 +75,10 @@
     <Compile Include="Forms\Account\AuthenticationForm.Designer.cs">
       <DependentUpon>AuthenticationForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\NewFolder1\DefectForm.cs">
+    <Compile Include="Forms\Write-off\DefectForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\NewFolder1\DefectForm.Designer.cs">
+    <Compile Include="Forms\Write-off\DefectForm.Designer.cs">
       <DependentUpon>DefectForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\EditCategory.cs">
@@ -93,10 +93,10 @@
     <Compile Include="Forms\Item Editing\EditForm.Designer.cs">
       <DependentUpon>EditForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\NewFolder1\InOrderForm.cs">
+    <Compile Include="Forms\Write-off\InOrderForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\NewFolder1\InOrderForm.Designer.cs">
+    <Compile Include="Forms\Write-off\InOrderForm.Designer.cs">
       <DependentUpon>InOrderForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Item Editing\PhotoEditor.cs">
@@ -117,10 +117,10 @@
     <Compile Include="Forms\Item Editing\SellerEdit.Designer.cs">
       <DependentUpon>SellerEdit.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\NewFolder1\SellingForm.cs">
+    <Compile Include="Forms\Write-off\SellingForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\NewFolder1\SellingForm.Designer.cs">
+    <Compile Include="Forms\Write-off\SellingForm.Designer.cs">
       <DependentUpon>SellingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Item.cs" />
@@ -141,7 +141,7 @@
     <EmbeddedResource Include="Forms\Account\AuthenticationForm.resx">
       <DependentUpon>AuthenticationForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\NewFolder1\DefectForm.resx">
+    <EmbeddedResource Include="Forms\Write-off\DefectForm.resx">
       <DependentUpon>DefectForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EditCategory.resx">
@@ -150,7 +150,7 @@
     <EmbeddedResource Include="Forms\Item Editing\EditForm.resx">
       <DependentUpon>EditForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\NewFolder1\InOrderForm.resx">
+    <EmbeddedResource Include="Forms\Write-off\InOrderForm.resx">
       <DependentUpon>InOrderForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
@@ -165,7 +165,7 @@
     <EmbeddedResource Include="Forms\Item Editing\SellerEdit.resx">
       <DependentUpon>SellerEdit.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\NewFolder1\SellingForm.resx">
+    <EmbeddedResource Include="Forms\Write-off\SellingForm.resx">
       <DependentUpon>SellingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

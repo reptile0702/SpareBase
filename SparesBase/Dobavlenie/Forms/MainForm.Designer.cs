@@ -67,11 +67,6 @@
             this.lpurchase = new System.Windows.Forms.Label();
             this.lseller = new System.Windows.Forms.Label();
             this.lname = new System.Windows.Forms.Label();
-            this.lsub4 = new System.Windows.Forms.Label();
-            this.lsub3 = new System.Windows.Forms.Label();
-            this.lsub2 = new System.Windows.Forms.Label();
-            this.lsub1 = new System.Windows.Forms.Label();
-            this.lMain = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.ltotal = new System.Windows.Forms.Label();
             this.lfirmprice = new System.Windows.Forms.Label();
@@ -295,6 +290,7 @@
             // 
             this.dgv.AllowUserToAddRows = false;
             this.dgv.AllowUserToDeleteRows = false;
+            this.dgv.AllowUserToResizeColumns = false;
             this.dgv.AllowUserToResizeRows = false;
             this.dgv.BackgroundColor = System.Drawing.SystemColors.Window;
             this.dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -366,11 +362,6 @@
             this.groupBox1.Controls.Add(this.lpurchase);
             this.groupBox1.Controls.Add(this.lseller);
             this.groupBox1.Controls.Add(this.lname);
-            this.groupBox1.Controls.Add(this.lsub4);
-            this.groupBox1.Controls.Add(this.lsub3);
-            this.groupBox1.Controls.Add(this.lsub2);
-            this.groupBox1.Controls.Add(this.lsub1);
-            this.groupBox1.Controls.Add(this.lMain);
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(378, 221);
@@ -381,7 +372,7 @@
             // lresidue
             // 
             this.lresidue.AutoSize = true;
-            this.lresidue.Location = new System.Drawing.Point(7, 202);
+            this.lresidue.Location = new System.Drawing.Point(18, 125);
             this.lresidue.Name = "lresidue";
             this.lresidue.Size = new System.Drawing.Size(49, 13);
             this.lresidue.TabIndex = 15;
@@ -419,7 +410,7 @@
             // lfirm
             // 
             this.lfirm.AutoSize = true;
-            this.lfirm.Location = new System.Drawing.Point(6, 190);
+            this.lfirm.Location = new System.Drawing.Point(17, 113);
             this.lfirm.Name = "lfirm";
             this.lfirm.Size = new System.Drawing.Size(72, 13);
             this.lfirm.TabIndex = 11;
@@ -428,7 +419,7 @@
             // lservice
             // 
             this.lservice.AutoSize = true;
-            this.lservice.Location = new System.Drawing.Point(6, 177);
+            this.lservice.Location = new System.Drawing.Point(17, 100);
             this.lservice.Name = "lservice";
             this.lservice.Size = new System.Drawing.Size(52, 13);
             this.lservice.TabIndex = 10;
@@ -437,7 +428,7 @@
             // lwhole
             // 
             this.lwhole.AutoSize = true;
-            this.lwhole.Location = new System.Drawing.Point(6, 164);
+            this.lwhole.Location = new System.Drawing.Point(17, 87);
             this.lwhole.Name = "lwhole";
             this.lwhole.Size = new System.Drawing.Size(66, 13);
             this.lwhole.TabIndex = 9;
@@ -446,7 +437,7 @@
             // lretail
             // 
             this.lretail.AutoSize = true;
-            this.lretail.Location = new System.Drawing.Point(6, 151);
+            this.lretail.Location = new System.Drawing.Point(17, 74);
             this.lretail.Name = "lretail";
             this.lretail.Size = new System.Drawing.Size(50, 13);
             this.lretail.TabIndex = 8;
@@ -455,7 +446,7 @@
             // lpurchase
             // 
             this.lpurchase.AutoSize = true;
-            this.lpurchase.Location = new System.Drawing.Point(6, 138);
+            this.lpurchase.Location = new System.Drawing.Point(17, 61);
             this.lpurchase.Name = "lpurchase";
             this.lpurchase.Size = new System.Drawing.Size(49, 13);
             this.lpurchase.TabIndex = 7;
@@ -464,7 +455,7 @@
             // lseller
             // 
             this.lseller.AutoSize = true;
-            this.lseller.Location = new System.Drawing.Point(6, 116);
+            this.lseller.Location = new System.Drawing.Point(17, 39);
             this.lseller.Name = "lseller";
             this.lseller.Size = new System.Drawing.Size(65, 13);
             this.lseller.TabIndex = 6;
@@ -473,56 +464,11 @@
             // lname
             // 
             this.lname.AutoSize = true;
-            this.lname.Location = new System.Drawing.Point(6, 103);
+            this.lname.Location = new System.Drawing.Point(17, 26);
             this.lname.Name = "lname";
             this.lname.Size = new System.Drawing.Size(57, 13);
             this.lname.TabIndex = 5;
             this.lname.Text = "Название";
-            // 
-            // lsub4
-            // 
-            this.lsub4.AutoSize = true;
-            this.lsub4.Location = new System.Drawing.Point(6, 79);
-            this.lsub4.Name = "lsub4";
-            this.lsub4.Size = new System.Drawing.Size(85, 13);
-            this.lsub4.TabIndex = 4;
-            this.lsub4.Text = "Подкатегория4";
-            // 
-            // lsub3
-            // 
-            this.lsub3.AutoSize = true;
-            this.lsub3.Location = new System.Drawing.Point(6, 66);
-            this.lsub3.Name = "lsub3";
-            this.lsub3.Size = new System.Drawing.Size(85, 13);
-            this.lsub3.TabIndex = 3;
-            this.lsub3.Text = "Подкатегория3";
-            // 
-            // lsub2
-            // 
-            this.lsub2.AutoSize = true;
-            this.lsub2.Location = new System.Drawing.Point(6, 53);
-            this.lsub2.Name = "lsub2";
-            this.lsub2.Size = new System.Drawing.Size(85, 13);
-            this.lsub2.TabIndex = 2;
-            this.lsub2.Text = "Подкатегория2";
-            // 
-            // lsub1
-            // 
-            this.lsub1.AutoSize = true;
-            this.lsub1.Location = new System.Drawing.Point(6, 40);
-            this.lsub1.Name = "lsub1";
-            this.lsub1.Size = new System.Drawing.Size(85, 13);
-            this.lsub1.TabIndex = 1;
-            this.lsub1.Text = "Подкатегория1";
-            // 
-            // lMain
-            // 
-            this.lMain.AutoSize = true;
-            this.lMain.Location = new System.Drawing.Point(6, 27);
-            this.lMain.Name = "lMain";
-            this.lMain.Size = new System.Drawing.Size(107, 13);
-            this.lMain.TabIndex = 0;
-            this.lMain.Text = "Главная категория:";
             // 
             // groupBox2
             // 
@@ -765,11 +711,6 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label lsub4;
-        private System.Windows.Forms.Label lsub3;
-        private System.Windows.Forms.Label lsub2;
-        private System.Windows.Forms.Label lsub1;
-        private System.Windows.Forms.Label lMain;
         private System.Windows.Forms.Label lquantity;
         private System.Windows.Forms.Label lnote;
         private System.Windows.Forms.Label lstorage;

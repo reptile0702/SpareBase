@@ -16,7 +16,7 @@ namespace SparesBase
 
         // TODO: Журнал действий над предметом (В заказ, продажа, брак, добавление, изменение, удаление)
 
-        // TODO: Удалить информацию о категориях
+        
 
         public MainForm()
         {
@@ -24,7 +24,7 @@ namespace SparesBase
             DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT LastName, FirstName, SecondName FROM Accounts WHERE(id=" + EnteredUser.id + ")");
             Text = "База запчастей - " + dt.Rows[0].ItemArray[0] + " " + dt.Rows[0].ItemArray[1] + " " + dt.Rows[0].ItemArray[2];
         }
-        
+
         #region Вспомогательные методы
 
         // Заполнение TreeView категориями из базы
@@ -158,7 +158,7 @@ namespace SparesBase
             dt.Columns.Add("Сервисы");
             dt.Columns.Add("Хранение");
             dt.Columns.Add("Количество");
-            dt.Columns.Add("Дата добавления");           
+            dt.Columns.Add("Дата добавления");
             dt.Columns.Add("Остаток");
 
             for (int i = 0; i < items.Rows.Count; i++)
@@ -186,6 +186,14 @@ namespace SparesBase
             dgv.Columns[7].Width = 90;
             dgv.Columns[8].Width = 90;
             dgv.Columns[9].Width = 90;
+
+            for (int i = 0; i < dgv.Rows.Count; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    dgv.Rows[i].DefaultCellStyle.BackColor = System.Drawing.Color.Aquamarine;
+                }
+            }
         }
 
         // Возвращает массив категорий сформированный по полному пути выделенного нода в TreeView
@@ -210,7 +218,7 @@ namespace SparesBase
                 else
                     categories[i] = cats[i];
             }
-            
+
             return categories;
         }
 
@@ -253,11 +261,7 @@ namespace SparesBase
             string query = "SELECT i.*, p.*, s.*, d.* FROM Items i LEFT JOIN Purchase p ON i.id = p.ItemId LEFT JOIN Selling s ON i.id = s.ItemId LEFT JOIN Defect d ON i.id = d.ItemId WHERE i.id =" + itemId;
 
             DataTable dt = DatabaseWorker.SqlSelectQuery(query);
-            lMain.Text = "Главная категория: " + DatabaseWorker.SqlScalarQuery("SELECT Name FROM Main_Category WHERE(id=" + dt.Rows[0].ItemArray[1].ToString() + ")");
-            lsub1.Text = "1-ая подкатегория: " + DatabaseWorker.SqlScalarQuery("SELECT Name FROM Sub_Category_1 WHERE(id=" + dt.Rows[0].ItemArray[2].ToString() + ")");
-            lsub2.Text = "2-ая подкатегория: " + DatabaseWorker.SqlScalarQuery("SELECT Name FROM Sub_Category_2 WHERE(id=" + dt.Rows[0].ItemArray[3].ToString() + ")");
-            lsub3.Text = "3-ая подкатегория: " + DatabaseWorker.SqlScalarQuery("SELECT Name FROM Sub_Category_3 WHERE(id=" + dt.Rows[0].ItemArray[4].ToString() + ")");
-            lsub4.Text = "4-ая подкатегория: " + DatabaseWorker.SqlScalarQuery("SELECT Name FROM Sub_Category_4 WHERE(id=" + dt.Rows[0].ItemArray[5].ToString() + ")");
+           
 
             lname.Text = "Имя: " + dt.Rows[0].ItemArray[6].ToString();
             lseller.Text = "Поставщик: " + DatabaseWorker.SqlScalarQuery("SELECT name FROM Sellers WHERE(id=" + dt.Rows[0].ItemArray[7].ToString() + ")");
@@ -298,7 +302,7 @@ namespace SparesBase
             {
                 DatabaseWorker.SqlQuery("INSERT INTO Main_Category VALUES('', '" + category + "', 0)");
                 id = DatabaseWorker.SqlScalarQuery("SELECT id FROM Main_Category WHERE(id=LAST_INSERT_ID())").ToString();
-                treeView.Nodes.Add(new TreeNode() { Text = category, Tag = id, ContextMenuStrip = cmsCategory }); 
+                treeView.Nodes.Add(new TreeNode() { Text = category, Tag = id, ContextMenuStrip = cmsCategory });
             }
             else
             {

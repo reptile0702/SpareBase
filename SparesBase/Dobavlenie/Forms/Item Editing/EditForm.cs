@@ -79,7 +79,11 @@ namespace SparesBase
                         query = "UPDATE Items SET Item_Name='{5}', Seller_Id={6}, Purchase_Price='{7}', Retail_Price='{8}', Wholesale_Price='{9}', Service_Price='{10}', FirmPrice='{11}', Storage='{12}', Note='{13}', Quantity={14}, Residue={15} WHERE id = " + updateId;
 
                     // Подсчет остатка
-                    CalcResidue();
+                    if (itemId != 0)
+                    {
+                        CalcResidue();
+                    }
+                    
 
                     query = string.Format(query,
                         categories[0],
@@ -216,17 +220,33 @@ namespace SparesBase
                 int selling = 0;
                 int defect = 0;
 
-                DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT p.Quantity, s.Quantity, d.QuantityOfDefect FROM Items i LEFT JOIN Purchase p ON i.id=p.ItemId LEFT JOIN Selling s ON i.id=s.ItemId LEFT JOIN Defect d ON i.id=d.ItemId WHERE(i.id=" + itemId + ")");
+                
                 // Подсчет всех строк
                 // TODO: сделать три запроса на разные таблицы
+
+                DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT Quantity FROM Purchase WHERE(ItemId=" + itemId + ")");
                 foreach (DataRow row in dt.Rows)
                 {
-                    purchase += row.ItemArray[0].ToString() != "" ? int.Parse(row.ItemArray[0].ToString()) : 0;
-                    selling += row.ItemArray[1].ToString() != "" ? int.Parse(row.ItemArray[1].ToString()) : 0;
-                    defect += row.ItemArray[2].ToString() != "" ? int.Parse(row.ItemArray[2].ToString()) : 0;
+                    purchase += row.ItemArray[0].ToString() != "" ? int.Parse(row.ItemArray[0].ToString()) : 0;                   
+                }
+
+
+                dt = DatabaseWorker.SqlSelectQuery("SELECT Quantity FROM Selling WHERE(ItemId=" + itemId + ")");
+                foreach (DataRow row in dt.Rows)
+                {
+                    selling += row.ItemArray[0].ToString() != "" ? int.Parse(row.ItemArray[0].ToString()) : 0;
+                }
+
+
+                dt = DatabaseWorker.SqlSelectQuery("SELECT QuantityOfDefect FROM Defect WHERE(ItemId=" + itemId + ")");
+                foreach (DataRow row in dt.Rows)
+                {
+                    defect += row.ItemArray[0].ToString() != "" ? int.Parse(row.ItemArray[0].ToString()) : 0;
                 }
 
                 residue = int.Parse(tbQuantity.Text) - (purchase + selling + defect);
+
+                DatabaseWorker.SqlQuery("UPDATE Items SET Residue =" + residue + " WHERE(id= " + itemId + ")");
             }
         }
 
