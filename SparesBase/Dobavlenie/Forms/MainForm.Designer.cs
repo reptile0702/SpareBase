@@ -247,6 +247,7 @@
             // 
             // treeView
             // 
+            this.treeView.AllowDrop = true;
             this.treeView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.treeView.ContextMenuStrip = this.cmsMainCategory;
             this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -255,6 +256,8 @@
             this.treeView.Size = new System.Drawing.Size(170, 528);
             this.treeView.TabIndex = 0;
             this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
+            this.treeView.DragDrop += new System.Windows.Forms.DragEventHandler(this.treeView_DragDrop);
+            this.treeView.DragEnter += new System.Windows.Forms.DragEventHandler(this.treeView_DragEnter);
             // 
             // cmsMainCategory
             // 
@@ -289,6 +292,8 @@
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer2.IsSplitterFixed = true;
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -306,6 +311,7 @@
             // 
             // dgv
             // 
+            this.dgv.AllowDrop = true;
             this.dgv.AllowUserToAddRows = false;
             this.dgv.AllowUserToDeleteRows = false;
             this.dgv.AllowUserToResizeColumns = false;
@@ -322,6 +328,7 @@
             this.dgv.TabIndex = 0;
             this.dgv.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellClick);
             this.dgv.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.EditItem_Click);
+            this.dgv.MouseMove += new System.Windows.Forms.MouseEventHandler(this.dgv_MouseMove);
             // 
             // cmsItem
             // 
@@ -390,7 +397,7 @@
             // lresidue
             // 
             this.lresidue.AutoSize = true;
-            this.lresidue.Location = new System.Drawing.Point(18, 125);
+            this.lresidue.Location = new System.Drawing.Point(190, 39);
             this.lresidue.Name = "lresidue";
             this.lresidue.Size = new System.Drawing.Size(49, 13);
             this.lresidue.TabIndex = 15;
@@ -399,7 +406,7 @@
             // lquantity
             // 
             this.lquantity.AutoSize = true;
-            this.lquantity.Location = new System.Drawing.Point(190, 27);
+            this.lquantity.Location = new System.Drawing.Point(190, 26);
             this.lquantity.Name = "lquantity";
             this.lquantity.Size = new System.Drawing.Size(66, 13);
             this.lquantity.TabIndex = 14;
@@ -408,7 +415,7 @@
             // lnote
             // 
             this.lnote.AutoSize = true;
-            this.lnote.Location = new System.Drawing.Point(190, 102);
+            this.lnote.Location = new System.Drawing.Point(190, 100);
             this.lnote.MaximumSize = new System.Drawing.Size(150, 0);
             this.lnote.Name = "lnote";
             this.lnote.Size = new System.Drawing.Size(57, 13);
@@ -418,7 +425,7 @@
             // lstorage
             // 
             this.lstorage.AutoSize = true;
-            this.lstorage.Location = new System.Drawing.Point(190, 53);
+            this.lstorage.Location = new System.Drawing.Point(191, 61);
             this.lstorage.MaximumSize = new System.Drawing.Size(150, 0);
             this.lstorage.Name = "lstorage";
             this.lstorage.Size = new System.Drawing.Size(56, 13);

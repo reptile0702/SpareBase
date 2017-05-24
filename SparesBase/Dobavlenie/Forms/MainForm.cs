@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace SparesBase
@@ -192,12 +193,8 @@ namespace SparesBase
             dgv.Columns[9].Width = 90;
 
             for (int i = 0; i < dgv.Rows.Count; i++)
-            {
-                if (i % 2 == 0)
-                {
-                    dgv.Rows[i].DefaultCellStyle.BackColor = System.Drawing.Color.Aquamarine;
-                }
-            }
+                if (i % 2 != 0)
+                    dgv.Rows[i].DefaultCellStyle.BackColor = Color.LightGray;
         }
 
         // Возвращает массив категорий сформированный по полному пути выделенного нода в TreeView
@@ -265,7 +262,7 @@ namespace SparesBase
             string query = "SELECT i.*, p.*, s.*, d.* FROM Items i LEFT JOIN Purchase p ON i.id = p.ItemId LEFT JOIN Selling s ON i.id = s.ItemId LEFT JOIN Defect d ON i.id = d.ItemId WHERE i.id =" + itemId;
 
             DataTable dt = DatabaseWorker.SqlSelectQuery(query);
-           
+
 
             lname.Text = "Имя: " + dt.Rows[0].ItemArray[6].ToString();
             lseller.Text = "Поставщик: " + DatabaseWorker.SqlScalarQuery("SELECT name FROM Sellers WHERE(id=" + dt.Rows[0].ItemArray[7].ToString() + ")");
@@ -447,5 +444,27 @@ namespace SparesBase
         }
 
         #endregion События
+
+
+        private void treeView_DragEnter(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.Copy;
+        }
+
+        private void treeView_DragDrop(object sender, DragEventArgs e)
+        {
+            Point pt = treeView.PointToClient(Cursor.Position);
+            TreeNode node = treeView.GetNodeAt(pt);
+            if (node != null)
+                MessageBox.Show(e.Data.GetData(DataFormats.Text).ToString() + " " + node.Text);
+        }
+
+        private void dgv_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                dgv.DoDragDrop(dgv.CurrentRow.Cells[0].Value.ToString(), DragDropEffects.Copy);
+            }
+        }
     }
 }
