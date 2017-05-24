@@ -75,6 +75,12 @@
     <Compile Include="Forms\Account\AuthenticationForm.Designer.cs">
       <DependentUpon>AuthenticationForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ActionLogsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ActionLogsForm.Designer.cs">
+      <DependentUpon>ActionLogsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Write-off\DefectForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -140,6 +146,9 @@
     </Compile>
     <EmbeddedResource Include="Forms\Account\AuthenticationForm.resx">
       <DependentUpon>AuthenticationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ActionLogsForm.resx">
+      <DependentUpon>ActionLogsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Write-off\DefectForm.resx">
       <DependentUpon>DefectForm.cs</DependentUpon>

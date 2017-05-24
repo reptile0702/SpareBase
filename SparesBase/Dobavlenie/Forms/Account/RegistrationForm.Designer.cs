@@ -51,8 +51,8 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.cbOrganization = new System.Windows.Forms.ComboBox();
             this.cbCity = new System.Windows.Forms.ComboBox();
+            this.cbOrganization = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -273,15 +273,6 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Дополнительные сведения";
             // 
-            // cbOrganization
-            // 
-            this.cbOrganization.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbOrganization.FormattingEnabled = true;
-            this.cbOrganization.Location = new System.Drawing.Point(116, 31);
-            this.cbOrganization.Name = "cbOrganization";
-            this.cbOrganization.Size = new System.Drawing.Size(158, 21);
-            this.cbOrganization.TabIndex = 7;
-            // 
             // cbCity
             // 
             this.cbCity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -292,8 +283,18 @@
             this.cbCity.TabIndex = 8;
             this.cbCity.SelectedIndexChanged += new System.EventHandler(this.cbCity_SelectedIndexChanged);
             // 
+            // cbOrganization
+            // 
+            this.cbOrganization.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbOrganization.FormattingEnabled = true;
+            this.cbOrganization.Location = new System.Drawing.Point(116, 31);
+            this.cbOrganization.Name = "cbOrganization";
+            this.cbOrganization.Size = new System.Drawing.Size(158, 21);
+            this.cbOrganization.TabIndex = 7;
+            // 
             // RegistrationForm
             // 
+            this.AcceptButton = this.btnFinishRegistration;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(319, 435);

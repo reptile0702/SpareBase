@@ -74,15 +74,13 @@ namespace SparesBase
                     string query = "";
 
                     if (operation == "INSERT")
-                        query = "INSERT INTO Items VALUES('', {0}, {1}, {2}, {3}, {4}, '{5}', {6}, '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', {14}, NOW(), {15}, 0)";
+                        query = "INSERT INTO Items VALUES('', {0}, {1}, {2}, {3}, {4}, '{5}', {6}, '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', {14}, NOW(), {15}," + EnteredUser.OrganizationId + ")";
                     else
                         query = "UPDATE Items SET Item_Name='{5}', Seller_Id={6}, Purchase_Price='{7}', Retail_Price='{8}', Wholesale_Price='{9}', Service_Price='{10}', FirmPrice='{11}', Storage='{12}', Note='{13}', Quantity={14}, Residue={15} WHERE id = " + updateId;
 
-                    // Подсчет остатка
-                    if (itemId != 0)
-                    {
+                    // Подсчет остатка                    
                         CalcResidue();
-                    }
+                    
                     
 
                     query = string.Format(query,
@@ -145,7 +143,7 @@ namespace SparesBase
             if (cbSeller.SelectedValue != null)
                 selectedId = int.Parse(cbSeller.SelectedValue.ToString());
 
-            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT id, name FROM Sellers");
+            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT id, name FROM Sellers WHERE(OrganizationId=" + EnteredUser.OrganizationId + ")");
             DataTable source = new DataTable();
             source.Columns.Add("id");
             source.Columns.Add("name");

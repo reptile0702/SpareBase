@@ -85,6 +85,8 @@
             this.cmsDeleteCategory = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsExpandNode = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsCollapseNode = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiLogs = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiActionLogs = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -110,7 +112,8 @@
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.категорииToolStripMenuItem,
             this.предметыToolStripMenuItem,
-            this.деревоToolStripMenuItem});
+            this.деревоToolStripMenuItem,
+            this.tsmiLogs});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(1354, 24);
@@ -633,6 +636,21 @@
             this.cmsCollapseNode.Text = "Скрыть узел";
             this.cmsCollapseNode.Click += new System.EventHandler(this.cmsCollapseNode_Click);
             // 
+            // tsmiLogs
+            // 
+            this.tsmiLogs.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiActionLogs});
+            this.tsmiLogs.Name = "tsmiLogs";
+            this.tsmiLogs.Size = new System.Drawing.Size(72, 20);
+            this.tsmiLogs.Text = "Журналы";
+            // 
+            // tsmiActionLogs
+            // 
+            this.tsmiActionLogs.Name = "tsmiActionLogs";
+            this.tsmiActionLogs.Size = new System.Drawing.Size(171, 22);
+            this.tsmiActionLogs.Text = "Журнал действий";
+            this.tsmiActionLogs.Click += new System.EventHandler(this.tsmiActionLogs_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -732,5 +750,7 @@
         private System.Windows.Forms.Label lresidue;
         private System.Windows.Forms.Label ltotal;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.ToolStripMenuItem tsmiLogs;
+        private System.Windows.Forms.ToolStripMenuItem tsmiActionLogs;
     }
 }

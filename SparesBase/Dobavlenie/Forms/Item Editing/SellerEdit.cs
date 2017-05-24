@@ -29,7 +29,7 @@ namespace SparesBase
         {
             if (sellerId != 0)
             {
-                DataTable sellerInfo = DatabaseWorker.SqlSelectQuery("SELECT * FROM Sellers WHERE(id = '" + sellerId + "')");
+                DataTable sellerInfo = DatabaseWorker.SqlSelectQuery("SELECT * FROM Sellers WHERE(id = " + sellerId + " AND OrganizationId=" + EnteredUser.OrganizationId + ")");
                 tbName.Text = sellerInfo.Rows[0].ItemArray[1].ToString();
                 tbSite.Text = sellerInfo.Rows[0].ItemArray[2].ToString();
                 tbTelephone.Text = sellerInfo.Rows[0].ItemArray[3].ToString();
@@ -43,7 +43,7 @@ namespace SparesBase
         private void btnOk_Click(object sender, EventArgs e)
         {
             if (sellerId == 0)
-                SellerOperation("INSERT INTO Sellers VALUES(NULL, '" + tbName.Text + "', '" + tbSite.Text + "', '" + tbTelephone.Text + "', '" + tbFirstName.Text + "', '" + tbLastName.Text + "', '" + tbSecondName.Text + "')");
+                SellerOperation("INSERT INTO Sellers VALUES(NULL, '" + tbName.Text + "', '" + tbSite.Text + "', '" + tbTelephone.Text + "', '" + tbFirstName.Text + "', '" + tbLastName.Text + "', '" + tbSecondName.Text + "', OrganizationId=" + EnteredUser.OrganizationId + ")");
             else
                 SellerOperation("UPDATE Sellers SET name='" + tbName.Text + "', site='" + tbSite.Text + "', telephone='" + tbTelephone.Text + "', contactFirstName='" + tbFirstName.Text + "', contactLastName='" + tbLastName.Text + "', contactSecondName='" + tbSecondName.Text + "' WHERE(id = " + sellerId + ")");
 

@@ -16,6 +16,8 @@ namespace SparesBase
 
         // TODO: Журнал действий над предметом (В заказ, продажа, брак, добавление, изменение, удаление)
 
+        // Quest: кто может просматривать журнал?
+
         
 
         public MainForm()
@@ -33,13 +35,13 @@ namespace SparesBase
             treeView.Nodes.Clear();
             TreeNode root = new TreeNode();
 
-            DataTable mainDt = DatabaseWorker.SqlSelectQuery("SELECT * FROM Main_Category");
+            DataTable mainDt = DatabaseWorker.SqlSelectQuery("SELECT * FROM Main_Category WHERE(OrganizationId=" + EnteredUser.OrganizationId + ")");
             if (mainDt.Rows.Count != 0)
             {
-                DataTable subCat1Dt = DatabaseWorker.SqlSelectQuery("SELECT * FROM Sub_Category_1");
-                DataTable subCat2Dt = DatabaseWorker.SqlSelectQuery("SELECT * FROM Sub_Category_2");
-                DataTable subCat3Dt = DatabaseWorker.SqlSelectQuery("SELECT * FROM Sub_Category_3");
-                DataTable subCat4Dt = DatabaseWorker.SqlSelectQuery("SELECT * FROM Sub_Category_4");
+                DataTable subCat1Dt = DatabaseWorker.SqlSelectQuery("SELECT * FROM Sub_Category_1 WHERE(OrganizationId=" + EnteredUser.OrganizationId + ")");
+                DataTable subCat2Dt = DatabaseWorker.SqlSelectQuery("SELECT * FROM Sub_Category_2 WHERE(OrganizationId=" + EnteredUser.OrganizationId + ")");
+                DataTable subCat3Dt = DatabaseWorker.SqlSelectQuery("SELECT * FROM Sub_Category_3 WHERE(OrganizationId=" + EnteredUser.OrganizationId + ")");
+                DataTable subCat4Dt = DatabaseWorker.SqlSelectQuery("SELECT * FROM Sub_Category_4 WHERE(OrganizationId=" + EnteredUser.OrganizationId + ")");
 
                 // MainCat
                 foreach (DataRow row in mainDt.Rows)
@@ -137,11 +139,11 @@ namespace SparesBase
             string where = "WHERE (";
             for (int i = 0; i < treeView.SelectedNode.FullPath.Split('\\').Length; i++)
             {
-                if (i == 0) where += "Main_Category_Id=(SELECT id FROM Main_Category WHERE(id=" + selectedCategories[i] + "))";
-                if (i == 1) where += " AND Sub_Category_1_Id=(SELECT id FROM Sub_Category_1 WHERE(id=" + selectedCategories[i] + "))";
-                if (i == 2) where += " AND Sub_Category_2_Id=(SELECT id FROM Sub_Category_2 WHERE(id=" + selectedCategories[i] + "))";
-                if (i == 3) where += " AND Sub_Category_3_Id=(SELECT id FROM Sub_Category_3 WHERE(id=" + selectedCategories[i] + "))";
-                if (i == 4) where += " AND Sub_Category_4_Id=(SELECT id FROM Sub_Category_4 WHERE(id=" + selectedCategories[i] + "))";
+                if (i == 0) where += "Main_Category_Id=(SELECT id FROM Main_Category WHERE(id=" + selectedCategories[i] + " AND OrganizationId=" + EnteredUser.OrganizationId + "))";
+                if (i == 1) where += " AND Sub_Category_1_Id=(SELECT id FROM Sub_Category_1 WHERE(id=" + selectedCategories[i] + " AND OrganizationId=" + EnteredUser.OrganizationId + "))";
+                if (i == 2) where += " AND Sub_Category_2_Id=(SELECT id FROM Sub_Category_2 WHERE(id=" + selectedCategories[i] + " AND OrganizationId=" + EnteredUser.OrganizationId + "))";
+                if (i == 3) where += " AND Sub_Category_3_Id=(SELECT id FROM Sub_Category_3 WHERE(id=" + selectedCategories[i] + " AND OrganizationId=" + EnteredUser.OrganizationId + "))";
+                if (i == 4) where += " AND Sub_Category_4_Id=(SELECT id FROM Sub_Category_4 WHERE(id=" + selectedCategories[i] + " AND OrganizationId=" + EnteredUser.OrganizationId + "))";
             }
             where += ")";
 
@@ -300,13 +302,13 @@ namespace SparesBase
             string id = "";
             if (nodeCount == 0)
             {
-                DatabaseWorker.SqlQuery("INSERT INTO Main_Category VALUES('', '" + category + "', 0)");
+                DatabaseWorker.SqlQuery("INSERT INTO Main_Category VALUES('', '" + category + "', " + EnteredUser.OrganizationId + ")");
                 id = DatabaseWorker.SqlScalarQuery("SELECT id FROM Main_Category WHERE(id=LAST_INSERT_ID())").ToString();
                 treeView.Nodes.Add(new TreeNode() { Text = category, Tag = id, ContextMenuStrip = cmsCategory });
             }
             else
             {
-                DatabaseWorker.SqlQuery("INSERT INTO Sub_Category_" + nodeCount + " VALUES('', '" + category + "', " + selectedIdNode + ", 0)");
+                DatabaseWorker.SqlQuery("INSERT INTO Sub_Category_" + nodeCount + " VALUES('', '" + category + "', " + selectedIdNode + ", " + EnteredUser.OrganizationId + ")");
                 id = DatabaseWorker.SqlScalarQuery("SELECT id FROM Sub_Category_" + nodeCount + " WHERE(id=LAST_INSERT_ID())").ToString();
                 treeView.SelectedNode.Nodes.Add(new TreeNode() { Text = category, Tag = id, ContextMenuStrip = cmsCategory });
             }
@@ -436,5 +438,11 @@ namespace SparesBase
         }
 
         #endregion События
+
+        private void tsmiActionLogs_Click(object sender, EventArgs e)
+        {
+            ActionLogsForm alf = new ActionLogsForm();
+            alf.ShowDialog();
+        }
     }
 }

@@ -42,7 +42,7 @@ namespace SparesBase
         private void lbSellers_SelectedIndexChanged(object sender, EventArgs e)
         {
             int selectedId = int.Parse(lbSellers.SelectedValue.ToString());
-            DataTable sellerInfo = DatabaseWorker.SqlSelectQuery("SELECT * FROM Sellers WHERE(id = '" + selectedId + "')");
+            DataTable sellerInfo = DatabaseWorker.SqlSelectQuery("SELECT * FROM Sellers WHERE(id = " + selectedId + " AND OrganizationId=" + EnteredUser.OrganizationId + ")");
             tbName.Text = sellerInfo.Rows[0].ItemArray[1].ToString();
             tbSite.Text = sellerInfo.Rows[0].ItemArray[2].ToString();
             tbTelephone.Text = sellerInfo.Rows[0].ItemArray[3].ToString();
@@ -87,7 +87,7 @@ namespace SparesBase
         // Обновить данные о поставщиках в ListBox
         private void UpdateData(int sellerId = 0)
         {
-            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT id, name FROM Sellers");
+            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT id, name FROM Sellers WHERE(OrganizationId=" + EnteredUser.OrganizationId + ")");
             listBoxSource = new DataTable();
             listBoxSource.Columns.Add("id");
             listBoxSource.Columns.Add("name");
