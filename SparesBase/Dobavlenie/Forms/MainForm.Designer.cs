@@ -42,6 +42,8 @@
             this.деревоToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiExpand = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiCollapse = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiLogs = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiActionLogs = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView = new System.Windows.Forms.TreeView();
             this.cmsMainCategory = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -85,8 +87,6 @@
             this.cmsDeleteCategory = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsExpandNode = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsCollapseNode = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiLogs = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiActionLogs = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -213,6 +213,21 @@
             this.tsmiCollapse.Text = "Скрыть все узлы";
             this.tsmiCollapse.Click += new System.EventHandler(this.CollapseAllNodes_Click);
             // 
+            // tsmiLogs
+            // 
+            this.tsmiLogs.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiActionLogs});
+            this.tsmiLogs.Name = "tsmiLogs";
+            this.tsmiLogs.Size = new System.Drawing.Size(72, 20);
+            this.tsmiLogs.Text = "Журналы";
+            // 
+            // tsmiActionLogs
+            // 
+            this.tsmiActionLogs.Name = "tsmiActionLogs";
+            this.tsmiActionLogs.Size = new System.Drawing.Size(171, 22);
+            this.tsmiActionLogs.Text = "Журнал действий";
+            this.tsmiActionLogs.Click += new System.EventHandler(this.tsmiActionLogs_Click);
+            // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -226,7 +241,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(1354, 662);
+            this.splitContainer1.Size = new System.Drawing.Size(1354, 528);
             this.splitContainer1.SplitterDistance = 170;
             this.splitContainer1.TabIndex = 1;
             // 
@@ -237,7 +252,7 @@
             this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView.Location = new System.Drawing.Point(0, 0);
             this.treeView.Name = "treeView";
-            this.treeView.Size = new System.Drawing.Size(170, 662);
+            this.treeView.Size = new System.Drawing.Size(170, 528);
             this.treeView.TabIndex = 0;
             this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
             // 
@@ -285,8 +300,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.flowLayoutPanel1);
-            this.splitContainer2.Size = new System.Drawing.Size(1180, 662);
-            this.splitContainer2.SplitterDistance = 411;
+            this.splitContainer2.Size = new System.Drawing.Size(1180, 528);
+            this.splitContainer2.SplitterDistance = 327;
             this.splitContainer2.TabIndex = 1;
             // 
             // dgv
@@ -303,7 +318,7 @@
             this.dgv.MultiSelect = false;
             this.dgv.Name = "dgv";
             this.dgv.ReadOnly = true;
-            this.dgv.Size = new System.Drawing.Size(1180, 411);
+            this.dgv.Size = new System.Drawing.Size(1180, 327);
             this.dgv.TabIndex = 0;
             this.dgv.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellClick);
             this.dgv.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.EditItem_Click);
@@ -348,7 +363,7 @@
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1180, 247);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1180, 197);
             this.flowLayoutPanel1.TabIndex = 1;
             this.flowLayoutPanel1.WrapContents = false;
             // 
@@ -367,7 +382,7 @@
             this.groupBox1.Controls.Add(this.lname);
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(378, 221);
+            this.groupBox1.Size = new System.Drawing.Size(378, 188);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Предмет";
@@ -481,7 +496,7 @@
             this.groupBox2.Controls.Add(this.lnumber);
             this.groupBox2.Location = new System.Drawing.Point(387, 3);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(258, 221);
+            this.groupBox2.Size = new System.Drawing.Size(258, 188);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "В заказ";
@@ -528,7 +543,7 @@
             this.groupBox3.Controls.Add(this.lsellquantity);
             this.groupBox3.Location = new System.Drawing.Point(651, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(258, 221);
+            this.groupBox3.Size = new System.Drawing.Size(258, 188);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Продажа";
@@ -558,7 +573,7 @@
             this.groupBox4.Controls.Add(this.ldefectquantity);
             this.groupBox4.Location = new System.Drawing.Point(915, 3);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(256, 221);
+            this.groupBox4.Size = new System.Drawing.Size(256, 188);
             this.groupBox4.TabIndex = 3;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Брак";
@@ -636,26 +651,11 @@
             this.cmsCollapseNode.Text = "Скрыть узел";
             this.cmsCollapseNode.Click += new System.EventHandler(this.cmsCollapseNode_Click);
             // 
-            // tsmiLogs
-            // 
-            this.tsmiLogs.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiActionLogs});
-            this.tsmiLogs.Name = "tsmiLogs";
-            this.tsmiLogs.Size = new System.Drawing.Size(72, 20);
-            this.tsmiLogs.Text = "Журналы";
-            // 
-            // tsmiActionLogs
-            // 
-            this.tsmiActionLogs.Name = "tsmiActionLogs";
-            this.tsmiActionLogs.Size = new System.Drawing.Size(171, 22);
-            this.tsmiActionLogs.Text = "Журнал действий";
-            this.tsmiActionLogs.Click += new System.EventHandler(this.tsmiActionLogs_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1354, 686);
+            this.ClientSize = new System.Drawing.Size(1354, 552);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip);
             this.MainMenuStrip = this.menuStrip;

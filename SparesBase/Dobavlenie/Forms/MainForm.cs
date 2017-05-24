@@ -14,17 +14,16 @@ namespace SparesBase
 
         // TODO: Возможность переносить предметы в другие категории
 
-        // TODO: Журнал действий над предметом (В заказ, продажа, брак, добавление, изменение, удаление)
-
         // Quest: кто может просматривать журнал?
 
-        
+        // TODO: Добавить поле в журнал: Id предмета
+
 
         public MainForm()
         {
             InitializeComponent();
-            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT LastName, FirstName, SecondName FROM Accounts WHERE(id=" + EnteredUser.id + ")");
-            Text = "База запчастей - " + dt.Rows[0].ItemArray[0] + " " + dt.Rows[0].ItemArray[1] + " " + dt.Rows[0].ItemArray[2];
+            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT Accounts.LastName, Accounts.FirstName, Accounts.SecondName, Organizations.Name FROM Accounts LEFT JOIN Organizations ON Organizations.id = Accounts.OrganizationId WHERE(Accounts.id=" + EnteredUser.id + ")");
+            Text = "База запчастей - " + dt.Rows[0].ItemArray[0] + " " + dt.Rows[0].ItemArray[1] + " " + dt.Rows[0].ItemArray[2] + " - " + dt.Rows[0].ItemArray[3];
         }
 
         #region Вспомогательные методы

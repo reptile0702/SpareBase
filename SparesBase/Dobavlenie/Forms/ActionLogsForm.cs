@@ -24,19 +24,20 @@ namespace SparesBase
 
         private void FindLogs(int actionId, int accountId)
         {
+            // TODO: Находить логи только по текущей организации
             lbLogs.Items.Clear();
             string where = "";
             if (actionId != 0 || accountId != 0)
             {
                 where = " WHERE ";
-                where += actionId != 0 ? "ActionLogs.ActionId= " + actionId +" ": "";
+                where += actionId != 0 ? "ActionLogs.ActionId= " + actionId + " " : "";
                 where += actionId != 0 && accountId != 0 ? " AND " : "";
-                where += accountId != 0 ? "ActionLogs.AccountId=" + accountId : "";               
+                where += accountId != 0 ? "ActionLogs.AccountId=" + accountId : "";
             }
-            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT ActionLogs.ActionId, Accounts.FirstName, Accounts.LastName, Accounts.SecondName FROM ActionLogs LEFT JOIN Accounts ON ActionLogs.AccountId=Accounts.id " + where);
+            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT ActionLogs.ActionId, Accounts.LastName, Accounts.FirstName, Accounts.SecondName FROM ActionLogs LEFT JOIN Accounts ON ActionLogs.AccountId=Accounts.id " + where);
             foreach (DataRow row in dt.Rows)
             {
-                lbLogs.Items.Add(row.ItemArray[0] + " " + row.ItemArray[1] + " " + row.ItemArray[2] + " " + row.ItemArray[3]); 
+                lbLogs.Items.Add(row.ItemArray[0] + " " + row.ItemArray[1] + " " + row.ItemArray[2] + " " + row.ItemArray[3]);
             }
         }
 
@@ -58,7 +59,8 @@ namespace SparesBase
             accounts.Columns.Add("FIO");
             accounts.Rows.Add("0", "Все аккаунты");
 
-            dt = DatabaseWorker.SqlSelectQuery("SELECT id, FirstName, LastName, SecondName FROM Accounts");
+            // TODO: Аккаунты только по текущей организации
+            dt = DatabaseWorker.SqlSelectQuery("SELECT id, LastName, FirstName, SecondName FROM Accounts");
             foreach (DataRow row in dt.Rows)
             {
                 accounts.Rows.Add(row.ItemArray[0], row.ItemArray[1] + " " + row.ItemArray[2] + " " + row.ItemArray[3]);

@@ -37,15 +37,18 @@
             // 
             // lbLogs
             // 
+            this.lbLogs.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lbLogs.FormattingEnabled = true;
+            this.lbLogs.ItemHeight = 20;
             this.lbLogs.Location = new System.Drawing.Point(217, 12);
             this.lbLogs.Name = "lbLogs";
-            this.lbLogs.Size = new System.Drawing.Size(426, 420);
+            this.lbLogs.Size = new System.Drawing.Size(426, 404);
             this.lbLogs.TabIndex = 0;
             this.lbLogs.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // cbAction
             // 
+            this.cbAction.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbAction.FormattingEnabled = true;
             this.cbAction.Location = new System.Drawing.Point(11, 28);
             this.cbAction.Name = "cbAction";
@@ -54,6 +57,7 @@
             // 
             // cbAccount
             // 
+            this.cbAccount.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbAccount.FormattingEnabled = true;
             this.cbAccount.Location = new System.Drawing.Point(12, 84);
             this.cbAccount.Name = "cbAccount";
@@ -89,7 +93,8 @@
             this.Controls.Add(this.cbAction);
             this.Controls.Add(this.lbLogs);
             this.Name = "ActionLogsForm";
-            this.Text = "ActionLogsForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Журнал действий";
             this.Load += new System.EventHandler(this.ActionLogsForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

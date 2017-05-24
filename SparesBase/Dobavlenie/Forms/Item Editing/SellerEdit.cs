@@ -42,6 +42,7 @@ namespace SparesBase
         // Добавление / изменение данных о поставщике
         private void btnOk_Click(object sender, EventArgs e)
         {
+            // TODO: БАГ - Id организации записывается неправильно
             if (sellerId == 0)
                 SellerOperation("INSERT INTO Sellers VALUES(NULL, '" + tbName.Text + "', '" + tbSite.Text + "', '" + tbTelephone.Text + "', '" + tbFirstName.Text + "', '" + tbLastName.Text + "', '" + tbSecondName.Text + "', OrganizationId=" + EnteredUser.OrganizationId + ")");
             else
