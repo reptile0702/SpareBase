@@ -44,7 +44,6 @@
             this.lbLogs.Name = "lbLogs";
             this.lbLogs.Size = new System.Drawing.Size(426, 404);
             this.lbLogs.TabIndex = 0;
-            this.lbLogs.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // cbAction
             // 

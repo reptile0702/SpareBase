@@ -9,19 +9,22 @@ namespace SparesBase
     {
         // TODO: Когда удаляются все фотографии из предмета, то превьюшка не удаляется     
         // TODO: отобразть превью после назначения фотографии
-
         // TODO: Загружать фотки предмета только при его добавлении или изменении
 
         // TODO: Возможность переносить предметы в другие категории
 
-        // Quest: кто может просматривать журнал?
-
         // TODO: Добавить поле в журнал: Id предмета
+        // TODO: При нажатии на кнопку "Добавить нового поставщика", открывать форму добавления поставщика, а не список их
+
+        // QUESTION: Кто может просматривать журнал?
 
 
+        // Конструктор
         public MainForm()
         {
             InitializeComponent();
+
+            // Заполнение заголовка формы именем пользовалеля и названием организации
             DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT Accounts.LastName, Accounts.FirstName, Accounts.SecondName, Organizations.Name FROM Accounts LEFT JOIN Organizations ON Organizations.id = Accounts.OrganizationId WHERE(Accounts.id=" + EnteredUser.id + ")");
             Text = "База запчастей - " + dt.Rows[0].ItemArray[0] + " " + dt.Rows[0].ItemArray[1] + " " + dt.Rows[0].ItemArray[2] + " - " + dt.Rows[0].ItemArray[3];
         }
@@ -436,12 +439,13 @@ namespace SparesBase
             Application.Exit();
         }
 
-        #endregion События
-
+        // Журнал действий
         private void tsmiActionLogs_Click(object sender, EventArgs e)
         {
             ActionLogsForm alf = new ActionLogsForm();
             alf.ShowDialog();
         }
+
+        #endregion События
     }
 }

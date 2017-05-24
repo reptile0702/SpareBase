@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SparesBase
@@ -15,6 +8,7 @@ namespace SparesBase
         int quantity, retailPrice, wholesalePrice, servicePrice;
         int id;
         
+        // Конструктор
         public SellingForm(int quantity, int retailPrice, int wholesalePrice, int servicePrice, int id)
         {
             InitializeComponent();
@@ -25,6 +19,8 @@ namespace SparesBase
             this.id = id;
         }
 
+
+        // Заполнение количества
         private void FillQuantity()
         {
             for (int i = 0; i < quantity; i++)
@@ -33,12 +29,7 @@ namespace SparesBase
             cbQuantity.SelectedIndex = 0;
         }
 
-        private void SellingForm_Load(object sender, EventArgs e)
-        {
-            FillPrices();
-            FillQuantity();
-        }
-
+        // Заполнение цен
         private void FillPrices()
         {
             cbPrice.Items.Add("Розничная цена: " + retailPrice);
@@ -47,17 +38,28 @@ namespace SparesBase
             cbPrice.SelectedIndex = 0;
         }
 
+        // Добавление продажи в базу
         private void AddSell()
         {
             DatabaseWorker.SqlQuery("INSERT INTO Selling VALUES (''," + cbQuantity.Text + "," + cbPrice.Text.Remove(0, cbPrice.Text.IndexOf(':') + 2) + ", " + id + ")");
         }
 
+
+        // Загрузка формы
+        private void SellingForm_Load(object sender, EventArgs e)
+        {
+            FillPrices();
+            FillQuantity();
+        }
+  
+        // Клик на ОК
         private void btnOK_Click(object sender, EventArgs e)
         {
             AddSell();
             Close();
         }
 
+        // Клик на Отмена
         private void btnCancel_Click(object sender, EventArgs e)
         {
             Close();

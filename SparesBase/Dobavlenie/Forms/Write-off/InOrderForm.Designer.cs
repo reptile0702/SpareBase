@@ -57,7 +57,6 @@
             this.tbPrice.ReadOnly = true;
             this.tbPrice.Size = new System.Drawing.Size(155, 20);
             this.tbPrice.TabIndex = 1;
-            this.tbPrice.TextChanged += new System.EventHandler(this.tbPrice_TextChanged);
             // 
             // tbTotal
             // 

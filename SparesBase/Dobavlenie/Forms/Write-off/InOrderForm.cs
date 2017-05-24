@@ -9,6 +9,7 @@ namespace SparesBase
         private int itemId = 0;
         private int price = 0;
 
+        // Конструктор
         public InOrder(int itemId, int quant, int price)
         {
             InitializeComponent();
@@ -18,23 +19,25 @@ namespace SparesBase
             this.price = price;
         }
 
+
         // Добавление заказа в таблицу
         private void AddInOrder()
         {
-            DatabaseWorker.SqlQuery("INSERT INTO Purchase VALUES(''," + tbNumber.Text + "," + cbQuantity.Text + ",'" + tbPrice.Text + "'," + tbTotal.Text + "," + itemId + ")");
+            // Проверка на введенность поля
+            if (tbNumber.Text != "")
+                DatabaseWorker.SqlQuery("INSERT INTO Purchase VALUES(''," + tbNumber.Text + "," + cbQuantity.Text + ",'" + tbPrice.Text + "'," + tbTotal.Text + "," + itemId + ")");
         }
 
 
         // Загрузка формы
         private void InOrder_Load(object sender, EventArgs e)
         {
+            // Заполнение ComboBox'а с количеством
             for (int i = 0; i < quant; i++)         
                 cbQuantity.Items.Add(i+1);
-
             cbQuantity.SelectedIndex = 0;
 
             tbPrice.Text = price.ToString();
-
             tbTotal.Text = (int.Parse(cbQuantity.Text) * price).ToString();      
         }
 
@@ -51,15 +54,11 @@ namespace SparesBase
             Close();
         }
 
-        private void tbPrice_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
+        // Изменение количества
         private void cbQuantity_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbQuantity.Text != "")          
-            tbTotal.Text = (int.Parse(cbQuantity.Text) * price).ToString();
+                tbTotal.Text = (int.Parse(cbQuantity.Text) * price).ToString();
         }
     }
 }

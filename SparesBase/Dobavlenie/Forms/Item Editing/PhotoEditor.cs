@@ -25,6 +25,7 @@ namespace SparesBase
 
         #region Конструкторы
 
+
         public PhotoEditor(int id, bool preview)
         {
             InitializeComponent();

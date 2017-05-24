@@ -106,7 +106,6 @@
             this.Name = "AuthenticationForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Вход в программу";
-            this.Load += new System.EventHandler(this.AuthenticationForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

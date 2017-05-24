@@ -8,12 +8,14 @@ namespace SparesBase
         int quantity;
         int id;
 
+        // Конструктор
         public DefectForm(int quantity, int id)
         {
             InitializeComponent();
             this.quantity = quantity;
             this.id = id;
         }
+
 
         // Заполнение ComboBox с количеством
         private void FillQuantity()
@@ -27,8 +29,12 @@ namespace SparesBase
         // Добавление дефекта в таблицу
         private void AddDefect()
         {
-            DatabaseWorker.SqlQuery("INSERT INTO Defect VALUES (''," + id + ", " + cbQuantityOfDefect.Text + ", '" + tbWhoIdentified.Text + "', '" + tbNote.Text + "')");
+            // Проверка на введенность полей
+            if (tbWhoIdentified.Text != "" &&
+                tbNote.Text != "")
+                DatabaseWorker.SqlQuery("INSERT INTO Defect VALUES (''," + id + ", " + cbQuantityOfDefect.Text + ", '" + tbWhoIdentified.Text + "', '" + tbNote.Text + "')");
         }
+
 
         // Загрузка формы
         private void DefectForm_Load(object sender, EventArgs e)

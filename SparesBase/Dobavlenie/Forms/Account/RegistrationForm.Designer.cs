@@ -281,7 +281,6 @@
             this.cbCity.Name = "cbCity";
             this.cbCity.Size = new System.Drawing.Size(158, 21);
             this.cbCity.TabIndex = 8;
-            this.cbCity.SelectedIndexChanged += new System.EventHandler(this.cbCity_SelectedIndexChanged);
             // 
             // cbOrganization
             // 

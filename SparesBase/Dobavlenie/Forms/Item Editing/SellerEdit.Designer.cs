@@ -184,10 +184,8 @@
             this.Name = "SellerEdit";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "SellerEdit";
-            this.Load += new System.EventHandler(this.SellerEdit_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion

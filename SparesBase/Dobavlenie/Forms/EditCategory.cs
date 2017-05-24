@@ -27,6 +27,7 @@ namespace SparesBase
             this.rename = rename;
         }
 
+
         // Загрузка формы
         private void EditCategory_Load(object sender, EventArgs e)
         {
