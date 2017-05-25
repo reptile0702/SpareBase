@@ -32,7 +32,10 @@ namespace SparesBase
             // Проверка на введенность полей
             if (tbWhoIdentified.Text != "" &&
                 tbNote.Text != "")
+            {
                 DatabaseWorker.SqlQuery("INSERT INTO Defect VALUES (''," + id + ", " + cbQuantityOfDefect.Text + ", '" + tbWhoIdentified.Text + "', '" + tbNote.Text + "')");
+                DatabaseWorker.InsertAction(6, id);
+            }
         }
 
 

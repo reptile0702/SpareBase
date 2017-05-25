@@ -117,6 +117,14 @@ namespace SparesBase
 
                 // Выполнение запроса
                 DatabaseWorker.SqlQuery(query);
+                if (updateId == 0)
+                {
+                    DatabaseWorker.InsertAction(1, int.Parse(DatabaseWorker.SqlScalarQuery("SELECT LAST_INSERT_ID() FROM Items").ToString()));
+                }
+                else
+                {
+                    DatabaseWorker.InsertAction(2, updateId);
+                }
 
                 Close();
             }
@@ -206,32 +214,36 @@ namespace SparesBase
         // Подсчет остатка
         private void CalcResidue()
         {
-            int purchase = 0;
-            int selling = 0;
-            int defect = 0;
+            if (tbQuantity.Text != "")
+            {
+                int purchase = 0;
+                int selling = 0;
+                int defect = 0;
 
-            // Подсчет всех строк
+                // Подсчет всех строк
 
-            // В заказ
-            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT Quantity FROM Purchase WHERE(ItemId=" + itemId + ")");
-            foreach (DataRow row in dt.Rows)
-                purchase += row.ItemArray[0].ToString() != "" ? int.Parse(row.ItemArray[0].ToString()) : 0;                   
+                // В заказ
+                DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT Quantity FROM Purchase WHERE(ItemId=" + itemId + ")");
+                foreach (DataRow row in dt.Rows)
+                    purchase += row.ItemArray[0].ToString() != "" ? int.Parse(row.ItemArray[0].ToString()) : 0;
 
-            // Продажа
-            dt = DatabaseWorker.SqlSelectQuery("SELECT Quantity FROM Selling WHERE(ItemId=" + itemId + ")");
-            foreach (DataRow row in dt.Rows)
-                selling += row.ItemArray[0].ToString() != "" ? int.Parse(row.ItemArray[0].ToString()) : 0;
+                // Продажа
+                dt = DatabaseWorker.SqlSelectQuery("SELECT Quantity FROM Selling WHERE(ItemId=" + itemId + ")");
+                foreach (DataRow row in dt.Rows)
+                    selling += row.ItemArray[0].ToString() != "" ? int.Parse(row.ItemArray[0].ToString()) : 0;
 
-            // Брак
-            dt = DatabaseWorker.SqlSelectQuery("SELECT QuantityOfDefect FROM Defect WHERE(ItemId=" + itemId + ")");
-            foreach (DataRow row in dt.Rows)
-                defect += row.ItemArray[0].ToString() != "" ? int.Parse(row.ItemArray[0].ToString()) : 0;
+                // Брак
+                dt = DatabaseWorker.SqlSelectQuery("SELECT QuantityOfDefect FROM Defect WHERE(ItemId=" + itemId + ")");
+                foreach (DataRow row in dt.Rows)
+                    defect += row.ItemArray[0].ToString() != "" ? int.Parse(row.ItemArray[0].ToString()) : 0;
 
-            // Остаток
-            residue = int.Parse(tbQuantity.Text) - (purchase + selling + defect);
+                // Остаток            
+                residue = int.Parse(tbQuantity.Text) - (purchase + selling + defect);
 
-            // Занесение остатка в базу
-            DatabaseWorker.SqlQuery("UPDATE Items SET Residue = " + residue + " WHERE(id = " + itemId + ")");
+                // Занесение остатка в базу
+                DatabaseWorker.SqlQuery("UPDATE Items SET Residue = " + residue + " WHERE(id = " + itemId + ")");
+            }
+            
         }
 
         #endregion Вспомогательные методы  

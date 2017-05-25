@@ -49,7 +49,7 @@ namespace SparesBase
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);    
+                MessageBox.Show(query + "\n\n" + e.Message);    
             }
             finally
             {
@@ -73,7 +73,7 @@ namespace SparesBase
             }
             catch (Exception e)
             {
-                MessageBox.Show( e.Message);
+                MessageBox.Show(query + "\n\n" + e.Message);
                 return null;
             }
             finally
@@ -97,7 +97,7 @@ namespace SparesBase
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                MessageBox.Show(query + "\n\n" + e.Message);
                 return null;
             }
             finally
@@ -105,6 +105,11 @@ namespace SparesBase
                 if (connection != null)
                     connection.Close();
             }
+        }
+
+        public static void InsertAction(int actionId, int itemId)
+        {
+            SqlQuery("INSERT INTO ActionLogs VALUES('', " + actionId + ", " + EnteredUser.id + ", " + EnteredUser.OrganizationId + ", " + itemId + ", NOW())");
         }
     }
 }

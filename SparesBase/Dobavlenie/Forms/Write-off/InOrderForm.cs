@@ -25,7 +25,10 @@ namespace SparesBase
         {
             // Проверка на введенность поля
             if (tbNumber.Text != "")
+            {
                 DatabaseWorker.SqlQuery("INSERT INTO Purchase VALUES(''," + tbNumber.Text + "," + cbQuantity.Text + ",'" + tbPrice.Text + "'," + tbTotal.Text + "," + itemId + ")");
+                DatabaseWorker.InsertAction(4, itemId);
+            }
         }
 
 

@@ -50,6 +50,7 @@
             this.cmsAddMainCategory = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsExpandAllNodes = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsCollapseAllNodes = new System.Windows.Forms.ToolStripMenuItem();
+            this.tbSearch = new System.Windows.Forms.TextBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.dgv = new System.Windows.Forms.DataGridView();
             this.cmsItem = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -237,6 +238,7 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.treeView);
+            this.splitContainer1.Panel1.Controls.Add(this.tbSearch);
             // 
             // splitContainer1.Panel2
             // 
@@ -251,13 +253,14 @@
             this.treeView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.treeView.ContextMenuStrip = this.cmsMainCategory;
             this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeView.Location = new System.Drawing.Point(0, 0);
+            this.treeView.Location = new System.Drawing.Point(0, 20);
             this.treeView.Name = "treeView";
-            this.treeView.Size = new System.Drawing.Size(170, 528);
+            this.treeView.Size = new System.Drawing.Size(170, 508);
             this.treeView.TabIndex = 0;
             this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
             this.treeView.DragDrop += new System.Windows.Forms.DragEventHandler(this.treeView_DragDrop);
             this.treeView.DragEnter += new System.Windows.Forms.DragEventHandler(this.treeView_DragEnter);
+            this.treeView.MouseMove += new System.Windows.Forms.MouseEventHandler(this.treeView_MouseMove);
             // 
             // cmsMainCategory
             // 
@@ -288,6 +291,15 @@
             this.cmsCollapseAllNodes.Size = new System.Drawing.Size(238, 22);
             this.cmsCollapseAllNodes.Text = "Скрыть все узлы";
             this.cmsCollapseAllNodes.Click += new System.EventHandler(this.CollapseAllNodes_Click);
+            // 
+            // tbSearch
+            // 
+            this.tbSearch.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tbSearch.Location = new System.Drawing.Point(0, 0);
+            this.tbSearch.Name = "tbSearch";
+            this.tbSearch.Size = new System.Drawing.Size(170, 20);
+            this.tbSearch.TabIndex = 1;
+            this.tbSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbSearch_KeyDown);
             // 
             // splitContainer2
             // 
@@ -674,6 +686,7 @@
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
@@ -759,5 +772,6 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.ToolStripMenuItem tsmiLogs;
         private System.Windows.Forms.ToolStripMenuItem tsmiActionLogs;
+        private System.Windows.Forms.TextBox tbSearch;
     }
 }

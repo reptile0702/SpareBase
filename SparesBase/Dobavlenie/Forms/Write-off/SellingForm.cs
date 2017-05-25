@@ -42,6 +42,7 @@ namespace SparesBase
         private void AddSell()
         {
             DatabaseWorker.SqlQuery("INSERT INTO Selling VALUES (''," + cbQuantity.Text + "," + cbPrice.Text.Remove(0, cbPrice.Text.IndexOf(':') + 2) + ", " + id + ")");
+            DatabaseWorker.InsertAction(5, id);
         }
 
 

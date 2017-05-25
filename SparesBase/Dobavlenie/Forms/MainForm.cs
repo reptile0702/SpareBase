@@ -14,10 +14,14 @@ namespace SparesBase
 
         // TODO: Возможность переносить предметы в другие категории
 
-        // TODO: Добавить поле в журнал: Id предмета
+
         // TODO: При нажатии на кнопку "Добавить нового поставщика", открывать форму добавления поставщика, а не список их
 
-        // QUESTION: Кто может просматривать журнал?
+        // TODO: Доработать Drug`n`Drop(раскрытие нода при удержание мыши над ним)
+
+        // TODO: Галочка: разршён ли поиск.
+        // TODO: Привилегия для Админов.
+        // TODO: Поиск по дате в логах.
 
 
         // Конструктор
@@ -28,6 +32,56 @@ namespace SparesBase
             // Заполнение заголовка формы именем пользовалеля и названием организации
             DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT Accounts.LastName, Accounts.FirstName, Accounts.SecondName, Organizations.Name FROM Accounts LEFT JOIN Organizations ON Organizations.id = Accounts.OrganizationId WHERE(Accounts.id=" + EnteredUser.id + ")");
             Text = "База запчастей - " + dt.Rows[0].ItemArray[0] + " " + dt.Rows[0].ItemArray[1] + " " + dt.Rows[0].ItemArray[2] + " - " + dt.Rows[0].ItemArray[3];
+        }
+
+        private void Search(string query)
+        {
+            DataTable items = DatabaseWorker.SqlSelectQuery("SELECT Items.id, Item_Name, Sellers.name, Purchase_Price, Retail_Price, Wholesale_Price, Service_Price, Storage, Quantity, Upload_Date, Residue FROM Items INNER JOIN Sellers ON Items.Seller_Id = Sellers.id WHERE(Item_Name LIKE \"%" + query + "%\" OR Note LIKE \"%" + query + "%\")");
+
+            DataTable dt = new DataTable();
+            dt.Columns.Add("ID");
+            dt.Columns.Add("Наименование");
+            dt.Columns.Add("Поставщик");
+            dt.Columns.Add("Закупка");
+            dt.Columns.Add("Розница");
+            dt.Columns.Add("Мелкий опт");
+            dt.Columns.Add("Сервисы");
+            dt.Columns.Add("Хранение");
+            dt.Columns.Add("Количество");
+            dt.Columns.Add("Дата добавления");
+            dt.Columns.Add("Остаток");
+
+            for (int i = 0; i < items.Rows.Count; i++)
+                dt.Rows.Add().ItemArray = items.Rows[i].ItemArray;
+
+            if (dt.Rows.Count == 0)
+            {
+                cmsDeleteItem.Enabled = false;
+                cmsEditItem.Enabled = false;
+            }
+            else
+            {
+                cmsEditItem.Enabled = true;
+                cmsDeleteItem.Enabled = true;
+            }
+
+            dgv.DataSource = dt;
+            dgv.Columns[0].Width = 90;
+            dgv.Columns[1].Width = 90;
+            dgv.Columns[2].Width = 90;
+            dgv.Columns[3].Width = 90;
+            dgv.Columns[4].Width = 90;
+            dgv.Columns[5].Width = 90;
+            dgv.Columns[6].Width = 90;
+            dgv.Columns[7].Width = 90;
+            dgv.Columns[8].Width = 90;
+            dgv.Columns[9].Width = 90;
+
+            for (int i = 0; i < dgv.Rows.Count; i++)
+                if (i % 2 != 0)
+                    dgv.Rows[i].DefaultCellStyle.BackColor = Color.LightGray;
+
+            cmsAddItem.Enabled = false;
         }
 
         #region Вспомогательные методы
@@ -195,6 +249,8 @@ namespace SparesBase
             for (int i = 0; i < dgv.Rows.Count; i++)
                 if (i % 2 != 0)
                     dgv.Rows[i].DefaultCellStyle.BackColor = Color.LightGray;
+
+            cmsAddItem.Enabled = true;
         }
 
         // Возвращает массив категорий сформированный по полному пути выделенного нода в TreeView
@@ -252,6 +308,7 @@ namespace SparesBase
             DatabaseWorker.SqlQuery("DELETE FROM Items WHERE(id = " + selectedItemId + ")");
             PhotoEditor pe = new PhotoEditor(selectedItemId, true);
             pe.DeleteItemImages();
+            DatabaseWorker.InsertAction(3, selectedItemId);
             FillDataGridView();
         }
 
@@ -464,6 +521,22 @@ namespace SparesBase
             if (e.Button == MouseButtons.Left)
             {
                 dgv.DoDragDrop(dgv.CurrentRow.Cells[0].Value.ToString(), DragDropEffects.Copy);
+            }
+        }
+
+        private void treeView_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+
+            }
+        }
+
+        private void tbSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                Search(tbSearch.Text);
             }
         }
     }
