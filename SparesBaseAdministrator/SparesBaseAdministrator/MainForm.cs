@@ -38,5 +38,11 @@ namespace SparesBaseAdministrator
             CitiesForm cf = new CitiesForm();
             cf.ShowDialog();
         }
+
+        private void btnSellers_Click(object sender, System.EventArgs e)
+        {
+            SellerForm sf = new SellerForm();
+            sf.ShowDialog();
+        }
     }
 }

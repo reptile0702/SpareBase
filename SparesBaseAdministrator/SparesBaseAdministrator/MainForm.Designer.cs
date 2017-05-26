@@ -95,6 +95,7 @@
             this.btnSellers.TabIndex = 5;
             this.btnSellers.Text = "Поставщики";
             this.btnSellers.UseVisualStyleBackColor = true;
+            this.btnSellers.Click += new System.EventHandler(this.btnSellers_Click);
             // 
             // lOrgCount
             // 
