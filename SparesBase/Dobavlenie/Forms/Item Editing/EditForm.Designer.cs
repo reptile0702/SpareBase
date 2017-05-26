@@ -56,6 +56,7 @@
             this.btnInOrder = new System.Windows.Forms.Button();
             this.btnDefect = new System.Windows.Forms.Button();
             this.cbSeller = new System.Windows.Forms.ComboBox();
+            this.chbSearchAllowed = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbPhoto)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -119,7 +120,7 @@
             this.pbPhoto.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pbPhoto.Location = new System.Drawing.Point(0, 13);
             this.pbPhoto.Name = "pbPhoto";
-            this.pbPhoto.Size = new System.Drawing.Size(248, 258);
+            this.pbPhoto.Size = new System.Drawing.Size(248, 272);
             this.pbPhoto.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbPhoto.TabIndex = 14;
             this.pbPhoto.TabStop = false;
@@ -209,7 +210,7 @@
             // btnPhoto
             // 
             this.btnPhoto.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btnPhoto.Location = new System.Drawing.Point(0, 271);
+            this.btnPhoto.Location = new System.Drawing.Point(0, 285);
             this.btnPhoto.Name = "btnPhoto";
             this.btnPhoto.Size = new System.Drawing.Size(248, 23);
             this.btnPhoto.TabIndex = 14;
@@ -235,7 +236,7 @@
             // 
             // btnEdit
             // 
-            this.btnEdit.Location = new System.Drawing.Point(92, 259);
+            this.btnEdit.Location = new System.Drawing.Point(92, 282);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(540, 23);
             this.btnEdit.TabIndex = 13;
@@ -251,6 +252,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.chbSearchAllowed);
             this.splitContainer1.Panel1.Controls.Add(this.label11);
             this.splitContainer1.Panel1.Controls.Add(this.tbFirmPrice);
             this.splitContainer1.Panel1.Controls.Add(this.btnSell);
@@ -281,7 +283,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.pbPhoto);
             this.splitContainer1.Panel2.Controls.Add(this.btnPhoto);
             this.splitContainer1.Panel2.Controls.Add(this.label9);
-            this.splitContainer1.Size = new System.Drawing.Size(906, 294);
+            this.splitContainer1.Size = new System.Drawing.Size(906, 308);
             this.splitContainer1.SplitterDistance = 654;
             this.splitContainer1.TabIndex = 31;
             // 
@@ -304,7 +306,7 @@
             // 
             // btnSell
             // 
-            this.btnSell.Location = new System.Drawing.Point(92, 231);
+            this.btnSell.Location = new System.Drawing.Point(92, 254);
             this.btnSell.Name = "btnSell";
             this.btnSell.Size = new System.Drawing.Size(176, 23);
             this.btnSell.TabIndex = 10;
@@ -314,7 +316,7 @@
             // 
             // btnInOrder
             // 
-            this.btnInOrder.Location = new System.Drawing.Point(456, 231);
+            this.btnInOrder.Location = new System.Drawing.Point(456, 254);
             this.btnInOrder.Name = "btnInOrder";
             this.btnInOrder.Size = new System.Drawing.Size(176, 23);
             this.btnInOrder.TabIndex = 12;
@@ -324,7 +326,7 @@
             // 
             // btnDefect
             // 
-            this.btnDefect.Location = new System.Drawing.Point(274, 231);
+            this.btnDefect.Location = new System.Drawing.Point(274, 254);
             this.btnDefect.Name = "btnDefect";
             this.btnDefect.Size = new System.Drawing.Size(176, 23);
             this.btnDefect.TabIndex = 11;
@@ -343,12 +345,23 @@
             this.cbSeller.DropDown += new System.EventHandler(this.cbSeller_DropDown);
             this.cbSeller.SelectedIndexChanged += new System.EventHandler(this.cbSeller_SelectedIndexChanged);
             // 
+            // chbSearchAllowed
+            // 
+            this.chbSearchAllowed.AutoSize = true;
+            this.chbSearchAllowed.Location = new System.Drawing.Point(523, 231);
+            this.chbSearchAllowed.Name = "chbSearchAllowed";
+            this.chbSearchAllowed.Size = new System.Drawing.Size(110, 17);
+            this.chbSearchAllowed.TabIndex = 32;
+            this.chbSearchAllowed.Text = "Разрешён поиск";
+            this.chbSearchAllowed.UseVisualStyleBackColor = true;
+            
+            // 
             // EditForm
             // 
             this.AcceptButton = this.btnEdit;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(906, 294);
+            this.ClientSize = new System.Drawing.Size(906, 308);
             this.Controls.Add(this.splitContainer1);
             this.Name = "EditForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -393,6 +406,7 @@
         private System.Windows.Forms.Button btnSell;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox tbFirmPrice;
+        private System.Windows.Forms.CheckBox chbSearchAllowed;
     }
 }
 

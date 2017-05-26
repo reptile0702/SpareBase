@@ -51,7 +51,7 @@ namespace SparesBase.Forms
             EnteredUser.OrganizationId = organizationId;
             EnteredUser.Admin = admin;
 
-            MainForm mf = new MainForm();
+            MainForm mf = new MainForm(this);
             mf.Show();
             Hide();
         }
@@ -68,6 +68,24 @@ namespace SparesBase.Forms
         {
             RegistrationForm reg = new RegistrationForm(this);
             reg.ShowDialog();
+        }
+
+        public void InitializeForm()
+        {
+            tbLogIn.Clear();
+            tbPassword.Clear();
+            tbLogIn.Select();
+
+            EnteredUser.id = 0;
+            EnteredUser.LogIn = "";
+            EnteredUser.OrganizationId = 0;
+            EnteredUser.Admin = false;
+
+        }
+
+        private void AuthenticationForm_Load(object sender, EventArgs e)
+        {
+          
         }
     }
 }

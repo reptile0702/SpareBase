@@ -38,6 +38,7 @@ namespace SparesBase
                 tbLastName.Text != "")
             {
                 DatabaseWorker.SqlQuery(query);
+                DialogResult = DialogResult.OK;
                 Close();
             }
             else
@@ -65,7 +66,7 @@ namespace SparesBase
             else
                 SellerOperation("UPDATE Sellers SET name='" + tbName.Text + "', site='" + tbSite.Text + "', telephone='" + tbTelephone.Text + "', contactFirstName='" + tbFirstName.Text + "', contactLastName='" + tbLastName.Text + "', contactSecondName='" + tbSecondName.Text + "' WHERE(id = " + sellerId + ")");
 
-            DialogResult = DialogResult.OK;
+            
         }
     }
 }

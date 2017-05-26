@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using SparesBase.Forms;
 
 namespace SparesBase
 {
@@ -12,27 +13,25 @@ namespace SparesBase
         // TODO: отобразть превью после назначения фотографии
         // TODO: Загружать фотки предмета только при его добавлении или изменении
 
-        // TODO: Возможность переносить предметы в другие категории
-
-
-        // TODO: При нажатии на кнопку "Добавить нового поставщика", открывать форму добавления поставщика, а не список их
-
-        // TODO: Доработать Drug`n`Drop(раскрытие нода при удержание мыши над ним)
-
-        // TODO: Галочка: разршён ли поиск.
-        // TODO: Привилегия для Админов.
+        // TODO: Сделать смену категорий в EditForm
         // TODO: Поиск по дате в логах.
 
-
+        AuthenticationForm au;
         // Конструктор
-        public MainForm()
+        public MainForm(AuthenticationForm au)
         {
             InitializeComponent();
 
             // Заполнение заголовка формы именем пользовалеля и названием организации
-            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT Accounts.LastName, Accounts.FirstName, Accounts.SecondName, Organizations.Name FROM Accounts LEFT JOIN Organizations ON Organizations.id = Accounts.OrganizationId WHERE(Accounts.id=" + EnteredUser.id + ")");
+            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT Accounts.LastName, Accounts.FirstName, Accounts.SecondName, Organizations.Name, Accounts.Admin FROM Accounts LEFT JOIN Organizations ON Organizations.id = Accounts.OrganizationId WHERE(Accounts.id=" + EnteredUser.id + ")");
             Text = "База запчастей - " + dt.Rows[0].ItemArray[0] + " " + dt.Rows[0].ItemArray[1] + " " + dt.Rows[0].ItemArray[2] + " - " + dt.Rows[0].ItemArray[3];
+            if (dt.Rows[0].ItemArray[4].ToString() != "1")
+            {
+                tsmiLogs.Visible = false;
+            }
+            this.au = au;
         }
+
 
         private void Search(string query)
         {
@@ -170,6 +169,7 @@ namespace SparesBase
                 // Добавление нодов в TreeView
                 foreach (TreeNode node in root.Nodes)
                     treeView.Nodes.Add(node);
+                treeView.Sort();
             }
         }
 
@@ -278,6 +278,32 @@ namespace SparesBase
 
             return categories;
         }
+        private int[] FormCategories(TreeNode node)
+        {
+            int[] categories = new int[5];
+            List<int> cats = new List<int>();
+            TreeNode parent = node;
+
+            do
+            {
+                cats.Add(int.Parse(parent.Tag.ToString()));
+                parent = parent.Parent;
+            }
+            while (parent != null);
+
+            cats.Reverse();
+            for (int i = 0; i < categories.Length; i++)
+            {
+                if (i > cats.Count - 1)
+                    break;
+                else
+                    categories[i] = cats[i];
+            }
+
+            return categories;
+        }
+
+
 
         #endregion Вспомогательные методы
 
@@ -386,6 +412,10 @@ namespace SparesBase
             treeView.SelectedNode.Remove();
         }
 
+        private void ChangeCategories(int[] categories, int itemId)
+        {
+            DatabaseWorker.SqlQuery("UPDATE Items Set Main_Category_Id=" + categories[0] + ",  Sub_Category_1_Id=" + categories[1] + ", Sub_Category_2_Id=" + categories[2] + ", Sub_Category_3_Id=" + categories[3] + ", Sub_Category_4_Id=" + categories[4] + " WHERE(id=" + itemId + ")");
+        }
         #endregion Категории
 
 
@@ -490,7 +520,11 @@ namespace SparesBase
         // Закрытие формы
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Application.Exit();
+            if (!au.Visible)
+            {
+                Application.Exit();
+            }
+           
         }
 
         // Журнал действий
@@ -510,10 +544,20 @@ namespace SparesBase
 
         private void treeView_DragDrop(object sender, DragEventArgs e)
         {
+            
             Point pt = treeView.PointToClient(Cursor.Position);
             TreeNode node = treeView.GetNodeAt(pt);
             if (node != null)
-                MessageBox.Show(e.Data.GetData(DataFormats.Text).ToString() + " " + node.Text);
+            {
+                //MessageBox.Show(e.Data.GetData(DataFormats.Text).ToString() + " " + node.Text);
+                if (MessageBox.Show("Вы уверены, что хотите переместить предмет из категорий \"" + treeView.SelectedNode.FullPath.Replace("\\", " - ") + "\" в категории \"" + node.FullPath.Replace("\\", " - ") + "\"?", "Вы уверены?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes) 
+                {
+                    ChangeCategories(FormCategories(node), int.Parse(e.Data.GetData(DataFormats.Text).ToString()));
+                    FillDataGridView();
+
+                }
+                
+            }
         }
 
         private void dgv_MouseMove(object sender, MouseEventArgs e)
@@ -538,6 +582,23 @@ namespace SparesBase
             {
                 Search(tbSearch.Text);
             }
+        }
+
+        private void tsmiChangeAccount_Click(object sender, EventArgs e)
+        {
+            au.InitializeForm();
+            au.Show();
+            Close();
+        }
+
+        private void tsmiUsers_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tsmiExit_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

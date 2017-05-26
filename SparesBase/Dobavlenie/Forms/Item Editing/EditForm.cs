@@ -31,6 +31,7 @@ namespace SparesBase
 
             Text = "Добавление предмета";
             btnEdit.Text = "Добавить предмет";
+            FillSellersComboBox();
         }
 
         // Конструктор для изменения предмета
@@ -51,6 +52,7 @@ namespace SparesBase
 
             Text = "Изменение предмета";
             btnEdit.Text = "Изменить предмет";
+            FillSellersComboBox();
             GetItemData(itemId);
         }
 
@@ -89,9 +91,9 @@ namespace SparesBase
                 // Формирование запроса
                 string query = "";
                 if (operation == "INSERT")
-                    query = "INSERT INTO Items VALUES('', {0}, {1}, {2}, {3}, {4}, '{5}', {6}, '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', {14}, NOW(), {15}, " + EnteredUser.OrganizationId + ")";
+                    query = "INSERT INTO Items VALUES('', {0}, {1}, {2}, {3}, {4}, '{5}', {6}, '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', {14}, NOW(), {15}, " + EnteredUser.OrganizationId + ", {16})";
                 else
-                    query = "UPDATE Items SET Item_Name='{5}', Seller_Id={6}, Purchase_Price='{7}', Retail_Price='{8}', Wholesale_Price='{9}', Service_Price='{10}', FirmPrice='{11}', Storage='{12}', Note='{13}', Quantity={14}, Residue={15} WHERE id = " + updateId;
+                    query = "UPDATE Items SET Item_Name='{5}', Seller_Id={6}, Purchase_Price='{7}', Retail_Price='{8}', Wholesale_Price='{9}', Service_Price='{10}', FirmPrice='{11}', Storage='{12}', Note='{13}', Quantity={14}, Residue={15} , SearchAllowed={16} WHERE id = " + updateId;
 
                 // Подсчет остатка                    
                 CalcResidue();                    
@@ -113,7 +115,8 @@ namespace SparesBase
                     tbStorage.Text,
                     tbNote.Text,
                     int.Parse(tbQuantity.Text),
-                    residue);
+                    residue,
+                    chbSearchAllowed.Checked ? "1" : "0");
 
                 // Выполнение запроса
                 DatabaseWorker.SqlQuery(query);
@@ -146,6 +149,7 @@ namespace SparesBase
             tbStorage.Text = dt.Rows[0].ItemArray[13].ToString();
             tbNote.Text = dt.Rows[0].ItemArray[14].ToString();
             tbQuantity.Text = dt.Rows[0].ItemArray[15].ToString();
+            chbSearchAllowed.Checked = dt.Rows[0].ItemArray[19].ToString() == "1" ? true : false;
         }
 
         #endregion Предметы
@@ -255,7 +259,7 @@ namespace SparesBase
         // Загрузка формы
         private void Form1_Load(object sender, EventArgs e)
         {
-            FillSellersComboBox();
+            
             DownloadPreviewImage(itemId);
             CalcResidue();
         }
@@ -265,8 +269,12 @@ namespace SparesBase
         {
             if (cbSeller.Text == "Добавить нового поставщика...")
             {
-                SellerForm sf = new SellerForm(this);
-                sf.ShowDialog();
+                SellerEdit sf = new SellerEdit();
+               
+                if (sf.ShowDialog() == DialogResult.OK)
+                {
+                    cbSeller.SelectedIndex = cbSeller.Items.Count - 2;
+                }
             }
         }
 
@@ -335,5 +343,7 @@ namespace SparesBase
         }
 
         #endregion Разные события
+
+      
     }
 }
