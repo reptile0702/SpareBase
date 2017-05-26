@@ -1,4 +1,4 @@
-﻿namespace SparesBase
+﻿namespace SparesBaseAdministrator
 {
     partial class ActionLogsForm
     {
@@ -36,6 +36,8 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cbOrganizations = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -57,7 +59,7 @@
             // 
             this.cbAction.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbAction.FormattingEnabled = true;
-            this.cbAction.Location = new System.Drawing.Point(14, 29);
+            this.cbAction.Location = new System.Drawing.Point(13, 65);
             this.cbAction.Name = "cbAction";
             this.cbAction.Size = new System.Drawing.Size(199, 21);
             this.cbAction.TabIndex = 1;
@@ -66,7 +68,7 @@
             // 
             this.cbAccount.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbAccount.FormattingEnabled = true;
-            this.cbAccount.Location = new System.Drawing.Point(14, 85);
+            this.cbAccount.Location = new System.Drawing.Point(13, 105);
             this.cbAccount.Name = "cbAccount";
             this.cbAccount.Size = new System.Drawing.Size(199, 21);
             this.cbAccount.TabIndex = 2;
@@ -74,7 +76,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 13);
+            this.label1.Location = new System.Drawing.Point(12, 49);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(57, 13);
             this.label1.TabIndex = 3;
@@ -83,7 +85,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 69);
+            this.label2.Location = new System.Drawing.Point(12, 89);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(78, 13);
             this.label2.TabIndex = 4;
@@ -99,6 +101,8 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.label3);
+            this.splitContainer1.Panel1.Controls.Add(this.cbOrganizations);
             this.splitContainer1.Panel1.Controls.Add(this.dateTimePicker2);
             this.splitContainer1.Panel1.Controls.Add(this.dateTimePicker1);
             this.splitContainer1.Panel1.Controls.Add(this.label1);
@@ -115,17 +119,35 @@
             // 
             // dateTimePicker2
             // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(14, 178);
+            this.dateTimePicker2.Location = new System.Drawing.Point(14, 236);
             this.dateTimePicker2.Name = "dateTimePicker2";
             this.dateTimePicker2.Size = new System.Drawing.Size(199, 20);
             this.dateTimePicker2.TabIndex = 6;
             // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(14, 132);
+            this.dateTimePicker1.Location = new System.Drawing.Point(14, 190);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(199, 20);
             this.dateTimePicker1.TabIndex = 5;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 9);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(74, 13);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Организации";
+            // 
+            // cbOrganizations
+            // 
+            this.cbOrganizations.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbOrganizations.FormattingEnabled = true;
+            this.cbOrganizations.Location = new System.Drawing.Point(13, 25);
+            this.cbOrganizations.Name = "cbOrganizations";
+            this.cbOrganizations.Size = new System.Drawing.Size(199, 21);
+            this.cbOrganizations.TabIndex = 7;
             // 
             // ActionLogsForm
             // 
@@ -156,5 +178,7 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.DateTimePicker dateTimePicker2;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox cbOrganizations;
     }
 }

@@ -103,7 +103,7 @@
             this.tbStorage.Location = new System.Drawing.Point(92, 96);
             this.tbStorage.Name = "tbStorage";
             this.tbStorage.Size = new System.Drawing.Size(540, 20);
-            this.tbStorage.TabIndex = 10;
+            this.tbStorage.TabIndex = 8;
             // 
             // tbNote
             // 
@@ -111,7 +111,7 @@
             this.tbNote.Multiline = true;
             this.tbNote.Name = "tbNote";
             this.tbNote.Size = new System.Drawing.Size(540, 103);
-            this.tbNote.TabIndex = 11;
+            this.tbNote.TabIndex = 9;
             // 
             // pbPhoto
             // 
@@ -212,7 +212,7 @@
             this.btnPhoto.Location = new System.Drawing.Point(0, 271);
             this.btnPhoto.Name = "btnPhoto";
             this.btnPhoto.Size = new System.Drawing.Size(248, 23);
-            this.btnPhoto.TabIndex = 13;
+            this.btnPhoto.TabIndex = 14;
             this.btnPhoto.Text = "Просмотр фотографий";
             this.btnPhoto.UseVisualStyleBackColor = true;
             this.btnPhoto.Click += new System.EventHandler(this.btnPhoto_Click);
@@ -238,7 +238,7 @@
             this.btnEdit.Location = new System.Drawing.Point(92, 259);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(540, 23);
-            this.btnEdit.TabIndex = 12;
+            this.btnEdit.TabIndex = 13;
             this.btnEdit.Text = "ДОБАВИТЬ / ИЗМЕНИТЬ";
             this.btnEdit.UseVisualStyleBackColor = true;
             this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
@@ -300,14 +300,14 @@
             this.tbFirmPrice.Location = new System.Drawing.Point(549, 67);
             this.tbFirmPrice.Name = "tbFirmPrice";
             this.tbFirmPrice.Size = new System.Drawing.Size(83, 20);
-            this.tbFirmPrice.TabIndex = 31;
+            this.tbFirmPrice.TabIndex = 7;
             // 
             // btnSell
             // 
             this.btnSell.Location = new System.Drawing.Point(92, 231);
             this.btnSell.Name = "btnSell";
             this.btnSell.Size = new System.Drawing.Size(176, 23);
-            this.btnSell.TabIndex = 30;
+            this.btnSell.TabIndex = 10;
             this.btnSell.Text = "Продажа";
             this.btnSell.UseVisualStyleBackColor = true;
             this.btnSell.Click += new System.EventHandler(this.btnSell_Click);
@@ -317,7 +317,7 @@
             this.btnInOrder.Location = new System.Drawing.Point(456, 231);
             this.btnInOrder.Name = "btnInOrder";
             this.btnInOrder.Size = new System.Drawing.Size(176, 23);
-            this.btnInOrder.TabIndex = 29;
+            this.btnInOrder.TabIndex = 12;
             this.btnInOrder.Text = "В заказ";
             this.btnInOrder.UseVisualStyleBackColor = true;
             this.btnInOrder.Click += new System.EventHandler(this.btnInOrder_Click);
@@ -327,7 +327,7 @@
             this.btnDefect.Location = new System.Drawing.Point(274, 231);
             this.btnDefect.Name = "btnDefect";
             this.btnDefect.Size = new System.Drawing.Size(176, 23);
-            this.btnDefect.TabIndex = 28;
+            this.btnDefect.TabIndex = 11;
             this.btnDefect.Text = "Брак";
             this.btnDefect.UseVisualStyleBackColor = true;
             this.btnDefect.Click += new System.EventHandler(this.btnDefect_Click);
