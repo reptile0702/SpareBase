@@ -20,7 +20,16 @@ namespace SparesBaseAdministrator
             lCity.Text = "Город: " + account.City;
             lPhone.Text = "Телефон: " + account.Phone;
             lEmail.Text = "Email: " + account.Email;
-            lAdmin.Text = account.Admin ? "Администратор оргацизации" : "Не администратор";
+            if (account.Organization != null)
+            {
+                lOrganization.Text = "Организация: " + account.Organization.Name;
+                lAdmin.Text = account.Admin ? "Статус: Администратор оргацизации" : "Статус: Сотрудник";
+            }
+            else
+            {
+                lOrganization.Text = "Организация: Не назначено";
+                lAdmin.Text = "Статус: Не назначен";
+            }
         }
     }
 }

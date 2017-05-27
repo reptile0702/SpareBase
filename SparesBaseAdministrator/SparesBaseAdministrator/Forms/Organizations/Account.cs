@@ -2,7 +2,7 @@
 {
     public class Account
     {
-        public Account(int id, string firstName, string lastName, string secondName, string login, string city, string phone, string email, bool admin)
+        public Account(int id, string firstName, string lastName, string secondName, string login, string city, string phone, string email, bool admin, Organization organization)
         {
             Id = id;
             FirstName = firstName;
@@ -13,6 +13,7 @@
             Phone = phone;
             Email = email;
             Admin = admin;
+            Organization = organization;
         }
 
         public int Id { get; set; }
@@ -28,5 +29,7 @@
         public string Email { get; set; }
 
         public bool Admin { get; set; }
+
+        public Organization Organization { get; set; }
     }
 }

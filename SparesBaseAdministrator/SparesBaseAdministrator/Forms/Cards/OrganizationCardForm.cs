@@ -27,6 +27,12 @@ namespace SparesBaseAdministrator
                 lAdminLastName.Text = "Фамилия: " + organization.Admin.LastName;
                 lAdminSecondName.Text = "Отчество: " + organization.Admin.SecondName;
             }
+            else
+            {
+                lAdminFirstName.Text = "";
+                lAdminLastName.Text = "Администратор не назначен";
+                lAdminSecondName.Text = "";
+            }
         }
 
         private void btnAdminCard_Click(object sender, System.EventArgs e)

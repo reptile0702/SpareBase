@@ -39,6 +39,7 @@
             this.lAdmin = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lCard = new System.Windows.Forms.Label();
+            this.lOrganization = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -117,7 +118,7 @@
             // lAdmin
             // 
             this.lAdmin.AutoSize = true;
-            this.lAdmin.Location = new System.Drawing.Point(20, 231);
+            this.lAdmin.Location = new System.Drawing.Point(19, 258);
             this.lAdmin.Name = "lAdmin";
             this.lAdmin.Size = new System.Drawing.Size(36, 13);
             this.lAdmin.TabIndex = 8;
@@ -125,6 +126,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.lOrganization);
             this.groupBox1.Controls.Add(this.lAdmin);
             this.groupBox1.Controls.Add(this.lEmail);
             this.groupBox1.Controls.Add(this.lId);
@@ -136,7 +138,7 @@
             this.groupBox1.Controls.Add(this.lLogin);
             this.groupBox1.Location = new System.Drawing.Point(12, 35);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(285, 257);
+            this.groupBox1.Size = new System.Drawing.Size(285, 289);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Информация";
@@ -151,11 +153,20 @@
             this.lCard.TabIndex = 9;
             this.lCard.Text = "Карточка аккаунта";
             // 
+            // lOrganization
+            // 
+            this.lOrganization.AutoSize = true;
+            this.lOrganization.Location = new System.Drawing.Point(19, 228);
+            this.lOrganization.Name = "lOrganization";
+            this.lOrganization.Size = new System.Drawing.Size(74, 13);
+            this.lOrganization.TabIndex = 9;
+            this.lOrganization.Text = "Организация";
+            // 
             // AccountCardForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(309, 304);
+            this.ClientSize = new System.Drawing.Size(309, 339);
             this.Controls.Add(this.lCard);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -182,5 +193,6 @@
         private System.Windows.Forms.Label lAdmin;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label lCard;
+        private System.Windows.Forms.Label lOrganization;
     }
 }
