@@ -18,6 +18,7 @@ namespace SparesBaseAdministrator
             FillCities();
         }
 
+        // Заполнение городов
         private void FillCities()
         {
             dgvCities.Rows.Clear();

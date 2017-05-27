@@ -4,12 +4,14 @@ namespace SparesBaseAdministrator
 {
     public partial class AccountCardForm : Form
     {
+        // Конструктор
         public AccountCardForm(Account account)
         {
             InitializeComponent();
             InitializeCard(account);
         }
 
+        // Заполнение данных об аккаунте
         private void InitializeCard(Account account)
         {
             lId.Text = "Идентификатор: " + account.Id.ToString();
@@ -30,6 +32,12 @@ namespace SparesBaseAdministrator
                 lOrganization.Text = "Организация: Не назначено";
                 lAdmin.Text = "Статус: Не назначен";
             }
+        }
+
+        // Клик на кнопку "ОК"
+        private void btnOk_Click(object sender, System.EventArgs e)
+        {
+            Close();
         }
     }
 }

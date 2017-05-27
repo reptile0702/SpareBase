@@ -38,8 +38,9 @@
             this.lEmail = new System.Windows.Forms.Label();
             this.lAdmin = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.lCard = new System.Windows.Forms.Label();
             this.lOrganization = new System.Windows.Forms.Label();
+            this.lCard = new System.Windows.Forms.Label();
+            this.btnOk = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -143,6 +144,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Информация";
             // 
+            // lOrganization
+            // 
+            this.lOrganization.AutoSize = true;
+            this.lOrganization.Location = new System.Drawing.Point(19, 228);
+            this.lOrganization.Name = "lOrganization";
+            this.lOrganization.Size = new System.Drawing.Size(74, 13);
+            this.lOrganization.TabIndex = 9;
+            this.lOrganization.Text = "Организация";
+            // 
             // lCard
             // 
             this.lCard.AutoSize = true;
@@ -153,20 +163,23 @@
             this.lCard.TabIndex = 9;
             this.lCard.Text = "Карточка аккаунта";
             // 
-            // lOrganization
+            // btnOk
             // 
-            this.lOrganization.AutoSize = true;
-            this.lOrganization.Location = new System.Drawing.Point(19, 228);
-            this.lOrganization.Name = "lOrganization";
-            this.lOrganization.Size = new System.Drawing.Size(74, 13);
-            this.lOrganization.TabIndex = 9;
-            this.lOrganization.Text = "Организация";
+            this.btnOk.Location = new System.Drawing.Point(222, 330);
+            this.btnOk.Name = "btnOk";
+            this.btnOk.Size = new System.Drawing.Size(75, 23);
+            this.btnOk.TabIndex = 10;
+            this.btnOk.Text = "OK";
+            this.btnOk.UseVisualStyleBackColor = true;
+            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
             // AccountCardForm
             // 
+            this.AcceptButton = this.btnOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(309, 339);
+            this.ClientSize = new System.Drawing.Size(309, 363);
+            this.Controls.Add(this.btnOk);
             this.Controls.Add(this.lCard);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -194,5 +207,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label lCard;
         private System.Windows.Forms.Label lOrganization;
+        private System.Windows.Forms.Button btnOk;
     }
 }

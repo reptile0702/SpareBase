@@ -17,7 +17,10 @@ namespace SparesBase
         // TODO: Поиск по дате в логах.
 
         // TODO: Скрывать панели: В заказ, продажа и брак если нет записей в базе
-        // TODO: Скрывать предметы у каторых остаток 0.
+        // TODO: Скрывать предметы у которых остаток 0.
+        // TODO: Добавить вызов формы редактора поставщиков
+
+        // TODO: Запретить вход в программу пользователям без организации
 
         AuthenticationForm au;
         // Конструктор
@@ -594,15 +597,15 @@ namespace SparesBase
             Close();
         }
 
+        private void tsmiExit_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
         private void tsmiUsers_Click(object sender, EventArgs e)
         {
             EmployeesForm employees = new EmployeesForm();
             employees.ShowDialog();
-        }
-
-        private void tsmiExit_Click(object sender, EventArgs e)
-        {
-            Close();
         }
     }
 }

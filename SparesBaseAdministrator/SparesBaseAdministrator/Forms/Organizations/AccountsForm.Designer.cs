@@ -30,6 +30,12 @@
         {
             this.components = new System.ComponentModel.Container();
             this.dgvAccounts = new System.Windows.Forms.DataGridView();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.firstName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lastName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.secondName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.login = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.admin = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.cmsAccount = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmsRegisterAccount = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsEditAccount = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,12 +56,6 @@
             this.cmsRegisterOrganization = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsEditOrganization = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsDeleteOrganization = new System.Windows.Forms.ToolStripMenuItem();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.firstName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lastName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.secondName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.login = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.admin = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAccounts)).BeginInit();
             this.cmsAccount.SuspendLayout();
             this.menuStrip.SuspendLayout();
@@ -66,7 +66,7 @@
             // 
             this.dgvAccounts.AllowUserToAddRows = false;
             this.dgvAccounts.AllowUserToResizeRows = false;
-            this.dgvAccounts.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.ColumnHeader;
+            this.dgvAccounts.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvAccounts.BackgroundColor = System.Drawing.Color.White;
             this.dgvAccounts.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvAccounts.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
@@ -88,6 +88,48 @@
             this.dgvAccounts.Size = new System.Drawing.Size(741, 396);
             this.dgvAccounts.TabIndex = 0;
             this.dgvAccounts.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAccounts_CellDoubleClick);
+            // 
+            // id
+            // 
+            this.id.HeaderText = "ID";
+            this.id.Name = "id";
+            this.id.ReadOnly = true;
+            this.id.Width = 43;
+            // 
+            // firstName
+            // 
+            this.firstName.HeaderText = "Имя";
+            this.firstName.Name = "firstName";
+            this.firstName.ReadOnly = true;
+            this.firstName.Width = 54;
+            // 
+            // lastName
+            // 
+            this.lastName.HeaderText = "Фамилия";
+            this.lastName.Name = "lastName";
+            this.lastName.ReadOnly = true;
+            this.lastName.Width = 81;
+            // 
+            // secondName
+            // 
+            this.secondName.HeaderText = "Отчество";
+            this.secondName.Name = "secondName";
+            this.secondName.ReadOnly = true;
+            this.secondName.Width = 79;
+            // 
+            // login
+            // 
+            this.login.HeaderText = "Логин";
+            this.login.Name = "login";
+            this.login.ReadOnly = true;
+            this.login.Width = 63;
+            // 
+            // admin
+            // 
+            this.admin.HeaderText = "Администратор";
+            this.admin.Name = "admin";
+            this.admin.ReadOnly = true;
+            this.admin.Width = 92;
             // 
             // cmsAccount
             // 
@@ -248,48 +290,6 @@
             this.cmsDeleteOrganization.Size = new System.Drawing.Size(174, 22);
             this.cmsDeleteOrganization.Text = "Удалить";
             this.cmsDeleteOrganization.Click += new System.EventHandler(this.DeleteOrganization_Click);
-            // 
-            // id
-            // 
-            this.id.HeaderText = "ID";
-            this.id.Name = "id";
-            this.id.ReadOnly = true;
-            this.id.Width = 43;
-            // 
-            // firstName
-            // 
-            this.firstName.HeaderText = "Имя";
-            this.firstName.Name = "firstName";
-            this.firstName.ReadOnly = true;
-            this.firstName.Width = 54;
-            // 
-            // lastName
-            // 
-            this.lastName.HeaderText = "Фамилия";
-            this.lastName.Name = "lastName";
-            this.lastName.ReadOnly = true;
-            this.lastName.Width = 81;
-            // 
-            // secondName
-            // 
-            this.secondName.HeaderText = "Отчество";
-            this.secondName.Name = "secondName";
-            this.secondName.ReadOnly = true;
-            this.secondName.Width = 79;
-            // 
-            // login
-            // 
-            this.login.HeaderText = "Логин";
-            this.login.Name = "login";
-            this.login.ReadOnly = true;
-            this.login.Width = 63;
-            // 
-            // admin
-            // 
-            this.admin.HeaderText = "Администратор";
-            this.admin.Name = "admin";
-            this.admin.ReadOnly = true;
-            this.admin.Width = 92;
             // 
             // AccountsForm
             // 

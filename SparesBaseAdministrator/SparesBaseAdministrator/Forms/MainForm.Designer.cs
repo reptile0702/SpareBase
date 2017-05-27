@@ -48,7 +48,7 @@
             this.btnAccounts.TabIndex = 0;
             this.btnAccounts.Text = "Организации";
             this.btnAccounts.UseVisualStyleBackColor = true;
-            this.btnAccounts.Click += new System.EventHandler(this.btnAccounts_Click);
+            this.btnAccounts.Click += new System.EventHandler(this.btnOrganizations_Click);
             // 
             // btnActionLogs
             // 
@@ -65,7 +65,7 @@
             this.btnCities.Location = new System.Drawing.Point(12, 128);
             this.btnCities.Name = "btnCities";
             this.btnCities.Size = new System.Drawing.Size(283, 23);
-            this.btnCities.TabIndex = 2;
+            this.btnCities.TabIndex = 4;
             this.btnCities.Text = "Города";
             this.btnCities.UseVisualStyleBackColor = true;
             this.btnCities.Click += new System.EventHandler(this.btnCities_Click);
@@ -75,16 +75,17 @@
             this.btnItems.Location = new System.Drawing.Point(12, 70);
             this.btnItems.Name = "btnItems";
             this.btnItems.Size = new System.Drawing.Size(283, 23);
-            this.btnItems.TabIndex = 3;
+            this.btnItems.TabIndex = 2;
             this.btnItems.Text = "Предметы";
             this.btnItems.UseVisualStyleBackColor = true;
+            this.btnItems.Click += new System.EventHandler(this.btnItems_Click);
             // 
             // btnSellers
             // 
             this.btnSellers.Location = new System.Drawing.Point(12, 99);
             this.btnSellers.Name = "btnSellers";
             this.btnSellers.Size = new System.Drawing.Size(283, 23);
-            this.btnSellers.TabIndex = 5;
+            this.btnSellers.TabIndex = 3;
             this.btnSellers.Text = "Поставщики";
             this.btnSellers.UseVisualStyleBackColor = true;
             this.btnSellers.Click += new System.EventHandler(this.btnSellers_Click);

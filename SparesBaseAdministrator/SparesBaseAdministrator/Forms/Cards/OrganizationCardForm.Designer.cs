@@ -40,6 +40,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnAdminCard = new System.Windows.Forms.Button();
             this.lCard = new System.Windows.Forms.Label();
+            this.btnOk = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -164,11 +165,23 @@
             this.lCard.Text = "Карточка организации";
             this.lCard.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // btnOk
+            // 
+            this.btnOk.Location = new System.Drawing.Point(440, 177);
+            this.btnOk.Name = "btnOk";
+            this.btnOk.Size = new System.Drawing.Size(75, 23);
+            this.btnOk.TabIndex = 11;
+            this.btnOk.Text = "OK";
+            this.btnOk.UseVisualStyleBackColor = true;
+            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
+            // 
             // OrganizationCardForm
             // 
+            this.AcceptButton = this.btnOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(526, 180);
+            this.ClientSize = new System.Drawing.Size(526, 211);
+            this.Controls.Add(this.btnOk);
             this.Controls.Add(this.lCard);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -199,5 +212,6 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnAdminCard;
         private System.Windows.Forms.Label lCard;
+        private System.Windows.Forms.Button btnOk;
     }
 }

@@ -100,6 +100,7 @@ namespace SparesBaseAdministrator
             FillAccounts(0);
         }
 
+        // Заполнение ComboBox'а с аккаунтами
         private void FillAccounts(int organizationId)
         {
             // Аккаунты
@@ -145,6 +146,13 @@ namespace SparesBaseAdministrator
         private void CbAccount_SelectedIndexChanged(object sender, EventArgs e)
         {
             GetLogs(int.Parse(cbOrganizations.SelectedValue.ToString()), int.Parse(cbAction.SelectedValue.ToString()), int.Parse(cbAccount.SelectedValue.ToString()));
+        }
+
+        // Редактирование списка действий
+        private void btnEditActions_Click(object sender, EventArgs e)
+        {
+            ActionsEditorForm aef = new ActionsEditorForm();
+            aef.ShowDialog();
         }
     }
 }

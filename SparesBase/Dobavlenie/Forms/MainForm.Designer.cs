@@ -44,6 +44,9 @@
             this.tsmiCollapse = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiLogs = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiActionLogs = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiAccount = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiChangeAccount = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiExit = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView = new System.Windows.Forms.TreeView();
             this.cmsMainCategory = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -88,9 +91,7 @@
             this.cmsDeleteCategory = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsExpandNode = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsCollapseNode = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiAccount = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiChangeAccount = new System.Windows.Forms.ToolStripMenuItem();
+            this.организацияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiUsers = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -115,11 +116,12 @@
             // menuStrip
             // 
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiAccount,
             this.категорииToolStripMenuItem,
             this.предметыToolStripMenuItem,
             this.деревоToolStripMenuItem,
             this.tsmiLogs,
-            this.tsmiAccount});
+            this.организацияToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(1354, 24);
@@ -233,6 +235,29 @@
             this.tsmiActionLogs.Size = new System.Drawing.Size(171, 22);
             this.tsmiActionLogs.Text = "Журнал действий";
             this.tsmiActionLogs.Click += new System.EventHandler(this.tsmiActionLogs_Click);
+            // 
+            // tsmiAccount
+            // 
+            this.tsmiAccount.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiChangeAccount,
+            this.tsmiExit});
+            this.tsmiAccount.Name = "tsmiAccount";
+            this.tsmiAccount.Size = new System.Drawing.Size(63, 20);
+            this.tsmiAccount.Text = "Аккаунт";
+            // 
+            // tsmiChangeAccount
+            // 
+            this.tsmiChangeAccount.Name = "tsmiChangeAccount";
+            this.tsmiChangeAccount.Size = new System.Drawing.Size(188, 22);
+            this.tsmiChangeAccount.Text = "Смена пользователя";
+            this.tsmiChangeAccount.Click += new System.EventHandler(this.tsmiChangeAccount_Click);
+            // 
+            // tsmiExit
+            // 
+            this.tsmiExit.Name = "tsmiExit";
+            this.tsmiExit.Size = new System.Drawing.Size(188, 22);
+            this.tsmiExit.Text = "Выход";
+            this.tsmiExit.Click += new System.EventHandler(this.tsmiExit_Click);
             // 
             // splitContainer1
             // 
@@ -676,34 +701,18 @@
             this.cmsCollapseNode.Text = "Скрыть узел";
             this.cmsCollapseNode.Click += new System.EventHandler(this.cmsCollapseNode_Click);
             // 
-            // tsmiAccount
+            // организацияToolStripMenuItem
             // 
-            this.tsmiAccount.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiUsers,
-            this.tsmiChangeAccount,
-            this.tsmiExit});
-            this.tsmiAccount.Name = "tsmiAccount";
-            this.tsmiAccount.Size = new System.Drawing.Size(63, 20);
-            this.tsmiAccount.Text = "Аккаунт";
-            // 
-            // tsmiExit
-            // 
-            this.tsmiExit.Name = "tsmiExit";
-            this.tsmiExit.Size = new System.Drawing.Size(188, 22);
-            this.tsmiExit.Text = "Выход";
-            this.tsmiExit.Click += new System.EventHandler(this.tsmiExit_Click);
-            // 
-            // tsmiChangeAccount
-            // 
-            this.tsmiChangeAccount.Name = "tsmiChangeAccount";
-            this.tsmiChangeAccount.Size = new System.Drawing.Size(188, 22);
-            this.tsmiChangeAccount.Text = "Смена пользователя";
-            this.tsmiChangeAccount.Click += new System.EventHandler(this.tsmiChangeAccount_Click);
+            this.организацияToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiUsers});
+            this.организацияToolStripMenuItem.Name = "организацияToolStripMenuItem";
+            this.организацияToolStripMenuItem.Size = new System.Drawing.Size(91, 20);
+            this.организацияToolStripMenuItem.Text = "Организация";
             // 
             // tsmiUsers
             // 
             this.tsmiUsers.Name = "tsmiUsers";
-            this.tsmiUsers.Size = new System.Drawing.Size(188, 22);
+            this.tsmiUsers.Size = new System.Drawing.Size(152, 22);
             this.tsmiUsers.Text = "Сотрудники";
             this.tsmiUsers.Click += new System.EventHandler(this.tsmiUsers_Click);
             // 
@@ -811,8 +820,9 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiActionLogs;
         private System.Windows.Forms.TextBox tbSearch;
         private System.Windows.Forms.ToolStripMenuItem tsmiAccount;
-        private System.Windows.Forms.ToolStripMenuItem tsmiUsers;
         private System.Windows.Forms.ToolStripMenuItem tsmiChangeAccount;
         private System.Windows.Forms.ToolStripMenuItem tsmiExit;
+        private System.Windows.Forms.ToolStripMenuItem организацияToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiUsers;
     }
 }

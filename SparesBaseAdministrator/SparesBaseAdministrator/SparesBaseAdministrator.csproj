@@ -49,6 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\Action Logs\ActionsEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Action Logs\ActionsEditorForm.Designer.cs">
+      <DependentUpon>ActionsEditorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Organizations\Account.cs" />
     <Compile Include="Forms\Action Logs\ActionLogsForm.cs">
       <SubType>Form</SubType>
@@ -62,10 +68,10 @@
     <Compile Include="Forms\Cards\AccountCardForm.Designer.cs">
       <DependentUpon>AccountCardForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Organizations\Accounts\AccountsForm.cs">
+    <Compile Include="Forms\Organizations\AccountsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Organizations\Accounts\AccountsForm.Designer.cs">
+    <Compile Include="Forms\Organizations\AccountsForm.Designer.cs">
       <DependentUpon>AccountsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\AuthenticationForm.cs">
@@ -87,6 +93,18 @@
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Organizations\Accounts\AccountRegistrationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Organizations\Accounts\AccountRegistrationForm.designer.cs">
+      <DependentUpon>AccountRegistrationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Organizations\Accounts\ChangePasswordForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Organizations\Accounts\ChangePasswordForm.Designer.cs">
+      <DependentUpon>ChangePasswordForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Organizations\Organization.cs" />
     <Compile Include="Forms\Cards\OrganizationCardForm.cs">
       <SubType>Form</SubType>
@@ -102,11 +120,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Forms\Organizations\Accounts\AccountEditorForm.cs">
+    <Compile Include="Forms\Organizations\Accounts\AccountEditForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Organizations\Accounts\AccountEditorForm.designer.cs">
-      <DependentUpon>AccountEditorForm.cs</DependentUpon>
+    <Compile Include="Forms\Organizations\Accounts\AccountEditForm.designer.cs">
+      <DependentUpon>AccountEditForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Sellers\SellerEdit.cs">
       <SubType>Form</SubType>
@@ -120,7 +138,10 @@
     <Compile Include="Forms\Sellers\SellerForm.designer.cs">
       <DependentUpon>SellerForm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Forms\Organizations\Accounts\AccountsForm.resx">
+    <EmbeddedResource Include="Forms\Action Logs\ActionsEditorForm.resx">
+      <DependentUpon>ActionsEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Organizations\AccountsForm.resx">
       <DependentUpon>AccountsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Action Logs\ActionLogsForm.resx">
@@ -141,6 +162,12 @@
     <EmbeddedResource Include="Forms\Cards\OrganizationCardForm.resx">
       <DependentUpon>OrganizationCardForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Organizations\Accounts\AccountRegistrationForm.resx">
+      <DependentUpon>AccountRegistrationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Organizations\Accounts\ChangePasswordForm.resx">
+      <DependentUpon>ChangePasswordForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Organizations\OrganizationEditorForm.resx">
       <DependentUpon>OrganizationEditorForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -153,8 +180,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Forms\Organizations\Accounts\AccountEditorForm.resx">
-      <DependentUpon>AccountEditorForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Organizations\Accounts\AccountEditForm.resx">
+      <DependentUpon>AccountEditForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Sellers\SellerEdit.resx">
       <DependentUpon>SellerEdit.cs</DependentUpon>

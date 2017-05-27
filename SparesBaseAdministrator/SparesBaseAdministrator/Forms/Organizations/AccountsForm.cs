@@ -1,39 +1,41 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SparesBaseAdministrator
 {
     public partial class AccountsForm : Form
     {
+        // Выделенная организация в TreeView
         private Organization SelectedOrganization
         {
-            get
-            {
-                return (Organization)tvOrganizations.SelectedNode.Tag;
-            }
-            set
-            {
-                tvOrganizations.SelectedNode.Tag = value;
-            }
+            get { return (Organization)tvOrganizations.SelectedNode.Tag; }
+            set { tvOrganizations.SelectedNode.Tag = value; }
         }
-        private Account SelectedAccount { get { return (Account)dgvAccounts.CurrentRow.Tag; } }
+
+        // Выделенный аккаунт в DataGridView
+        private Account SelectedAccount
+        {
+            get { return (Account)dgvAccounts.CurrentRow.Tag; }
+            set { dgvAccounts.CurrentRow.Tag = value; }
+        }
 
 
-
+        // Конструктор
         public AccountsForm()
         {
             InitializeComponent();
         }
 
+        #region Методы
+
+        // Заполнение TreeView организациями
         private void FillOrganizations()
         {
+            // Выделенный нод
+            TreeNode selectedNode = tvOrganizations.SelectedNode;
+
+            tvOrganizations.Nodes.Clear();
             tvOrganizations.Nodes.Add("Без организации");
 
             DataTable organizations = DatabaseWorker.SqlSelectQuery("SELECT o.id, o.Name, o.Site, o.Telephone, c.City, o.AdminAccountId, a.FirstName, a.LastName, a.SecondName, a.Login, ac.City, a.Phone, a.Email, a.Admin FROM Organizations o LEFT JOIN Cities c ON c.id = o.CityId LEFT JOIN Accounts a ON a.id = o.AdminAccountId LEFT JOIN Cities ac ON ac.id = a.CityId");
@@ -61,15 +63,23 @@ namespace SparesBaseAdministrator
                     row.ItemArray[4].ToString(),
                     adminAccount);
 
-                organization.Admin.Organization = organization;
+                if (adminAccount != null)
+                    organization.Admin.Organization = organization;
 
                 TreeNode organizationNode = new TreeNode(organization.Name);
                 organizationNode.Tag = organization;
                 organizationNode.ContextMenuStrip = cmsOrganization;
                 tvOrganizations.Nodes.Add(organizationNode);
             }
+
+            // Выделение последнего выделенного нода
+            if (selectedNode != null)
+                tvOrganizations.SelectedNode = tvOrganizations.Nodes[selectedNode.Index];
+            else
+                tvOrganizations.SelectedNode = tvOrganizations.Nodes[0];
         }
 
+        // Заполнение DataGridView аккаунтами (Без организации)
         private void FillAccounts()
         {
             dgvAccounts.Rows.Clear();
@@ -98,8 +108,32 @@ namespace SparesBaseAdministrator
 
                 dgvAccounts.Rows[dgvAccounts.Rows.Count - 1].Tag = account;
             }
+
+            if (dgvAccounts.Rows.Count == 0)
+            {
+                tsmiEditAccount.Enabled = false;
+                cmsEditAccount.Enabled = false;
+
+                tsmiDeleteAccount.Enabled = false;
+                cmsDeleteAccount.Enabled = false;
+
+                tsmiDesignateAnAdministrator.Enabled = false;
+                cmsDesignateAnAdministrator.Enabled = false;
+            }
+            else
+            {
+                tsmiEditAccount.Enabled = true;
+                cmsEditAccount.Enabled = true;
+
+                tsmiDeleteAccount.Enabled = true;
+                cmsDeleteAccount.Enabled = true;
+
+                tsmiDesignateAnAdministrator.Enabled = true;
+                cmsDesignateAnAdministrator.Enabled = true;
+            }
         }
 
+        // Заполнение DataGridView аккаунтами (С организацией)
         private void FillAccounts(Organization organization)
         {
             dgvAccounts.Rows.Clear();
@@ -128,21 +162,78 @@ namespace SparesBaseAdministrator
 
                 dgvAccounts.Rows[dgvAccounts.Rows.Count - 1].Tag = account;
             }
+
+            if (dgvAccounts.Rows.Count == 0)
+            {
+                tsmiEditAccount.Enabled = false;
+                cmsEditAccount.Enabled = false;
+
+                tsmiDeleteAccount.Enabled = false;
+                cmsDeleteAccount.Enabled = false;
+
+                tsmiDesignateAnAdministrator.Enabled = false;
+                cmsDesignateAnAdministrator.Enabled = false;
+            }
+            else
+            {
+                tsmiEditAccount.Enabled = true;
+                cmsEditAccount.Enabled = true;
+
+                tsmiDeleteAccount.Enabled = true;
+                cmsDeleteAccount.Enabled = true;
+
+                tsmiDesignateAnAdministrator.Enabled = true;
+                cmsDesignateAnAdministrator.Enabled = true;
+            }
         }
 
+        #endregion Методы
+
+
+
+        #region События
+
+
+        #region Главные
+
+        // Загрузка формы
         private void AccountsForm_Load(object sender, EventArgs e)
         {
             FillOrganizations();
         }
 
+        // Выделение нода в TreeView
         private void tvOrganizations_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            if (tvOrganizations.SelectedNode.Tag != null) 
+            if (tvOrganizations.SelectedNode.Tag != null)
+            {
                 FillAccounts((Organization)tvOrganizations.SelectedNode.Tag);
+
+                tsmiDesignateAnAdministrator.Enabled = true;
+                cmsDesignateAnAdministrator.Enabled = true;
+
+                tsmiEditOrganization.Enabled = true;
+                cmsEditOrganization.Enabled = true;
+
+                tsmiDeleteOrganization.Enabled = true;
+                cmsDeleteOrganization.Enabled = true;
+            }
             else
+            {
                 FillAccounts();
+
+                tsmiDesignateAnAdministrator.Enabled = false;
+                cmsDesignateAnAdministrator.Enabled = false;
+
+                tsmiEditOrganization.Enabled = false;
+                cmsEditOrganization.Enabled = false;
+
+                tsmiDeleteOrganization.Enabled = false;
+                cmsDeleteOrganization.Enabled = false;
+            }
         }
 
+        // Двойной клик на ноде в TreeView
         private void tvOrganizations_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             if (e.Node.Tag != null)
@@ -152,31 +243,47 @@ namespace SparesBaseAdministrator
             }
         }
 
+        // Двойной клик на ячейку в DataGridView
         private void dgvAccounts_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             AccountCardForm acf = new AccountCardForm((Account)dgvAccounts.Rows[e.RowIndex].Tag);
             acf.ShowDialog();
         }
 
+        #endregion Главные
 
 
         #region Организация
 
+        // Регистрация организации
         private void RegisterOrganization_Click(object sender, EventArgs e)
         {
             OrganizationEditorForm oe = new OrganizationEditorForm();
             oe.ShowDialog();
+            FillOrganizations();
         }
 
+        // Редактирование организации
         private void EditOrganization_Click(object sender, EventArgs e)
         {
             OrganizationEditorForm oe = new OrganizationEditorForm((Organization)tvOrganizations.SelectedNode.Tag);
             oe.ShowDialog();
+            FillOrganizations();
         }
 
+        // Удаление организации
         private void DeleteOrganization_Click(object sender, EventArgs e)
         {
-
+            if (MessageBox.Show(
+                    "Вы уверены, что хотите удалить эту организацию?",
+                    "Внимание!",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning) == DialogResult.Yes)
+            {
+                DatabaseWorker.SqlQuery("UPDATE Accounts SET OrganizationId = 0, Admin = 0 WHERE(OrganizationId = " + SelectedOrganization.Id + ")");
+                DatabaseWorker.SqlQuery("DELETE FROM Organizations WHERE(id = " + SelectedOrganization.Id + ")");
+                tvOrganizations.Nodes.Remove(tvOrganizations.SelectedNode);
+            }
         }
 
         #endregion Организация
@@ -187,8 +294,17 @@ namespace SparesBaseAdministrator
         // Регистрация аккаунта
         private void RegisterAccount_Click(object sender, EventArgs e)
         {
-            AccountEditorForm aef = new AccountEditorForm(SelectedOrganization.Id);
-            aef.ShowDialog();
+            if (SelectedOrganization != null)
+            {
+                AccountRegistrationForm aef = new AccountRegistrationForm(SelectedOrganization.Id);
+                aef.ShowDialog();
+            }
+            else
+            {
+                AccountRegistrationForm aef = new AccountRegistrationForm(0);
+                aef.ShowDialog();
+            }
+
             if (SelectedOrganization != null)
                 FillAccounts(SelectedOrganization);
             else
@@ -198,7 +314,7 @@ namespace SparesBaseAdministrator
         // Редактирование аккаунта
         private void EditAccount_Click(object sender, EventArgs e)
         {
-            AccountEditorForm aef = new AccountEditorForm(SelectedAccount);
+            AccountEditForm aef = new AccountEditForm(SelectedAccount);
             aef.ShowDialog();
             if (SelectedOrganization != null)
                 FillAccounts(SelectedOrganization);
@@ -259,5 +375,8 @@ namespace SparesBaseAdministrator
         }
 
         #endregion Аккаунт
+
+
+        #endregion События
     }
 }

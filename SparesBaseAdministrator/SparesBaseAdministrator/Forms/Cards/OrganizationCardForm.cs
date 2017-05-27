@@ -6,6 +6,7 @@ namespace SparesBaseAdministrator
     {
         Organization organization;
 
+        // Конструктор
         public OrganizationCardForm(Organization organization)
         {
             InitializeComponent();
@@ -13,6 +14,7 @@ namespace SparesBaseAdministrator
             this.organization = organization;
         }
 
+        // Заполнение данных о организации
         public void InitializeCard(Organization organization)
         {
             lId.Text = "Идентификатор: " + organization.Id.ToString();
@@ -35,10 +37,17 @@ namespace SparesBaseAdministrator
             }
         }
 
+        // Клик на кнопку "Карточка администратора"
         private void btnAdminCard_Click(object sender, System.EventArgs e)
         {
             AccountCardForm acf = new AccountCardForm(organization.Admin);
             acf.ShowDialog();
+        }
+
+        // Клик на кнопку "ОК"
+        private void btnOk_Click(object sender, System.EventArgs e)
+        {
+            Close();
         }
     }
 }

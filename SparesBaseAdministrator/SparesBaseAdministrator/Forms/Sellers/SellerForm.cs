@@ -7,7 +7,6 @@ namespace SparesBaseAdministrator
     public partial class SellerForm : Form
     {
         DataTable listBoxSource;
-        //EditForm editForm;
 
         // Конструктор обычный
         public SellerForm()
@@ -15,14 +14,7 @@ namespace SparesBaseAdministrator
             InitializeComponent();
         }
 
-        // Констуктор для EditForm, чтобы выделенный поставщик вставился в ComboBox
-        //public SellerForm(EditForm editForm)
-        //{
-        //    InitializeComponent();
-        //    this.editForm = editForm;
-        //}
-
-
+        // Заполнение ComboBox'а с организациями
         private void FillOrganizations()
         {
             DataTable organizations = new DataTable();
@@ -128,11 +120,7 @@ namespace SparesBaseAdministrator
             Close();
         }
 
-        private void groupBox2_Enter(object sender, EventArgs e)
-        {
-
-        }
-
+        // Смена выделенного индекса в ComboBox'е организаций
         private void cbOrganizations_SelectedIndexChanged(object sender, EventArgs e)
         {
             FillSellers(int.Parse(cbOrganizations.SelectedValue.ToString()));
