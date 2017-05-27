@@ -67,8 +67,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DatabaseWorker.cs" />
-    <Compile Include="EnteredUser.cs" />
+    <Compile Include="Database Classes\Account.cs" />
+    <Compile Include="Forms\Cards\AccountCardForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Cards\AccountCardForm.designer.cs">
+      <DependentUpon>AccountCardForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Database Classes\DatabaseWorker.cs" />
+    <Compile Include="Database Classes\EnteredUser.cs" />
     <Compile Include="Forms\Account\AuthenticationForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,6 +87,12 @@
     </Compile>
     <Compile Include="Forms\ActionLogsForm.Designer.cs">
       <DependentUpon>ActionLogsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\EmployeesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\EmployeesForm.Designer.cs">
+      <DependentUpon>EmployeesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Write-off\DefectForm.cs">
       <SubType>Form</SubType>
@@ -129,12 +142,19 @@
     <Compile Include="Forms\Write-off\SellingForm.Designer.cs">
       <DependentUpon>SellingForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Item.cs" />
+    <Compile Include="Database Classes\Item.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Database Classes\Organization.cs" />
+    <Compile Include="Forms\Cards\OrganizationCardForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Cards\OrganizationCardForm.designer.cs">
+      <DependentUpon>OrganizationCardForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -144,11 +164,17 @@
     <Compile Include="Forms\Item Editing\SellerForm.Designer.cs">
       <DependentUpon>SellerForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Forms\Cards\AccountCardForm.resx">
+      <DependentUpon>AccountCardForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Account\AuthenticationForm.resx">
       <DependentUpon>AuthenticationForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ActionLogsForm.resx">
       <DependentUpon>ActionLogsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\EmployeesForm.resx">
+      <DependentUpon>EmployeesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Write-off\DefectForm.resx">
       <DependentUpon>DefectForm.cs</DependentUpon>
@@ -176,6 +202,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Write-off\SellingForm.resx">
       <DependentUpon>SellingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Cards\OrganizationCardForm.resx">
+      <DependentUpon>OrganizationCardForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

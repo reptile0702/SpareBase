@@ -593,7 +593,8 @@ namespace SparesBase
 
         private void tsmiUsers_Click(object sender, EventArgs e)
         {
-
+            EmployeesForm employees = new EmployeesForm();
+            employees.ShowDialog();
         }
 
         private void tsmiExit_Click(object sender, EventArgs e)
