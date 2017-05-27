@@ -16,6 +16,8 @@ namespace SparesBase
         // TODO: Сделать смену категорий в EditForm
         // TODO: Поиск по дате в логах.
 
+        // TODO: Скрывать панели: В заказ, продажа и брак если нет записей в базе
+
         AuthenticationForm au;
         // Конструктор
         public MainForm(AuthenticationForm au)

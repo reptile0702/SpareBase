@@ -32,11 +32,12 @@
             this.btnActionLogs = new System.Windows.Forms.Button();
             this.btnCities = new System.Windows.Forms.Button();
             this.btnItems = new System.Windows.Forms.Button();
-            this.btnOrganizations = new System.Windows.Forms.Button();
             this.btnSellers = new System.Windows.Forms.Button();
             this.lOrgCount = new System.Windows.Forms.Label();
             this.lAccCount = new System.Windows.Forms.Label();
             this.lItemsCount = new System.Windows.Forms.Label();
+            this.lActionsCount = new System.Windows.Forms.Label();
+            this.lSellersCount = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnAccounts
@@ -45,7 +46,7 @@
             this.btnAccounts.Name = "btnAccounts";
             this.btnAccounts.Size = new System.Drawing.Size(283, 23);
             this.btnAccounts.TabIndex = 0;
-            this.btnAccounts.Text = "Аккаунты";
+            this.btnAccounts.Text = "Организации";
             this.btnAccounts.UseVisualStyleBackColor = true;
             this.btnAccounts.Click += new System.EventHandler(this.btnAccounts_Click);
             // 
@@ -61,7 +62,7 @@
             // 
             // btnCities
             // 
-            this.btnCities.Location = new System.Drawing.Point(12, 70);
+            this.btnCities.Location = new System.Drawing.Point(12, 128);
             this.btnCities.Name = "btnCities";
             this.btnCities.Size = new System.Drawing.Size(283, 23);
             this.btnCities.TabIndex = 2;
@@ -71,25 +72,16 @@
             // 
             // btnItems
             // 
-            this.btnItems.Location = new System.Drawing.Point(12, 99);
+            this.btnItems.Location = new System.Drawing.Point(12, 70);
             this.btnItems.Name = "btnItems";
             this.btnItems.Size = new System.Drawing.Size(283, 23);
             this.btnItems.TabIndex = 3;
             this.btnItems.Text = "Предметы";
             this.btnItems.UseVisualStyleBackColor = true;
             // 
-            // btnOrganizations
-            // 
-            this.btnOrganizations.Location = new System.Drawing.Point(12, 128);
-            this.btnOrganizations.Name = "btnOrganizations";
-            this.btnOrganizations.Size = new System.Drawing.Size(283, 23);
-            this.btnOrganizations.TabIndex = 4;
-            this.btnOrganizations.Text = "Организации";
-            this.btnOrganizations.UseVisualStyleBackColor = true;
-            // 
             // btnSellers
             // 
-            this.btnSellers.Location = new System.Drawing.Point(12, 157);
+            this.btnSellers.Location = new System.Drawing.Point(12, 99);
             this.btnSellers.Name = "btnSellers";
             this.btnSellers.Size = new System.Drawing.Size(283, 23);
             this.btnSellers.TabIndex = 5;
@@ -124,16 +116,35 @@
             this.lItemsCount.TabIndex = 8;
             this.lItemsCount.Text = "Количество предметов в базе";
             // 
+            // lActionsCount
+            // 
+            this.lActionsCount.AutoSize = true;
+            this.lActionsCount.Location = new System.Drawing.Point(301, 104);
+            this.lActionsCount.Name = "lActionsCount";
+            this.lActionsCount.Size = new System.Drawing.Size(224, 13);
+            this.lActionsCount.TabIndex = 9;
+            this.lActionsCount.Text = "Количество совершенных действий в базе";
+            // 
+            // lSellersCount
+            // 
+            this.lSellersCount.AutoSize = true;
+            this.lSellersCount.Location = new System.Drawing.Point(301, 133);
+            this.lSellersCount.Name = "lSellersCount";
+            this.lSellersCount.Size = new System.Drawing.Size(173, 13);
+            this.lSellersCount.TabIndex = 10;
+            this.lSellersCount.Text = "Количество поставщиков в базе";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(613, 193);
+            this.ClientSize = new System.Drawing.Size(613, 161);
+            this.Controls.Add(this.lSellersCount);
+            this.Controls.Add(this.lActionsCount);
             this.Controls.Add(this.lItemsCount);
             this.Controls.Add(this.lAccCount);
             this.Controls.Add(this.lOrgCount);
             this.Controls.Add(this.btnSellers);
-            this.Controls.Add(this.btnOrganizations);
             this.Controls.Add(this.btnItems);
             this.Controls.Add(this.btnCities);
             this.Controls.Add(this.btnActionLogs);
@@ -155,11 +166,12 @@
         private System.Windows.Forms.Button btnActionLogs;
         private System.Windows.Forms.Button btnCities;
         private System.Windows.Forms.Button btnItems;
-        private System.Windows.Forms.Button btnOrganizations;
         private System.Windows.Forms.Button btnSellers;
         private System.Windows.Forms.Label lOrgCount;
         private System.Windows.Forms.Label lAccCount;
         private System.Windows.Forms.Label lItemsCount;
+        private System.Windows.Forms.Label lActionsCount;
+        private System.Windows.Forms.Label lSellersCount;
     }
 }
 
