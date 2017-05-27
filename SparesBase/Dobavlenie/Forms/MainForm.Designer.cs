@@ -30,6 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
+            this.tsmiAccount = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiChangeAccount = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiExit = new System.Windows.Forms.ToolStripMenuItem();
             this.категорииToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiAddMainCategory = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiAddSubCategory = new System.Windows.Forms.ToolStripMenuItem();
@@ -44,9 +47,8 @@
             this.tsmiCollapse = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiLogs = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiActionLogs = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiAccount = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiChangeAccount = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.организацияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiUsers = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView = new System.Windows.Forms.TreeView();
             this.cmsMainCategory = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -91,8 +93,7 @@
             this.cmsDeleteCategory = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsExpandNode = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsCollapseNode = new System.Windows.Forms.ToolStripMenuItem();
-            this.организацияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiUsers = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -121,12 +122,36 @@
             this.предметыToolStripMenuItem,
             this.деревоToolStripMenuItem,
             this.tsmiLogs,
-            this.организацияToolStripMenuItem});
+            this.организацияToolStripMenuItem,
+            this.tsmiSearch});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(1354, 24);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "menuStrip1";
+            // 
+            // tsmiAccount
+            // 
+            this.tsmiAccount.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiChangeAccount,
+            this.tsmiExit});
+            this.tsmiAccount.Name = "tsmiAccount";
+            this.tsmiAccount.Size = new System.Drawing.Size(63, 20);
+            this.tsmiAccount.Text = "Аккаунт";
+            // 
+            // tsmiChangeAccount
+            // 
+            this.tsmiChangeAccount.Name = "tsmiChangeAccount";
+            this.tsmiChangeAccount.Size = new System.Drawing.Size(188, 22);
+            this.tsmiChangeAccount.Text = "Смена пользователя";
+            this.tsmiChangeAccount.Click += new System.EventHandler(this.tsmiChangeAccount_Click);
+            // 
+            // tsmiExit
+            // 
+            this.tsmiExit.Name = "tsmiExit";
+            this.tsmiExit.Size = new System.Drawing.Size(188, 22);
+            this.tsmiExit.Text = "Выход";
+            this.tsmiExit.Click += new System.EventHandler(this.tsmiExit_Click);
             // 
             // категорииToolStripMenuItem
             // 
@@ -236,28 +261,20 @@
             this.tsmiActionLogs.Text = "Журнал действий";
             this.tsmiActionLogs.Click += new System.EventHandler(this.tsmiActionLogs_Click);
             // 
-            // tsmiAccount
+            // организацияToolStripMenuItem
             // 
-            this.tsmiAccount.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiChangeAccount,
-            this.tsmiExit});
-            this.tsmiAccount.Name = "tsmiAccount";
-            this.tsmiAccount.Size = new System.Drawing.Size(63, 20);
-            this.tsmiAccount.Text = "Аккаунт";
+            this.организацияToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiUsers});
+            this.организацияToolStripMenuItem.Name = "организацияToolStripMenuItem";
+            this.организацияToolStripMenuItem.Size = new System.Drawing.Size(91, 20);
+            this.организацияToolStripMenuItem.Text = "Организация";
             // 
-            // tsmiChangeAccount
+            // tsmiUsers
             // 
-            this.tsmiChangeAccount.Name = "tsmiChangeAccount";
-            this.tsmiChangeAccount.Size = new System.Drawing.Size(188, 22);
-            this.tsmiChangeAccount.Text = "Смена пользователя";
-            this.tsmiChangeAccount.Click += new System.EventHandler(this.tsmiChangeAccount_Click);
-            // 
-            // tsmiExit
-            // 
-            this.tsmiExit.Name = "tsmiExit";
-            this.tsmiExit.Size = new System.Drawing.Size(188, 22);
-            this.tsmiExit.Text = "Выход";
-            this.tsmiExit.Click += new System.EventHandler(this.tsmiExit_Click);
+            this.tsmiUsers.Name = "tsmiUsers";
+            this.tsmiUsers.Size = new System.Drawing.Size(140, 22);
+            this.tsmiUsers.Text = "Сотрудники";
+            this.tsmiUsers.Click += new System.EventHandler(this.tsmiUsers_Click);
             // 
             // splitContainer1
             // 
@@ -701,20 +718,12 @@
             this.cmsCollapseNode.Text = "Скрыть узел";
             this.cmsCollapseNode.Click += new System.EventHandler(this.cmsCollapseNode_Click);
             // 
-            // организацияToolStripMenuItem
+            // tsmiSearch
             // 
-            this.организацияToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiUsers});
-            this.организацияToolStripMenuItem.Name = "организацияToolStripMenuItem";
-            this.организацияToolStripMenuItem.Size = new System.Drawing.Size(91, 20);
-            this.организацияToolStripMenuItem.Text = "Организация";
-            // 
-            // tsmiUsers
-            // 
-            this.tsmiUsers.Name = "tsmiUsers";
-            this.tsmiUsers.Size = new System.Drawing.Size(152, 22);
-            this.tsmiUsers.Text = "Сотрудники";
-            this.tsmiUsers.Click += new System.EventHandler(this.tsmiUsers_Click);
+            this.tsmiSearch.Name = "tsmiSearch";
+            this.tsmiSearch.Size = new System.Drawing.Size(52, 20);
+            this.tsmiSearch.Text = "поиск";
+            this.tsmiSearch.Click += new System.EventHandler(this.tsmiSearch_Click);
             // 
             // MainForm
             // 
@@ -824,5 +833,6 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiExit;
         private System.Windows.Forms.ToolStripMenuItem организацияToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmiUsers;
+        private System.Windows.Forms.ToolStripMenuItem tsmiSearch;
     }
 }

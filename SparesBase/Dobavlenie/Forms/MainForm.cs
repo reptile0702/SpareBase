@@ -607,5 +607,11 @@ namespace SparesBase
             EmployeesForm employees = new EmployeesForm();
             employees.ShowDialog();
         }
+
+        private void tsmiSearch_Click(object sender, EventArgs e)
+        {
+            SearchingForm sf = new SearchingForm();
+            sf.ShowDialog();
+        }
     }
 }
