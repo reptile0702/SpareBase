@@ -36,6 +36,9 @@ namespace SparesBase
                 tsmiLogs.Visible = false;
             }
             this.au = au;
+
+            tbSearch.Text = "Поиск";
+            tbSearch.ForeColor = Color.Gray;
         }
 
 
@@ -612,6 +615,24 @@ namespace SparesBase
         {
             SearchingForm sf = new SearchingForm();
             sf.ShowDialog();
+        }
+
+        private void tbSearch_Enter(object sender, EventArgs e)
+        {
+            if (tbSearch.Text == "Поиск")
+            {
+                tbSearch.Text = "";
+                tbSearch.ForeColor = Color.Black;
+            }
+        }
+
+        private void tbSearch_Leave(object sender, EventArgs e)
+        {
+            if (tbSearch.Text == "")
+            {
+                tbSearch.Text = "Поиск";
+                tbSearch.ForeColor = Color.Gray;
+            }
         }
     }
 }

@@ -49,6 +49,7 @@
             this.tsmiActionLogs = new System.Windows.Forms.ToolStripMenuItem();
             this.организацияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiUsers = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView = new System.Windows.Forms.TreeView();
             this.cmsMainCategory = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -93,7 +94,6 @@
             this.cmsDeleteCategory = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsExpandNode = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsCollapseNode = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -276,6 +276,13 @@
             this.tsmiUsers.Text = "Сотрудники";
             this.tsmiUsers.Click += new System.EventHandler(this.tsmiUsers_Click);
             // 
+            // tsmiSearch
+            // 
+            this.tsmiSearch.Name = "tsmiSearch";
+            this.tsmiSearch.Size = new System.Drawing.Size(52, 20);
+            this.tsmiSearch.Text = "поиск";
+            this.tsmiSearch.Click += new System.EventHandler(this.tsmiSearch_Click);
+            // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -342,11 +349,14 @@
             // tbSearch
             // 
             this.tbSearch.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tbSearch.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.tbSearch.Location = new System.Drawing.Point(0, 0);
             this.tbSearch.Name = "tbSearch";
             this.tbSearch.Size = new System.Drawing.Size(170, 20);
             this.tbSearch.TabIndex = 1;
+            this.tbSearch.Enter += new System.EventHandler(this.tbSearch_Enter);
             this.tbSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbSearch_KeyDown);
+            this.tbSearch.Leave += new System.EventHandler(this.tbSearch_Leave);
             // 
             // splitContainer2
             // 
@@ -717,13 +727,6 @@
             this.cmsCollapseNode.Size = new System.Drawing.Size(223, 22);
             this.cmsCollapseNode.Text = "Скрыть узел";
             this.cmsCollapseNode.Click += new System.EventHandler(this.cmsCollapseNode_Click);
-            // 
-            // tsmiSearch
-            // 
-            this.tsmiSearch.Name = "tsmiSearch";
-            this.tsmiSearch.Size = new System.Drawing.Size(52, 20);
-            this.tsmiSearch.Text = "поиск";
-            this.tsmiSearch.Click += new System.EventHandler(this.tsmiSearch_Click);
             // 
             // MainForm
             // 
