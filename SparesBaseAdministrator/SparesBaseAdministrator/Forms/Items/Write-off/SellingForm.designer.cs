@@ -105,6 +105,7 @@
             this.Controls.Add(this.cbPrice);
             this.Controls.Add(this.cbQuantity);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.MaximizeBox = false;
             this.Name = "SellingForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Продажа";

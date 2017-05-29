@@ -229,7 +229,6 @@
             this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
             this.treeView.DragDrop += new System.Windows.Forms.DragEventHandler(this.treeView_DragDrop);
             this.treeView.DragEnter += new System.Windows.Forms.DragEventHandler(this.treeView_DragEnter);
-            this.treeView.MouseMove += new System.Windows.Forms.MouseEventHandler(this.treeView_MouseMove);
             // 
             // cmsMainCategory
             // 
@@ -268,7 +267,7 @@
             this.tbSearch.Location = new System.Drawing.Point(0, 21);
             this.tbSearch.Name = "tbSearch";
             this.tbSearch.Size = new System.Drawing.Size(170, 20);
-            this.tbSearch.TabIndex = 1;
+            this.tbSearch.TabIndex = 2;
             this.tbSearch.Enter += new System.EventHandler(this.tbSearch_Enter);
             this.tbSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbSearch_KeyDown);
             this.tbSearch.Leave += new System.EventHandler(this.tbSearch_Leave);
@@ -281,7 +280,7 @@
             this.cbOrganizations.Location = new System.Drawing.Point(0, 0);
             this.cbOrganizations.Name = "cbOrganizations";
             this.cbOrganizations.Size = new System.Drawing.Size(170, 21);
-            this.cbOrganizations.TabIndex = 2;
+            this.cbOrganizations.TabIndex = 3;
             this.cbOrganizations.SelectedIndexChanged += new System.EventHandler(this.cbOrganizations_SelectedIndexChanged);
             // 
             // splitContainer2
@@ -321,8 +320,7 @@
             this.dgv.ReadOnly = true;
             this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv.Size = new System.Drawing.Size(1180, 317);
-            this.dgv.TabIndex = 0;
-            this.dgv.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellClick);
+            this.dgv.TabIndex = 1;
             this.dgv.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.EditItem_Click);
             this.dgv.SelectionChanged += new System.EventHandler(this.dgv_SelectionChanged);
             this.dgv.MouseMove += new System.Windows.Forms.MouseEventHandler(this.dgv_MouseMove);
@@ -546,7 +544,6 @@
             this.Name = "ItemsForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Предметы";
-            this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);

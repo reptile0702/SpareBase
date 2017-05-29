@@ -124,6 +124,7 @@
             this.Controls.Add(this.tbWhoIdentified);
             this.Controls.Add(this.cbQuantityOfDefect);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.MaximizeBox = false;
             this.Name = "DefectForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Дефект";

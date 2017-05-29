@@ -31,11 +31,12 @@
             this.btnAdd = new System.Windows.Forms.Button();
             this.tbCategory = new System.Windows.Forms.TextBox();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.cbOrganizations = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(117, 39);
+            this.btnAdd.Location = new System.Drawing.Point(117, 65);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(99, 23);
             this.btnAdd.TabIndex = 1;
@@ -52,7 +53,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(222, 39);
+            this.btnCancel.Location = new System.Drawing.Point(222, 65);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(99, 23);
             this.btnCancel.TabIndex = 2;
@@ -60,16 +61,27 @@
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
+            // cbOrganizations
+            // 
+            this.cbOrganizations.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbOrganizations.FormattingEnabled = true;
+            this.cbOrganizations.Location = new System.Drawing.Point(12, 38);
+            this.cbOrganizations.Name = "cbOrganizations";
+            this.cbOrganizations.Size = new System.Drawing.Size(309, 21);
+            this.cbOrganizations.TabIndex = 3;
+            // 
             // EditCategory
             // 
             this.AcceptButton = this.btnAdd;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(333, 68);
+            this.ClientSize = new System.Drawing.Size(333, 98);
+            this.Controls.Add(this.cbOrganizations);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.tbCategory);
             this.Controls.Add(this.btnAdd);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.MaximizeBox = false;
             this.Name = "EditCategory";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Добавление категории";
@@ -84,5 +96,6 @@
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.TextBox tbCategory;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.ComboBox cbOrganizations;
     }
 }

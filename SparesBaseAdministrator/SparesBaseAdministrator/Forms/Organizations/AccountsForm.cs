@@ -246,8 +246,11 @@ namespace SparesBaseAdministrator
         // Двойной клик на ячейку в DataGridView
         private void dgvAccounts_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            AccountCardForm acf = new AccountCardForm((Account)dgvAccounts.Rows[e.RowIndex].Tag);
-            acf.ShowDialog();
+            if (e.RowIndex != -1)
+            {
+                AccountCardForm acf = new AccountCardForm((Account)dgvAccounts.Rows[e.RowIndex].Tag);
+                acf.ShowDialog();
+            }
         }
 
         #endregion Главные

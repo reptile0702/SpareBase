@@ -146,6 +146,7 @@
             this.Controls.Add(this.tbPrice);
             this.Controls.Add(this.cbQuantity);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.MaximizeBox = false;
             this.Name = "InOrder";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "В заказ";
