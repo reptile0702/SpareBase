@@ -5,7 +5,6 @@ namespace SparesBaseAdministrator
     public partial class MainForm : Form
     {
         // TODO: Доделать вход в программу
-        // TODO: Доделать поставщиков
         // TODO: Сделать форму предметов
 
         // Конструктор

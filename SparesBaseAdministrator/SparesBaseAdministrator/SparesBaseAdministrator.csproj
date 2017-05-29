@@ -49,13 +49,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database Classes\Seller.cs" />
     <Compile Include="Forms\Action Logs\ActionsEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Action Logs\ActionsEditorForm.Designer.cs">
       <DependentUpon>ActionsEditorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Organizations\Account.cs" />
+    <Compile Include="Database Classes\Account.cs" />
     <Compile Include="Forms\Action Logs\ActionLogsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -86,7 +87,7 @@
     <Compile Include="Forms\Cities\CitiesForm.Designer.cs">
       <DependentUpon>CitiesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="DatabaseWorker.cs" />
+    <Compile Include="Database Classes\DatabaseWorker.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -105,7 +106,7 @@
     <Compile Include="Forms\Organizations\Accounts\ChangePasswordForm.Designer.cs">
       <DependentUpon>ChangePasswordForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Organizations\Organization.cs" />
+    <Compile Include="Database Classes\Organization.cs" />
     <Compile Include="Forms\Cards\OrganizationCardForm.cs">
       <SubType>Form</SubType>
     </Compile>

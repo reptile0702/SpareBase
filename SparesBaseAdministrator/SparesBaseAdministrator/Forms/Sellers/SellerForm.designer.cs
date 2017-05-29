@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lbSellers = new System.Windows.Forms.ListBox();
             this.tbName = new System.Windows.Forms.TextBox();
             this.tbSite = new System.Windows.Forms.TextBox();
             this.tbTelephone = new System.Windows.Forms.MaskedTextBox();
@@ -43,24 +42,15 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.tbOk = new System.Windows.Forms.Button();
             this.btnSellerEdit = new System.Windows.Forms.Button();
             this.cbOrganizations = new System.Windows.Forms.ComboBox();
             this.lOrganization = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.tvSellers = new System.Windows.Forms.TreeView();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // lbSellers
-            // 
-            this.lbSellers.FormattingEnabled = true;
-            this.lbSellers.Location = new System.Drawing.Point(12, 12);
-            this.lbSellers.Name = "lbSellers";
-            this.lbSellers.Size = new System.Drawing.Size(169, 264);
-            this.lbSellers.TabIndex = 0;
-            this.lbSellers.SelectedIndexChanged += new System.EventHandler(this.lbSellers_SelectedIndexChanged);
             // 
             // tbName
             // 
@@ -122,7 +112,7 @@
             this.btnAdd.TabIndex = 8;
             this.btnAdd.Text = "Добавть нового поставщика";
             this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            this.btnAdd.Click += new System.EventHandler(this.Add_Click);
             // 
             // btnDelete
             // 
@@ -132,7 +122,7 @@
             this.btnDelete.TabIndex = 9;
             this.btnDelete.Text = "Удалить поставщика";
             this.btnDelete.UseVisualStyleBackColor = true;
-            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            this.btnDelete.Click += new System.EventHandler(this.Delete_Click);
             // 
             // tbFirstName
             // 
@@ -185,16 +175,6 @@
             this.label7.TabIndex = 17;
             this.label7.Text = "Отчество";
             // 
-            // tbOk
-            // 
-            this.tbOk.Location = new System.Drawing.Point(400, 371);
-            this.tbOk.Name = "tbOk";
-            this.tbOk.Size = new System.Drawing.Size(75, 23);
-            this.tbOk.TabIndex = 18;
-            this.tbOk.Text = "ОК";
-            this.tbOk.UseVisualStyleBackColor = true;
-            this.tbOk.Click += new System.EventHandler(this.tbOk_Click);
-            // 
             // btnSellerEdit
             // 
             this.btnSellerEdit.Location = new System.Drawing.Point(12, 311);
@@ -203,7 +183,7 @@
             this.btnSellerEdit.TabIndex = 19;
             this.btnSellerEdit.Text = "Редактировать поставщика";
             this.btnSellerEdit.UseVisualStyleBackColor = true;
-            this.btnSellerEdit.Click += new System.EventHandler(this.btnSellerEdit_Click);
+            this.btnSellerEdit.Click += new System.EventHandler(this.SellerEdit_Click);
             // 
             // cbOrganizations
             // 
@@ -254,27 +234,33 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Информация";
             // 
+            // tvSellers
+            // 
+            this.tvSellers.Location = new System.Drawing.Point(12, 12);
+            this.tvSellers.Name = "tvSellers";
+            this.tvSellers.ShowRootLines = false;
+            this.tvSellers.Size = new System.Drawing.Size(169, 264);
+            this.tvSellers.TabIndex = 24;
+            this.tvSellers.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvSellers_AfterSelect);
+            this.tvSellers.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvSellers_NodeMouseDoubleClick);
+            // 
             // SellerForm
             // 
-            this.AcceptButton = this.tbOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(491, 406);
+            this.ClientSize = new System.Drawing.Size(489, 378);
+            this.Controls.Add(this.tvSellers);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.lOrganization);
             this.Controls.Add(this.cbOrganizations);
             this.Controls.Add(this.btnSellerEdit);
-            this.Controls.Add(this.tbOk);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnAdd);
-            this.Controls.Add(this.lbSellers);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "SellerForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Поставщики";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SellerForm_FormClosing);
-            this.Load += new System.EventHandler(this.SellerForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -285,8 +271,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.ListBox lbSellers;
         private System.Windows.Forms.TextBox tbName;
         private System.Windows.Forms.TextBox tbSite;
         private System.Windows.Forms.MaskedTextBox tbTelephone;
@@ -301,11 +285,11 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Button tbOk;
         private System.Windows.Forms.Button btnSellerEdit;
         private System.Windows.Forms.ComboBox cbOrganizations;
         private System.Windows.Forms.Label lOrganization;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.TreeView tvSellers;
     }
 }
