@@ -5,7 +5,6 @@ namespace SparesBaseAdministrator
     public partial class MainForm : Form
     {
         // TODO: Доделать вход в программу
-        // TODO: Сделать форму предметов
 
         // Конструктор
         public MainForm()
@@ -61,7 +60,8 @@ namespace SparesBaseAdministrator
         // Клик на кнопку "Предметы"
         private void btnItems_Click(object sender, System.EventArgs e)
         {
-
+            ItemsForm itemsForm = new ItemsForm();
+            itemsForm.ShowDialog();
         }
     }
 }
