@@ -14,13 +14,12 @@ namespace SparesBase
         // TODO: Загружать фотки предмета только при его добавлении или изменении
 
         // TODO: Сделать смену категорий в EditForm
-        // TODO: Поиск по дате в логах.
+       
 
-        // TODO: Скрывать панели: В заказ, продажа и брак если нет записей в базе
-        // TODO: Скрывать предметы у которых остаток 0.
-        // TODO: Добавить вызов формы редактора поставщиков
-
-        // TODO: Запретить вход в программу пользователям без организации
+       
+       
+    
+       
 
         public Category SelectedCategory { get { return (Category)treeView.SelectedNode.Tag; } }
         public Item SelectedItem { get { return (Item)dgv.CurrentRow.Tag; } }
@@ -58,7 +57,7 @@ namespace SparesBase
             treeView.Nodes.Clear();
             TreeNode root = new TreeNode();
 
-            string where =  "WHERE(OrganizationId=" + EnteredUser.OrganizationId + ")";
+            string where = "WHERE(OrganizationId=" + EnteredUser.OrganizationId + ")";
 
             DataTable mainDt = DatabaseWorker.SqlSelectQuery("SELECT id, Name, OrganizationId FROM Main_Category " + where);
             if (mainDt.Rows.Count != 0)
@@ -348,13 +347,13 @@ namespace SparesBase
             string where = "WHERE (";
             for (int i = 0; i < treeView.SelectedNode.FullPath.Split('\\').Length; i++)
             {
-                if (i == 0) where += "i.Main_Category_Id=(SELECT id FROM Main_Category WHERE(id=" + selectedCategories[i] + "))";
+                if (i == 0) where += "(i.Main_Category_Id=(SELECT id FROM Main_Category WHERE(id=" + selectedCategories[i] + "))";
                 if (i == 1) where += " AND i.Sub_Category_1_Id=(SELECT id FROM Sub_Category_1 WHERE(id=" + selectedCategories[i] + "))";
                 if (i == 2) where += " AND i.Sub_Category_2_Id=(SELECT id FROM Sub_Category_2 WHERE(id=" + selectedCategories[i] + "))";
                 if (i == 3) where += " AND i.Sub_Category_3_Id=(SELECT id FROM Sub_Category_3 WHERE(id=" + selectedCategories[i] + "))";
                 if (i == 4) where += " AND i.Sub_Category_4_Id=(SELECT id FROM Sub_Category_4 WHERE(id=" + selectedCategories[i] + "))";
             }
-            where += ")";
+            where += ") AND (i.Residue <> 0))";
 
             FillItems(where);
         }
@@ -511,12 +510,21 @@ namespace SparesBase
             lnote.Text = "Описание: \n" + selItem.Note;
             lquantity.Text = "Количество: " + selItem.Quantity;
             lresidue.Text = "Остаток: " + selItem.Residue;
+            lMainCat.Text = "Главная категория: " + selItem.MainCategory.Name;
+            if(selItem.SubCategory1 != null)
+                lSub1.Text = "Подкатегория 1: " + selItem.SubCategory1.Name;
+            if (selItem.SubCategory2 != null)
+                lSub2.Text = "Подкатегория 2: " + selItem.SubCategory2.Name;
+            if (selItem.SubCategory3 != null)
+                lSub3.Text = "Подкатегория 3: " + selItem.SubCategory3.Name;
+            if (selItem.SubCategory4 != null)
+                lSub4.Text = "Подкатегория 4: " + selItem.SubCategory4.Name;
         }
 
         // Поиск предмета
         private void SearchItems(string query)
         {
-            string where = "WHERE((Item_Name LIKE \"%" + query + "%\" OR Note LIKE \"%" + query + "%\") AND (Items.OrganizationId = " + EnteredUser.OrganizationId + "))";
+            string where = "WHERE((Item_Name LIKE \"%" + query + "%\" OR Note LIKE \"%" + query + "%\") AND (i.OrganizationId = " + EnteredUser.OrganizationId + ") AND (i.Residue <> 0))";
             FillItems(where);
         }
 
@@ -601,25 +609,28 @@ namespace SparesBase
         {
             if (treeView.SelectedNode.FullPath.Split('\\').Length < 5)
             {
-                EditCategory ecf = new EditCategory(this, int.Parse(treeView.SelectedNode.Tag.ToString()), treeView.SelectedNode.FullPath.Split('\\').Length, false);
+                EditCategory ecf = new EditCategory(this, SelectedCategory.Id, treeView.SelectedNode.FullPath.Split('\\').Length, false, "");
                 ecf.ShowDialog();
             }
             else
-                MessageBox.Show("Невозможно создать новую категорию");
+                MessageBox.Show("Невозможно создать новую категорию", "Создание категории", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         // Клик на кнопку "Переименовать категорию"
         private void RenameCategory_Click(object sender, EventArgs e)
         {
-            EditCategory ecf = new EditCategory(this, int.Parse(treeView.SelectedNode.Tag.ToString()), treeView.SelectedNode.FullPath.Split('\\').Length, true);
+            EditCategory ecf = new EditCategory(this, SelectedCategory.Id, treeView.SelectedNode.FullPath.Split('\\').Length, true, SelectedCategory.Name);
             ecf.ShowDialog();
         }
 
         // Клик на кнопку "Удалить категорию"
         private void DeleteCategory_Click(object sender, EventArgs e)
         {
-            DeleteCategory(treeView.SelectedNode.FullPath.Split('\\').Length, int.Parse(treeView.SelectedNode.Tag.ToString()));
+            if (MessageBox.Show("Вы уверены, что хотите удалить категорию \"" + SelectedCategory.Name + "\"?", "Удаление категории", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                DeleteCategory(treeView.SelectedNode.FullPath.Split('\\').Length, SelectedCategory.Id);
         }
+
+
 
 
         // Клик на кнопку "Добавить предмет"
@@ -778,6 +789,12 @@ namespace SparesBase
                 tbSearch.Text = "Поиск";
                 tbSearch.ForeColor = Color.Gray;
             }
+        }
+
+        private void tsmiSellers_Click(object sender, EventArgs e)
+        {
+            SellerForm sf = new SellerForm();
+            sf.ShowDialog();
         }
     }
 }

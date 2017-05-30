@@ -46,7 +46,7 @@ namespace SparesBase
             tbFirstName.Text = seller.ContactFirstName;
             tbLastName.Text = seller.ContactLastName;
             tbSecondName.Text = seller.ContactSecondName;
-            cbOrganizations.SelectedValue = seller.OrganizationId;
+           
         }
 
         #endregion Заполнение данных

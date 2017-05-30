@@ -49,6 +49,7 @@
             this.tsmiActionLogs = new System.Windows.Forms.ToolStripMenuItem();
             this.организацияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiUsers = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiSellers = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView = new System.Windows.Forms.TreeView();
@@ -82,6 +83,11 @@
             this.cmsDeleteCategory = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsExpandNode = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsCollapseNode = new System.Windows.Forms.ToolStripMenuItem();
+            this.lMainCat = new System.Windows.Forms.Label();
+            this.lSub1 = new System.Windows.Forms.Label();
+            this.lSub2 = new System.Windows.Forms.Label();
+            this.lSub3 = new System.Windows.Forms.Label();
+            this.lSub4 = new System.Windows.Forms.Label();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -249,7 +255,8 @@
             // организацияToolStripMenuItem
             // 
             this.организацияToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiUsers});
+            this.tsmiUsers,
+            this.tsmiSellers});
             this.организацияToolStripMenuItem.Name = "организацияToolStripMenuItem";
             this.организацияToolStripMenuItem.Size = new System.Drawing.Size(91, 20);
             this.организацияToolStripMenuItem.Text = "Организация";
@@ -257,15 +264,22 @@
             // tsmiUsers
             // 
             this.tsmiUsers.Name = "tsmiUsers";
-            this.tsmiUsers.Size = new System.Drawing.Size(140, 22);
+            this.tsmiUsers.Size = new System.Drawing.Size(152, 22);
             this.tsmiUsers.Text = "Сотрудники";
             this.tsmiUsers.Click += new System.EventHandler(this.tsmiUsers_Click);
+            // 
+            // tsmiSellers
+            // 
+            this.tsmiSellers.Name = "tsmiSellers";
+            this.tsmiSellers.Size = new System.Drawing.Size(152, 22);
+            this.tsmiSellers.Text = "Поставщики";
+            this.tsmiSellers.Click += new System.EventHandler(this.tsmiSellers_Click);
             // 
             // tsmiSearch
             // 
             this.tsmiSearch.Name = "tsmiSearch";
-            this.tsmiSearch.Size = new System.Drawing.Size(52, 20);
-            this.tsmiSearch.Text = "поиск";
+            this.tsmiSearch.Size = new System.Drawing.Size(54, 20);
+            this.tsmiSearch.Text = "Поиск";
             this.tsmiSearch.Click += new System.EventHandler(this.tsmiSearch_Click);
             // 
             // splitContainer1
@@ -282,7 +296,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(1354, 528);
+            this.splitContainer1.Size = new System.Drawing.Size(1354, 520);
             this.splitContainer1.SplitterDistance = 170;
             this.splitContainer1.TabIndex = 1;
             // 
@@ -294,7 +308,7 @@
             this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView.Location = new System.Drawing.Point(0, 20);
             this.treeView.Name = "treeView";
-            this.treeView.Size = new System.Drawing.Size(170, 508);
+            this.treeView.Size = new System.Drawing.Size(170, 500);
             this.treeView.TabIndex = 0;
             this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
             this.treeView.DragDrop += new System.Windows.Forms.DragEventHandler(this.treeView_DragDrop);
@@ -359,8 +373,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.flowLayoutPanel1);
-            this.splitContainer2.Size = new System.Drawing.Size(1180, 528);
-            this.splitContainer2.SplitterDistance = 327;
+            this.splitContainer2.Size = new System.Drawing.Size(1180, 520);
+            this.splitContainer2.SplitterDistance = 319;
             this.splitContainer2.TabIndex = 1;
             // 
             // dgv
@@ -379,7 +393,7 @@
             this.dgv.Name = "dgv";
             this.dgv.ReadOnly = true;
             this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv.Size = new System.Drawing.Size(1180, 327);
+            this.dgv.Size = new System.Drawing.Size(1180, 319);
             this.dgv.TabIndex = 0;
             this.dgv.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellClick);
             this.dgv.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.EditItem_Click);
@@ -428,6 +442,11 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.lSub4);
+            this.groupBox1.Controls.Add(this.lSub3);
+            this.groupBox1.Controls.Add(this.lSub2);
+            this.groupBox1.Controls.Add(this.lSub1);
+            this.groupBox1.Controls.Add(this.lMainCat);
             this.groupBox1.Controls.Add(this.lresidue);
             this.groupBox1.Controls.Add(this.lquantity);
             this.groupBox1.Controls.Add(this.lnote);
@@ -441,7 +460,7 @@
             this.groupBox1.Controls.Add(this.lname);
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(378, 188);
+            this.groupBox1.Size = new System.Drawing.Size(585, 188);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Предмет";
@@ -449,7 +468,7 @@
             // lresidue
             // 
             this.lresidue.AutoSize = true;
-            this.lresidue.Location = new System.Drawing.Point(190, 39);
+            this.lresidue.Location = new System.Drawing.Point(403, 29);
             this.lresidue.Name = "lresidue";
             this.lresidue.Size = new System.Drawing.Size(49, 13);
             this.lresidue.TabIndex = 15;
@@ -458,7 +477,7 @@
             // lquantity
             // 
             this.lquantity.AutoSize = true;
-            this.lquantity.Location = new System.Drawing.Point(190, 26);
+            this.lquantity.Location = new System.Drawing.Point(403, 16);
             this.lquantity.Name = "lquantity";
             this.lquantity.Size = new System.Drawing.Size(66, 13);
             this.lquantity.TabIndex = 14;
@@ -467,7 +486,7 @@
             // lnote
             // 
             this.lnote.AutoSize = true;
-            this.lnote.Location = new System.Drawing.Point(190, 100);
+            this.lnote.Location = new System.Drawing.Point(403, 90);
             this.lnote.MaximumSize = new System.Drawing.Size(150, 0);
             this.lnote.Name = "lnote";
             this.lnote.Size = new System.Drawing.Size(57, 13);
@@ -477,7 +496,7 @@
             // lstorage
             // 
             this.lstorage.AutoSize = true;
-            this.lstorage.Location = new System.Drawing.Point(191, 61);
+            this.lstorage.Location = new System.Drawing.Point(404, 51);
             this.lstorage.MaximumSize = new System.Drawing.Size(150, 0);
             this.lstorage.Name = "lstorage";
             this.lstorage.Size = new System.Drawing.Size(56, 13);
@@ -487,7 +506,7 @@
             // lfirm
             // 
             this.lfirm.AutoSize = true;
-            this.lfirm.Location = new System.Drawing.Point(17, 113);
+            this.lfirm.Location = new System.Drawing.Point(233, 103);
             this.lfirm.Name = "lfirm";
             this.lfirm.Size = new System.Drawing.Size(72, 13);
             this.lfirm.TabIndex = 11;
@@ -496,7 +515,7 @@
             // lservice
             // 
             this.lservice.AutoSize = true;
-            this.lservice.Location = new System.Drawing.Point(17, 100);
+            this.lservice.Location = new System.Drawing.Point(233, 90);
             this.lservice.Name = "lservice";
             this.lservice.Size = new System.Drawing.Size(52, 13);
             this.lservice.TabIndex = 10;
@@ -505,7 +524,7 @@
             // lwhole
             // 
             this.lwhole.AutoSize = true;
-            this.lwhole.Location = new System.Drawing.Point(17, 87);
+            this.lwhole.Location = new System.Drawing.Point(233, 77);
             this.lwhole.Name = "lwhole";
             this.lwhole.Size = new System.Drawing.Size(66, 13);
             this.lwhole.TabIndex = 9;
@@ -514,7 +533,7 @@
             // lretail
             // 
             this.lretail.AutoSize = true;
-            this.lretail.Location = new System.Drawing.Point(17, 74);
+            this.lretail.Location = new System.Drawing.Point(233, 64);
             this.lretail.Name = "lretail";
             this.lretail.Size = new System.Drawing.Size(50, 13);
             this.lretail.TabIndex = 8;
@@ -523,7 +542,7 @@
             // lpurchase
             // 
             this.lpurchase.AutoSize = true;
-            this.lpurchase.Location = new System.Drawing.Point(17, 61);
+            this.lpurchase.Location = new System.Drawing.Point(233, 51);
             this.lpurchase.Name = "lpurchase";
             this.lpurchase.Size = new System.Drawing.Size(49, 13);
             this.lpurchase.TabIndex = 7;
@@ -532,7 +551,7 @@
             // lseller
             // 
             this.lseller.AutoSize = true;
-            this.lseller.Location = new System.Drawing.Point(17, 39);
+            this.lseller.Location = new System.Drawing.Point(233, 29);
             this.lseller.Name = "lseller";
             this.lseller.Size = new System.Drawing.Size(65, 13);
             this.lseller.TabIndex = 6;
@@ -541,7 +560,7 @@
             // lname
             // 
             this.lname.AutoSize = true;
-            this.lname.Location = new System.Drawing.Point(17, 26);
+            this.lname.Location = new System.Drawing.Point(233, 16);
             this.lname.Name = "lname";
             this.lname.Size = new System.Drawing.Size(57, 13);
             this.lname.TabIndex = 5;
@@ -593,11 +612,56 @@
             this.cmsCollapseNode.Text = "Скрыть узел";
             this.cmsCollapseNode.Click += new System.EventHandler(this.cmsCollapseNode_Click);
             // 
+            // lMainCat
+            // 
+            this.lMainCat.AutoSize = true;
+            this.lMainCat.Location = new System.Drawing.Point(12, 16);
+            this.lMainCat.Name = "lMainCat";
+            this.lMainCat.Size = new System.Drawing.Size(87, 13);
+            this.lMainCat.TabIndex = 16;
+            this.lMainCat.Text = "Глав.Категория";
+            // 
+            // lSub1
+            // 
+            this.lSub1.AutoSize = true;
+            this.lSub1.Location = new System.Drawing.Point(12, 29);
+            this.lSub1.Name = "lSub1";
+            this.lSub1.Size = new System.Drawing.Size(85, 13);
+            this.lSub1.TabIndex = 17;
+            this.lSub1.Text = "Подкатегория1";
+            // 
+            // lSub2
+            // 
+            this.lSub2.AutoSize = true;
+            this.lSub2.Location = new System.Drawing.Point(12, 42);
+            this.lSub2.Name = "lSub2";
+            this.lSub2.Size = new System.Drawing.Size(85, 13);
+            this.lSub2.TabIndex = 18;
+            this.lSub2.Text = "Подкатегория2";
+            // 
+            // lSub3
+            // 
+            this.lSub3.AutoSize = true;
+            this.lSub3.Location = new System.Drawing.Point(12, 55);
+            this.lSub3.Name = "lSub3";
+            this.lSub3.Size = new System.Drawing.Size(85, 13);
+            this.lSub3.TabIndex = 19;
+            this.lSub3.Text = "Подкатегория3";
+            // 
+            // lSub4
+            // 
+            this.lSub4.AutoSize = true;
+            this.lSub4.Location = new System.Drawing.Point(12, 67);
+            this.lSub4.Name = "lSub4";
+            this.lSub4.Size = new System.Drawing.Size(85, 13);
+            this.lSub4.TabIndex = 20;
+            this.lSub4.Text = "Подкатегория4";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1354, 552);
+            this.ClientSize = new System.Drawing.Size(1354, 544);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip);
             this.MainMenuStrip = this.menuStrip;
@@ -684,5 +748,11 @@
         private System.Windows.Forms.ToolStripMenuItem организацияToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmiUsers;
         private System.Windows.Forms.ToolStripMenuItem tsmiSearch;
+        private System.Windows.Forms.ToolStripMenuItem tsmiSellers;
+        private System.Windows.Forms.Label lSub4;
+        private System.Windows.Forms.Label lSub3;
+        private System.Windows.Forms.Label lSub2;
+        private System.Windows.Forms.Label lSub1;
+        private System.Windows.Forms.Label lMainCat;
     }
 }

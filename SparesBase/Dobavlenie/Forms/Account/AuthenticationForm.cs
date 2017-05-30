@@ -27,11 +27,22 @@ namespace SparesBase.Forms
                     return;
                 }
             }
+            else
+            {
+                MessageBox.Show("Пользователь с таким логином не зарегистрирован");
+                return;
+            }
 
             // Проверка пароля
             if (dr.Rows[0].ItemArray[2].ToString() != tbPassword.Text)
             {
                 MessageBox.Show("Не верно введён пароль");
+                return;
+            }
+
+            if (dr.Rows[0].ItemArray[3].ToString() == "0")
+            {
+                MessageBox.Show("Данный аккаунт не зарегистрирован ни в одной из организаций.");
                 return;
             }
 

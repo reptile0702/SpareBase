@@ -9,6 +9,7 @@ namespace SparesBase
         int id;
         int nodeCount;
         bool rename;
+        string oldName;
 
         // Конструктор для добавления главной категории
         public EditCategory(MainForm mf)
@@ -18,13 +19,14 @@ namespace SparesBase
         }
 
         // Конструктор для добавления подкатегории и переименования
-        public EditCategory(MainForm mf, int id, int nodeCount, bool rename)
+        public EditCategory(MainForm mf, int id, int nodeCount, bool rename, string oldName)
         {
             InitializeComponent();
             this.mf = mf;
             this.id = id;
             this.nodeCount = nodeCount;
             this.rename = rename;
+            this.oldName = oldName;
         }
 
 
@@ -35,6 +37,7 @@ namespace SparesBase
             {
                 Text = "Переименовывание категории";
                 btnAdd.Text = "Переименовать";
+                tbCategory.Text = oldName;
             }
             else
             {
