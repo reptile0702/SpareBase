@@ -76,18 +76,6 @@
             this.lpurchase = new System.Windows.Forms.Label();
             this.lseller = new System.Windows.Forms.Label();
             this.lname = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.ltotal = new System.Windows.Forms.Label();
-            this.lfirmprice = new System.Windows.Forms.Label();
-            this.lpurquant = new System.Windows.Forms.Label();
-            this.lnumber = new System.Windows.Forms.Label();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.lsellprice = new System.Windows.Forms.Label();
-            this.lsellquantity = new System.Windows.Forms.Label();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.ldefectnote = new System.Windows.Forms.Label();
-            this.lwhoidentified = new System.Windows.Forms.Label();
-            this.ldefectquantity = new System.Windows.Forms.Label();
             this.cmsCategory = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmsAddSubCategory = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsRenameCategory = new System.Windows.Forms.ToolStripMenuItem();
@@ -108,9 +96,6 @@
             this.cmsItem.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.groupBox4.SuspendLayout();
             this.cmsCategory.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -434,9 +419,6 @@
             // 
             this.flowLayoutPanel1.AutoScroll = true;
             this.flowLayoutPanel1.Controls.Add(this.groupBox1);
-            this.flowLayoutPanel1.Controls.Add(this.groupBox2);
-            this.flowLayoutPanel1.Controls.Add(this.groupBox3);
-            this.flowLayoutPanel1.Controls.Add(this.groupBox4);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -565,123 +547,6 @@
             this.lname.TabIndex = 5;
             this.lname.Text = "Название";
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.ltotal);
-            this.groupBox2.Controls.Add(this.lfirmprice);
-            this.groupBox2.Controls.Add(this.lpurquant);
-            this.groupBox2.Controls.Add(this.lnumber);
-            this.groupBox2.Location = new System.Drawing.Point(387, 3);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(258, 188);
-            this.groupBox2.TabIndex = 1;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "В заказ";
-            // 
-            // ltotal
-            // 
-            this.ltotal.AutoSize = true;
-            this.ltotal.Location = new System.Drawing.Point(16, 102);
-            this.ltotal.Name = "ltotal";
-            this.ltotal.Size = new System.Drawing.Size(82, 13);
-            this.ltotal.TabIndex = 3;
-            this.ltotal.Text = "Итоговая цена";
-            // 
-            // lfirmprice
-            // 
-            this.lfirmprice.AutoSize = true;
-            this.lfirmprice.Location = new System.Drawing.Point(16, 77);
-            this.lfirmprice.Name = "lfirmprice";
-            this.lfirmprice.Size = new System.Drawing.Size(72, 13);
-            this.lfirmprice.TabIndex = 2;
-            this.lfirmprice.Text = "Цена фирмы";
-            // 
-            // lpurquant
-            // 
-            this.lpurquant.AutoSize = true;
-            this.lpurquant.Location = new System.Drawing.Point(16, 52);
-            this.lpurquant.Name = "lpurquant";
-            this.lpurquant.Size = new System.Drawing.Size(66, 13);
-            this.lpurquant.TabIndex = 1;
-            this.lpurquant.Text = "Количество";
-            // 
-            // lnumber
-            // 
-            this.lnumber.AutoSize = true;
-            this.lnumber.Location = new System.Drawing.Point(16, 26);
-            this.lnumber.Name = "lnumber";
-            this.lnumber.Size = new System.Drawing.Size(80, 13);
-            this.lnumber.TabIndex = 0;
-            this.lnumber.Text = "Номер заказа";
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.lsellprice);
-            this.groupBox3.Controls.Add(this.lsellquantity);
-            this.groupBox3.Location = new System.Drawing.Point(651, 3);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(258, 188);
-            this.groupBox3.TabIndex = 2;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Продажа";
-            // 
-            // lsellprice
-            // 
-            this.lsellprice.AutoSize = true;
-            this.lsellprice.Location = new System.Drawing.Point(6, 53);
-            this.lsellprice.Name = "lsellprice";
-            this.lsellprice.Size = new System.Drawing.Size(33, 13);
-            this.lsellprice.TabIndex = 1;
-            this.lsellprice.Text = "Цена";
-            // 
-            // lsellquantity
-            // 
-            this.lsellquantity.AutoSize = true;
-            this.lsellquantity.Location = new System.Drawing.Point(6, 27);
-            this.lsellquantity.Name = "lsellquantity";
-            this.lsellquantity.Size = new System.Drawing.Size(66, 13);
-            this.lsellquantity.TabIndex = 0;
-            this.lsellquantity.Text = "Количество";
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.ldefectnote);
-            this.groupBox4.Controls.Add(this.lwhoidentified);
-            this.groupBox4.Controls.Add(this.ldefectquantity);
-            this.groupBox4.Location = new System.Drawing.Point(915, 3);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(256, 188);
-            this.groupBox4.TabIndex = 3;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Брак";
-            // 
-            // ldefectnote
-            // 
-            this.ldefectnote.AutoSize = true;
-            this.ldefectnote.Location = new System.Drawing.Point(16, 79);
-            this.ldefectnote.Name = "ldefectnote";
-            this.ldefectnote.Size = new System.Drawing.Size(57, 13);
-            this.ldefectnote.TabIndex = 2;
-            this.ldefectnote.Text = "Описание";
-            // 
-            // lwhoidentified
-            // 
-            this.lwhoidentified.AutoSize = true;
-            this.lwhoidentified.Location = new System.Drawing.Point(16, 53);
-            this.lwhoidentified.Name = "lwhoidentified";
-            this.lwhoidentified.Size = new System.Drawing.Size(82, 13);
-            this.lwhoidentified.TabIndex = 1;
-            this.lwhoidentified.Text = "Кто определил";
-            // 
-            // ldefectquantity
-            // 
-            this.ldefectquantity.AutoSize = true;
-            this.ldefectquantity.Location = new System.Drawing.Point(16, 27);
-            this.ldefectquantity.Name = "ldefectquantity";
-            this.ldefectquantity.Size = new System.Drawing.Size(66, 13);
-            this.ldefectquantity.TabIndex = 0;
-            this.ldefectquantity.Text = "Количество";
-            // 
             // cmsCategory
             // 
             this.cmsCategory.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -758,12 +623,6 @@
             this.flowLayoutPanel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
             this.cmsCategory.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -803,9 +662,6 @@
         private System.Windows.Forms.ToolStripMenuItem cmsExpandAllNodes;
         private System.Windows.Forms.ToolStripMenuItem cmsCollapseAllNodes;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label lquantity;
         private System.Windows.Forms.Label lnote;
@@ -817,16 +673,7 @@
         private System.Windows.Forms.Label lpurchase;
         private System.Windows.Forms.Label lseller;
         private System.Windows.Forms.Label lname;
-        private System.Windows.Forms.Label ldefectnote;
-        private System.Windows.Forms.Label lwhoidentified;
-        private System.Windows.Forms.Label ldefectquantity;
-        private System.Windows.Forms.Label lsellprice;
-        private System.Windows.Forms.Label lsellquantity;
-        private System.Windows.Forms.Label lfirmprice;
-        private System.Windows.Forms.Label lpurquant;
-        private System.Windows.Forms.Label lnumber;
         private System.Windows.Forms.Label lresidue;
-        private System.Windows.Forms.Label ltotal;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.ToolStripMenuItem tsmiLogs;
         private System.Windows.Forms.ToolStripMenuItem tsmiActionLogs;

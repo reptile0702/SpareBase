@@ -6,108 +6,146 @@ namespace SparesBase
 {
     public partial class SellerForm : Form
     {
-        DataTable listBoxSource;
-        EditForm editForm;
+        // Выделенный поставщик
+        private Seller SelectedSeller
+        {
+            get { return (Seller)tvSellers.SelectedNode.Tag; }
+            set { tvSellers.SelectedNode.Tag = value; }
+        }
 
-        // Конструктор обычный
+
+        // Конструктор
         public SellerForm()
         {
             InitializeComponent();
+
+           
+            FillSellers();
         }
 
-        // Констуктор для EditForm, чтобы выделенный поставщик вставился в ComboBox
-        public SellerForm(EditForm editForm)
-        {
-            InitializeComponent();
-            this.editForm = editForm;
-        }
 
+        #region Заполнение данных
+
+      
+       
 
         // Получение данных о выделенном поставщике из базы и вывод данных во все TextBox'ы
-        private void GetSellerData()
+        private void FillSellerData()
         {
-            int selectedId = int.Parse(lbSellers.SelectedValue.ToString());
-            DataTable sellerInfo = DatabaseWorker.SqlSelectQuery("SELECT * FROM Sellers WHERE(id = " + selectedId + " AND OrganizationId=" + EnteredUser.OrganizationId + ")");
-            tbName.Text = sellerInfo.Rows[0].ItemArray[1].ToString();
-            tbSite.Text = sellerInfo.Rows[0].ItemArray[2].ToString();
-            tbTelephone.Text = sellerInfo.Rows[0].ItemArray[3].ToString();
-            tbFirstName.Text = sellerInfo.Rows[0].ItemArray[4].ToString();
-            tbLastName.Text = sellerInfo.Rows[0].ItemArray[5].ToString();
-            tbSecondName.Text = sellerInfo.Rows[0].ItemArray[6].ToString();
+            Seller selectedSeller = (Seller)tvSellers.SelectedNode.Tag;
+            tbName.Text = selectedSeller.Name;
+            tbSite.Text = selectedSeller.Site;
+            tbTelephone.Text = selectedSeller.Telephone;
+            tbFirstName.Text = selectedSeller.ContactFirstName;
+            tbLastName.Text = selectedSeller.ContactLastName;
+            tbSecondName.Text = selectedSeller.ContactSecondName;
         }
 
         // Обновить данные о поставщиках в ListBox
-        private void UpdateData(int sellerId = 0)
+        private void FillSellers()
         {
-            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT id, name FROM Sellers WHERE(OrganizationId=" + EnteredUser.OrganizationId + ")");
-            listBoxSource = new DataTable();
-            listBoxSource.Columns.Add("id");
-            listBoxSource.Columns.Add("name");
+            tvSellers.Nodes.Clear();
+
+            string where = "WHERE(OrganizationId = " + EnteredUser.OrganizationId + ")";
+            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT * FROM Sellers " + where);
+
+            Seller seller = null;
             foreach (DataRow row in dt.Rows)
-                listBoxSource.Rows.Add(row.ItemArray[0].ToString(), row.ItemArray[1].ToString());
-
-            lbSellers.DisplayMember = "name";
-            lbSellers.ValueMember = "id";
-            lbSellers.DataSource = listBoxSource;
-
-            if (sellerId != 0)
-                lbSellers.SelectedValue = sellerId;
-        }
-
-
-        // Загрузка формы
-        private void SellerForm_Load(object sender, EventArgs e)
-        {
-            UpdateData();
-        }
-
-        // Закрытие формы и вставка в ComboBox AddForm'ы выделенного поставщика
-        private void SellerForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (editForm != null)
             {
-                DataRowView text = (DataRowView)lbSellers.SelectedItem;
-                editForm.ChangeTextInSellerComboBox(text[1].ToString());
+                seller = new Seller(
+                    int.Parse(row.ItemArray[0].ToString()),
+                    row.ItemArray[1].ToString(),
+                    row.ItemArray[2].ToString(),
+                    row.ItemArray[3].ToString(),
+                    row.ItemArray[4].ToString(),
+                    row.ItemArray[5].ToString(),
+                    row.ItemArray[6].ToString(),
+                    int.Parse(row.ItemArray[7].ToString()));
+
+                TreeNode sellerNode = new TreeNode(seller.Name);
+                sellerNode.Tag = seller;
+
+                tvSellers.Nodes.Add(sellerNode);
             }
+
+            if (tvSellers.Nodes.Count != 0)
+                tvSellers.SelectedNode = tvSellers.Nodes[0];
         }
 
-        // Смена выделенного поставщика
-        private void lbSellers_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            GetSellerData();
-        }
+        #endregion Заполнение данных
+
+
+
+        #region Работа с поставщиком
 
         // Добавление нового поставщика
-        private void btnAdd_Click(object sender, EventArgs e)
+        private void AddSeller()
         {
             SellerEdit editForm = new SellerEdit();
             if (editForm.ShowDialog() == DialogResult.OK)
             {
-                UpdateData();
-                lbSellers.SelectedIndex = lbSellers.Items.Count - 1;
+                FillSellers();
+                tvSellers.SelectedNode = tvSellers.Nodes[tvSellers.Nodes.Count - 1];
             }
         }
 
         // Редактирование поставщика
-        private void btnSellerEdit_Click(object sender, EventArgs e)
+        private void EditSeller()
         {
-            SellerEdit editForm = new SellerEdit(int.Parse(lbSellers.SelectedValue.ToString()));
+            SellerEdit editForm = new SellerEdit(SelectedSeller);
             if (editForm.ShowDialog() == DialogResult.OK)
-                UpdateData(int.Parse(lbSellers.SelectedValue.ToString()));
+                FillSellers();
         }
 
         // Удаление поставщика
-        private void btnDelete_Click(object sender, EventArgs e)
+        private void DeleteSeller()
         {
-            int id = int.Parse(lbSellers.SelectedValue.ToString());
-            DatabaseWorker.SqlQuery("DELETE FROM Sellers WHERE(id=" + id + ")");
-            listBoxSource.Rows.RemoveAt(lbSellers.SelectedIndex);
+            DatabaseWorker.SqlQuery("DELETE FROM Sellers WHERE(id=" + SelectedSeller.Id + ")");
+            tvSellers.Nodes.Remove(tvSellers.SelectedNode);
         }
 
-        // Клик на кнопку OK
-        private void tbOk_Click(object sender, EventArgs e)
+        #endregion Работа с поставщиком
+
+
+
+        #region События
+
+        // Добавление нового поставщика
+        private void Add_Click(object sender, EventArgs e)
         {
-            Close();
-        }   
+            AddSeller();
+        }
+
+        // Редактирование поставщика
+        private void SellerEdit_Click(object sender, EventArgs e)
+        {
+            EditSeller();
+        }
+
+        // Редактирование поставщика при двойном клике на нод
+        private void tvSellers_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            EditSeller();
+        }
+
+        // Удаление поставщика
+        private void Delete_Click(object sender, EventArgs e)
+        {
+            DeleteSeller();
+        }
+
+        // Смена выделенного индекса в ComboBox'е организаций
+        private void cbOrganizations_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            FillSellers();
+        }
+
+        // Смена выделенного поставщика
+        private void tvSellers_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            FillSellerData();
+        }
+
+        #endregion События
     }
 }

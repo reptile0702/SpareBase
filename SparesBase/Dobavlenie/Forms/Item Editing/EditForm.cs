@@ -6,11 +6,13 @@ namespace SparesBase
 {
     public partial class EditForm : Form
     {
-        // Идентификатор текущего предмета
-        int itemId;
+        // Предмет
+        Item item;
 
         // Категории текущего предмета
         int[] categories;
+
+       
 
         // Остаток
         int residue = 0;
@@ -23,6 +25,7 @@ namespace SparesBase
             InitializeComponent();
 
             this.categories = categories;
+           
 
             // Выключение кнопок: В заказ, продажа, брак
             btnInOrder.Enabled = false;
@@ -35,11 +38,11 @@ namespace SparesBase
         }
 
         // Конструктор для изменения предмета
-        public EditForm(int itemId, int[] categories)
+        public EditForm(Item item, int[] categories)
         {
             InitializeComponent();
 
-            this.itemId = itemId;
+            this.item = item;
             this.categories = categories;
 
             // Выключение полей
@@ -53,7 +56,7 @@ namespace SparesBase
             Text = "Изменение предмета";
             btnEdit.Text = "Изменить предмет";
             FillSellersComboBox();
-            GetItemData(itemId);
+            GetItemData(item);
         }
 
         #endregion Конструкторы
@@ -95,8 +98,11 @@ namespace SparesBase
                 else
                     query = "UPDATE Items SET Item_Name='{5}', Seller_Id={6}, Purchase_Price='{7}', Retail_Price='{8}', Wholesale_Price='{9}', Service_Price='{10}', FirmPrice='{11}', Storage='{12}', Note='{13}', Quantity={14}, Residue={15} , SearchAllowed={16} WHERE id = " + updateId;
 
-                // Подсчет остатка                    
-                CalcResidue();                    
+                // Подсчет остатка 
+                if (item != null)
+                    CalcResidue();
+                else
+                    residue = int.Parse(tbQuantity.Text);
 
                 // Вставка данных о предмете в стороку запроса
                 query = string.Format(query,
@@ -136,20 +142,19 @@ namespace SparesBase
         }
 
         // Поиск предмета в базе по выделенному ID и запись данных в панель информации
-        private void GetItemData(int itemId)
+        private void GetItemData(Item item)
         {
-            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT * FROM Items WHERE id=" + itemId);
-            tbItemName.Text = dt.Rows[0].ItemArray[6].ToString();
-            cbSeller.Text = DatabaseWorker.SqlScalarQuery("SELECT name FROM Sellers WHERE id=" + dt.Rows[0][7]).ToString();
-            tbPurchasePrice.Text = dt.Rows[0].ItemArray[8].ToString();
-            tbRetailPrice.Text = dt.Rows[0].ItemArray[9].ToString();
-            tbWholesalePrice.Text = dt.Rows[0].ItemArray[10].ToString();
-            tbServicePrice.Text = dt.Rows[0].ItemArray[11].ToString();
-            tbFirmPrice.Text = dt.Rows[0].ItemArray[12].ToString();
-            tbStorage.Text = dt.Rows[0].ItemArray[13].ToString();
-            tbNote.Text = dt.Rows[0].ItemArray[14].ToString();
-            tbQuantity.Text = dt.Rows[0].ItemArray[15].ToString();
-            chbSearchAllowed.Checked = dt.Rows[0].ItemArray[19].ToString() == "1" ? true : false;
+            tbItemName.Text = item.Name;
+            cbSeller.SelectedValue = item.Seller.Id;
+            tbPurchasePrice.Text = item.PurchasePrice;
+            tbRetailPrice.Text = item.RetailPrice;
+            tbWholesalePrice.Text = item.WholesalePrice;
+            tbServicePrice.Text = item.ServicePrice;
+            tbFirmPrice.Text = item.FirmPrice;
+            tbStorage.Text = item.Storage;
+            tbNote.Text = item.Note;
+            tbQuantity.Text = item.Quantity.ToString();
+            chbSearchAllowed.Checked = item.SearchAllowed;
         }
 
         #endregion Предметы
@@ -165,7 +170,8 @@ namespace SparesBase
             if (cbSeller.SelectedValue != null)
                 selectedId = int.Parse(cbSeller.SelectedValue.ToString());
 
-            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT id, name FROM Sellers WHERE(OrganizationId = " + EnteredUser.OrganizationId + ")");
+            string where = "WHERE(OrganizationId = " + EnteredUser.OrganizationId + ")";
+            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT id, name FROM Sellers " + where);
             DataTable source = new DataTable();
             source.Columns.Add("id");
             source.Columns.Add("name");
@@ -196,12 +202,6 @@ namespace SparesBase
                 cbSeller.SelectedIndex = 0;
         }
 
-        // Вставляет в Seller ComboBox текст
-        public void ChangeTextInSellerComboBox(string text)
-        {
-            cbSeller.Text = text;
-        }
-
         #endregion Заполнение элеметов данными
 
 
@@ -227,17 +227,17 @@ namespace SparesBase
                 // Подсчет всех строк
 
                 // В заказ
-                DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT Quantity FROM Purchase WHERE(ItemId=" + itemId + ")");
+                DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT Quantity FROM Purchase WHERE(ItemId=" + item.Id + ")");
                 foreach (DataRow row in dt.Rows)
                     purchase += row.ItemArray[0].ToString() != "" ? int.Parse(row.ItemArray[0].ToString()) : 0;
 
                 // Продажа
-                dt = DatabaseWorker.SqlSelectQuery("SELECT Quantity FROM Selling WHERE(ItemId=" + itemId + ")");
+                dt = DatabaseWorker.SqlSelectQuery("SELECT Quantity FROM Selling WHERE(ItemId=" + item.Id + ")");
                 foreach (DataRow row in dt.Rows)
                     selling += row.ItemArray[0].ToString() != "" ? int.Parse(row.ItemArray[0].ToString()) : 0;
 
                 // Брак
-                dt = DatabaseWorker.SqlSelectQuery("SELECT QuantityOfDefect FROM Defect WHERE(ItemId=" + itemId + ")");
+                dt = DatabaseWorker.SqlSelectQuery("SELECT QuantityOfDefect FROM Defect WHERE(ItemId=" + item.Id + ")");
                 foreach (DataRow row in dt.Rows)
                     defect += row.ItemArray[0].ToString() != "" ? int.Parse(row.ItemArray[0].ToString()) : 0;
 
@@ -245,7 +245,7 @@ namespace SparesBase
                 residue = int.Parse(tbQuantity.Text) - (purchase + selling + defect);
 
                 // Занесение остатка в базу
-                DatabaseWorker.SqlQuery("UPDATE Items SET Residue = " + residue + " WHERE(id = " + itemId + ")");
+                DatabaseWorker.SqlQuery("UPDATE Items SET Residue = " + residue + " WHERE(id = " + item.Id + ")");
             }
             
         }
@@ -260,7 +260,7 @@ namespace SparesBase
         private void Form1_Load(object sender, EventArgs e)
         {
             
-            DownloadPreviewImage(itemId);
+            //DownloadPreviewImage(item.Id);
             CalcResidue();
         }
 
@@ -270,11 +270,8 @@ namespace SparesBase
             if (cbSeller.Text == "Добавить нового поставщика...")
             {
                 SellerEdit sf = new SellerEdit();
-               
                 if (sf.ShowDialog() == DialogResult.OK)
-                {
                     cbSeller.SelectedIndex = cbSeller.Items.Count - 2;
-                }
             }
         }
 
@@ -287,17 +284,17 @@ namespace SparesBase
         // Просмотр фотографий предмета
         private void btnPhoto_Click(object sender, EventArgs e)
         {
-            PhotoEditor pe = new PhotoEditor(itemId);
+            PhotoEditor pe = new PhotoEditor(item.Id);
             pe.ShowDialog();
         }
 
         // Клик на кнопку Добавления / Изменения
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            if (itemId == 0)
+            if (item == null)
                 AddItem();
             else
-                UpdateItem(itemId);
+                UpdateItem(item.Id);
         }
 
         // Продажа
@@ -306,7 +303,7 @@ namespace SparesBase
             // Проверка на остаток
             if (residue > 0)
             {
-                SellingForm selling = new SellingForm(residue, int.Parse(tbRetailPrice.Text), int.Parse(tbWholesalePrice.Text), int.Parse(tbServicePrice.Text), itemId);
+                SellingForm selling = new SellingForm(residue, int.Parse(tbRetailPrice.Text), int.Parse(tbWholesalePrice.Text), int.Parse(tbServicePrice.Text), item.Id);
                 selling.ShowDialog();
                 CalcResidue();
             }
@@ -320,7 +317,7 @@ namespace SparesBase
             // Проверка на остаток
             if (residue > 0)
             {
-                DefectForm defect = new DefectForm(residue, itemId);
+                DefectForm defect = new DefectForm(residue, item.Id);
                 defect.ShowDialog();
                 CalcResidue();
             }
@@ -334,7 +331,7 @@ namespace SparesBase
             // Проверка на остаток
             if (residue > 0)
             {
-                InOrder InOrder = new InOrder(itemId, residue, int.Parse(tbFirmPrice.Text));
+                InOrder InOrder = new InOrder(item.Id, residue, int.Parse(tbFirmPrice.Text));
                 InOrder.ShowDialog();
                 CalcResidue();
             }

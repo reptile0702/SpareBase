@@ -22,6 +22,9 @@ namespace SparesBase
 
         // TODO: Запретить вход в программу пользователям без организации
 
+        public Category SelectedCategory { get { return (Category)treeView.SelectedNode.Tag; } }
+        public Item SelectedItem { get { return (Item)dgv.CurrentRow.Tag; } }
+
         AuthenticationForm au;
         // Конструктор
         public MainForm(AuthenticationForm au)
@@ -39,30 +42,286 @@ namespace SparesBase
 
             tbSearch.Text = "Поиск";
             tbSearch.ForeColor = Color.Gray;
+            
+            FillCategories();
+            InitializeDataGridView();
         }
 
 
-        private void Search(string query)
+        #region Заполнение данных
+
+        
+
+        // Заполнение TreeView категориями из базы
+        private void FillCategories()
         {
-            DataTable items = DatabaseWorker.SqlSelectQuery("SELECT Items.id, Item_Name, Sellers.name, Purchase_Price, Retail_Price, Wholesale_Price, Service_Price, Storage, Quantity, Upload_Date, Residue FROM Items INNER JOIN Sellers ON Items.Seller_Id = Sellers.id WHERE(Item_Name LIKE \"%" + query + "%\" OR Note LIKE \"%" + query + "%\")");
+            treeView.Nodes.Clear();
+            TreeNode root = new TreeNode();
 
-            DataTable dt = new DataTable();
-            dt.Columns.Add("ID");
-            dt.Columns.Add("Наименование");
-            dt.Columns.Add("Поставщик");
-            dt.Columns.Add("Закупка");
-            dt.Columns.Add("Розница");
-            dt.Columns.Add("Мелкий опт");
-            dt.Columns.Add("Сервисы");
-            dt.Columns.Add("Хранение");
-            dt.Columns.Add("Количество");
-            dt.Columns.Add("Дата добавления");
-            dt.Columns.Add("Остаток");
+            string where =  "WHERE(OrganizationId=" + EnteredUser.OrganizationId + ")";
 
-            for (int i = 0; i < items.Rows.Count; i++)
-                dt.Rows.Add().ItemArray = items.Rows[i].ItemArray;
+            DataTable mainDt = DatabaseWorker.SqlSelectQuery("SELECT id, Name, OrganizationId FROM Main_Category " + where);
+            if (mainDt.Rows.Count != 0)
+            {
+                DataTable subCat1Dt = DatabaseWorker.SqlSelectQuery("SELECT * FROM Sub_Category_1 " + where);
+                DataTable subCat2Dt = DatabaseWorker.SqlSelectQuery("SELECT * FROM Sub_Category_2 " + where);
+                DataTable subCat3Dt = DatabaseWorker.SqlSelectQuery("SELECT * FROM Sub_Category_3 " + where);
+                DataTable subCat4Dt = DatabaseWorker.SqlSelectQuery("SELECT * FROM Sub_Category_4 " + where);
 
-            if (dt.Rows.Count == 0)
+                // Главная категория
+                foreach (DataRow row in mainDt.Rows)
+                {
+                    Category category = new Category(
+                        int.Parse(row.ItemArray[0].ToString()),
+                        row.ItemArray[1].ToString(),
+                        0,
+                        int.Parse(row.ItemArray[2].ToString()));
+
+                    TreeNode newTreeNode = new TreeNode(category.Name);
+                    newTreeNode.Tag = category;
+                    newTreeNode.ContextMenuStrip = cmsCategory;
+                    root.Nodes.Add(newTreeNode);
+                }
+
+                // Подкатегория 1
+                foreach (DataRow row in subCat1Dt.Rows)
+                {
+                    Category category = new Category(
+                        int.Parse(row.ItemArray[0].ToString()),
+                        row.ItemArray[1].ToString(),
+                        int.Parse(row.ItemArray[2].ToString()),
+                        int.Parse(row.ItemArray[3].ToString()));
+
+                    TreeNode newTreeNode = new TreeNode(category.Name);
+                    newTreeNode.Tag = category;
+                    newTreeNode.ContextMenuStrip = cmsCategory;
+                    int mainId = category.PreviousCategoryId;
+
+                    foreach (TreeNode node in root.Nodes)
+                    {
+                        Category cat = (Category)node.Tag;
+                        if (cat.Id == mainId)
+                            node.Nodes.Add(newTreeNode);
+                    }
+                }
+
+                // Подкатегория 2
+                foreach (DataRow row in subCat2Dt.Rows)
+                {
+                    Category category = new Category(
+                        int.Parse(row.ItemArray[0].ToString()),
+                        row.ItemArray[1].ToString(),
+                        int.Parse(row.ItemArray[2].ToString()),
+                        int.Parse(row.ItemArray[3].ToString()));
+
+                    TreeNode newTreeNode = new TreeNode(category.Name);
+                    newTreeNode.Tag = category;
+                    newTreeNode.ContextMenuStrip = cmsCategory;
+                    int sub1Id = category.PreviousCategoryId;
+
+                    foreach (TreeNode rootNode in root.Nodes)
+                        foreach (TreeNode sub1Node in rootNode.Nodes)
+                        {
+                            Category cat = (Category)sub1Node.Tag;
+                            if (cat.Id == sub1Id)
+                                sub1Node.Nodes.Add(newTreeNode);
+                        }
+                }
+
+                // Подкатегория 3
+                foreach (DataRow row in subCat3Dt.Rows)
+                {
+                    Category category = new Category(
+                        int.Parse(row.ItemArray[0].ToString()),
+                        row.ItemArray[1].ToString(),
+                        int.Parse(row.ItemArray[2].ToString()),
+                        int.Parse(row.ItemArray[3].ToString()));
+
+                    TreeNode newTreeNode = new TreeNode(category.Name);
+                    newTreeNode.Tag = category;
+                    newTreeNode.ContextMenuStrip = cmsCategory;
+                    int sub2Id = category.PreviousCategoryId;
+
+                    foreach (TreeNode rootNode in root.Nodes)
+                        foreach (TreeNode sub1Node in rootNode.Nodes)
+                            foreach (TreeNode sub2Node in sub1Node.Nodes)
+                            {
+                                Category cat = (Category)sub2Node.Tag;
+                                if (cat.Id == sub2Id)
+                                    sub2Node.Nodes.Add(newTreeNode);
+                            }
+                }
+
+                // Подкатегория 4
+                foreach (DataRow row in subCat4Dt.Rows)
+                {
+                    Category category = new Category(
+                        int.Parse(row.ItemArray[0].ToString()),
+                        row.ItemArray[1].ToString(),
+                        int.Parse(row.ItemArray[2].ToString()),
+                        int.Parse(row.ItemArray[3].ToString()));
+
+                    TreeNode newTreeNode = new TreeNode(category.Name);
+                    newTreeNode.Tag = category;
+                    newTreeNode.ContextMenuStrip = cmsCategory;
+                    int sub3Id = category.PreviousCategoryId;
+
+                    foreach (TreeNode rootNode in root.Nodes)
+                        foreach (TreeNode sub1Node in rootNode.Nodes)
+                            foreach (TreeNode sub2Node in sub1Node.Nodes)
+                                foreach (TreeNode sub3Node in sub2Node.Nodes)
+                                {
+                                    Category cat = (Category)sub3Node.Tag;
+                                    if (cat.Id == sub3Id)
+                                        sub3Node.Nodes.Add(newTreeNode);
+                                }
+                }
+
+                // Добавление нодов в TreeView
+                foreach (TreeNode node in root.Nodes)
+                    treeView.Nodes.Add(node);
+
+                // Сортировка по алфавиту
+                treeView.Sort();
+
+                // Выделение первого нода
+                if (treeView.Nodes.Count != 0)
+                    treeView.SelectedNode = treeView.Nodes[0];
+            }
+        }
+
+        // Заполнение DataGridView предметами по условию
+        public void FillItems(string where)
+        {
+            dgv.Rows.Clear();
+
+            // Выполнение запроса
+            DataTable items = DatabaseWorker.SqlSelectQuery("SELECT i.id, mc.id, mc.Name, mc.OrganizationId, sc1.id, sc1.Name, sc1.MainCatId, sc1.OrganizationId, sc2.id, sc2.Name, sc2.SubCat1Id, sc2.OrganizationId, sc3.id, sc3.Name, sc3.SubCat2Id, sc3.OrganizationId, sc4.id, sc4.Name, sc4.SubCat3Id, sc4.OrganizationId, i.Item_Name, s.id, s.name, s.site, s.telephone, s.contactFirstName, s.contactLastName, s.contactSecondName, s.OrganizationId, i.Purchase_Price, i.Retail_Price, i.Wholesale_Price, i.Service_Price, i.FirmPrice, i.Storage, i.Note, i.Quantity, i.Residue, i.Upload_Date, o.id, o.Name, o.Site, o.Telephone, oc.City, oa.id, oa.FirstName, oa.LastName, oa.SecondName, oa.Login, oac.City, oa.Phone, oa.Email, oa.Admin, i.SearchAllowed FROM Items i LEFT JOIN Main_Category mc ON mc.id = i.Main_Category_Id LEFT JOIN Sub_Category_1 sc1 ON sc1.id = i.Sub_Category_1_Id LEFT JOIN Sub_Category_2 sc2 ON sc2.id = i.Sub_Category_2_Id LEFT JOIN Sub_Category_3 sc3 ON sc3.id = i.Sub_Category_3_Id LEFT JOIN Sub_Category_4 sc4 ON sc4.id = i.Sub_Category_4_Id LEFT JOIN Sellers s ON s.id = i.Seller_Id LEFT JOIN Organizations o ON o.id = i.OrganizationId LEFT JOIN Cities oc ON oc.id = o.CityId LEFT JOIN Accounts oa ON oa.id = o.AdminAccountId LEFT JOIN Cities oac ON oac.id = oa.CityId " + where);
+
+            foreach (DataRow row in items.Rows)
+            {
+                // Категории
+                Category mainCat = new Category(
+                        int.Parse(row.ItemArray[1].ToString()),
+                        row.ItemArray[2].ToString(),
+                        0,
+                        int.Parse(row.ItemArray[3].ToString()));
+
+                Category subCat1 = null;
+                if (row.ItemArray[4].ToString() != "")
+                {
+                    subCat1 = new Category(
+                        int.Parse(row.ItemArray[4].ToString()),
+                        row.ItemArray[5].ToString(),
+                        int.Parse(row.ItemArray[6].ToString()),
+                        int.Parse(row.ItemArray[7].ToString()));
+                }
+
+                Category subCat2 = null;
+                if (row.ItemArray[8].ToString() != "")
+                {
+                    subCat2 = new Category(
+                        int.Parse(row.ItemArray[8].ToString()),
+                        row.ItemArray[9].ToString(),
+                        int.Parse(row.ItemArray[10].ToString()),
+                        int.Parse(row.ItemArray[11].ToString()));
+                }
+
+                Category subCat3 = null;
+                if (row.ItemArray[12].ToString() != "")
+                {
+                    subCat3 = new Category(
+                        int.Parse(row.ItemArray[12].ToString()),
+                        row.ItemArray[13].ToString(),
+                        int.Parse(row.ItemArray[14].ToString()),
+                        int.Parse(row.ItemArray[15].ToString()));
+                }
+
+                Category subCat4 = null;
+                if (row.ItemArray[16].ToString() != "")
+                {
+                    subCat4 = new Category(
+                        int.Parse(row.ItemArray[16].ToString()),
+                        row.ItemArray[17].ToString(),
+                        int.Parse(row.ItemArray[18].ToString()),
+                        int.Parse(row.ItemArray[19].ToString()));
+                }
+
+
+                // Поставщик
+                Seller seller = new Seller(
+                        int.Parse(row.ItemArray[21].ToString()),
+                        row.ItemArray[22].ToString(),
+                        row.ItemArray[23].ToString(),
+                        row.ItemArray[24].ToString(),
+                        row.ItemArray[25].ToString(),
+                        row.ItemArray[26].ToString(),
+                        row.ItemArray[27].ToString(),
+                        int.Parse(row.ItemArray[28].ToString()));
+
+                // Организация
+                Organization organization = new Organization(
+                        int.Parse(row.ItemArray[39].ToString()),
+                        row.ItemArray[40].ToString(),
+                        row.ItemArray[41].ToString(),
+                        row.ItemArray[42].ToString(),
+                        row.ItemArray[43].ToString(),
+                        null);
+
+                // Аккаунт админа
+                Account adminAccount = new Account(
+                    int.Parse(row.ItemArray[44].ToString()),
+                    row.ItemArray[45].ToString(),
+                    row.ItemArray[46].ToString(),
+                    row.ItemArray[47].ToString(),
+                    row.ItemArray[48].ToString(),
+                    row.ItemArray[49].ToString(),
+                    row.ItemArray[50].ToString(),
+                    row.ItemArray[51].ToString(),
+                    row.ItemArray[52].ToString() == "1" ? true : false,
+                    organization);
+
+                organization.Admin = adminAccount;
+
+                Item item = new Item(
+                    int.Parse(row.ItemArray[0].ToString()),
+                    mainCat,
+                    subCat1,
+                    subCat2,
+                    subCat3,
+                    subCat4,
+                    row.ItemArray[20].ToString(),
+                    seller,
+                    row.ItemArray[29].ToString(),
+                    row.ItemArray[30].ToString(),
+                    row.ItemArray[31].ToString(),
+                    row.ItemArray[32].ToString(),
+                    row.ItemArray[33].ToString(),
+                    row.ItemArray[34].ToString(),
+                    row.ItemArray[35].ToString(),
+                    int.Parse(row.ItemArray[36].ToString()),
+                    int.Parse(row.ItemArray[37].ToString()),
+                    DateTime.Parse(row.ItemArray[38].ToString()),
+                    organization,
+                    row.ItemArray[53].ToString() == "1" ? true : false);
+
+                dgv.Rows.Add(
+                    item.Id,
+                    item.Name,
+                    item.Seller.Name,
+                    item.PurchasePrice,
+                    item.RetailPrice,
+                    item.WholesalePrice,
+                    item.ServicePrice,
+                    item.Storage,
+                    item.Quantity,
+                    item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay,
+                    item.Residue);
+
+                dgv.Rows[dgv.Rows.Count - 1].Tag = item;
+            }
+
+            if (dgv.Rows.Count == 0)
             {
                 cmsDeleteItem.Enabled = false;
                 cmsEditItem.Enabled = false;
@@ -73,116 +332,70 @@ namespace SparesBase
                 cmsDeleteItem.Enabled = true;
             }
 
-            dgv.DataSource = dt;
-            dgv.Columns[0].Width = 90;
-            dgv.Columns[1].Width = 90;
-            dgv.Columns[2].Width = 90;
+            for (int i = 0; i < dgv.Rows.Count; i++)
+                if (i % 2 != 0)
+                    dgv.Rows[i].DefaultCellStyle.BackColor = Color.LightGray;
+
+            cmsAddItem.Enabled = true;
+        }
+
+        // Заполнение предметов по категориям
+        private void FillItemsByCategory()
+        {
+            int[] selectedCategories = FormCategories();
+
+            // Формирование условия WHERE
+            string where = "WHERE (";
+            for (int i = 0; i < treeView.SelectedNode.FullPath.Split('\\').Length; i++)
+            {
+                if (i == 0) where += "i.Main_Category_Id=(SELECT id FROM Main_Category WHERE(id=" + selectedCategories[i] + "))";
+                if (i == 1) where += " AND i.Sub_Category_1_Id=(SELECT id FROM Sub_Category_1 WHERE(id=" + selectedCategories[i] + "))";
+                if (i == 2) where += " AND i.Sub_Category_2_Id=(SELECT id FROM Sub_Category_2 WHERE(id=" + selectedCategories[i] + "))";
+                if (i == 3) where += " AND i.Sub_Category_3_Id=(SELECT id FROM Sub_Category_3 WHERE(id=" + selectedCategories[i] + "))";
+                if (i == 4) where += " AND i.Sub_Category_4_Id=(SELECT id FROM Sub_Category_4 WHERE(id=" + selectedCategories[i] + "))";
+            }
+            where += ")";
+
+            FillItems(where);
+        }
+
+        #endregion Заполнение данных
+
+
+
+        #region Вспомогательные методы
+
+        // Инициализация DataGridView
+        private void InitializeDataGridView()
+        {
+            dgv.Columns.Clear();
+
+            dgv.Columns.Add("id", "ID");
+            dgv.Columns.Add("name", "Наименование");
+            dgv.Columns.Add("seller", "Поставщик");
+            dgv.Columns.Add("purchasePrice", "Закупка");
+            dgv.Columns.Add("retailPrice", "Розница");
+            dgv.Columns.Add("wholesalePrice", "Мелкий опт");
+            dgv.Columns.Add("servicePrice", "Сервисы");
+            dgv.Columns.Add("storage", "Хранение");
+            dgv.Columns.Add("quantity", "Количество");
+            dgv.Columns.Add("uploadDate", "Дата добавления");
+            dgv.Columns.Add("residue", "Остаток");
+
+            dgv.Columns[0].Width = 50;
+            dgv.Columns[1].Width = 120;
+            dgv.Columns[2].Width = 120;
             dgv.Columns[3].Width = 90;
             dgv.Columns[4].Width = 90;
             dgv.Columns[5].Width = 90;
             dgv.Columns[6].Width = 90;
             dgv.Columns[7].Width = 90;
             dgv.Columns[8].Width = 90;
-            dgv.Columns[9].Width = 90;
-
-            for (int i = 0; i < dgv.Rows.Count; i++)
-                if (i % 2 != 0)
-                    dgv.Rows[i].DefaultCellStyle.BackColor = Color.LightGray;
-
-            cmsAddItem.Enabled = false;
+            dgv.Columns[9].Width = 120;
+            dgv.Columns[10].Width = 70;
         }
 
-        #region Вспомогательные методы
-
-        // Заполнение TreeView категориями из базы
-        private void FillTreeView()
-        {
-            treeView.Nodes.Clear();
-            TreeNode root = new TreeNode();
-
-            DataTable mainDt = DatabaseWorker.SqlSelectQuery("SELECT * FROM Main_Category WHERE(OrganizationId=" + EnteredUser.OrganizationId + ")");
-            if (mainDt.Rows.Count != 0)
-            {
-                DataTable subCat1Dt = DatabaseWorker.SqlSelectQuery("SELECT * FROM Sub_Category_1 WHERE(OrganizationId=" + EnteredUser.OrganizationId + ")");
-                DataTable subCat2Dt = DatabaseWorker.SqlSelectQuery("SELECT * FROM Sub_Category_2 WHERE(OrganizationId=" + EnteredUser.OrganizationId + ")");
-                DataTable subCat3Dt = DatabaseWorker.SqlSelectQuery("SELECT * FROM Sub_Category_3 WHERE(OrganizationId=" + EnteredUser.OrganizationId + ")");
-                DataTable subCat4Dt = DatabaseWorker.SqlSelectQuery("SELECT * FROM Sub_Category_4 WHERE(OrganizationId=" + EnteredUser.OrganizationId + ")");
-
-                // MainCat
-                foreach (DataRow row in mainDt.Rows)
-                {
-                    TreeNode newTreeNode = new TreeNode(row.ItemArray[1].ToString());
-                    newTreeNode.Tag = row.ItemArray[0];
-                    newTreeNode.ContextMenuStrip = cmsCategory;
-                    root.Nodes.Add(newTreeNode);
-                }
-
-                // SubCat1
-                foreach (DataRow row in subCat1Dt.Rows)
-                {
-                    TreeNode newTreeNode = new TreeNode(row.ItemArray[1].ToString());
-                    newTreeNode.Tag = row.ItemArray[0];
-                    newTreeNode.ContextMenuStrip = cmsCategory;
-                    string mainId = row.ItemArray[2].ToString();
-
-                    foreach (TreeNode node in root.Nodes)
-                        if (node.Tag.ToString() == mainId)
-                            node.Nodes.Add(newTreeNode);
-                }
-
-                // SubCat2
-                foreach (DataRow row in subCat2Dt.Rows)
-                {
-                    TreeNode newTreeNode = new TreeNode(row.ItemArray[1].ToString());
-                    newTreeNode.Tag = row.ItemArray[0];
-                    newTreeNode.ContextMenuStrip = cmsCategory;
-                    string sub1Id = row.ItemArray[2].ToString();
-
-                    foreach (TreeNode rootNode in root.Nodes)
-                        foreach (TreeNode sub1Node in rootNode.Nodes)
-                            if (sub1Node.Tag.ToString() == sub1Id)
-                                sub1Node.Nodes.Add(newTreeNode);
-                }
-
-                // SubCat3
-                foreach (DataRow row in subCat3Dt.Rows)
-                {
-                    TreeNode newTreeNode = new TreeNode(row.ItemArray[1].ToString());
-                    newTreeNode.Tag = row.ItemArray[0];
-                    newTreeNode.ContextMenuStrip = cmsCategory;
-                    string sub2Id = row.ItemArray[2].ToString();
-
-                    foreach (TreeNode rootNode in root.Nodes)
-                        foreach (TreeNode sub1Node in rootNode.Nodes)
-                            foreach (TreeNode sub2Node in sub1Node.Nodes)
-                                if (sub2Node.Tag.ToString() == sub2Id)
-                                    sub2Node.Nodes.Add(newTreeNode);
-                }
-
-                // SubCat4
-                foreach (DataRow row in subCat4Dt.Rows)
-                {
-                    TreeNode newTreeNode = new TreeNode(row.ItemArray[1].ToString());
-                    newTreeNode.Tag = row.ItemArray[0];
-                    newTreeNode.ContextMenuStrip = cmsCategory;
-                    string sub3Id = row.ItemArray[2].ToString();
-
-                    foreach (TreeNode rootNode in root.Nodes)
-                        foreach (TreeNode sub1Node in rootNode.Nodes)
-                            foreach (TreeNode sub2Node in sub1Node.Nodes)
-                                foreach (TreeNode sub3Node in sub2Node.Nodes)
-                                    if (sub3Node.Tag.ToString() == sub3Id)
-                                        sub3Node.Nodes.Add(newTreeNode);
-                }
-
-                // Добавление нодов в TreeView
-                foreach (TreeNode node in root.Nodes)
-                    treeView.Nodes.Add(node);
-                treeView.Sort();
-            }
-        }
-
-        // Поиск нода по пути
+        // Поиск и выделение нода по пути
         private void Find(TreeNodeCollection nodes, string path)
         {
             foreach (TreeNode item in nodes)
@@ -196,72 +409,6 @@ namespace SparesBase
             }
         }
 
-        // Заполнение DataGridView предметами по выделенным категориям в TreeView
-        public void FillDataGridView()
-        {
-            int[] selectedCategories = FormCategories();
-
-            // Формирование условия WHERE
-            string where = "WHERE (";
-            for (int i = 0; i < treeView.SelectedNode.FullPath.Split('\\').Length; i++)
-            {
-                if (i == 0) where += "Main_Category_Id=(SELECT id FROM Main_Category WHERE(id=" + selectedCategories[i] + " AND OrganizationId=" + EnteredUser.OrganizationId + "))";
-                if (i == 1) where += " AND Sub_Category_1_Id=(SELECT id FROM Sub_Category_1 WHERE(id=" + selectedCategories[i] + " AND OrganizationId=" + EnteredUser.OrganizationId + "))";
-                if (i == 2) where += " AND Sub_Category_2_Id=(SELECT id FROM Sub_Category_2 WHERE(id=" + selectedCategories[i] + " AND OrganizationId=" + EnteredUser.OrganizationId + "))";
-                if (i == 3) where += " AND Sub_Category_3_Id=(SELECT id FROM Sub_Category_3 WHERE(id=" + selectedCategories[i] + " AND OrganizationId=" + EnteredUser.OrganizationId + "))";
-                if (i == 4) where += " AND Sub_Category_4_Id=(SELECT id FROM Sub_Category_4 WHERE(id=" + selectedCategories[i] + " AND OrganizationId=" + EnteredUser.OrganizationId + "))";
-            }
-            where += ")";
-
-            // Выполнение запроса
-            DataTable items = DatabaseWorker.SqlSelectQuery("SELECT Items.id, Item_Name, Sellers.name, Purchase_Price, Retail_Price, Wholesale_Price, Service_Price, Storage, Quantity, Upload_Date, Residue FROM Items INNER JOIN Sellers ON Items.Seller_Id = Sellers.id " + where);
-
-            DataTable dt = new DataTable();
-            dt.Columns.Add("ID");
-            dt.Columns.Add("Наименование");
-            dt.Columns.Add("Поставщик");
-            dt.Columns.Add("Закупка");
-            dt.Columns.Add("Розница");
-            dt.Columns.Add("Мелкий опт");
-            dt.Columns.Add("Сервисы");
-            dt.Columns.Add("Хранение");
-            dt.Columns.Add("Количество");
-            dt.Columns.Add("Дата добавления");
-            dt.Columns.Add("Остаток");
-
-            for (int i = 0; i < items.Rows.Count; i++)
-                dt.Rows.Add().ItemArray = items.Rows[i].ItemArray;
-
-            if (dt.Rows.Count == 0)
-            {
-                cmsDeleteItem.Enabled = false;
-                cmsEditItem.Enabled = false;
-            }
-            else
-            {
-                cmsEditItem.Enabled = true;
-                cmsDeleteItem.Enabled = true;
-            }
-
-            dgv.DataSource = dt;
-            dgv.Columns[0].Width = 90;
-            dgv.Columns[1].Width = 90;
-            dgv.Columns[2].Width = 90;
-            dgv.Columns[3].Width = 90;
-            dgv.Columns[4].Width = 90;
-            dgv.Columns[5].Width = 90;
-            dgv.Columns[6].Width = 90;
-            dgv.Columns[7].Width = 90;
-            dgv.Columns[8].Width = 90;
-            dgv.Columns[9].Width = 90;
-
-            for (int i = 0; i < dgv.Rows.Count; i++)
-                if (i % 2 != 0)
-                    dgv.Rows[i].DefaultCellStyle.BackColor = Color.LightGray;
-
-            cmsAddItem.Enabled = true;
-        }
-
         // Возвращает массив категорий сформированный по полному пути выделенного нода в TreeView
         private int[] FormCategories()
         {
@@ -271,7 +418,8 @@ namespace SparesBase
 
             do
             {
-                cats.Add(int.Parse(parent.Tag.ToString()));
+                Category category = (Category)parent.Tag;
+                cats.Add(category.Id);
                 parent = parent.Parent;
             }
             while (parent != null);
@@ -287,6 +435,8 @@ namespace SparesBase
 
             return categories;
         }
+
+        // Возвращает массив категорий сформированный по полному пути нода
         private int[] FormCategories(TreeNode node)
         {
             int[] categories = new int[5];
@@ -295,7 +445,8 @@ namespace SparesBase
 
             do
             {
-                cats.Add(int.Parse(parent.Tag.ToString()));
+                Category category = (Category)parent.Tag;
+                cats.Add(category.Id);
                 parent = parent.Parent;
             }
             while (parent != null);
@@ -311,8 +462,6 @@ namespace SparesBase
 
             return categories;
         }
-
-
 
         #endregion Вспомогательные методы
 
@@ -325,15 +474,15 @@ namespace SparesBase
         {
             EditForm form = new EditForm(FormCategories());
             form.ShowDialog();
-            FillDataGridView();
+            FillItemsByCategory();
         }
 
         // Редактировать предмет
         private void EditItem()
         {
-            EditForm form = new EditForm(int.Parse(dgv.CurrentRow.Cells[0].Value.ToString()), FormCategories());
+            EditForm form = new EditForm(SelectedItem, FormCategories());
             form.ShowDialog();
-            FillDataGridView();
+            FillItemsByCategory();
         }
 
         // Удалить предмет
@@ -344,41 +493,31 @@ namespace SparesBase
             PhotoEditor pe = new PhotoEditor(selectedItemId, true);
             pe.DeleteItemImages();
             DatabaseWorker.InsertAction(3, selectedItemId);
-            FillDataGridView();
+            FillItemsByCategory();
         }
 
-
         // Обновляет информацию о выделенном предмете в панели информации
-        private void InsertInfoAboutItem(int itemId)
+        private void InsertInfoAboutItem()
         {
-            string query = "SELECT i.*, p.*, s.*, d.* FROM Items i LEFT JOIN Purchase p ON i.id = p.ItemId LEFT JOIN Selling s ON i.id = s.ItemId LEFT JOIN Defect d ON i.id = d.ItemId WHERE i.id =" + itemId;
+            Item selItem = SelectedItem;
+            lname.Text = "Имя: " + selItem.Name;
+            lseller.Text = "Поставщик: " + selItem.Seller.Name;
+            lpurchase.Text = "Закупка: " + selItem.PurchasePrice;
+            lretail.Text = "Розница: " + selItem.RetailPrice;
+            lwhole.Text = "Мелкий опт: " + selItem.WholesalePrice;
+            lservice.Text = "Сервисы: " + selItem.ServicePrice;
+            lfirm.Text = "Фирменная цена: " + selItem.FirmPrice;
+            lstorage.Text = "Хранение: \n" + selItem.Storage;
+            lnote.Text = "Описание: \n" + selItem.Note;
+            lquantity.Text = "Количество: " + selItem.Quantity;
+            lresidue.Text = "Остаток: " + selItem.Residue;
+        }
 
-            DataTable dt = DatabaseWorker.SqlSelectQuery(query);
-
-
-            lname.Text = "Имя: " + dt.Rows[0].ItemArray[6].ToString();
-            lseller.Text = "Поставщик: " + DatabaseWorker.SqlScalarQuery("SELECT name FROM Sellers WHERE(id=" + dt.Rows[0].ItemArray[7].ToString() + ")");
-            lpurchase.Text = "Закупка: " + dt.Rows[0].ItemArray[8].ToString();
-            lretail.Text = "Розница: " + dt.Rows[0].ItemArray[9].ToString();
-            lwhole.Text = "Мелкий опт: " + dt.Rows[0].ItemArray[10].ToString();
-            lservice.Text = "Сервисы: " + dt.Rows[0].ItemArray[11].ToString();
-            lfirm.Text = "Фирменная цена: " + dt.Rows[0].ItemArray[12].ToString();
-            lstorage.Text = "Хранение: \n" + dt.Rows[0].ItemArray[13].ToString();
-            lnote.Text = "Описание: \n" + dt.Rows[0].ItemArray[14].ToString();
-            lquantity.Text = "Количество: " + dt.Rows[0].ItemArray[15].ToString();
-            lresidue.Text = "Остаток: " + dt.Rows[0].ItemArray[17].ToString();
-
-            lnumber.Text = "Номер заказа: " + dt.Rows[0].ItemArray[19].ToString();
-            lpurquant.Text = "Количество: " + dt.Rows[0].ItemArray[20].ToString();
-            lfirmprice.Text = "Фирменная цена: " + dt.Rows[0].ItemArray[21].ToString();
-            ltotal.Text = "Итоговая цена: " + dt.Rows[0].ItemArray[22].ToString();
-
-            lsellquantity.Text = "Количество: " + dt.Rows[0].ItemArray[25].ToString();
-            lsellprice.Text = "Цена: " + dt.Rows[0].ItemArray[26].ToString();
-
-            ldefectquantity.Text = "Количество: " + dt.Rows[0].ItemArray[30].ToString();
-            lwhoidentified.Text = "Кто выявил: " + dt.Rows[0].ItemArray[31].ToString();
-            ldefectnote.Text = "Описание: \n" + dt.Rows[0].ItemArray[32].ToString();
+        // Поиск предмета
+        private void SearchItems(string query)
+        {
+            string where = "WHERE((Item_Name LIKE \"%" + query + "%\" OR Note LIKE \"%" + query + "%\") AND (Items.OrganizationId = " + EnteredUser.OrganizationId + "))";
+            FillItems(where);
         }
 
         #endregion Предметы
@@ -408,23 +547,29 @@ namespace SparesBase
         // Переименовать категорию
         public void RenameCategory(int nodeCount, int selectedIdNode, string newName)
         {
-            if (nodeCount == 1) DatabaseWorker.SqlQuery("UPDATE Main_Category SET Name = '" + newName + "' WHERE(id = " + selectedIdNode + ")");
-            else DatabaseWorker.SqlQuery("UPDATE Sub_Category_" + (nodeCount - 1) + " SET Name = '" + newName + "' WHERE(id = " + selectedIdNode + ")");
+            if (nodeCount == 1)
+                DatabaseWorker.SqlQuery("UPDATE Main_Category SET Name = '" + newName + "' WHERE(id = " + selectedIdNode + ")");
+            else
+                DatabaseWorker.SqlQuery("UPDATE Sub_Category_" + (nodeCount - 1) + " SET Name = '" + newName + "' WHERE(id = " + selectedIdNode + ")");
             treeView.SelectedNode.Text = newName;
         }
 
         // Удалить категорию
         public void DeleteCategory(int nodeCount, int selectedIdNode)
         {
-            if (nodeCount == 1) DatabaseWorker.SqlQuery("DELETE FROM Main_Category WHERE(id = " + selectedIdNode + ")");
-            else DatabaseWorker.SqlQuery("DELETE FROM Sub_Category_" + (nodeCount - 1) + " WHERE(id = " + selectedIdNode + ")");
+            if (nodeCount == 1)
+                DatabaseWorker.SqlQuery("DELETE FROM Main_Category WHERE(id = " + selectedIdNode + ")");
+            else
+                DatabaseWorker.SqlQuery("DELETE FROM Sub_Category_" + (nodeCount - 1) + " WHERE(id = " + selectedIdNode + ")");
             treeView.SelectedNode.Remove();
         }
 
+        // Смена категории
         private void ChangeCategories(int[] categories, int itemId)
         {
             DatabaseWorker.SqlQuery("UPDATE Items Set Main_Category_Id=" + categories[0] + ",  Sub_Category_1_Id=" + categories[1] + ", Sub_Category_2_Id=" + categories[2] + ", Sub_Category_3_Id=" + categories[3] + ", Sub_Category_4_Id=" + categories[4] + " WHERE(id=" + itemId + ")");
         }
+
         #endregion Категории
 
 
@@ -434,13 +579,13 @@ namespace SparesBase
         // Загрузка формы
         private void MainForm_Load(object sender, EventArgs e)
         {
-            FillTreeView();
+            FillCategories();
         }
 
         // Выделение нода в TreeView
         private void treeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            FillDataGridView();
+            FillItemsByCategory();
         }
 
 
@@ -523,7 +668,7 @@ namespace SparesBase
         // Клик на ячейку предмета в DataGridView
         private void dgv_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            InsertInfoAboutItem(int.Parse(dgv.CurrentRow.Cells[0].Value.ToString()));
+            InsertInfoAboutItem();
         }
 
         // Закрытие формы
@@ -562,7 +707,7 @@ namespace SparesBase
                 if (MessageBox.Show("Вы уверены, что хотите переместить предмет из категорий \"" + treeView.SelectedNode.FullPath.Replace("\\", " - ") + "\" в категории \"" + node.FullPath.Replace("\\", " - ") + "\"?", "Вы уверены?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes) 
                 {
                     ChangeCategories(FormCategories(node), int.Parse(e.Data.GetData(DataFormats.Text).ToString()));
-                    FillDataGridView();
+                    FillItemsByCategory();
 
                 }
                 
@@ -589,7 +734,7 @@ namespace SparesBase
         {
             if (e.KeyCode == Keys.Enter)
             {
-                Search(tbSearch.Text);
+                SearchItems(tbSearch.Text);
             }
         }
 

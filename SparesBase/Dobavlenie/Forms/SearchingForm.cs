@@ -40,26 +40,26 @@ namespace SparesBase
 
         private void Search(string searchStr, int organizationId)
         {
-            dgv.Rows.Clear();
-            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT * FROM Items WHERE(SearchAllowed=1)");
-            foreach (DataRow row in dt.Rows)
-            {
-                Item item = new Item(row.ItemArray);
-                dgv.Rows.Add(
-                    item.Id,
-                    item.ItemName,
-                    item.SellerID,
-                    item.PurchasePrice,
-                    item.RetailPrice,
-                    item.WholesalePrice,
-                    item.ServicePrice,
-                    item.Storage,
-                    item.Quantuty,
-                    item.Residue);
+            //dgv.Rows.Clear();
+            //DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT * FROM Items WHERE(SearchAllowed=1)");
+            //foreach (DataRow row in dt.Rows)
+            //{
+            //    Item item = new Item(row.ItemArray);
+            //    dgv.Rows.Add(
+            //        item.Id,
+            //        item.ItemName,
+            //        item.SellerID,
+            //        item.PurchasePrice,
+            //        item.RetailPrice,
+            //        item.WholesalePrice,
+            //        item.ServicePrice,
+            //        item.Storage,
+            //        item.Quantuty,
+            //        item.Residue);
 
-                dgv.Rows[dgv.Rows.Count - 1].Tag = item;
+            //    dgv.Rows[dgv.Rows.Count - 1].Tag = item;
 
-            }
+            //}
             
 
         }

@@ -18,17 +18,20 @@ namespace SparesBase
         {           
             lbLogs.Items.Clear();
 
+            string dateFrom = dtpFrom.Value.Date.ToString("yyyy-MM-dd HH:mm:ss");
+            string dateTo = dtpTo.Value.Date.ToString("yyyy-MM-dd HH:mm:ss");
+
             // Формирование условия по фильтрам
             string where = "";
-            where = " WHERE((ActionLogs.OrganizationId=" + EnteredUser.OrganizationId + ") ";
+            where = " WHERE(((ActionLogs.OrganizationId=" + EnteredUser.OrganizationId + ") AND (Date BETWEEN '" + dateFrom + "' AND '" + dateTo + "')) AND ";
             if (actionId != 0 || accountId != 0)
             {
                
-                where += actionId != 0 ? " AND ActionLogs.ActionId= " + actionId + " " : "";               
-                where += accountId != 0 ? " AND ActionLogs.AccountId=" + accountId : "";
+                where += actionId != 0 ? " ActionLogs.ActionId= " + actionId + " AND " : "";               
+                where += accountId != 0 ? " ActionLogs.AccountId=" + accountId + " AND " : "";
                
             }
-            where += ")";
+            where = where.Remove(where.Length - 4, 4) + ")";
 
             // Получение логов
             DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT ActionLogs.ActionId, Accounts.LastName, Accounts.FirstName, Accounts.SecondName, Items.Item_Name, ActionLogs.Date FROM ActionLogs LEFT JOIN Accounts ON ActionLogs.AccountId=Accounts.id LEFT JOIN Items ON ActionLogs.ItemId=Items.id " + where);
@@ -119,6 +122,16 @@ namespace SparesBase
 
         // Изменение выделенного аккаунта
         private void CbAccount_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GetLogs(int.Parse(cbAction.SelectedValue.ToString()), int.Parse(cbAccount.SelectedValue.ToString()));
+        }
+
+        private void dtpFrom_ValueChanged(object sender, EventArgs e)
+        {
+            GetLogs(int.Parse(cbAction.SelectedValue.ToString()), int.Parse(cbAccount.SelectedValue.ToString()));
+        }
+
+        private void dtpTo_ValueChanged(object sender, EventArgs e)
         {
             GetLogs(int.Parse(cbAction.SelectedValue.ToString()), int.Parse(cbAccount.SelectedValue.ToString()));
         }

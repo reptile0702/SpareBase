@@ -6,26 +6,54 @@ namespace SparesBase
 {
     public partial class SellerEdit : Form
     {
-        // Идентификатор поставщика
-        int sellerId;
+        // Поставщик
+        Seller seller;
+
+        #region Конструкторы
 
         // Конструктор для добавления нового поставщика
         public SellerEdit()
         {
             InitializeComponent();
-            sellerId = 0;
             Text = "Новый поставщик";
+            
         }
 
         // Конструктор для редактирования поставщика
-        public SellerEdit(int sellerId)
+        public SellerEdit(Seller seller)
         {
             InitializeComponent();
-            this.sellerId = sellerId;
-            GetSellerData(sellerId);
+            this.seller = seller;
+            
+            FillSellerData(seller);
             Text = "Редактирование поставщика";
         }
 
+        #endregion Конструкторы
+        
+
+
+        #region Заполнение данных
+
+       
+      
+        // Заполнение данных о поставщике
+        private void FillSellerData(Seller seller)
+        {
+            tbName.Text = seller.Name;
+            tbSite.Text = seller.Site;
+            tbTelephone.Text = seller.Telephone;
+            tbFirstName.Text = seller.ContactFirstName;
+            tbLastName.Text = seller.ContactLastName;
+            tbSecondName.Text = seller.ContactSecondName;
+            cbOrganizations.SelectedValue = seller.OrganizationId;
+        }
+
+        #endregion Заполнение данных
+
+
+
+        #region Методы
 
         // Операция над поставщиком
         private void SellerOperation(string query)
@@ -38,35 +66,35 @@ namespace SparesBase
                 tbLastName.Text != "")
             {
                 DatabaseWorker.SqlQuery(query);
-                DialogResult = DialogResult.OK;
                 Close();
             }
             else
                 MessageBox.Show("Заполнены не все поля");
         }
 
-        // Получение данных о поставщике из базы
-        private void GetSellerData(int sellerId)
-        {
-            DataTable sellerInfo = DatabaseWorker.SqlSelectQuery("SELECT * FROM Sellers WHERE(id = " + sellerId + " AND OrganizationId=" + EnteredUser.OrganizationId + ")");
-            tbName.Text = sellerInfo.Rows[0].ItemArray[1].ToString();
-            tbSite.Text = sellerInfo.Rows[0].ItemArray[2].ToString();
-            tbTelephone.Text = sellerInfo.Rows[0].ItemArray[3].ToString();
-            tbFirstName.Text = sellerInfo.Rows[0].ItemArray[4].ToString();
-            tbLastName.Text = sellerInfo.Rows[0].ItemArray[5].ToString();
-            tbSecondName.Text = sellerInfo.Rows[0].ItemArray[6].ToString();
-        }
-        
+        #endregion Методы
+
+
+
+        #region События
 
         // Добавление / изменение данных о поставщике
         private void btnOk_Click(object sender, EventArgs e)
-        {            
-            if (sellerId == 0)
+        {
+            if (seller == null)
                 SellerOperation("INSERT INTO Sellers VALUES(NULL, '" + tbName.Text + "', '" + tbSite.Text + "', '" + tbTelephone.Text + "', '" + tbFirstName.Text + "', '" + tbLastName.Text + "', '" + tbSecondName.Text + "', " + EnteredUser.OrganizationId + ")");
             else
-                SellerOperation("UPDATE Sellers SET name='" + tbName.Text + "', site='" + tbSite.Text + "', telephone='" + tbTelephone.Text + "', contactFirstName='" + tbFirstName.Text + "', contactLastName='" + tbLastName.Text + "', contactSecondName='" + tbSecondName.Text + "' WHERE(id = " + sellerId + ")");
+                SellerOperation("UPDATE Sellers SET name='" + tbName.Text + "', site='" + tbSite.Text + "', telephone='" + tbTelephone.Text + "', contactFirstName='" + tbFirstName.Text + "', contactLastName='" + tbLastName.Text + "', contactSecondName='" + tbSecondName.Text + "', OrganizationId = " + EnteredUser.OrganizationId + " WHERE(id = " + seller.Id + ")");
 
-            
+            DialogResult = DialogResult.OK;
         }
+
+        // Клик на кнопку "Отмена"
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        #endregion События
     }
 }
