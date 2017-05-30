@@ -34,11 +34,13 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.btnEditActions = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.cbOrganizations = new System.Windows.Forms.ComboBox();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.btnEditActions = new System.Windows.Forms.Button();
+            this.dtpTo = new System.Windows.Forms.DateTimePicker();
+            this.dtpFrom = new System.Windows.Forms.DateTimePicker();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -102,11 +104,13 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.label5);
+            this.splitContainer1.Panel1.Controls.Add(this.label4);
             this.splitContainer1.Panel1.Controls.Add(this.btnEditActions);
             this.splitContainer1.Panel1.Controls.Add(this.label3);
             this.splitContainer1.Panel1.Controls.Add(this.cbOrganizations);
-            this.splitContainer1.Panel1.Controls.Add(this.dateTimePicker2);
-            this.splitContainer1.Panel1.Controls.Add(this.dateTimePicker1);
+            this.splitContainer1.Panel1.Controls.Add(this.dtpTo);
+            this.splitContainer1.Panel1.Controls.Add(this.dtpFrom);
             this.splitContainer1.Panel1.Controls.Add(this.label1);
             this.splitContainer1.Panel1.Controls.Add(this.label2);
             this.splitContainer1.Panel1.Controls.Add(this.cbAction);
@@ -118,6 +122,16 @@
             this.splitContainer1.Size = new System.Drawing.Size(1005, 385);
             this.splitContainer1.SplitterDistance = 222;
             this.splitContainer1.TabIndex = 5;
+            // 
+            // btnEditActions
+            // 
+            this.btnEditActions.Location = new System.Drawing.Point(13, 210);
+            this.btnEditActions.Name = "btnEditActions";
+            this.btnEditActions.Size = new System.Drawing.Size(199, 23);
+            this.btnEditActions.TabIndex = 9;
+            this.btnEditActions.Text = "Редактировать действия";
+            this.btnEditActions.UseVisualStyleBackColor = true;
+            this.btnEditActions.Click += new System.EventHandler(this.btnEditActions_Click);
             // 
             // label3
             // 
@@ -137,29 +151,42 @@
             this.cbOrganizations.Size = new System.Drawing.Size(199, 21);
             this.cbOrganizations.TabIndex = 7;
             // 
-            // dateTimePicker2
+            // dtpTo
             // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(13, 198);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(199, 20);
-            this.dateTimePicker2.TabIndex = 6;
+            this.dtpTo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpTo.Location = new System.Drawing.Point(120, 163);
+            this.dtpTo.Name = "dtpTo";
+            this.dtpTo.Size = new System.Drawing.Size(92, 20);
+            this.dtpTo.TabIndex = 6;
+            this.dtpTo.ValueChanged += new System.EventHandler(this.dtpTo_ValueChanged);
             // 
-            // dateTimePicker1
+            // dtpFrom
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(13, 152);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(199, 20);
-            this.dateTimePicker1.TabIndex = 5;
+            this.dtpFrom.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpFrom.Location = new System.Drawing.Point(13, 163);
+            this.dtpFrom.Name = "dtpFrom";
+            this.dtpFrom.Size = new System.Drawing.Size(92, 20);
+            this.dtpFrom.TabIndex = 5;
+            this.dtpFrom.Value = new System.DateTime(2016, 12, 28, 0, 0, 0, 0);
+            this.dtpFrom.ValueChanged += new System.EventHandler(this.dtpFrom_ValueChanged);
             // 
-            // btnEditActions
+            // label4
             // 
-            this.btnEditActions.Location = new System.Drawing.Point(13, 240);
-            this.btnEditActions.Name = "btnEditActions";
-            this.btnEditActions.Size = new System.Drawing.Size(199, 23);
-            this.btnEditActions.TabIndex = 9;
-            this.btnEditActions.Text = "Редактировать действия";
-            this.btnEditActions.UseVisualStyleBackColor = true;
-            this.btnEditActions.Click += new System.EventHandler(this.btnEditActions_Click);
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(10, 147);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(20, 13);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "От";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(117, 147);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(22, 13);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "До";
             // 
             // ActionLogsForm
             // 
@@ -188,10 +215,12 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.DateTimePicker dateTimePicker2;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.DateTimePicker dtpTo;
+        private System.Windows.Forms.DateTimePicker dtpFrom;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox cbOrganizations;
         private System.Windows.Forms.Button btnEditActions;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
     }
 }

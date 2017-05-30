@@ -53,9 +53,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database Classes\Action.cs" />
     <Compile Include="Database Classes\Category.cs" />
     <Compile Include="Database Classes\Item.cs" />
     <Compile Include="Database Classes\Seller.cs" />
+    <Compile Include="Forms\Action Logs\ActionEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Action Logs\ActionEditor.Designer.cs">
+      <DependentUpon>ActionEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Items\EditCategory.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -187,6 +194,9 @@
     <Compile Include="Forms\Items\Write-off\SellingForm.designer.cs">
       <DependentUpon>SellingForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Forms\Action Logs\ActionEditor.resx">
+      <DependentUpon>ActionEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Items\EditCategory.resx">
       <DependentUpon>EditCategory.cs</DependentUpon>
     </EmbeddedResource>
