@@ -33,35 +33,35 @@ namespace SparesBaseAdministrator
         private void btnOrganizations_Click(object sender, System.EventArgs e)
         {
             AccountsForm af = new AccountsForm();
-            af.Show();
+            af.ShowDialog();
         }
 
         // Клик на кнопку "Журнал действий"
         private void btnActionLogs_Click(object sender, System.EventArgs e)
         {
             ActionLogsForm alf = new ActionLogsForm();
-            alf.Show();
+            alf.ShowDialog();
         }
 
         // Клик на кнопку "Города"
         private void btnCities_Click(object sender, System.EventArgs e)
         {
             CitiesForm cf = new CitiesForm();
-            cf.Show();
+            cf.ShowDialog();
         }
 
         // Клик на кнопку "Поставщики"
         private void btnSellers_Click(object sender, System.EventArgs e)
         {
             SellerForm sf = new SellerForm();
-            sf.Show();
+            sf.ShowDialog();
         }
 
         // Клик на кнопку "Предметы"
         private void btnItems_Click(object sender, System.EventArgs e)
         {
             ItemsForm itemsForm = new ItemsForm();
-            itemsForm.Show();
+            itemsForm.ShowDialog();
         }
     }
 }

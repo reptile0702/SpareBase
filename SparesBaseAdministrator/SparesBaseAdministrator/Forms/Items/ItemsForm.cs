@@ -70,7 +70,7 @@ namespace SparesBaseAdministrator
                 foreach (DataRow row in subCat1Dt.Rows)
                 {
                     Category category = new Category(
-                        int.Parse(row.ItemArray[0].ToString()), 
+                        int.Parse(row.ItemArray[0].ToString()),
                         row.ItemArray[1].ToString(),
                         int.Parse(row.ItemArray[2].ToString()),
                         int.Parse(row.ItemArray[3].ToString()));
@@ -163,7 +163,7 @@ namespace SparesBaseAdministrator
                 // Добавление нодов в TreeView
                 foreach (TreeNode node in root.Nodes)
                     treeView.Nodes.Add(node);
-                
+
                 // Сортировка по алфавиту
                 treeView.Sort();
 
@@ -337,7 +337,13 @@ namespace SparesBaseAdministrator
                 if (i == 3) where += " AND i.Sub_Category_3_Id=(SELECT id FROM Sub_Category_3 WHERE(id=" + selectedCategories[i] + "))";
                 if (i == 4) where += " AND i.Sub_Category_4_Id=(SELECT id FROM Sub_Category_4 WHERE(id=" + selectedCategories[i] + "))";
             }
-            where += ")";
+            where += ") ";
+
+            if (!tsmiZeroResidueItems.Checked)
+                where += " AND (i.Residue > 0)";
+            if (!tsmiDeletedItems.Checked)
+                where += " AND (i.Deleted <> 1)";
+
 
             FillItems(where);
         }
@@ -494,6 +500,16 @@ namespace SparesBaseAdministrator
             lnote.Text = "Описание: \n" + selItem.Note;
             lquantity.Text = "Количество: " + selItem.Quantity;
             lresidue.Text = "Остаток: " + selItem.Residue;
+
+            lMainCategory.Text = "Главная категория: " + selItem.MainCategory.Name;
+            if (selItem.SubCategory1 != null)
+                lSubCategory1.Text = "Подкатегория 1: " + selItem.SubCategory1.Name;
+            if (selItem.SubCategory2 != null)
+                lSubCategory2.Text = "Подкатегория 2: " + selItem.SubCategory2.Name;
+            if (selItem.SubCategory3 != null)
+                lSubCategory3.Text = "Подкатегория 3: " + selItem.SubCategory3.Name;
+            if (selItem.SubCategory4 != null)
+                lSubCategory4.Text = "Подкатегория 4: " + selItem.SubCategory4.Name;
         }
 
         // Поиск предмета
@@ -636,6 +652,18 @@ namespace SparesBaseAdministrator
                 InsertInfoAboutItem();
         }
 
+        // Отображение предметов с остатком 0
+        private void tsmiZeroResidueItems_Click(object sender, EventArgs e)
+        {
+            FillItemsByCategory();
+        }
+
+        // Отображение удаленных предметов
+        private void tsmiDeletedItems_Click(object sender, EventArgs e)
+        {
+            FillItemsByCategory();
+        }
+
         #endregion Предметы
 
         #region Раскрытие / Закрытие узлов TreeView
@@ -724,5 +752,7 @@ namespace SparesBaseAdministrator
         #endregion Поиск
 
         #endregion События
+
+
     }
 }

@@ -18,18 +18,18 @@ namespace SparesBaseAdministrator
         {           
             lbLogs.Items.Clear();
 
-            string dateFrom = dtpFrom.Value.Date.ToString("yyyy-MM-dd HH:mm:ss");
-            string dateTo = dtpTo.Value.Date.ToString("yyyy-MM-dd HH:mm:ss");
+            string dateFrom = dtpFrom.Value.Date.ToString("yyyy-MM-dd 23:59:59");
+            string dateTo = dtpTo.Value.Date.ToString("yyyy-MM-dd 23:59:59");
 
             // Формирование условия по фильтрам
-            string where = "WHERE((Date BETWEEN '" + dateFrom + "' AND '" + dateTo + "') AND";
+            string where = "WHERE((Date BETWEEN '" + dateFrom + "' AND '" + dateTo + "') AND ";
             if (organizationId != 0 || actionId != 0 || accountId != 0)
             {
                 where += organizationId != 0 ? "ActionLogs.OrganizationId=" + organizationId + " AND " : "";
                 where += actionId != 0 ? "ActionLogs.ActionId= " + actionId + " AND " : "";               
                 where += accountId != 0 ? "ActionLogs.AccountId=" + accountId + " AND " : "";
             }
-            where = where.Remove(where.Length - 4, 4) + ")";
+            where = where.Remove(where.Length - 4, 4) + ") ORDER BY Date";
 
             // Получение логов
             DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT ActionLogs.ActionId, Accounts.LastName, Accounts.FirstName, Accounts.SecondName, Items.Item_Name, ActionLogs.Date FROM ActionLogs LEFT JOIN Accounts ON ActionLogs.AccountId=Accounts.id LEFT JOIN Items ON ActionLogs.ItemId=Items.id " + where);
@@ -58,9 +58,6 @@ namespace SparesBaseAdministrator
                     case "6":
                         lbLogs.Items.Add("[" + date.Date.ToShortDateString() + " " + date.TimeOfDay + "] Обнаружен брак в предмете \"" + row.ItemArray[4] + "\" пользователем " + row.ItemArray[1] + " " + row.ItemArray[2] + " " + row.ItemArray[3]);
                         break;
-
-
-
                 }
             }
                

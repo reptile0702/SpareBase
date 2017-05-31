@@ -34,13 +34,14 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.btnEditActions = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.cbOrganizations = new System.Windows.Forms.ComboBox();
             this.dtpTo = new System.Windows.Forms.DateTimePicker();
             this.dtpFrom = new System.Windows.Forms.DateTimePicker();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -104,6 +105,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.label6);
             this.splitContainer1.Panel1.Controls.Add(this.label5);
             this.splitContainer1.Panel1.Controls.Add(this.label4);
             this.splitContainer1.Panel1.Controls.Add(this.btnEditActions);
@@ -123,9 +125,27 @@
             this.splitContainer1.SplitterDistance = 222;
             this.splitContainer1.TabIndex = 5;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(117, 154);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(21, 13);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "По";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(10, 154);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(14, 13);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "С";
+            // 
             // btnEditActions
             // 
-            this.btnEditActions.Location = new System.Drawing.Point(13, 210);
+            this.btnEditActions.Location = new System.Drawing.Point(13, 217);
             this.btnEditActions.Name = "btnEditActions";
             this.btnEditActions.Size = new System.Drawing.Size(199, 23);
             this.btnEditActions.TabIndex = 9;
@@ -154,7 +174,7 @@
             // dtpTo
             // 
             this.dtpTo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpTo.Location = new System.Drawing.Point(120, 163);
+            this.dtpTo.Location = new System.Drawing.Point(120, 170);
             this.dtpTo.Name = "dtpTo";
             this.dtpTo.Size = new System.Drawing.Size(92, 20);
             this.dtpTo.TabIndex = 6;
@@ -163,30 +183,21 @@
             // dtpFrom
             // 
             this.dtpFrom.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpFrom.Location = new System.Drawing.Point(13, 163);
+            this.dtpFrom.Location = new System.Drawing.Point(13, 170);
             this.dtpFrom.Name = "dtpFrom";
             this.dtpFrom.Size = new System.Drawing.Size(92, 20);
             this.dtpFrom.TabIndex = 5;
             this.dtpFrom.Value = new System.DateTime(2016, 12, 28, 0, 0, 0, 0);
             this.dtpFrom.ValueChanged += new System.EventHandler(this.dtpFrom_ValueChanged);
             // 
-            // label4
+            // label6
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(10, 147);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(20, 13);
-            this.label4.TabIndex = 10;
-            this.label4.Text = "От";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(117, 147);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(22, 13);
-            this.label5.TabIndex = 11;
-            this.label5.Text = "До";
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(10, 136);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(56, 13);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "В период:";
             // 
             // ActionLogsForm
             // 
@@ -222,5 +233,6 @@
         private System.Windows.Forms.Button btnEditActions;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label6;
     }
 }

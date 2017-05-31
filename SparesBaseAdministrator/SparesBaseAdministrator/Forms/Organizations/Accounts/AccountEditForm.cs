@@ -32,9 +32,17 @@ namespace SparesBaseAdministrator
                 MessageBox.Show("Не все поля были заполнены");
                 return;
             }
-            
+
+
             // Изменение данных об аккаунте
-            DatabaseWorker.SqlQuery("UPDATE Accounts SET FirstName = '" + tbName.Text + "', LastName = '" + tbLastName.Text + "', SecondName = '" + tbSecondName.Text + "', Login = '" + tbLogIn.Text + "', OrganizationId = " + cbOrganization.SelectedValue + ", CityId = " + (cbCity.SelectedIndex + 1) + ", Phone = '" + tbPhone.Text + "', Email = '" + tbMail.Text + "' WHERE(id = " + account.Id + ")");
+            string query = "";
+            if (account.Organization != null)
+                if (account.Admin && int.Parse(cbOrganization.SelectedValue.ToString()) != account.Organization.Id)
+                    query += "UPDATE Accounts SET Admin = 0 WHERE(id = " + account.Id + "); ";
+
+            query += "UPDATE Accounts SET FirstName = '" + tbName.Text + "', LastName = '" + tbLastName.Text + "', SecondName = '" + tbSecondName.Text + "', Login = '" + tbLogIn.Text + "', OrganizationId = " + cbOrganization.SelectedValue + ", CityId = " + (cbCity.SelectedIndex + 1) + ", Phone = '" + tbPhone.Text + "', Email = '" + tbMail.Text + "' WHERE(id = " + account.Id + ")";
+            
+            DatabaseWorker.SqlQuery(query);
 
             Close();
         }
