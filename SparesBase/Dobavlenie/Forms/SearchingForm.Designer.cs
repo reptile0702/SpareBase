@@ -43,6 +43,7 @@
             this.tbSearching.Name = "tbSearching";
             this.tbSearching.Size = new System.Drawing.Size(130, 20);
             this.tbSearching.TabIndex = 0;
+            this.tbSearching.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbSearching_KeyDown);
             // 
             // cbOrganizations
             // 
@@ -51,6 +52,7 @@
             this.cbOrganizations.Name = "cbOrganizations";
             this.cbOrganizations.Size = new System.Drawing.Size(130, 21);
             this.cbOrganizations.TabIndex = 2;
+            this.cbOrganizations.SelectedIndexChanged += new System.EventHandler(this.cbOrganizations_SelectedIndexChanged);
             // 
             // dgv
             // 

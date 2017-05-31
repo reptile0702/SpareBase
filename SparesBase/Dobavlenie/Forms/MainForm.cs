@@ -17,7 +17,7 @@ namespace SparesBase
        
 
        
-       
+       // TODO: Оптимизировать подсчет остатка
     
        
 
@@ -353,7 +353,7 @@ namespace SparesBase
                 if (i == 3) where += " AND i.Sub_Category_3_Id=(SELECT id FROM Sub_Category_3 WHERE(id=" + selectedCategories[i] + "))";
                 if (i == 4) where += " AND i.Sub_Category_4_Id=(SELECT id FROM Sub_Category_4 WHERE(id=" + selectedCategories[i] + "))";
             }
-            where += ") AND (i.Residue <> 0))";
+            where += ") AND (i.Residue <> 0) AND (i.Deleted <> 1))";
 
             FillItems(where);
         }
@@ -487,11 +487,11 @@ namespace SparesBase
         // Удалить предмет
         private void DeleteItem()
         {
-            int selectedItemId = int.Parse(dgv.CurrentRow.Cells[0].Value.ToString());
-            DatabaseWorker.SqlQuery("DELETE FROM Items WHERE(id = " + selectedItemId + ")");
-            PhotoEditor pe = new PhotoEditor(selectedItemId, true);
+           
+            DatabaseWorker.SqlQuery("UPDATE Items SET Deleted = 1 WHERE(id = " + SelectedItem.Id + ")");
+            PhotoEditor pe = new PhotoEditor(SelectedItem.Id, true);
             pe.DeleteItemImages();
-            DatabaseWorker.InsertAction(3, selectedItemId);
+            DatabaseWorker.InsertAction(3, SelectedItem.Id);
             FillItemsByCategory();
         }
 
@@ -524,7 +524,7 @@ namespace SparesBase
         // Поиск предмета
         private void SearchItems(string query)
         {
-            string where = "WHERE((Item_Name LIKE \"%" + query + "%\" OR Note LIKE \"%" + query + "%\") AND (i.OrganizationId = " + EnteredUser.OrganizationId + ") AND (i.Residue <> 0))";
+            string where = "WHERE((Item_Name LIKE \"%" + query + "%\" OR Note LIKE \"%" + query + "%\") AND (i.OrganizationId = " + EnteredUser.OrganizationId + ") AND (i.Residue <> 0)  AND (i.Deleted <> 1))";
             FillItems(where);
         }
 

@@ -215,6 +215,12 @@ namespace SparesBase
             pbPhoto.Image = pe.DownloadPreviewImage();
         }
 
+        private void GetResidue()
+        {
+            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT Residue FROM Items WHERE(id = " + item.Id + ")");
+            residue = int.Parse(dt.Rows[0].ItemArray[0].ToString());
+        }
+
         // Подсчет остатка
         private void CalcResidue()
         {
@@ -259,9 +265,9 @@ namespace SparesBase
         // Загрузка формы
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+
             //DownloadPreviewImage(item.Id);
-            CalcResidue();
+            GetResidue();
         }
 
         // Смена выделенного индекса поставщика
