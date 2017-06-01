@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ItemsForm));
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.категорииToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiAddMainCategory = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,6 +62,11 @@
             this.cmsDeleteItem = new System.Windows.Forms.ToolStripMenuItem();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lSubCategory4 = new System.Windows.Forms.Label();
+            this.lSubCategory3 = new System.Windows.Forms.Label();
+            this.lSubCategory2 = new System.Windows.Forms.Label();
+            this.lSubCategory1 = new System.Windows.Forms.Label();
+            this.lMainCategory = new System.Windows.Forms.Label();
             this.lresidue = new System.Windows.Forms.Label();
             this.lquantity = new System.Windows.Forms.Label();
             this.lnote = new System.Windows.Forms.Label();
@@ -78,11 +84,6 @@
             this.cmsDeleteCategory = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsExpandNode = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsCollapseNode = new System.Windows.Forms.ToolStripMenuItem();
-            this.lSubCategory4 = new System.Windows.Forms.Label();
-            this.lSubCategory3 = new System.Windows.Forms.Label();
-            this.lSubCategory2 = new System.Windows.Forms.Label();
-            this.lSubCategory1 = new System.Windows.Forms.Label();
-            this.lMainCategory = new System.Windows.Forms.Label();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -429,6 +430,51 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Предмет";
             // 
+            // lSubCategory4
+            // 
+            this.lSubCategory4.AutoSize = true;
+            this.lSubCategory4.Location = new System.Drawing.Point(22, 78);
+            this.lSubCategory4.Name = "lSubCategory4";
+            this.lSubCategory4.Size = new System.Drawing.Size(91, 13);
+            this.lSubCategory4.TabIndex = 20;
+            this.lSubCategory4.Text = "Подкатегория 4:";
+            // 
+            // lSubCategory3
+            // 
+            this.lSubCategory3.AutoSize = true;
+            this.lSubCategory3.Location = new System.Drawing.Point(22, 65);
+            this.lSubCategory3.Name = "lSubCategory3";
+            this.lSubCategory3.Size = new System.Drawing.Size(91, 13);
+            this.lSubCategory3.TabIndex = 19;
+            this.lSubCategory3.Text = "Подкатегория 3:";
+            // 
+            // lSubCategory2
+            // 
+            this.lSubCategory2.AutoSize = true;
+            this.lSubCategory2.Location = new System.Drawing.Point(22, 52);
+            this.lSubCategory2.Name = "lSubCategory2";
+            this.lSubCategory2.Size = new System.Drawing.Size(91, 13);
+            this.lSubCategory2.TabIndex = 18;
+            this.lSubCategory2.Text = "Подкатегория 2:";
+            // 
+            // lSubCategory1
+            // 
+            this.lSubCategory1.AutoSize = true;
+            this.lSubCategory1.Location = new System.Drawing.Point(22, 39);
+            this.lSubCategory1.Name = "lSubCategory1";
+            this.lSubCategory1.Size = new System.Drawing.Size(91, 13);
+            this.lSubCategory1.TabIndex = 17;
+            this.lSubCategory1.Text = "Подкатегория 1:";
+            // 
+            // lMainCategory
+            // 
+            this.lMainCategory.AutoSize = true;
+            this.lMainCategory.Location = new System.Drawing.Point(22, 26);
+            this.lMainCategory.Name = "lMainCategory";
+            this.lMainCategory.Size = new System.Drawing.Size(107, 13);
+            this.lMainCategory.TabIndex = 16;
+            this.lMainCategory.Text = "Главная категория:";
+            // 
             // lresidue
             // 
             this.lresidue.AutoSize = true;
@@ -576,51 +622,6 @@
             this.cmsCollapseNode.Text = "Скрыть узел";
             this.cmsCollapseNode.Click += new System.EventHandler(this.cmsCollapseNode_Click);
             // 
-            // lSubCategory4
-            // 
-            this.lSubCategory4.AutoSize = true;
-            this.lSubCategory4.Location = new System.Drawing.Point(22, 78);
-            this.lSubCategory4.Name = "lSubCategory4";
-            this.lSubCategory4.Size = new System.Drawing.Size(91, 13);
-            this.lSubCategory4.TabIndex = 20;
-            this.lSubCategory4.Text = "Подкатегория 4:";
-            // 
-            // lSubCategory3
-            // 
-            this.lSubCategory3.AutoSize = true;
-            this.lSubCategory3.Location = new System.Drawing.Point(22, 65);
-            this.lSubCategory3.Name = "lSubCategory3";
-            this.lSubCategory3.Size = new System.Drawing.Size(91, 13);
-            this.lSubCategory3.TabIndex = 19;
-            this.lSubCategory3.Text = "Подкатегория 3:";
-            // 
-            // lSubCategory2
-            // 
-            this.lSubCategory2.AutoSize = true;
-            this.lSubCategory2.Location = new System.Drawing.Point(22, 52);
-            this.lSubCategory2.Name = "lSubCategory2";
-            this.lSubCategory2.Size = new System.Drawing.Size(91, 13);
-            this.lSubCategory2.TabIndex = 18;
-            this.lSubCategory2.Text = "Подкатегория 2:";
-            // 
-            // lSubCategory1
-            // 
-            this.lSubCategory1.AutoSize = true;
-            this.lSubCategory1.Location = new System.Drawing.Point(22, 39);
-            this.lSubCategory1.Name = "lSubCategory1";
-            this.lSubCategory1.Size = new System.Drawing.Size(91, 13);
-            this.lSubCategory1.TabIndex = 17;
-            this.lSubCategory1.Text = "Подкатегория 1:";
-            // 
-            // lMainCategory
-            // 
-            this.lMainCategory.AutoSize = true;
-            this.lMainCategory.Location = new System.Drawing.Point(22, 26);
-            this.lMainCategory.Name = "lMainCategory";
-            this.lMainCategory.Size = new System.Drawing.Size(107, 13);
-            this.lMainCategory.TabIndex = 16;
-            this.lMainCategory.Text = "Главная категория:";
-            // 
             // ItemsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -628,6 +629,7 @@
             this.ClientSize = new System.Drawing.Size(1354, 542);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
             this.Name = "ItemsForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

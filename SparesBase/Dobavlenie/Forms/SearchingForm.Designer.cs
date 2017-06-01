@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SearchingForm));
             this.tbSearching = new System.Windows.Forms.TextBox();
             this.cbOrganizations = new System.Windows.Forms.ComboBox();
             this.dgv = new System.Windows.Forms.DataGridView();
@@ -111,6 +112,7 @@
             this.ClientSize = new System.Drawing.Size(1253, 695);
             this.Controls.Add(this.dgv);
             this.Controls.Add(this.panel1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SearchingForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Поиск предметов по организациям";

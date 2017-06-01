@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.tsmiAccount = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiChangeAccount = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,6 +67,11 @@
             this.cmsDeleteItem = new System.Windows.Forms.ToolStripMenuItem();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lSub4 = new System.Windows.Forms.Label();
+            this.lSub3 = new System.Windows.Forms.Label();
+            this.lSub2 = new System.Windows.Forms.Label();
+            this.lSub1 = new System.Windows.Forms.Label();
+            this.lMainCat = new System.Windows.Forms.Label();
             this.lresidue = new System.Windows.Forms.Label();
             this.lquantity = new System.Windows.Forms.Label();
             this.lnote = new System.Windows.Forms.Label();
@@ -83,11 +89,6 @@
             this.cmsDeleteCategory = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsExpandNode = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsCollapseNode = new System.Windows.Forms.ToolStripMenuItem();
-            this.lMainCat = new System.Windows.Forms.Label();
-            this.lSub1 = new System.Windows.Forms.Label();
-            this.lSub2 = new System.Windows.Forms.Label();
-            this.lSub3 = new System.Windows.Forms.Label();
-            this.lSub4 = new System.Windows.Forms.Label();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -264,14 +265,14 @@
             // tsmiUsers
             // 
             this.tsmiUsers.Name = "tsmiUsers";
-            this.tsmiUsers.Size = new System.Drawing.Size(152, 22);
+            this.tsmiUsers.Size = new System.Drawing.Size(144, 22);
             this.tsmiUsers.Text = "Сотрудники";
             this.tsmiUsers.Click += new System.EventHandler(this.tsmiUsers_Click);
             // 
             // tsmiSellers
             // 
             this.tsmiSellers.Name = "tsmiSellers";
-            this.tsmiSellers.Size = new System.Drawing.Size(152, 22);
+            this.tsmiSellers.Size = new System.Drawing.Size(144, 22);
             this.tsmiSellers.Text = "Поставщики";
             this.tsmiSellers.Click += new System.EventHandler(this.tsmiSellers_Click);
             // 
@@ -465,6 +466,51 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Предмет";
             // 
+            // lSub4
+            // 
+            this.lSub4.AutoSize = true;
+            this.lSub4.Location = new System.Drawing.Point(12, 67);
+            this.lSub4.Name = "lSub4";
+            this.lSub4.Size = new System.Drawing.Size(85, 13);
+            this.lSub4.TabIndex = 20;
+            this.lSub4.Text = "Подкатегория4";
+            // 
+            // lSub3
+            // 
+            this.lSub3.AutoSize = true;
+            this.lSub3.Location = new System.Drawing.Point(12, 55);
+            this.lSub3.Name = "lSub3";
+            this.lSub3.Size = new System.Drawing.Size(85, 13);
+            this.lSub3.TabIndex = 19;
+            this.lSub3.Text = "Подкатегория3";
+            // 
+            // lSub2
+            // 
+            this.lSub2.AutoSize = true;
+            this.lSub2.Location = new System.Drawing.Point(12, 42);
+            this.lSub2.Name = "lSub2";
+            this.lSub2.Size = new System.Drawing.Size(85, 13);
+            this.lSub2.TabIndex = 18;
+            this.lSub2.Text = "Подкатегория2";
+            // 
+            // lSub1
+            // 
+            this.lSub1.AutoSize = true;
+            this.lSub1.Location = new System.Drawing.Point(12, 29);
+            this.lSub1.Name = "lSub1";
+            this.lSub1.Size = new System.Drawing.Size(85, 13);
+            this.lSub1.TabIndex = 17;
+            this.lSub1.Text = "Подкатегория1";
+            // 
+            // lMainCat
+            // 
+            this.lMainCat.AutoSize = true;
+            this.lMainCat.Location = new System.Drawing.Point(12, 16);
+            this.lMainCat.Name = "lMainCat";
+            this.lMainCat.Size = new System.Drawing.Size(87, 13);
+            this.lMainCat.TabIndex = 16;
+            this.lMainCat.Text = "Глав.Категория";
+            // 
             // lresidue
             // 
             this.lresidue.AutoSize = true;
@@ -612,51 +658,6 @@
             this.cmsCollapseNode.Text = "Скрыть узел";
             this.cmsCollapseNode.Click += new System.EventHandler(this.cmsCollapseNode_Click);
             // 
-            // lMainCat
-            // 
-            this.lMainCat.AutoSize = true;
-            this.lMainCat.Location = new System.Drawing.Point(12, 16);
-            this.lMainCat.Name = "lMainCat";
-            this.lMainCat.Size = new System.Drawing.Size(87, 13);
-            this.lMainCat.TabIndex = 16;
-            this.lMainCat.Text = "Глав.Категория";
-            // 
-            // lSub1
-            // 
-            this.lSub1.AutoSize = true;
-            this.lSub1.Location = new System.Drawing.Point(12, 29);
-            this.lSub1.Name = "lSub1";
-            this.lSub1.Size = new System.Drawing.Size(85, 13);
-            this.lSub1.TabIndex = 17;
-            this.lSub1.Text = "Подкатегория1";
-            // 
-            // lSub2
-            // 
-            this.lSub2.AutoSize = true;
-            this.lSub2.Location = new System.Drawing.Point(12, 42);
-            this.lSub2.Name = "lSub2";
-            this.lSub2.Size = new System.Drawing.Size(85, 13);
-            this.lSub2.TabIndex = 18;
-            this.lSub2.Text = "Подкатегория2";
-            // 
-            // lSub3
-            // 
-            this.lSub3.AutoSize = true;
-            this.lSub3.Location = new System.Drawing.Point(12, 55);
-            this.lSub3.Name = "lSub3";
-            this.lSub3.Size = new System.Drawing.Size(85, 13);
-            this.lSub3.TabIndex = 19;
-            this.lSub3.Text = "Подкатегория3";
-            // 
-            // lSub4
-            // 
-            this.lSub4.AutoSize = true;
-            this.lSub4.Location = new System.Drawing.Point(12, 67);
-            this.lSub4.Name = "lSub4";
-            this.lSub4.Size = new System.Drawing.Size(85, 13);
-            this.lSub4.TabIndex = 20;
-            this.lSub4.Text = "Подкатегория4";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -664,6 +665,7 @@
             this.ClientSize = new System.Drawing.Size(1354, 544);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
