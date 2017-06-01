@@ -18,6 +18,7 @@ namespace SparesBase
 
        
        // TODO: Оптимизировать подсчет остатка
+       // TODO: Исправить сотрудников
     
        
 
@@ -353,7 +354,7 @@ namespace SparesBase
                 if (i == 3) where += " AND i.Sub_Category_3_Id=(SELECT id FROM Sub_Category_3 WHERE(id=" + selectedCategories[i] + "))";
                 if (i == 4) where += " AND i.Sub_Category_4_Id=(SELECT id FROM Sub_Category_4 WHERE(id=" + selectedCategories[i] + "))";
             }
-            where += ") AND (i.Residue <> 0) AND (i.Deleted <> 1))";
+            where += ") AND (i.Residue > 0) AND (i.Deleted <> 1))";
 
             FillItems(where);
         }
@@ -510,6 +511,7 @@ namespace SparesBase
             lnote.Text = "Описание: \n" + selItem.Note;
             lquantity.Text = "Количество: " + selItem.Quantity;
             lresidue.Text = "Остаток: " + selItem.Residue;
+
             lMainCat.Text = "Главная категория: " + selItem.MainCategory.Name;
             if(selItem.SubCategory1 != null)
                 lSub1.Text = "Подкатегория 1: " + selItem.SubCategory1.Name;
@@ -524,7 +526,7 @@ namespace SparesBase
         // Поиск предмета
         private void SearchItems(string query)
         {
-            string where = "WHERE((Item_Name LIKE \"%" + query + "%\" OR Note LIKE \"%" + query + "%\") AND (i.OrganizationId = " + EnteredUser.OrganizationId + ") AND (i.Residue <> 0)  AND (i.Deleted <> 1))";
+            string where = "WHERE((Item_Name LIKE \"%" + query + "%\" OR Note LIKE \"%" + query + "%\") AND (i.OrganizationId = " + EnteredUser.OrganizationId + ") AND (i.Residue > 0)  AND (i.Deleted <> 1))";
             FillItems(where);
         }
 

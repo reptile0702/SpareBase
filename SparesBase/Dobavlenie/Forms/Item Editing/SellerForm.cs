@@ -131,13 +131,8 @@ namespace SparesBase
         // Удаление поставщика
         private void Delete_Click(object sender, EventArgs e)
         {
-            DeleteSeller();
-        }
-
-        // Смена выделенного индекса в ComboBox'е организаций
-        private void cbOrganizations_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            FillSellers();
+            if (MessageBox.Show("Вы уверены, что хотите удалить поставщика \"" + SelectedSeller.Name + "\"?", "Удаление поставщика", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                DeleteSeller();
         }
 
         // Смена выделенного поставщика
