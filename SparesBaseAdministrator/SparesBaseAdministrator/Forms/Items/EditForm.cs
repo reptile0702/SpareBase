@@ -89,7 +89,7 @@ namespace SparesBaseAdministrator
                 if (operation == "INSERT")
                     query = "INSERT INTO Items VALUES('', {0}, {1}, {2}, {3}, {4}, '{5}', {6}, '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', {14}, NOW(), {15}, " + organizationId + ", {16}, 0)";
                 else
-                    query = "UPDATE Items SET Item_Name='{5}', Seller_Id={6}, Purchase_Price='{7}', Retail_Price='{8}', Wholesale_Price='{9}', Service_Price='{10}', FirmPrice='{11}', Storage='{12}', Note='{13}', Quantity={14}, Residue={15} , SearchAllowed={16} WHERE id = " + updateId;
+                    query = "UPDATE Items SET Main_Category_Id = {0}, Sub_Category_1_Id = {1}, Sub_Category_2_Id = {2}, Sub_Category_3_Id = {3}, Sub_Category_4_Id = {4}, Item_Name='{5}', Seller_Id={6}, Purchase_Price='{7}', Retail_Price='{8}', Wholesale_Price='{9}', Service_Price='{10}', FirmPrice='{11}', Storage='{12}', Note='{13}', Quantity={14}, Residue={15} , SearchAllowed={16} WHERE id = " + updateId;
 
                 // Подсчет остатка 
                 if (item != null)
@@ -148,6 +148,35 @@ namespace SparesBaseAdministrator
             tbNote.Text = item.Note;
             tbQuantity.Text = item.Quantity.ToString();
             chbSearchAllowed.Checked = item.SearchAllowed;
+            FillCategoriesInfo();
+        }
+
+        private void FillCategoriesInfo()
+        {
+            lMainCategory.Text = "Главная категория: " + item.MainCategory.Name;
+            if (item.SubCategory1 != null)
+                lSubCategory1.Text = "Подкатегория 1: " + item.SubCategory1.Name;
+            if (item.SubCategory2 != null)
+                lSubCategory2.Text = "Подкатегория 2: " + item.SubCategory2.Name;
+            if (item.SubCategory3 != null)
+                lSubCategory3.Text = "Подкатегория 3: " + item.SubCategory3.Name;
+            if (item.SubCategory4 != null)
+                lSubCategory4.Text = "Подкатегория 4: " + item.SubCategory4.Name;
+        }
+
+        public void ChangeCategories(Category[] categories)
+        {
+            for (int i = 0; i < this.categories.Length; i++)
+                if (categories[i] != null)
+                    this.categories[i] = categories[i].Id;
+
+            item.MainCategory = categories[0];
+            item.SubCategory1 = categories[1];
+            item.SubCategory2 = categories[2];
+            item.SubCategory3 = categories[3];
+            item.SubCategory4 = categories[4];
+
+            FillCategoriesInfo();
         }
 
         #endregion Предметы
@@ -240,7 +269,7 @@ namespace SparesBaseAdministrator
                 // Занесение остатка в базу
                 DatabaseWorker.SqlQuery("UPDATE Items SET Residue = " + residue + " WHERE(id = " + item.Id + ")");
             }
-            
+
         }
 
         #endregion Вспомогательные методы  
@@ -252,7 +281,7 @@ namespace SparesBaseAdministrator
         // Загрузка формы
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+
             //DownloadPreviewImage(item.Id);
             CalcResidue();
         }
@@ -332,8 +361,13 @@ namespace SparesBaseAdministrator
                 MessageBox.Show("Остаток данного предмета равен нулю");
         }
 
+
         #endregion Разные события
 
-      
+        private void btnChangeCategories_Click(object sender, EventArgs e)
+        {
+            ChangeCategoriesForm ccf = new ChangeCategoriesForm(this, item.Organization.Id);
+            ccf.ShowDialog();
+        }
     }
 }

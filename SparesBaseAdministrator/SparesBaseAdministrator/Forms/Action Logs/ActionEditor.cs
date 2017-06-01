@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SparesBaseAdministrator
@@ -34,7 +27,7 @@ namespace SparesBaseAdministrator
         private void FillActionData()
         {
             tbActionName.Text = action.Name;
-            tbActionText.Text = action.Text;
+            tbActionText.Text = action.TemplateText;
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
@@ -42,7 +35,7 @@ namespace SparesBaseAdministrator
             if (action == null)
                 DatabaseWorker.SqlQuery("INSERT INTO Actions VALUES('', '" + tbActionName.Text + "', '" + tbActionText.Text + "')");
             else
-                DatabaseWorker.SqlQuery("UPDATE Actions SET Action = '" + tbActionName.Text + "', ActionText = '" + tbActionText.Text + "' WHERE(id = " + action.Id + ")");
+                DatabaseWorker.SqlQuery("UPDATE Actions SET Action = '" + tbActionName.Text + "', TemplateText = '" + tbActionText.Text + "' WHERE(id = " + action.Id + ")");
 
             Close();
         }

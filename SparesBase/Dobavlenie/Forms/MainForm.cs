@@ -22,24 +22,26 @@ namespace SparesBase
     
        
 
+        // Выбранная категория в TreeView
         public Category SelectedCategory { get { return (Category)treeView.SelectedNode.Tag; } }
+
+        // Выбранный предмет в DataGridView
         public Item SelectedItem { get { return (Item)dgv.CurrentRow.Tag; } }
 
         AuthenticationForm au;
+
         // Конструктор
         public MainForm(AuthenticationForm au)
         {
             InitializeComponent();
+            this.au = au;
 
             // Заполнение заголовка формы именем пользовалеля и названием организации
             DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT Accounts.LastName, Accounts.FirstName, Accounts.SecondName, Organizations.Name, Accounts.Admin FROM Accounts LEFT JOIN Organizations ON Organizations.id = Accounts.OrganizationId WHERE(Accounts.id=" + EnteredUser.id + ")");
             Text = "База запчастей - " + dt.Rows[0].ItemArray[0] + " " + dt.Rows[0].ItemArray[1] + " " + dt.Rows[0].ItemArray[2] + " - " + dt.Rows[0].ItemArray[3];
             if (dt.Rows[0].ItemArray[4].ToString() != "1")
-            {
                 tsmiLogs.Visible = false;
-            }
-            this.au = au;
-
+            
             tbSearch.Text = "Поиск";
             tbSearch.ForeColor = Color.Gray;
             
@@ -49,9 +51,7 @@ namespace SparesBase
 
 
         #region Заполнение данных
-
         
-
         // Заполнение TreeView категориями из базы
         private void FillCategories()
         {
@@ -561,6 +561,7 @@ namespace SparesBase
                 DatabaseWorker.SqlQuery("UPDATE Main_Category SET Name = '" + newName + "' WHERE(id = " + selectedIdNode + ")");
             else
                 DatabaseWorker.SqlQuery("UPDATE Sub_Category_" + (nodeCount - 1) + " SET Name = '" + newName + "' WHERE(id = " + selectedIdNode + ")");
+
             treeView.SelectedNode.Text = newName;
         }
 

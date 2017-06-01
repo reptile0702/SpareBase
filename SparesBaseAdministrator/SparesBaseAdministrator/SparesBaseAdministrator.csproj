@@ -56,6 +56,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Custom Components\CategoriesTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Database Classes\Action.cs" />
     <Compile Include="Database Classes\Category.cs" />
     <Compile Include="Database Classes\Item.cs" />
@@ -65,6 +68,12 @@
     </Compile>
     <Compile Include="Forms\Action Logs\ActionEditor.Designer.cs">
       <DependentUpon>ActionEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Items\ChangeCategoriesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Items\ChangeCategoriesForm.Designer.cs">
+      <DependentUpon>ChangeCategoriesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Items\EditCategory.cs">
       <SubType>Form</SubType>
@@ -171,6 +180,9 @@
     <Compile Include="Forms\Items\ItemsForm.designer.cs">
       <DependentUpon>ItemsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Custom Components\ItemsDataGridView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Forms\Organizations\Accounts\AccountEditForm.cs">
@@ -199,6 +211,9 @@
     </Compile>
     <EmbeddedResource Include="Forms\Action Logs\ActionEditor.resx">
       <DependentUpon>ActionEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Items\ChangeCategoriesForm.resx">
+      <DependentUpon>ChangeCategoriesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Items\EditCategory.resx">
       <DependentUpon>EditCategory.cs</DependentUpon>
