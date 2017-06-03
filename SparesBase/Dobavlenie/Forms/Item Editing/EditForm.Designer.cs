@@ -57,7 +57,6 @@
             this.btnDefect = new System.Windows.Forms.Button();
             this.cbSeller = new System.Windows.Forms.ComboBox();
             this.photoPanel = new System.Windows.Forms.Panel();
-            this.btnChangeCategories = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbPhoto)).BeginInit();
             this.photoPanel.SuspendLayout();
             this.SuspendLayout();
@@ -320,22 +319,12 @@
             this.photoPanel.Size = new System.Drawing.Size(225, 295);
             this.photoPanel.TabIndex = 33;
             // 
-            // btnChangeCategories
-            // 
-            this.btnChangeCategories.Location = new System.Drawing.Point(101, 332);
-            this.btnChangeCategories.Name = "btnChangeCategories";
-            this.btnChangeCategories.Size = new System.Drawing.Size(176, 23);
-            this.btnChangeCategories.TabIndex = 34;
-            this.btnChangeCategories.Text = "Поменять категории";
-            this.btnChangeCategories.UseVisualStyleBackColor = true;
-            // 
             // EditForm
             // 
             this.AcceptButton = this.btnEdit;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(886, 487);
-            this.Controls.Add(this.btnChangeCategories);
+            this.ClientSize = new System.Drawing.Size(886, 321);
             this.Controls.Add(this.photoPanel);
             this.Controls.Add(this.chbSearchAllowed);
             this.Controls.Add(this.label11);
@@ -405,7 +394,6 @@
         private System.Windows.Forms.TextBox tbFirmPrice;
         private System.Windows.Forms.CheckBox chbSearchAllowed;
         private System.Windows.Forms.Panel photoPanel;
-        private System.Windows.Forms.Button btnChangeCategories;
     }
 }
 

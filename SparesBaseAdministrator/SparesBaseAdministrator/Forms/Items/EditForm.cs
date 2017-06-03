@@ -153,15 +153,16 @@ namespace SparesBaseAdministrator
 
         private void FillCategoriesInfo()
         {
-            lMainCategory.Text = "Главная категория: " + item.MainCategory.Name;
+            lMainCategory.Text = "Категории: ";
+            lMainCategory.Text += item.MainCategory.Name;
             if (item.SubCategory1 != null)
-                lSubCategory1.Text = "Подкатегория 1: " + item.SubCategory1.Name;
+                lMainCategory.Text += " - " + item.SubCategory1.Name;
             if (item.SubCategory2 != null)
-                lSubCategory2.Text = "Подкатегория 2: " + item.SubCategory2.Name;
+                lMainCategory.Text += " - " + item.SubCategory2.Name;
             if (item.SubCategory3 != null)
-                lSubCategory3.Text = "Подкатегория 3: " + item.SubCategory3.Name;
+                lMainCategory.Text += " - " + item.SubCategory3.Name;
             if (item.SubCategory4 != null)
-                lSubCategory4.Text = "Подкатегория 4: " + item.SubCategory4.Name;
+                lMainCategory.Text += " - " + item.SubCategory4.Name;
         }
 
         public void ChangeCategories(Category[] categories)
