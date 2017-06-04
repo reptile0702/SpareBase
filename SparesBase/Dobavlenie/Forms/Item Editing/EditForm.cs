@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace SparesBase
 {
@@ -12,7 +13,7 @@ namespace SparesBase
         // Категории текущего предмета
         int[] categories;
 
-       
+        Image[] images;
 
         // Остаток
         int residue = 0;
@@ -25,7 +26,7 @@ namespace SparesBase
             InitializeComponent();
 
             this.categories = categories;
-           
+          
 
             // Выключение кнопок: В заказ, продажа, брак
             btnInOrder.Enabled = false;
@@ -45,18 +46,12 @@ namespace SparesBase
             this.item = item;
             this.categories = categories;
 
-            // Выключение полей
-            tbQuantity.Enabled = false;
-            tbRetailPrice.Enabled = false;
-            tbServicePrice.Enabled = false;
-            tbPurchasePrice.Enabled = false;
-            tbFirmPrice.Enabled = false;
-            tbWholesalePrice.Enabled = false;
-
             Text = "Изменение предмета";
             btnEdit.Text = "Изменить предмет";
             FillSellersComboBox();
             GetItemData(item);
+
+            pbPhoto.Image = FtpManager.DownloadPreviewImage(item.Id);
         }
 
         #endregion Конструкторы
@@ -94,9 +89,9 @@ namespace SparesBase
                 // Формирование запроса
                 string query = "";
                 if (operation == "INSERT")
-                    query = "INSERT INTO Items VALUES('', {0}, {1}, {2}, {3}, {4}, '{5}', {6}, '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', {14}, NOW(), {15}, " + EnteredUser.OrganizationId + ", {16})";
+                    query = "INSERT INTO Items VALUES('', {0}, {1}, {2}, {3}, {4}, '{5}', {6}, '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', {14}, NOW(), {15}, " + EnteredUser.OrganizationId + ", {16}, 0)";
                 else
-                    query = "UPDATE Items SET Item_Name='{5}', Seller_Id={6}, Purchase_Price='{7}', Retail_Price='{8}', Wholesale_Price='{9}', Service_Price='{10}', FirmPrice='{11}', Storage='{12}', Note='{13}', Quantity={14}, Residue={15} , SearchAllowed={16} WHERE id = " + updateId;
+                    query = "UPDATE Items SET Main_Category_Id = {0}, Sub_Category_1_Id = {1}, Sub_Category_2_Id = {2}, Sub_Category_3_Id = {3}, Sub_Category_4_Id = {4}, Item_Name='{5}', Seller_Id={6}, Purchase_Price='{7}', Retail_Price='{8}', Wholesale_Price='{9}', Service_Price='{10}', FirmPrice='{11}', Storage='{12}', Note='{13}', Quantity={14}, Residue={15} , SearchAllowed={16} WHERE id = " + updateId;
 
                 // Подсчет остатка 
                 if (item != null)
@@ -128,10 +123,35 @@ namespace SparesBase
                 DatabaseWorker.SqlQuery(query);
                 if (updateId == 0)
                 {
+                    for (int i = 0; i < images.Length; i++)
+                    {
+                        if (images[i] != null)
+                        {
+                            int itemId = int.Parse(DatabaseWorker.SqlScalarQuery("SELECT id FROM Items WHERE(id = LAST_INSERT_ID())").ToString());
+                            FtpManager.UploadImages(images, itemId);
+                            break;
+                        }
+                       
+
+                    }
+
+                    
+                   
                     DatabaseWorker.InsertAction(1, int.Parse(DatabaseWorker.SqlScalarQuery("SELECT LAST_INSERT_ID() FROM Items").ToString()));
+                   
                 }
                 else
                 {
+                    for (int i = 0; i < images.Length; i++)
+                    {
+                        if (images[i] != null)
+                        {                           
+                            FtpManager.UploadImages(images, item.Id);
+                            break;
+                        }
+
+                    }
+
                     DatabaseWorker.InsertAction(2, updateId);
                 }
 
@@ -155,6 +175,36 @@ namespace SparesBase
             tbNote.Text = item.Note;
             tbQuantity.Text = item.Quantity.ToString();
             chbSearchAllowed.Checked = item.SearchAllowed;
+            FillCategoriesInfo();
+        }
+
+        private void FillCategoriesInfo()
+        {
+            lMainCategory.Text = "Категории: ";
+            lMainCategory.Text += item.MainCategory.Name;
+            if (item.SubCategory1 != null)
+                lMainCategory.Text += " - " + item.SubCategory1.Name;
+            if (item.SubCategory2 != null)
+                lMainCategory.Text += " - " + item.SubCategory2.Name;
+            if (item.SubCategory3 != null)
+                lMainCategory.Text += " - " + item.SubCategory3.Name;
+            if (item.SubCategory4 != null)
+                lMainCategory.Text += " - " + item.SubCategory4.Name;
+        }
+
+        public void ChangeCategories(Category[] categories)
+        {
+            for (int i = 0; i < this.categories.Length; i++)
+                if (categories[i] != null)
+                    this.categories[i] = categories[i].Id;
+
+            item.MainCategory = categories[0];
+            item.SubCategory1 = categories[1];
+            item.SubCategory2 = categories[2];
+            item.SubCategory3 = categories[3];
+            item.SubCategory4 = categories[4];
+
+            FillCategoriesInfo();
         }
 
         #endregion Предметы
@@ -170,8 +220,8 @@ namespace SparesBase
             if (cbSeller.SelectedValue != null)
                 selectedId = int.Parse(cbSeller.SelectedValue.ToString());
 
-            string where = "WHERE(OrganizationId = " + EnteredUser.OrganizationId + ")";
-            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT id, name FROM Sellers " + where);
+            
+            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT id, name FROM Sellers WHERE(OrganizationId=" + EnteredUser.OrganizationId + ")");
             DataTable source = new DataTable();
             source.Columns.Add("id");
             source.Columns.Add("name");
@@ -208,19 +258,6 @@ namespace SparesBase
 
         #region Вспомогательные методы
 
-        // Загрузка превью-фотографии
-        private void DownloadPreviewImage(int id)
-        {
-            PhotoEditor pe = new PhotoEditor(id, true);
-            pbPhoto.Image = pe.DownloadPreviewImage();
-        }
-
-        private void GetResidue()
-        {
-            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT Residue FROM Items WHERE(id = " + item.Id + ")");
-            residue = int.Parse(dt.Rows[0].ItemArray[0].ToString());
-        }
-
         // Подсчет остатка
         private void CalcResidue()
         {
@@ -253,7 +290,13 @@ namespace SparesBase
                 // Занесение остатка в базу
                 DatabaseWorker.SqlQuery("UPDATE Items SET Residue = " + residue + " WHERE(id = " + item.Id + ")");
             }
-            
+
+        }
+
+        private void GetResidue()
+        {
+            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT Residue FROM Items WHERE(id = " + item.Id + ")");
+            residue = int.Parse(dt.Rows[0].ItemArray[0].ToString());
         }
 
         #endregion Вспомогательные методы  
@@ -266,8 +309,12 @@ namespace SparesBase
         private void Form1_Load(object sender, EventArgs e)
         {
 
-            //DownloadPreviewImage(item.Id);
-            GetResidue();
+            //DownloadPreviewImage(item.Id);            
+            if (item != null)
+            {
+                GetResidue();
+            }
+            
         }
 
         // Смена выделенного индекса поставщика
@@ -290,8 +337,31 @@ namespace SparesBase
         // Просмотр фотографий предмета
         private void btnPhoto_Click(object sender, EventArgs e)
         {
-            PhotoEditor pe = new PhotoEditor(item.Id);
-            pe.ShowDialog();
+
+            PhotoEditor pe = null;
+            if (item == null)
+            {
+                pe = new PhotoEditor();
+            }
+            else
+            {
+                pe = new PhotoEditor(item.Id);
+            }
+            if (pe.ShowDialog() == DialogResult.OK)
+            {
+                images = pe.Images;
+                pbPhoto.Image = null;
+                foreach (Image image in images)
+                {
+                    if (image != null)
+                    {
+                        pbPhoto.Image = image;
+                        break;
+                    }
+                }
+            }
+           
+          
         }
 
         // Клик на кнопку Добавления / Изменения
@@ -345,8 +415,13 @@ namespace SparesBase
                 MessageBox.Show("Остаток данного предмета равен нулю");
         }
 
+
         #endregion Разные события
 
-      
+        private void btnChangeCategories_Click(object sender, EventArgs e)
+        {
+            ChangeCategoriesForm ccf = new ChangeCategoriesForm(this, item.Organization.Id);
+            ccf.ShowDialog();
+        }
     }
 }
