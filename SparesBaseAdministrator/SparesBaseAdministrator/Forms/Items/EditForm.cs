@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace SparesBaseAdministrator
@@ -14,6 +15,9 @@ namespace SparesBaseAdministrator
 
         // Идентификатор организации
         int organizationId;
+
+        Image[] images;
+        bool imagesEdited;
 
         // Остаток
         int residue = 0;
@@ -50,6 +54,8 @@ namespace SparesBaseAdministrator
             btnEdit.Text = "Изменить предмет";
             FillSellersComboBox();
             GetItemData(item);
+
+            pbPhoto.Image = FtpManager.DownloadPreviewImage(item.Id);
         }
 
         #endregion Конструкторы
@@ -121,10 +127,20 @@ namespace SparesBaseAdministrator
                 DatabaseWorker.SqlQuery(query);
                 if (updateId == 0)
                 {
+                    if (imagesEdited)
+                    {
+                        int itemId = int.Parse(DatabaseWorker.SqlScalarQuery("SELECT id FROM Items WHERE(id = LAST_INSERT_ID())").ToString());
+                        FtpManager.UploadImages(images, itemId);
+                    }
+
                     DatabaseWorker.InsertAction(1, int.Parse(DatabaseWorker.SqlScalarQuery("SELECT LAST_INSERT_ID() FROM Items").ToString()));
+
                 }
                 else
                 {
+                    if (imagesEdited)
+                        FtpManager.UploadImages(images, item.Id);
+
                     DatabaseWorker.InsertAction(2, updateId);
                 }
 
@@ -234,8 +250,26 @@ namespace SparesBaseAdministrator
         // Загрузка превью-фотографии
         private void DownloadPreviewImage(int id)
         {
-            PhotoEditor pe = new PhotoEditor(id, true);
-            pbPhoto.Image = pe.DownloadPreviewImage();
+            PhotoEditor pe = null;
+            if (item == null)
+                pe = new PhotoEditor();
+            else
+                pe = new PhotoEditor(item.Id);
+
+            if (pe.ShowDialog() == DialogResult.OK)
+            {
+                imagesEdited = true;
+                images = pe.Images;
+                pbPhoto.Image = null;
+                foreach (Image image in images)
+                {
+                    if (image != null)
+                    {
+                        pbPhoto.Image = image;
+                        break;
+                    }
+                }
+            }
         }
 
         // Подсчет остатка

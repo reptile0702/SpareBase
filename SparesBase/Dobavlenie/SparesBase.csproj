@@ -70,7 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CategoriesTreeView.cs">
+    <Compile Include="Custom Components\CategoriesTreeView.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\Item Editing\ChangeCategoriesForm.cs">
@@ -171,7 +171,7 @@
       <DependentUpon>OrganizationCardForm.cs</DependentUpon>
     </Compile>
     <Compile Include="FtpManager.cs" />
-    <Compile Include="ItemsDataGridView.cs">
+    <Compile Include="Custom Components\ItemsDataGridView.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Program.cs" />

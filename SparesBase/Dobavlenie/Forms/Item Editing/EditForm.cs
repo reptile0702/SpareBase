@@ -14,6 +14,7 @@ namespace SparesBase
         int[] categories;
 
         Image[] images;
+        bool imagesEdited;
 
         // Остаток
         int residue = 0;
@@ -26,7 +27,7 @@ namespace SparesBase
             InitializeComponent();
 
             this.categories = categories;
-          
+
 
             // Выключение кнопок: В заказ, продажа, брак
             btnInOrder.Enabled = false;
@@ -123,34 +124,39 @@ namespace SparesBase
                 DatabaseWorker.SqlQuery(query);
                 if (updateId == 0)
                 {
-                    for (int i = 0; i < images.Length; i++)
-                    {
-                        if (images[i] != null)
-                        {
-                            int itemId = int.Parse(DatabaseWorker.SqlScalarQuery("SELECT id FROM Items WHERE(id = LAST_INSERT_ID())").ToString());
-                            FtpManager.UploadImages(images, itemId);
-                            break;
-                        }
-                       
+                    //for (int i = 0; i < images.Length; i++)
+                    //{
+                    //    if (images[i] != null)
+                    //    {
+                    //        int itemId = int.Parse(DatabaseWorker.SqlScalarQuery("SELECT id FROM Items WHERE(id = LAST_INSERT_ID())").ToString());
+                    //        FtpManager.UploadImages(images, itemId);
+                    //        break;
+                    //    }
+                    //}
 
+                    if (imagesEdited)
+                    {
+                        int itemId = int.Parse(DatabaseWorker.SqlScalarQuery("SELECT id FROM Items WHERE(id = LAST_INSERT_ID())").ToString());
+                        FtpManager.UploadImages(images, itemId);
                     }
 
-                    
-                   
+
                     DatabaseWorker.InsertAction(1, int.Parse(DatabaseWorker.SqlScalarQuery("SELECT LAST_INSERT_ID() FROM Items").ToString()));
-                   
+
                 }
                 else
                 {
-                    for (int i = 0; i < images.Length; i++)
-                    {
-                        if (images[i] != null)
-                        {                           
-                            FtpManager.UploadImages(images, item.Id);
-                            break;
-                        }
+                    //for (int i = 0; i < images.Length; i++)
+                    //{
+                    //    if (images[i] != null)
+                    //    {
+                    //        FtpManager.UploadImages(images, item.Id);
+                    //        break;
+                    //    }
+                    //}
 
-                    }
+                    if (imagesEdited)
+                        FtpManager.UploadImages(images, item.Id);
 
                     DatabaseWorker.InsertAction(2, updateId);
                 }
@@ -220,7 +226,7 @@ namespace SparesBase
             if (cbSeller.SelectedValue != null)
                 selectedId = int.Parse(cbSeller.SelectedValue.ToString());
 
-            
+
             DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT id, name FROM Sellers WHERE(OrganizationId=" + EnteredUser.OrganizationId + ")");
             DataTable source = new DataTable();
             source.Columns.Add("id");
@@ -307,14 +313,9 @@ namespace SparesBase
 
         // Загрузка формы
         private void Form1_Load(object sender, EventArgs e)
-        {
-
-            //DownloadPreviewImage(item.Id);            
+        {       
             if (item != null)
-            {
                 GetResidue();
-            }
-            
         }
 
         // Смена выделенного индекса поставщика
@@ -337,18 +338,15 @@ namespace SparesBase
         // Просмотр фотографий предмета
         private void btnPhoto_Click(object sender, EventArgs e)
         {
-
             PhotoEditor pe = null;
             if (item == null)
-            {
                 pe = new PhotoEditor();
-            }
             else
-            {
                 pe = new PhotoEditor(item.Id);
-            }
+
             if (pe.ShowDialog() == DialogResult.OK)
             {
+                imagesEdited = true;
                 images = pe.Images;
                 pbPhoto.Image = null;
                 foreach (Image image in images)
@@ -360,8 +358,6 @@ namespace SparesBase
                     }
                 }
             }
-           
-          
         }
 
         // Клик на кнопку Добавления / Изменения

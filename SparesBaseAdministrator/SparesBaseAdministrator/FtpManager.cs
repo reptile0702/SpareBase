@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Drawing.Drawing2D;
 
-namespace SparesBase
+namespace SparesBaseAdministrator
 {
     class FtpManager
     {

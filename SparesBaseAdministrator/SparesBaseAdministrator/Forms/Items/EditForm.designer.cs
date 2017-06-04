@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EditForm));
             this.tbItemName = new System.Windows.Forms.TextBox();
             this.tbPurchasePrice = new System.Windows.Forms.TextBox();
             this.tbQuantity = new System.Windows.Forms.TextBox();
@@ -122,7 +121,6 @@
             // 
             this.pbPhoto.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbPhoto.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbPhoto.Image = ((System.Drawing.Image)(resources.GetObject("pbPhoto.Image")));
             this.pbPhoto.Location = new System.Drawing.Point(3, 16);
             this.pbPhoto.Name = "pbPhoto";
             this.pbPhoto.Size = new System.Drawing.Size(296, 194);

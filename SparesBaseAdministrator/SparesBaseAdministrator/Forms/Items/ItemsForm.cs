@@ -151,8 +151,7 @@ namespace SparesBaseAdministrator
         {
             int selectedItemId = int.Parse(dgv.CurrentRow.Cells[0].Value.ToString());
             DatabaseWorker.SqlQuery("DELETE FROM Items WHERE(id = " + selectedItemId + ")");
-            PhotoEditor pe = new PhotoEditor(selectedItemId, true);
-            pe.DeleteItemImages();
+            FtpManager.DeleteItemImages(SelectedItem.Id);
             DatabaseWorker.InsertAction(3, selectedItemId);
             FillItemsByCategory();
         }

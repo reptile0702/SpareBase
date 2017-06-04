@@ -1,22 +1,12 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using BytesRoad.Net.Ftp;
 using System.IO;
 
 namespace SparesBase
 {
     public partial class PhotoEditor : Form
     {
-        // Данные об FTP сервере
-        int timeout = 30000;
-        int port = 21;
-        string server = "status.nvhost.ru";
-        string username = "sh61018001";
-        string password = "lfybkrf";
-        string remotePath = "Photos/";
-
         // Фотографии
         Image[] images;
 
@@ -24,15 +14,18 @@ namespace SparesBase
         private int id;
 
         public Image[] Images { get { return images; } }
+
+
         #region Конструкторы
 
-
+        // Конструктор для добавления предмета
         public PhotoEditor()
         {
             InitializeComponent();
             images = new Image[5];
         }
 
+        // Конструктор для редактирования предмета
         public PhotoEditor(int id)
         {
             InitializeComponent();
@@ -45,7 +38,6 @@ namespace SparesBase
 
         #region Методы
 
-      
         // Обновление PictureBox
         private void UpdatePicture()
         {
@@ -62,7 +54,6 @@ namespace SparesBase
             }
         }
         
-
         #endregion Методы
 
 
@@ -78,7 +69,7 @@ namespace SparesBase
                 int selectedImage = int.Parse(lbImages.SelectedItem.ToString()[12].ToString());
                 Image img = Image.FromFile(ofd.FileName);
                 string fileExtension = Path.GetExtension(ofd.FileName);
-                img.Tag = remotePath + "item_" + id + "/" + selectedImage + fileExtension;
+                img.Tag = "Photos/item_" + id + "/" + selectedImage + fileExtension;
                 images[selectedImage - 1] = img;
                 UpdatePicture();
             }
@@ -95,10 +86,7 @@ namespace SparesBase
         // ОК
         private void btnOk_Click(object sender, EventArgs e)
         {
-            //int selectedImage = int.Parse(lbImages.SelectedItem.ToString()[12].ToString());
-            //FtpManager.UploadImages(images, id);
-            DialogResult = DialogResult.OK;
-            
+            DialogResult = DialogResult.OK;   
             Close();
         }
 

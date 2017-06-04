@@ -11,7 +11,7 @@ namespace SparesBase
     {
         // TODO: при очищении всех назначенных фото не происходит удаления с сервера.
        
-       
+        // TODO: Доделать поиск по всем оргпнизациям (сделать форму Просмотра предмета) 
 
       
        
@@ -201,7 +201,6 @@ namespace SparesBase
         {
            
             DatabaseWorker.SqlQuery("UPDATE Items SET Deleted = 1 WHERE(id = " + SelectedItem.Id + ")");
-           
             FtpManager.DeleteItemImages(SelectedItem.Id);
             DatabaseWorker.InsertAction(3, SelectedItem.Id);
             FillItemsByCategory();
