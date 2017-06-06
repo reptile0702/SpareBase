@@ -3,8 +3,15 @@ using System.Windows.Forms;
 
 namespace SparesBase
 {
+    public enum SellerState
+    {
+        Insert, Update
+    }
     public partial class SellerEdit : Form
     {
+        SellerState state;
+        public int sellerId;
+    
         // Поставщик
         Seller seller;
 
@@ -15,7 +22,7 @@ namespace SparesBase
         {
             InitializeComponent();
             Text = "Новый поставщик";
-            
+            state = SellerState.Insert;
         }
 
         // Конструктор для редактирования поставщика
@@ -26,6 +33,8 @@ namespace SparesBase
             
             FillSellerData(seller);
             Text = "Редактирование поставщика";
+
+            state = SellerState.Update;
         }
 
         #endregion Конструкторы
@@ -71,6 +80,13 @@ namespace SparesBase
                 MessageBox.Show("Заполнены не все поля");
         }
 
+        
+        public SellerState ShowForm()
+        {
+            ShowDialog();            
+            return state;
+        }
+
         #endregion Методы
 
 
@@ -81,11 +97,15 @@ namespace SparesBase
         private void btnOk_Click(object sender, EventArgs e)
         {
             if (seller == null)
+            {
                 SellerOperation("INSERT INTO Sellers VALUES(NULL, '" + tbName.Text + "', '" + tbSite.Text + "', '" + tbTelephone.Text + "', '" + tbFirstName.Text + "', '" + tbLastName.Text + "', '" + tbSecondName.Text + "', " + EnteredUser.OrganizationId + ")");
+                sellerId = int.Parse(DatabaseWorker.SqlScalarQuery("SELECT id FROM Sellers WHERE(id=LAST_INSERT_ID())").ToString());
+            }
             else
+            {
                 SellerOperation("UPDATE Sellers SET name='" + tbName.Text + "', site='" + tbSite.Text + "', telephone='" + tbTelephone.Text + "', contactFirstName='" + tbFirstName.Text + "', contactLastName='" + tbLastName.Text + "', contactSecondName='" + tbSecondName.Text + "', OrganizationId = " + EnteredUser.OrganizationId + " WHERE(id = " + seller.Id + ")");
-
-            DialogResult = DialogResult.OK;
+                sellerId = seller.Id;
+            }
         }
 
         // Клик на кнопку "Отмена"

@@ -34,7 +34,28 @@ namespace SparesBase
 
         private void Search(string searchStr, int organizationId)
         {
-            string where = organizationId != 0 ? "WHERE((i.Item_Name LIKE \"%" + searchStr + "%\" OR i.Note LIKE \"%" + searchStr + "%\") AND (i.OrganizationId = " + organizationId + ") AND (i.SearchAllowed = 1) AND (i.Residue > 0) AND (i.Deleted <> 1))" : "WHERE((i.Item_Name LIKE \"%" + searchStr + "%\" OR i.Note LIKE \"%" + searchStr + "%\") AND (i.SearchAllowed = 1) AND (i.Residue > 0) AND (i.Deleted <> 1))";
+            string where = "WHERE(";//organizationId != 0 ? "WHERE((i.Item_Name LIKE \"%" + searchStr + "%\" OR i.Note LIKE \"%" + searchStr + "%\") AND (i.OrganizationId = " + organizationId + ") AND (i.SearchAllowed = 1) AND (i.Residue > 0) AND (i.Deleted <> 1))" : "WHERE((i.Item_Name LIKE \"%" + searchStr + "%\" OR i.Note LIKE \"%" + searchStr + "%\") AND (i.SearchAllowed = 1) AND (i.Residue > 0) AND (i.Deleted <> 1))";
+            string[] searchWords = searchStr.Split(' ');
+            if (searchStr != "")
+            {
+                where += "(";
+            }
+            foreach (string word in searchWords)
+            {
+                if (word != "")
+                {
+                    where += "i.Item_Name LIKE \"%" + word + "%\" OR ";
+                }               
+            }
+            if (searchStr != "")
+            {
+                where = where.Remove(where.Length - 3, 3) + ") AND";
+            }           
+            where += organizationId != 0 ? " (i.OrganizationId = " + organizationId + ") AND" : "";
+            //where += searchStr != "" || organizationId != 0 ? " AND ": 
+            where += " (i.SearchAllowed = 1) AND (i.Residue > 0) AND (i.Deleted <> 1))";
+
+
             Item[] items = dgv.FillItems(where);
             foreach (Item item in items)
             {
@@ -90,7 +111,12 @@ namespace SparesBase
 
         private void dgv_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-
+            if (dgv.CurrentRow != null)
+            {
+                Item item = (Item)dgv.CurrentRow.Tag;
+                OrganizationCardForm ocf = new OrganizationCardForm(item.Organization);
+                ocf.ShowDialog();
+            }            
         }
     }
 }

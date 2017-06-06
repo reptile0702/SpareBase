@@ -21,7 +21,7 @@ namespace SparesBase.Forms
             // Проверка на существование введенного логина в базе
             if (dr.Rows.Count != 0)
             {
-                if (dr.Rows[0].ItemArray[1].ToString() != tbLogIn.Text)
+                if (dr.Rows[0].ItemArray[1].ToString() != tbLogIn.Text.Trim())
                 {
                     MessageBox.Show("Пользователь с таким логином не зарегистрирован");
                     return;
@@ -34,12 +34,13 @@ namespace SparesBase.Forms
             }
 
             // Проверка пароля
-            if (dr.Rows[0].ItemArray[2].ToString() != tbPassword.Text)
+            if (dr.Rows[0].ItemArray[2].ToString() != tbPassword.Text.Trim())
             {
                 MessageBox.Show("Не верно введён пароль");
                 return;
             }
 
+            // зарегистрирован ли данный аккаунт в какой-либо организации
             if (dr.Rows[0].ItemArray[3].ToString() == "0")
             {
                 MessageBox.Show("Данный аккаунт не зарегистрирован ни в одной из организаций.");

@@ -15,7 +15,7 @@ namespace SparesBase
 
         public void InitializeCard(Organization organization)
         {
-            lId.Text = "Идентификатор: " + organization.Id.ToString();
+            
             lName.Text = "Название: " + organization.Name;
             lSite.Text = "Сайт: " + organization.Site;
             lTelephone.Text = "Телефон: " + organization.Telephone;
@@ -26,6 +26,12 @@ namespace SparesBase
                 lAdminFirstName.Text = "Имя: " + organization.Admin.FirstName;
                 lAdminLastName.Text = "Фамилия: " + organization.Admin.LastName;
                 lAdminSecondName.Text = "Отчество: " + organization.Admin.SecondName;
+            }
+            else
+            {
+                lAdminFirstName.Text = "";
+                lAdminLastName.Text = "Не назначен";
+                lAdminSecondName.Text = "";
             }
         }
 

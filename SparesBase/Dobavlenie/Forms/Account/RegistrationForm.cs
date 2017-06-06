@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace SparesBase.Forms
@@ -19,6 +20,14 @@ namespace SparesBase.Forms
         // Регистрация
         private void Register()
         {
+            Regex regex = new Regex(@"(^[^\d?])(\w{2,10}$)");
+
+            if (!regex.IsMatch(tbLogIn.Text))
+            {
+                MessageBox.Show("Ощибка");  
+            }
+
+
             // Проверка на введенность полей
             if (tbName.Text == "" ||
                 tbLastName.Text == "" ||
@@ -32,11 +41,16 @@ namespace SparesBase.Forms
             }
 
             // Проверка на совпадение двух паролей
-            if (tbPassword.Text != tbSecondPassword.Text)
+            if (tbPassword.Text.Trim() != tbSecondPassword.Text.Trim())
             {
                 MessageBox.Show("Не совпадают введенные пароли");
                 return;
             }
+
+           
+
+
+           
 
             // Проверка на существование введенного логина в базе
             if (DatabaseWorker.SqlScalarQuery("SELECT Login FROM Accounts WHERE(Login='" + tbLogIn.Text + "')") != null)
@@ -46,7 +60,7 @@ namespace SparesBase.Forms
             }
 
             // Добавление аккаунта в базу
-            DatabaseWorker.SqlQuery("INSERT INTO Accounts VALUES('','" + tbName.Text + "', '" + tbLastName.Text + "', '" + tbSecondName.Text + "', '" + tbLogIn.Text + "', '" + tbPassword.Text + "', " + cbOrganization.SelectedValue + ", " + (cbCity.SelectedIndex + 1) + ", '" + tbPhone.Text + "', '" + tbMail.Text + "', 0)");
+            DatabaseWorker.SqlQuery("INSERT INTO Accounts VALUES('','" + tbName.Text + "', '" + tbLastName.Text + "', '" + tbSecondName.Text + "', '" + tbLogIn.Text.Trim() + "', '" + tbPassword.Text.Trim() + "', " + cbOrganization.SelectedValue + ", " + (cbCity.SelectedIndex + 1) + ", '" + tbPhone.Text + "', '" + tbMail.Text + "', 0)");
 
             // Инициализация аккаунта в программе
             DataTable dr = DatabaseWorker.SqlSelectQuery("SELECT id, Login, Password, OrganizationId, Admin FROM Accounts WHERE(id = LAST_INSERT_ID())");

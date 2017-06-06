@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lId = new System.Windows.Forms.Label();
             this.lName = new System.Windows.Forms.Label();
             this.lSite = new System.Windows.Forms.Label();
             this.lTelephone = new System.Windows.Forms.Label();
@@ -44,19 +43,10 @@
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // lId
-            // 
-            this.lId.AutoSize = true;
-            this.lId.Location = new System.Drawing.Point(23, 25);
-            this.lId.Name = "lId";
-            this.lId.Size = new System.Drawing.Size(18, 13);
-            this.lId.TabIndex = 0;
-            this.lId.Text = "ID";
-            // 
             // lName
             // 
             this.lName.AutoSize = true;
-            this.lName.Location = new System.Drawing.Point(23, 45);
+            this.lName.Location = new System.Drawing.Point(21, 25);
             this.lName.Name = "lName";
             this.lName.Size = new System.Drawing.Size(125, 13);
             this.lName.TabIndex = 1;
@@ -65,7 +55,7 @@
             // lSite
             // 
             this.lSite.AutoSize = true;
-            this.lSite.Location = new System.Drawing.Point(23, 64);
+            this.lSite.Location = new System.Drawing.Point(21, 44);
             this.lSite.Name = "lSite";
             this.lSite.Size = new System.Drawing.Size(31, 13);
             this.lSite.TabIndex = 2;
@@ -74,7 +64,7 @@
             // lTelephone
             // 
             this.lTelephone.AutoSize = true;
-            this.lTelephone.Location = new System.Drawing.Point(23, 83);
+            this.lTelephone.Location = new System.Drawing.Point(21, 63);
             this.lTelephone.Name = "lTelephone";
             this.lTelephone.Size = new System.Drawing.Size(52, 13);
             this.lTelephone.TabIndex = 3;
@@ -83,7 +73,7 @@
             // lCity
             // 
             this.lCity.AutoSize = true;
-            this.lCity.Location = new System.Drawing.Point(23, 102);
+            this.lCity.Location = new System.Drawing.Point(21, 82);
             this.lCity.Name = "lCity";
             this.lCity.Size = new System.Drawing.Size(37, 13);
             this.lCity.TabIndex = 4;
@@ -119,7 +109,6 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.lName);
-            this.groupBox1.Controls.Add(this.lId);
             this.groupBox1.Controls.Add(this.lSite);
             this.groupBox1.Controls.Add(this.lTelephone);
             this.groupBox1.Controls.Add(this.lCity);
@@ -186,8 +175,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Label lId;
         private System.Windows.Forms.Label lName;
         private System.Windows.Forms.Label lSite;
         private System.Windows.Forms.Label lTelephone;

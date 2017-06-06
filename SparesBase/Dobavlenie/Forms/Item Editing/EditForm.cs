@@ -227,7 +227,7 @@ namespace SparesBase
                 selectedId = int.Parse(cbSeller.SelectedValue.ToString());
 
 
-            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT id, name FROM Sellers WHERE(OrganizationId=" + EnteredUser.OrganizationId + ")");
+            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT id, name FROM Sellers WHERE(OrganizationId=" + EnteredUser.OrganizationId + ") ORDER BY name");
             DataTable source = new DataTable();
             source.Columns.Add("id");
             source.Columns.Add("name");
@@ -324,8 +324,11 @@ namespace SparesBase
             if (cbSeller.Text == "Добавить нового поставщика...")
             {
                 SellerEdit sf = new SellerEdit();
-                if (sf.ShowDialog() == DialogResult.OK)
-                    cbSeller.SelectedIndex = cbSeller.Items.Count - 2;
+                if (sf.ShowForm() == SellerState.Insert)
+                {
+                    FillSellersComboBox();
+                    cbSeller.SelectedValue = sf.sellerId;
+                }
             }
         }
 
