@@ -35,21 +35,40 @@ namespace SparesBase
         private void Search(string searchStr, int organizationId)
         {
             string where = organizationId != 0 ? "WHERE((i.Item_Name LIKE \"%" + searchStr + "%\" OR i.Note LIKE \"%" + searchStr + "%\") AND (i.OrganizationId = " + organizationId + ") AND (i.SearchAllowed = 1) AND (i.Residue > 0) AND (i.Deleted <> 1))" : "WHERE((i.Item_Name LIKE \"%" + searchStr + "%\" OR i.Note LIKE \"%" + searchStr + "%\") AND (i.SearchAllowed = 1) AND (i.Residue > 0) AND (i.Deleted <> 1))";
-            dgv.FillItems(where);           
+            Item[] items = dgv.FillItems(where);
+            foreach (Item item in items)
+            {
+#if DEBUG
+                dgv.Rows.Add(
+                    item.Id,
+                    item.Name,
+                    item.RetailPrice,
+                    item.ServicePrice,
+                    item.Quantity,
+                    item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay);
+#else
+                dgv.Rows.Add(
+                    item.Name,
+                    item.RetailPrice,
+                    item.ServicePrice,
+                    item.Quantity,
+                    item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay);
+#endif
+
+                dgv.Rows[dgv.Rows.Count - 1].Tag = item;
+            }
         }
 
         private void SearchingForm_Load(object sender, EventArgs e)
         {
+#if DEBUG
             dgv.Columns.Add("Id", "ID");
+#endif
             dgv.Columns.Add("Name", "Наименование");
-            dgv.Columns.Add("Seller", "Поставщик");
-            dgv.Columns.Add("Purchase", "Закупка");
             dgv.Columns.Add("Retail", "Розница");
-            dgv.Columns.Add("Wholesale", "Мелкий опт");
             dgv.Columns.Add("Service", "Сервисы");
-            dgv.Columns.Add("Storage", "Хранение");
             dgv.Columns.Add("Quantity", "Количество");
-            dgv.Columns.Add("Residue", "Остаток");
+            dgv.Columns.Add("date", "Дата добавления");
 
             FillOrganizations();
             Search("", 0);

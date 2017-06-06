@@ -1,4 +1,7 @@
-﻿using System;
+﻿#define DEV
+
+using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
@@ -10,6 +13,22 @@ namespace SparesBase
         public ItemsDataGridView()
         {
             Sorted += ItemsDataGridView_Sorted;
+            RowsAdded += ItemsDataGridView_RowsAdded;
+            RowsRemoved += ItemsDataGridView_RowsRemoved;
+        }
+
+        private void ItemsDataGridView_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        {
+            for (int i = 0; i < Rows.Count; i++)
+                if (i % 2 != 0)
+                    Rows[i].DefaultCellStyle.BackColor = Color.LightGray;
+        }
+
+        private void ItemsDataGridView_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            for (int i = 0; i < Rows.Count; i++)
+                if (i % 2 != 0)
+                    Rows[i].DefaultCellStyle.BackColor = Color.LightGray;
         }
 
         private void ItemsDataGridView_Sorted(object sender, EventArgs e)
@@ -21,10 +40,11 @@ namespace SparesBase
                     Rows[i].DefaultCellStyle.BackColor = Color.White;
         }
 
-        public void FillItems(string where)
+        public Item[] FillItems(string where)
         {
             Rows.Clear();
 
+            List<Item> resItems = new List<Item>();
             // Выполнение запроса
             DataTable items = DatabaseWorker.SqlSelectQuery("SELECT i.id, mc.id, mc.Name, mc.OrganizationId, sc1.id, sc1.Name, sc1.MainCatId, sc1.OrganizationId, sc2.id, sc2.Name, sc2.SubCat1Id, sc2.OrganizationId, sc3.id, sc3.Name, sc3.SubCat2Id, sc3.OrganizationId, sc4.id, sc4.Name, sc4.SubCat3Id, sc4.OrganizationId, i.Item_Name, s.id, s.name, s.site, s.telephone, s.contactFirstName, s.contactLastName, s.contactSecondName, s.OrganizationId, i.Purchase_Price, i.Retail_Price, i.Wholesale_Price, i.Service_Price, i.FirmPrice, i.Storage, i.Note, i.Quantity, i.Residue, i.Upload_Date, o.id, o.Name, o.Site, o.Telephone, oc.City, oa.id, oa.FirstName, oa.LastName, oa.SecondName, oa.Login, oac.City, oa.Phone, oa.Email, oa.Admin, i.SearchAllowed FROM Items i LEFT JOIN Main_Category mc ON mc.id = i.Main_Category_Id LEFT JOIN Sub_Category_1 sc1 ON sc1.id = i.Sub_Category_1_Id LEFT JOIN Sub_Category_2 sc2 ON sc2.id = i.Sub_Category_2_Id LEFT JOIN Sub_Category_3 sc3 ON sc3.id = i.Sub_Category_3_Id LEFT JOIN Sub_Category_4 sc4 ON sc4.id = i.Sub_Category_4_Id LEFT JOIN Sellers s ON s.id = i.Seller_Id LEFT JOIN Organizations o ON o.id = i.OrganizationId LEFT JOIN Cities oc ON oc.id = o.CityId LEFT JOIN Accounts oa ON oa.id = o.AdminAccountId LEFT JOIN Cities oac ON oac.id = oa.CityId " + where);
 
@@ -135,25 +155,15 @@ namespace SparesBase
                     organization,
                     row.ItemArray[53].ToString() == "1" ? true : false);
 
-                Rows.Add(
-                    item.Id,
-                    item.Name,
-                    item.Seller.Name,
-                    item.PurchasePrice,
-                    item.RetailPrice,
-                    item.WholesalePrice,
-                    item.ServicePrice,
-                    item.Storage,
-                    item.Quantity,
-                    item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay,
-                    item.Residue);
+                resItems.Add(item);
+               
 
-                Rows[Rows.Count - 1].Tag = item;
+                
             }
 
-            for (int i = 0; i < Rows.Count; i++)
-                if (i % 2 != 0)
-                    Rows[i].DefaultCellStyle.BackColor = Color.LightGray;
+            return resItems.ToArray();
+
+           
         }
     }
 }

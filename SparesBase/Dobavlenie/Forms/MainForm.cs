@@ -13,6 +13,7 @@ namespace SparesBase
        
         // TODO: Доделать поиск по всем оргпнизациям (сделать форму Просмотра предмета) 
 
+        // TODO: Запретить в логине и пароле все знаки кроме: . @
       
        
        
@@ -67,7 +68,41 @@ namespace SparesBase
             }
             where += ") AND (i.Residue > 0) AND (i.Deleted <> 1))";
 
-            dgv.FillItems(where);
+            Item[] items = dgv.FillItems(where);
+            foreach (Item item in items)
+            {
+#if DEBUG
+                dgv.Rows.Add(
+                    item.Id,
+                    item.Name,
+                    item.Seller.Name,
+                    item.PurchasePrice,
+                    item.RetailPrice,
+                    item.WholesalePrice,
+                    item.ServicePrice,
+                    item.FirmPrice,
+                    item.Storage,
+                    item.Quantity,
+                    item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay,
+                    item.Residue);
+
+#else
+                dgv.Rows.Add(                    
+                    item.Name,
+                    item.Seller.Name,
+                    item.PurchasePrice,
+                    item.RetailPrice,
+                    item.WholesalePrice,
+                    item.ServicePrice,
+                    item.FirmPrice,
+                    item.Storage,
+                    item.Quantity,
+                    item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay,
+                    item.Residue);
+#endif
+
+                dgv.Rows[dgv.Rows.Count - 1].Tag = item;
+            }
         }
 
         #endregion Заполнение данных
@@ -81,21 +116,39 @@ namespace SparesBase
         {
             dgv.Columns.Clear();
 
+#if DEBUG
             dgv.Columns.Add("id", "ID");
+#endif
             dgv.Columns.Add("name", "Наименование");
             dgv.Columns.Add("seller", "Поставщик");
             dgv.Columns.Add("purchasePrice", "Закупка");
             dgv.Columns.Add("retailPrice", "Розница");
             dgv.Columns.Add("wholesalePrice", "Мелкий опт");
             dgv.Columns.Add("servicePrice", "Сервисы");
+            dgv.Columns.Add("firmPrice", "Цена фирмы");
             dgv.Columns.Add("storage", "Хранение");
             dgv.Columns.Add("quantity", "Количество");
             dgv.Columns.Add("uploadDate", "Дата добавления");
             dgv.Columns.Add("residue", "Остаток");
 
+#if DEBUG
             dgv.Columns[0].Width = 50;
-            dgv.Columns[1].Width = 120;
+            dgv.Columns[1].Width = 150;
             dgv.Columns[2].Width = 120;
+            dgv.Columns[3].Width = 90;
+            dgv.Columns[4].Width = 90;
+            dgv.Columns[5].Width = 90;
+            dgv.Columns[6].Width = 90;
+            dgv.Columns[7].Width = 90;
+            dgv.Columns[8].Width = 90;
+            dgv.Columns[9].Width = 90;
+            dgv.Columns[10].Width = 120;
+            dgv.Columns[11].Width = 70;
+#else
+            
+            dgv.Columns[0].Width = 150;
+            dgv.Columns[1].Width = 120;
+            dgv.Columns[2].Width = 90;
             dgv.Columns[3].Width = 90;
             dgv.Columns[4].Width = 90;
             dgv.Columns[5].Width = 90;
@@ -104,6 +157,7 @@ namespace SparesBase
             dgv.Columns[8].Width = 90;
             dgv.Columns[9].Width = 120;
             dgv.Columns[10].Width = 70;
+#endif
         }
 
         // Поиск и выделение нода по пути
@@ -174,11 +228,11 @@ namespace SparesBase
             return categories;
         }
 
-        #endregion Вспомогательные методы
+#endregion Вспомогательные методы
 
 
 
-        #region Предметы
+#region Предметы
 
         // Добавить предмет
         private void AddItem()
@@ -237,14 +291,48 @@ namespace SparesBase
         private void SearchItems(string query)
         {
             string where = "WHERE((Item_Name LIKE \"%" + query + "%\" OR Note LIKE \"%" + query + "%\") AND (i.OrganizationId = " + EnteredUser.OrganizationId + ") AND (i.Residue > 0)  AND (i.Deleted <> 1))";
-            dgv.FillItems(where);
+            Item[] items = dgv.FillItems(where);
+            foreach (Item item in items)
+            {
+#if DEBUG
+                dgv.Rows.Add(
+                    item.Id,
+                    item.Name,
+                    item.Seller.Name,
+                    item.PurchasePrice,
+                    item.RetailPrice,
+                    item.WholesalePrice,
+                    item.ServicePrice,
+                    item.FirmPrice,
+                    item.Storage,
+                    item.Quantity,
+                    item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay,
+                    item.Residue);
+
+#else
+                dgv.Rows.Add(                    
+                    item.Name,
+                    item.Seller.Name,
+                    item.PurchasePrice,
+                    item.RetailPrice,
+                    item.WholesalePrice,
+                    item.ServicePrice,
+                    item.FirmPrice,
+                    item.Storage,
+                    item.Quantity,
+                    item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay,
+                    item.Residue);
+#endif
+
+                dgv.Rows[dgv.Rows.Count - 1].Tag = item;
+            }
         }
 
-        #endregion Предметы
+#endregion Предметы
 
 
 
-        #region Категории
+#region Категории
 
         // Добавляет новую категорию
         public void AddCategory(int nodeCount, int selectedIdNode, string category)
@@ -254,13 +342,27 @@ namespace SparesBase
             {
                 DatabaseWorker.SqlQuery("INSERT INTO Main_Category VALUES('', '" + category + "', " + EnteredUser.OrganizationId + ")");
                 id = DatabaseWorker.SqlScalarQuery("SELECT id FROM Main_Category WHERE(id=LAST_INSERT_ID())").ToString();
-                treeView.Nodes.Add(new TreeNode() { Text = category, Tag = id, ContextMenuStrip = cmsCategory });
+
+                Category cat = new Category(
+                    int.Parse(id),
+                    category,
+                    selectedIdNode,
+                    EnteredUser.OrganizationId);
+
+                treeView.Nodes.Add(new TreeNode() { Text = category, Tag = cat, ContextMenuStrip = cmsCategory });
             }
             else
             {
                 DatabaseWorker.SqlQuery("INSERT INTO Sub_Category_" + nodeCount + " VALUES('', '" + category + "', " + selectedIdNode + ", " + EnteredUser.OrganizationId + ")");
                 id = DatabaseWorker.SqlScalarQuery("SELECT id FROM Sub_Category_" + nodeCount + " WHERE(id=LAST_INSERT_ID())").ToString();
-                treeView.SelectedNode.Nodes.Add(new TreeNode() { Text = category, Tag = id, ContextMenuStrip = cmsCategory });
+
+                Category cat = new Category(
+                    int.Parse(id),
+                    category,
+                    selectedIdNode,
+                    EnteredUser.OrganizationId);
+
+                treeView.SelectedNode.Nodes.Add(new TreeNode() { Text = category, Tag = cat, ContextMenuStrip = cmsCategory });
             }
         }
 
@@ -291,11 +393,11 @@ namespace SparesBase
             DatabaseWorker.SqlQuery("UPDATE Items Set Main_Category_Id=" + categories[0] + ",  Sub_Category_1_Id=" + categories[1] + ", Sub_Category_2_Id=" + categories[2] + ", Sub_Category_3_Id=" + categories[3] + ", Sub_Category_4_Id=" + categories[4] + " WHERE(id=" + itemId + ")");
         }
 
-        #endregion Категории
+#endregion Категории
 
 
 
-        #region События
+#region События
 
         // Загрузка формы
         private void MainForm_Load(object sender, EventArgs e)
@@ -408,7 +510,7 @@ namespace SparesBase
             alf.ShowDialog();
         }
 
-        #endregion События
+#endregion События
 
 
         private void treeView_DragEnter(object sender, DragEventArgs e)
