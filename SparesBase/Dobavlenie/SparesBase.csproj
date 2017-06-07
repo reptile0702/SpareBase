@@ -188,6 +188,7 @@
     <Compile Include="Forms\Item Editing\SellerForm.designer.cs">
       <DependentUpon>SellerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="StringValidation.cs" />
     <EmbeddedResource Include="Forms\Item Editing\ChangeCategoriesForm.resx">
       <DependentUpon>ChangeCategoriesForm.cs</DependentUpon>
     </EmbeddedResource>

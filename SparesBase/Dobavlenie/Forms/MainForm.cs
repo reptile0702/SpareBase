@@ -9,12 +9,7 @@ namespace SparesBase
 {
     public partial class MainForm : Form
     {
-        // TODO: Запретить в логине и пароле все знаки кроме: . @
-        // TODO: Добавить поле Дата изменения
-        // TODO: Добавть журнал поисков
-        // TODO: Проверка на уделние поставщика и категории, на то, связаны ли с ним предметы, если "да" - запретиить удаление
-       
-       
+        // TODO: Добавть журнал поисков 
 
         // Выбранная категория в TreeView
         public Category SelectedCategory { get { return (Category)treeView.SelectedNode.Tag; } }
@@ -35,19 +30,16 @@ namespace SparesBase
             Text = "База запчастей - " + dt.Rows[0].ItemArray[0] + " " + dt.Rows[0].ItemArray[1] + " " + dt.Rows[0].ItemArray[2] + " - " + dt.Rows[0].ItemArray[3];
             if (dt.Rows[0].ItemArray[4].ToString() != "1")
                 tsmiLogs.Visible = false;
-            
+
             tbSearch.Text = "Поиск";
             tbSearch.ForeColor = Color.Gray;
-            
-           treeView.FillCategories(EnteredUser.OrganizationId, cmsCategory);
+
+            treeView.FillCategories(EnteredUser.OrganizationId, cmsCategory);
             InitializeDataGridView();
         }
 
 
         #region Заполнение данных
-        
-        
-        
 
         // Заполнение предметов по категориям
         private void FillItemsByCategory()
@@ -82,6 +74,7 @@ namespace SparesBase
                     item.Storage,
                     item.Quantity,
                     item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay,
+                    item.ChangeDate.Date.ToShortDateString() + " " + item.ChangeDate.TimeOfDay,
                     item.Residue);
 
 #else
@@ -96,6 +89,7 @@ namespace SparesBase
                     item.Storage,
                     item.Quantity,
                     item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay,
+                    item.ChangeDate.Date.ToShortDateString() + " " + item.ChangeDate.TimeOfDay,
                     item.Residue);
 #endif
 
@@ -127,6 +121,7 @@ namespace SparesBase
             dgv.Columns.Add("storage", "Хранение");
             dgv.Columns.Add("quantity", "Количество");
             dgv.Columns.Add("uploadDate", "Дата добавления");
+            dgv.Columns.Add("changeDate", "Дата изменения");
             dgv.Columns.Add("residue", "Остаток");
 
 #if DEBUG
@@ -141,7 +136,8 @@ namespace SparesBase
             dgv.Columns[8].Width = 90;
             dgv.Columns[9].Width = 90;
             dgv.Columns[10].Width = 120;
-            dgv.Columns[11].Width = 70;
+            dgv.Columns[11].Width = 120;
+            dgv.Columns[12].Width = 70;
 #else
             
             dgv.Columns[0].Width = 150;
@@ -154,7 +150,8 @@ namespace SparesBase
             dgv.Columns[7].Width = 90;
             dgv.Columns[8].Width = 90;
             dgv.Columns[9].Width = 120;
-            dgv.Columns[10].Width = 70;
+            dgv.Columns[10].Width = 120;
+            dgv.Columns[11].Width = 70;
 #endif
         }
 
@@ -226,11 +223,11 @@ namespace SparesBase
             return categories;
         }
 
-#endregion Вспомогательные методы
+        #endregion Вспомогательные методы
 
 
 
-#region Предметы
+        #region Предметы
 
         // Добавить предмет
         private void AddItem()
@@ -251,7 +248,7 @@ namespace SparesBase
         // Удалить предмет
         private void DeleteItem()
         {
-           
+
             DatabaseWorker.SqlQuery("UPDATE Items SET Deleted = 1 WHERE(id = " + SelectedItem.Id + ")");
             FtpManager.DeleteItemImages(SelectedItem.Id);
             DatabaseWorker.InsertAction(3, SelectedItem.Id);
@@ -275,7 +272,7 @@ namespace SparesBase
             lresidue.Text = "Остаток: " + selItem.Residue;
 
             lMainCat.Text = "Главная категория: " + selItem.MainCategory.Name;
-            if(selItem.SubCategory1 != null)
+            if (selItem.SubCategory1 != null)
                 lSub1.Text = "Подкатегория 1: " + selItem.SubCategory1.Name;
             if (selItem.SubCategory2 != null)
                 lSub2.Text = "Подкатегория 2: " + selItem.SubCategory2.Name;
@@ -305,7 +302,7 @@ namespace SparesBase
             {
                 where = where.Remove(where.Length - 3, 3) + ") AND";
             }
-            where +=  " (i.OrganizationId = " + EnteredUser.OrganizationId + ") AND";
+            where += " (i.OrganizationId = " + EnteredUser.OrganizationId + ") AND";
             //where += searchStr != "" || organizationId != 0 ? " AND ": 
             where += " (i.Residue > 0) AND (i.Deleted <> 1))";
             Item[] items = dgv.FillItems(where);
@@ -345,11 +342,11 @@ namespace SparesBase
             }
         }
 
-#endregion Предметы
+        #endregion Предметы
 
 
 
-#region Категории
+        #region Категории
 
         // Добавляет новую категорию
         public void AddCategory(int nodeCount, int selectedIdNode, string category)
@@ -398,10 +395,23 @@ namespace SparesBase
         public void DeleteCategory(int nodeCount, int selectedIdNode)
         {
             if (nodeCount == 1)
-                DatabaseWorker.SqlQuery("DELETE FROM Main_Category WHERE(id = " + selectedIdNode + ")");
+                if (int.Parse(DatabaseWorker.SqlScalarQuery("SELECT COUNT(1) FROM Items WHERE(Main_Category_Id = " + SelectedCategory.Id + ")").ToString()) <= 0)
+                {
+                    DatabaseWorker.SqlQuery("DELETE FROM Main_Category WHERE(id = " + selectedIdNode + ")");
+                    treeView.SelectedNode.Remove();
+                }
+                else
+                    MessageBox.Show("Операцию удаления категории произвести невозможно, так как к ней привязаны один или несколько предметов.", "Удаление категории", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else
-                DatabaseWorker.SqlQuery("DELETE FROM Sub_Category_" + (nodeCount - 1) + " WHERE(id = " + selectedIdNode + ")");
-            treeView.SelectedNode.Remove();
+            {
+                if (int.Parse(DatabaseWorker.SqlScalarQuery("SELECT COUNT(1) FROM Items WHERE(Sub_Category_" + (nodeCount - 1) + "_Id = " + SelectedCategory.Id + ")").ToString()) <= 0)
+                {
+                    DatabaseWorker.SqlQuery("DELETE FROM Sub_Category_" + (nodeCount - 1) + " WHERE(id = " + selectedIdNode + ")");
+                    treeView.SelectedNode.Remove();
+                }
+                else
+                    MessageBox.Show("Операцию удаления категории произвести невозможно, так как к ней привязаны один или несколько предметов.", "Удаление категории", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         // Смена категории
@@ -410,11 +420,11 @@ namespace SparesBase
             DatabaseWorker.SqlQuery("UPDATE Items Set Main_Category_Id=" + categories[0] + ",  Sub_Category_1_Id=" + categories[1] + ", Sub_Category_2_Id=" + categories[2] + ", Sub_Category_3_Id=" + categories[3] + ", Sub_Category_4_Id=" + categories[4] + " WHERE(id=" + itemId + ")");
         }
 
-#endregion Категории
+        #endregion Категории
 
 
 
-#region События
+        #region События
 
         // Загрузка формы
         private void MainForm_Load(object sender, EventArgs e)
@@ -508,7 +518,7 @@ namespace SparesBase
         }
 
 
-        
+
 
         // Закрытие формы
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -517,7 +527,7 @@ namespace SparesBase
             {
                 Application.Exit();
             }
-           
+
         }
 
         // Журнал действий
@@ -527,7 +537,7 @@ namespace SparesBase
             alf.ShowDialog();
         }
 
-#endregion События
+        #endregion События
 
 
         private void treeView_DragEnter(object sender, DragEventArgs e)
@@ -537,19 +547,19 @@ namespace SparesBase
 
         private void treeView_DragDrop(object sender, DragEventArgs e)
         {
-            
+
             Point pt = treeView.PointToClient(Cursor.Position);
             TreeNode node = treeView.GetNodeAt(pt);
             if (node != null)
             {
                 //MessageBox.Show(e.Data.GetData(DataFormats.Text).ToString() + " " + node.Text);
-                if (MessageBox.Show("Вы уверены, что хотите переместить предмет из категорий \"" + treeView.SelectedNode.FullPath.Replace("\\", " - ") + "\" в категории \"" + node.FullPath.Replace("\\", " - ") + "\"?", "Вы уверены?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes) 
+                if (MessageBox.Show("Вы уверены, что хотите переместить предмет из категорий \"" + treeView.SelectedNode.FullPath.Replace("\\", " - ") + "\" в категории \"" + node.FullPath.Replace("\\", " - ") + "\"?", "Вы уверены?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                 {
                     ChangeCategories(FormCategories(node), int.Parse(e.Data.GetData(DataFormats.Text).ToString()));
                     FillItemsByCategory();
 
                 }
-                
+
             }
         }
 
@@ -561,7 +571,7 @@ namespace SparesBase
                 {
                     dgv.DoDragDrop(dgv.CurrentRow.Cells[0].Value.ToString(), DragDropEffects.Copy);
                 }
-               
+
             }
         }
 
@@ -637,6 +647,6 @@ namespace SparesBase
             }
         }
 
-      
+
     }
 }

@@ -16,18 +16,9 @@ namespace SparesBase.Forms
             this.af = af;
         }
 
-
         // Регистрация
         private void Register()
         {
-            Regex regex = new Regex(@"(^[^\d?])(\w{2,10}$)");
-
-            if (!regex.IsMatch(tbLogIn.Text))
-            {
-                MessageBox.Show("Ощибка");  
-            }
-
-
             // Проверка на введенность полей
             if (tbName.Text == "" ||
                 tbLastName.Text == "" ||
@@ -37,6 +28,13 @@ namespace SparesBase.Forms
                 tbSecondPassword.Text == "")
             {
                 MessageBox.Show("Не все поля были заполнены");
+                return;
+            }
+
+            // Проверка на допустимые символы
+            if (!StringValidation.IsValid(tbLogIn.Text))
+            {
+                MessageBox.Show("Были введены недопустимые символы.\nРазрешены: латинские буквы, цифры _ - . @");
                 return;
             }
 

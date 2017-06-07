@@ -16,6 +16,13 @@ namespace SparesBase.Forms
         // Аунтентификация
         private void Authentification()
         {
+            // Проверка на допустимые символы
+            if (!StringValidation.IsValid(tbLogIn.Text))
+            {
+                MessageBox.Show("Были введены недопустимые символы.\nРазрешены: латинские буквы, цифры _ - . @");
+                return;
+            }
+
             DataTable dr = DatabaseWorker.SqlSelectQuery("SELECT id, Login, Password, OrganizationId, Admin FROM Accounts WHERE(Login='" + tbLogIn.Text + "')");
 
             // Проверка на существование введенного логина в базе

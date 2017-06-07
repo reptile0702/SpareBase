@@ -90,9 +90,9 @@ namespace SparesBase
                 // Формирование запроса
                 string query = "";
                 if (operation == "INSERT")
-                    query = "INSERT INTO Items VALUES('', {0}, {1}, {2}, {3}, {4}, '{5}', {6}, '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', {14}, NOW(), {15}, " + EnteredUser.OrganizationId + ", {16}, 0)";
+                    query = "INSERT INTO Items VALUES('', {0}, {1}, {2}, {3}, {4}, '{5}', {6}, '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', {14}, NOW(), NOW(), {15}, " + EnteredUser.OrganizationId + ", {16}, 0)";
                 else
-                    query = "UPDATE Items SET Main_Category_Id = {0}, Sub_Category_1_Id = {1}, Sub_Category_2_Id = {2}, Sub_Category_3_Id = {3}, Sub_Category_4_Id = {4}, Item_Name='{5}', Seller_Id={6}, Purchase_Price='{7}', Retail_Price='{8}', Wholesale_Price='{9}', Service_Price='{10}', FirmPrice='{11}', Storage='{12}', Note='{13}', Quantity={14}, Residue={15} , SearchAllowed={16} WHERE id = " + updateId;
+                    query = "UPDATE Items SET Main_Category_Id = {0}, Sub_Category_1_Id = {1}, Sub_Category_2_Id = {2}, Sub_Category_3_Id = {3}, Sub_Category_4_Id = {4}, Item_Name='{5}', Seller_Id={6}, Purchase_Price='{7}', Retail_Price='{8}', Wholesale_Price='{9}', Service_Price='{10}', FirmPrice='{11}', Storage='{12}', Note='{13}', Quantity={14}, Residue={15} , SearchAllowed={16}, ChangeDate = NOW() WHERE id = " + updateId;
 
                 // Подсчет остатка 
                 if (item != null)
@@ -124,37 +124,16 @@ namespace SparesBase
                 DatabaseWorker.SqlQuery(query);
                 if (updateId == 0)
                 {
-                    //for (int i = 0; i < images.Length; i++)
-                    //{
-                    //    if (images[i] != null)
-                    //    {
-                    //        int itemId = int.Parse(DatabaseWorker.SqlScalarQuery("SELECT id FROM Items WHERE(id = LAST_INSERT_ID())").ToString());
-                    //        FtpManager.UploadImages(images, itemId);
-                    //        break;
-                    //    }
-                    //}
-
                     if (imagesEdited)
                     {
                         int itemId = int.Parse(DatabaseWorker.SqlScalarQuery("SELECT id FROM Items WHERE(id = LAST_INSERT_ID())").ToString());
                         FtpManager.UploadImages(images, itemId);
                     }
-
-
                     DatabaseWorker.InsertAction(1, int.Parse(DatabaseWorker.SqlScalarQuery("SELECT LAST_INSERT_ID() FROM Items").ToString()));
 
                 }
                 else
                 {
-                    //for (int i = 0; i < images.Length; i++)
-                    //{
-                    //    if (images[i] != null)
-                    //    {
-                    //        FtpManager.UploadImages(images, item.Id);
-                    //        break;
-                    //    }
-                    //}
-
                     if (imagesEdited)
                         FtpManager.UploadImages(images, item.Id);
 

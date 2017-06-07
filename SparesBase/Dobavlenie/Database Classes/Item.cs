@@ -21,6 +21,7 @@
             int quantity,
             int residue,
             System.DateTime uploadDate,
+            System.DateTime changeDate,
             Organization organization,
             bool searchAllowed)
         {
@@ -48,6 +49,7 @@
             Residue = residue;
 
             UploadDate = uploadDate;
+            ChangeDate = changeDate;
 
             Organization = organization;
 
@@ -78,6 +80,7 @@
         public int Residue { get; set; }
 
         public System.DateTime UploadDate { get; set; }
+        public System.DateTime ChangeDate { get; set; }
 
         public Organization Organization { get; set; }
 

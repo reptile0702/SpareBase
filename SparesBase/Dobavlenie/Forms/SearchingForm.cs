@@ -66,14 +66,16 @@ namespace SparesBase
                     item.RetailPrice,
                     item.ServicePrice,
                     item.Quantity,
-                    item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay);
+                    item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay,
+                    item.ChangeDate.Date.ToShortDateString() + " " + item.ChangeDate.TimeOfDay);
 #else
                 dgv.Rows.Add(
                     item.Name,
                     item.RetailPrice,
                     item.ServicePrice,
                     item.Quantity,
-                    item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay);
+                    item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay,
+                    item.ChangeDate.Date.ToShortDateString() + " " + item.ChangeDate.TimeOfDay);
 #endif
 
                 dgv.Rows[dgv.Rows.Count - 1].Tag = item;
@@ -90,6 +92,7 @@ namespace SparesBase
             dgv.Columns.Add("Service", "Сервисы");
             dgv.Columns.Add("Quantity", "Количество");
             dgv.Columns.Add("date", "Дата добавления");
+            dgv.Columns.Add("changeDate", "Дата изменения");
 
             FillOrganizations();
             Search("", 0);
