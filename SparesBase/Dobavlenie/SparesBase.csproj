@@ -55,7 +55,7 @@
       <HintPath>..\..\..\..\..\..\YandexDisk\C# Libraries\BytesRoad.NetSuit_2_0\Bin\BytesRoad.Net.Ftp.dll</HintPath>
     </Reference>
     <Reference Include="mysql.data">
-      <HintPath>..\..\..\..\..\..\YandexDisk\C# Libraries\MySQL Connector 6.0.7\mysql.data.dll</HintPath>
+      <HintPath>bin\Debug\mysql.data.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -122,6 +122,12 @@
     <Compile Include="Forms\SearchingForm.Designer.cs">
       <DependentUpon>SearchingForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\UpdateProgramForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UpdateProgramForm.Designer.cs">
+      <DependentUpon>UpdateProgramForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Write-off\DefectForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -175,6 +181,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="ProgramUpdate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Forms\Item Editing\SellerEdit.cs">
       <SubType>Form</SubType>
@@ -209,6 +216,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SearchingForm.resx">
       <DependentUpon>SearchingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UpdateProgramForm.resx">
+      <DependentUpon>UpdateProgramForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Write-off\DefectForm.resx">
       <DependentUpon>DefectForm.cs</DependentUpon>

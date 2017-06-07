@@ -4,6 +4,9 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 using System.Drawing.Drawing2D;
+using System.Xml;
+using System.Net;
+using System.Threading;
 
 namespace SparesBase
 {
@@ -218,7 +221,21 @@ namespace SparesBase
 
         #endregion Методы
 
+        public static bool CheckUpdate()
+        {
+            try
+            {
+                
+                
+            }
+            catch (System.Exception)
+            {
 
+                throw;
+            }
+            return true;
+
+        }
 
         #region Вспомогательные методы
 

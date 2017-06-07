@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data;
+using System.Net;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace SparesBase.Forms
 {
@@ -10,6 +12,7 @@ namespace SparesBase.Forms
         public AuthenticationForm()
         {
             InitializeComponent();
+            bwUpdater.RunWorkerAsync();
         }
         
 
@@ -104,7 +107,47 @@ namespace SparesBase.Forms
 
         private void AuthenticationForm_Load(object sender, EventArgs e)
         {
-          
+           
+        }
+
+        private void bwUpdater_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+
+            //Connect();
+            //client.GetFile(timeout, "SparesBase/Versions/CurrentVersion/Version.xml", Application.StartupPath);
+            //client.Disconnect(timeout);
+            WebClient webcl = new WebClient();
+            webcl.DownloadFile(new System.Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Versions/CurrentVersion/Version.xml"), "Version.xml");
+
+            XmlDocument xDoc = new XmlDocument();
+            xDoc.Load("Version.xml");
+            XmlElement xRoot = xDoc.DocumentElement;
+            double version = Convert.ToDouble(xRoot["Version"].InnerText.Replace(".", ""));
+            double thisVersion = Convert.ToDouble(Application.ProductVersion.Replace(".", ""));
+            if (thisVersion < version )
+            {
+                e.Result = new ProgramUpdate(xRoot["Version"].InnerText, xRoot["ChangeLog"].InnerText);
+               // e.Cancel = true;
+            }
+           
+
+        }
+
+        private void bwUpdater_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
+        {
+
+        }
+
+        private void bwUpdater_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+
+            ProgramUpdate pu = (ProgramUpdate)e.Result;
+            if (pu != null)
+            {
+                UpdateProgramForm upf = new UpdateProgramForm(pu.Version, pu.ChangeLog);
+                upf.ShowDialog();
+            }
+            
         }
     }
 }

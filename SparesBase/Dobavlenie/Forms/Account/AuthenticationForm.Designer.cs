@@ -35,6 +35,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnEnter = new System.Windows.Forms.Button();
             this.btnRegistration = new System.Windows.Forms.Button();
+            this.bwUpdater = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // tbLogIn
@@ -90,6 +91,12 @@
             this.btnRegistration.UseVisualStyleBackColor = true;
             this.btnRegistration.Click += new System.EventHandler(this.btnRegistration_Click);
             // 
+            // bwUpdater
+            // 
+            this.bwUpdater.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwUpdater_DoWork);
+            this.bwUpdater.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bwUpdater_ProgressChanged);
+            this.bwUpdater.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwUpdater_RunWorkerCompleted);
+            // 
             // AuthenticationForm
             // 
             this.AcceptButton = this.btnEnter;
@@ -122,5 +129,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnEnter;
         private System.Windows.Forms.Button btnRegistration;
+        private System.ComponentModel.BackgroundWorker bwUpdater;
     }
 }
