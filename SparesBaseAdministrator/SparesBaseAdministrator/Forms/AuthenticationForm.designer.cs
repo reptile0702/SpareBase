@@ -33,7 +33,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.btnEnter = new System.Windows.Forms.Button();
-            this.btnRegistration = new System.Windows.Forms.Button();
+            this.bwUpdater = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // tbLogIn
@@ -79,23 +79,16 @@
             this.btnEnter.UseVisualStyleBackColor = true;
             this.btnEnter.Click += new System.EventHandler(this.btnEnter_Click);
             // 
-            // btnRegistration
+            // bwUpdater
             // 
-            this.btnRegistration.Location = new System.Drawing.Point(51, 119);
-            this.btnRegistration.Name = "btnRegistration";
-            this.btnRegistration.Size = new System.Drawing.Size(183, 23);
-            this.btnRegistration.TabIndex = 5;
-            this.btnRegistration.Text = "Регистрация";
-            this.btnRegistration.UseVisualStyleBackColor = true;
-            this.btnRegistration.Click += new System.EventHandler(this.btnRegistration_Click);
+            this.bwUpdater.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwUpdater_DoWork);
             // 
             // AuthenticationForm
             // 
             this.AcceptButton = this.btnEnter;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 152);
-            this.Controls.Add(this.btnRegistration);
+            this.ClientSize = new System.Drawing.Size(284, 127);
             this.Controls.Add(this.btnEnter);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -118,6 +111,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnEnter;
-        private System.Windows.Forms.Button btnRegistration;
+        private System.ComponentModel.BackgroundWorker bwUpdater;
     }
 }

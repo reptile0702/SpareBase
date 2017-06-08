@@ -16,8 +16,9 @@ namespace SparesBase
         public void InitializeCard(Organization organization)
         {
             
-            lName.Text = "Название: " + organization.Name;
-            lSite.Text = "Сайт: " + organization.Site;
+            lName.Text = "Название:\n" + organization.Name;
+            lSite.Text = "Сайт:";
+            lSiteLink.Text = organization.Site;
             lTelephone.Text = "Телефон: " + organization.Telephone;
             lCity.Text = "Город: " + organization.City;
 
@@ -39,6 +40,11 @@ namespace SparesBase
         {
             AccountCardForm acf = new AccountCardForm(organization.Admin);
             acf.ShowDialog();
+        }
+
+        private void lSiteLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(lSiteLink.Text);
         }
     }
 }

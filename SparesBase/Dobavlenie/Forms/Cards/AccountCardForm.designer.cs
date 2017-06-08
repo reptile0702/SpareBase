@@ -28,11 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lId = new System.Windows.Forms.Label();
             this.lFirstName = new System.Windows.Forms.Label();
             this.lLastName = new System.Windows.Forms.Label();
             this.lSecondName = new System.Windows.Forms.Label();
-            this.lLogin = new System.Windows.Forms.Label();
             this.lCity = new System.Windows.Forms.Label();
             this.lPhone = new System.Windows.Forms.Label();
             this.lEmail = new System.Windows.Forms.Label();
@@ -42,19 +40,10 @@
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // lId
-            // 
-            this.lId.AutoSize = true;
-            this.lId.Location = new System.Drawing.Point(20, 26);
-            this.lId.Name = "lId";
-            this.lId.Size = new System.Drawing.Size(18, 13);
-            this.lId.TabIndex = 0;
-            this.lId.Text = "ID";
-            // 
             // lFirstName
             // 
             this.lFirstName.AutoSize = true;
-            this.lFirstName.Location = new System.Drawing.Point(20, 52);
+            this.lFirstName.Location = new System.Drawing.Point(20, 26);
             this.lFirstName.Name = "lFirstName";
             this.lFirstName.Size = new System.Drawing.Size(29, 13);
             this.lFirstName.TabIndex = 1;
@@ -63,7 +52,7 @@
             // lLastName
             // 
             this.lLastName.AutoSize = true;
-            this.lLastName.Location = new System.Drawing.Point(19, 71);
+            this.lLastName.Location = new System.Drawing.Point(19, 45);
             this.lLastName.Name = "lLastName";
             this.lLastName.Size = new System.Drawing.Size(56, 13);
             this.lLastName.TabIndex = 2;
@@ -72,25 +61,16 @@
             // lSecondName
             // 
             this.lSecondName.AutoSize = true;
-            this.lSecondName.Location = new System.Drawing.Point(20, 90);
+            this.lSecondName.Location = new System.Drawing.Point(20, 64);
             this.lSecondName.Name = "lSecondName";
             this.lSecondName.Size = new System.Drawing.Size(54, 13);
             this.lSecondName.TabIndex = 3;
             this.lSecondName.Text = "Отчество";
             // 
-            // lLogin
-            // 
-            this.lLogin.AutoSize = true;
-            this.lLogin.Location = new System.Drawing.Point(20, 125);
-            this.lLogin.Name = "lLogin";
-            this.lLogin.Size = new System.Drawing.Size(38, 13);
-            this.lLogin.TabIndex = 4;
-            this.lLogin.Text = "Логин";
-            // 
             // lCity
             // 
             this.lCity.AutoSize = true;
-            this.lCity.Location = new System.Drawing.Point(20, 163);
+            this.lCity.Location = new System.Drawing.Point(19, 101);
             this.lCity.Name = "lCity";
             this.lCity.Size = new System.Drawing.Size(37, 13);
             this.lCity.TabIndex = 5;
@@ -99,7 +79,7 @@
             // lPhone
             // 
             this.lPhone.AutoSize = true;
-            this.lPhone.Location = new System.Drawing.Point(20, 182);
+            this.lPhone.Location = new System.Drawing.Point(19, 120);
             this.lPhone.Name = "lPhone";
             this.lPhone.Size = new System.Drawing.Size(52, 13);
             this.lPhone.TabIndex = 6;
@@ -108,7 +88,7 @@
             // lEmail
             // 
             this.lEmail.AutoSize = true;
-            this.lEmail.Location = new System.Drawing.Point(20, 201);
+            this.lEmail.Location = new System.Drawing.Point(19, 139);
             this.lEmail.Name = "lEmail";
             this.lEmail.Size = new System.Drawing.Size(32, 13);
             this.lEmail.TabIndex = 7;
@@ -117,7 +97,7 @@
             // lAdmin
             // 
             this.lAdmin.AutoSize = true;
-            this.lAdmin.Location = new System.Drawing.Point(20, 231);
+            this.lAdmin.Location = new System.Drawing.Point(19, 169);
             this.lAdmin.Name = "lAdmin";
             this.lAdmin.Size = new System.Drawing.Size(36, 13);
             this.lAdmin.TabIndex = 8;
@@ -127,16 +107,14 @@
             // 
             this.groupBox1.Controls.Add(this.lAdmin);
             this.groupBox1.Controls.Add(this.lEmail);
-            this.groupBox1.Controls.Add(this.lId);
             this.groupBox1.Controls.Add(this.lFirstName);
             this.groupBox1.Controls.Add(this.lPhone);
             this.groupBox1.Controls.Add(this.lLastName);
             this.groupBox1.Controls.Add(this.lCity);
             this.groupBox1.Controls.Add(this.lSecondName);
-            this.groupBox1.Controls.Add(this.lLogin);
             this.groupBox1.Location = new System.Drawing.Point(12, 35);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(285, 257);
+            this.groupBox1.Size = new System.Drawing.Size(285, 203);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Информация";
@@ -155,7 +133,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(309, 304);
+            this.ClientSize = new System.Drawing.Size(309, 249);
             this.Controls.Add(this.lCard);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -170,12 +148,9 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Label lId;
         private System.Windows.Forms.Label lFirstName;
         private System.Windows.Forms.Label lLastName;
         private System.Windows.Forms.Label lSecondName;
-        private System.Windows.Forms.Label lLogin;
         private System.Windows.Forms.Label lCity;
         private System.Windows.Forms.Label lPhone;
         private System.Windows.Forms.Label lEmail;

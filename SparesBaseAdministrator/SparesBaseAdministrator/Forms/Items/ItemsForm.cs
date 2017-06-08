@@ -58,7 +58,26 @@ namespace SparesBaseAdministrator
                 where += " AND (i.Deleted <> 1)";
 
 
-            dgv.FillItems(where);
+            Item[] items = dgv.FillItems(where);
+            foreach (Item item in items)
+            {
+                dgv.Rows.Add(
+                    item.Id,
+                    item.Name,
+                    item.Seller.Name,
+                    item.PurchasePrice,
+                    item.RetailPrice,
+                    item.WholesalePrice,
+                    item.ServicePrice,
+                    item.FirmPrice,
+                    item.Storage,
+                    item.Quantity,
+                    item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay,
+                    item.ChangeDate.Date.ToShortDateString() + " " + item.ChangeDate.TimeOfDay,
+                    item.Residue);
+
+                dgv.Rows[dgv.Rows.Count - 1].Tag = item;
+            }
 
             if (dgv.Rows.Count == 0)
             {
@@ -92,13 +111,15 @@ namespace SparesBaseAdministrator
             dgv.Columns.Add("retailPrice", "Розница");
             dgv.Columns.Add("wholesalePrice", "Мелкий опт");
             dgv.Columns.Add("servicePrice", "Сервисы");
+            dgv.Columns.Add("firmPrice", "Цена фирмы");
             dgv.Columns.Add("storage", "Хранение");
             dgv.Columns.Add("quantity", "Количество");
             dgv.Columns.Add("uploadDate", "Дата добавления");
+            dgv.Columns.Add("changeDate", "Дата изменения");
             dgv.Columns.Add("residue", "Остаток");
 
             dgv.Columns[0].Width = 50;
-            dgv.Columns[1].Width = 120;
+            dgv.Columns[1].Width = 150;
             dgv.Columns[2].Width = 120;
             dgv.Columns[3].Width = 90;
             dgv.Columns[4].Width = 90;
@@ -106,8 +127,10 @@ namespace SparesBaseAdministrator
             dgv.Columns[6].Width = 90;
             dgv.Columns[7].Width = 90;
             dgv.Columns[8].Width = 90;
-            dgv.Columns[9].Width = 120;
-            dgv.Columns[10].Width = 70;
+            dgv.Columns[9].Width = 90;
+            dgv.Columns[10].Width = 120;
+            dgv.Columns[11].Width = 120;
+            dgv.Columns[12].Width = 70;
         }
 
         // Поиск и выделение нода по пути
@@ -186,8 +209,41 @@ namespace SparesBaseAdministrator
         // Поиск предмета
         private void SearchItems(string query, int organizationId)
         {
-            string where = organizationId != 0 ? "WHERE((Item_Name LIKE \"%" + query + "%\" OR Note LIKE \"%" + query + "%\") AND (Items.OrganizationId = " + organizationId + "))" : "WHERE(Item_Name LIKE \"%" + query + "%\" OR Note LIKE \"%" + query + "%\")";
-            dgv.FillItems(where);
+            string where = "WHERE(";
+            string[] searchWords = query.Split(' ');
+            if (query != "")
+            {
+                where += "(";
+            }
+            foreach (string word in searchWords)
+            {
+                if (word != "")
+                {
+                    where += "i.Item_Name LIKE \"%" + word + "%\" OR ";
+                }
+            }
+            if (query != "")
+            {
+                where = where.Remove(where.Length - 3, 3) + ") AND";
+            }
+            where += organizationId != 0 ? " (i.OrganizationId = " + organizationId + ") AND" : "";
+            where += " (i.SearchAllowed = 1) AND (i.Residue > 0) AND (i.Deleted <> 1))";
+
+            Item[] items = dgv.FillItems(where);
+
+            foreach (Item item in items)
+            {
+                dgv.Rows.Add(
+                    item.Id,
+                    item.Name,
+                    item.RetailPrice,
+                    item.ServicePrice,
+                    item.Quantity,
+                    item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay,
+                    item.ChangeDate.Date.ToShortDateString() + " " + item.ChangeDate.TimeOfDay);
+
+                dgv.Rows[dgv.Rows.Count - 1].Tag = item;
+            }
 
             if (dgv.Rows.Count == 0)
             {
@@ -241,10 +297,23 @@ namespace SparesBaseAdministrator
         public void DeleteCategory(int nodeCount, int selectedIdNode)
         {
             if (nodeCount == 1)
-                DatabaseWorker.SqlQuery("DELETE FROM Main_Category WHERE(id = " + selectedIdNode + ")");
+                if (int.Parse(DatabaseWorker.SqlScalarQuery("SELECT COUNT(1) FROM Items WHERE(Main_Category_Id = " + SelectedCategory.Id + ")").ToString()) <= 0)
+                {
+                    DatabaseWorker.SqlQuery("DELETE FROM Main_Category WHERE(id = " + selectedIdNode + ")");
+                    treeView.SelectedNode.Remove();
+                }
+                else
+                    MessageBox.Show("Операцию удаления категории произвести невозможно, так как к ней привязаны один или несколько предметов.", "Удаление категории", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else
-                DatabaseWorker.SqlQuery("DELETE FROM Sub_Category_" + (nodeCount - 1) + " WHERE(id = " + selectedIdNode + ")");
-            treeView.SelectedNode.Remove();
+            {
+                if (int.Parse(DatabaseWorker.SqlScalarQuery("SELECT COUNT(1) FROM Items WHERE(Sub_Category_" + (nodeCount - 1) + "_Id = " + SelectedCategory.Id + ")").ToString()) <= 0)
+                {
+                    DatabaseWorker.SqlQuery("DELETE FROM Sub_Category_" + (nodeCount - 1) + " WHERE(id = " + selectedIdNode + ")");
+                    treeView.SelectedNode.Remove();
+                }
+                else
+                    MessageBox.Show("Операцию удаления категории произвести невозможно, так как к ней привязаны один или несколько предметов.", "Удаление категории", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         // Смена категории
@@ -255,7 +324,7 @@ namespace SparesBaseAdministrator
 
         #endregion Категории
 
-        
+
 
         #region События
 

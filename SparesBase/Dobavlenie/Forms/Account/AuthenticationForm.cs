@@ -118,7 +118,7 @@ namespace SparesBase.Forms
 
             WebClient webcl = new WebClient();
             webcl.DownloadFileCompleted += Webcl_DownloadFileCompleted;
-            webcl.DownloadFileAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Versions/CurrentVersion/Version.xml"), "Version.xml");
+            webcl.DownloadFileAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Client/Versions/CurrentVersion/Version.xml"), "Version.xml");
         }
 
         private void Webcl_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)

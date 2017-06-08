@@ -145,7 +145,13 @@ namespace SparesBaseAdministrator
         // Удаление поставщика
         private void Delete_Click(object sender, EventArgs e)
         {
-            DeleteSeller();
+            if (int.Parse(DatabaseWorker.SqlScalarQuery("SELECT COUNT(1) FROM Items WHERE(Seller_Id = " + SelectedSeller.Id + ")").ToString()) <= 0)
+            {
+                if (MessageBox.Show("Вы уверены, что хотите удалить поставщика \"" + SelectedSeller.Name + "\"?", "Удаление поставщика", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    DeleteSeller();
+            }
+            else
+                MessageBox.Show("Операцию удаления поставщика произвести невозможно, так как к нему привязаны один или несколько предметов.", "Удаление поставщика", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         // Смена выделенного индекса в ComboBox'е организаций

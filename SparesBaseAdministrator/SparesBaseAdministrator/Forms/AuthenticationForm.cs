@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Data;
+using System.IO;
+using System.Net;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace SparesBaseAdministrator
 {
@@ -10,47 +13,41 @@ namespace SparesBaseAdministrator
         public AuthenticationForm()
         {
             InitializeComponent();
+            bwUpdater.RunWorkerAsync();
         }
-        
+
 
         // Аунтентификация
         private void Authentification()
         {
-            DataTable dr = DatabaseWorker.SqlSelectQuery("SELECT id, Login, Password, OrganizationId, Admin FROM Accounts WHERE(Login='" + tbLogIn.Text + "')");
-
-            // Проверка на существование введенного логина в базе
-            if (dr.Rows.Count != 0)
+            // Проверка на допустимые символы
+            if (!StringValidation.IsValid(tbLogIn.Text))
             {
-                if (dr.Rows[0].ItemArray[1].ToString() != tbLogIn.Text)
-                {
-                    MessageBox.Show("Пользователь с таким логином не зарегистрирован");
-                    return;
-                }
+                MessageBox.Show("Были введены недопустимые символы.\nРазрешены: латинские буквы, цифры _ - . @");
+                return;
+            }
+
+            // Проверка логина
+            if (tbLogIn.Text != "login")
+            {
+                MessageBox.Show("Пользователь с таким логином не зарегистрирован");
+                return;
             }
 
             // Проверка пароля
-            if (dr.Rows[0].ItemArray[2].ToString() != tbPassword.Text)
+            if (tbPassword.Text != "password")
             {
                 MessageBox.Show("Не верно введён пароль");
                 return;
             }
 
-            // Инициализация аккаунта
-            InitializeAccount(
-                int.Parse(dr.Rows[0].ItemArray[0].ToString()),
-                dr.Rows[0].ItemArray[1].ToString(),
-                int.Parse(dr.Rows[0].ItemArray[3].ToString()),
-                int.Parse(dr.Rows[0].ItemArray[4].ToString()) == 0 ? false : true);
+            // Инициализация формы
+            InitializeForm();
         }
 
         // Инициализация аккаунта
-        public void InitializeAccount(int id, string login, int organizationId, bool admin)
+        public void InitializeForm()
         {
-            //EnteredUser.id = id;
-            //EnteredUser.LogIn = login;
-            //EnteredUser.OrganizationId = organizationId;
-            //EnteredUser.Admin = admin;
-
             MainForm mf = new MainForm();
             mf.Show();
             Hide();
@@ -63,11 +60,30 @@ namespace SparesBaseAdministrator
             Authentification();
         }
 
-        // Клик на кнопку "Регистрация"
-        private void btnRegistration_Click(object sender, EventArgs e)
+        private void bwUpdater_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            //RegistrationForm reg = new RegistrationForm(this);
-            //reg.ShowDialog();
+            File.Delete("Version.xml");
+
+            WebClient webcl = new WebClient();
+            webcl.DownloadFileCompleted += Webcl_DownloadFileCompleted;
+            webcl.DownloadFileAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru//SparesBase/Admin/Versions/CurrentVersion/Version.xml"), "Version.xml");
+        }
+
+        private void Webcl_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        {
+            XmlDocument xDoc = new XmlDocument();
+            xDoc.Load("Version.xml");
+            XmlElement xRoot = xDoc.DocumentElement;
+
+            File.Delete("Version.xml");
+
+            double remoteVersion = Convert.ToDouble(xRoot["Version"].InnerText.Replace(".", ""));
+            double thisVersion = Convert.ToDouble(Application.ProductVersion.Replace(".", ""));
+            if (thisVersion < remoteVersion)
+            {
+                UpdateProgramForm upf = new UpdateProgramForm(xRoot["Version"].InnerText, xRoot["Date"].InnerText, xRoot["ChangeLog"].InnerText);
+                upf.ShowDialog();
+            }
         }
     }
 }

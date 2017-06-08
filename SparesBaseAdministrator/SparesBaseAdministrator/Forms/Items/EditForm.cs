@@ -93,10 +93,10 @@ namespace SparesBaseAdministrator
                 // Формирование запроса
                 string query = "";
                 if (operation == "INSERT")
-                    query = "INSERT INTO Items VALUES('', {0}, {1}, {2}, {3}, {4}, '{5}', {6}, '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', {14}, NOW(), {15}, " + organizationId + ", {16}, 0)";
+                    query = "INSERT INTO Items VALUES('', {0}, {1}, {2}, {3}, {4}, '{5}', {6}, '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', {14}, NOW(), NOW(), {15}, " + organizationId + ", {16}, 0)";
                 else
-                    query = "UPDATE Items SET Main_Category_Id = {0}, Sub_Category_1_Id = {1}, Sub_Category_2_Id = {2}, Sub_Category_3_Id = {3}, Sub_Category_4_Id = {4}, Item_Name='{5}', Seller_Id={6}, Purchase_Price='{7}', Retail_Price='{8}', Wholesale_Price='{9}', Service_Price='{10}', FirmPrice='{11}', Storage='{12}', Note='{13}', Quantity={14}, Residue={15} , SearchAllowed={16} WHERE id = " + updateId;
-
+                    query = "UPDATE Items SET Main_Category_Id = {0}, Sub_Category_1_Id = {1}, Sub_Category_2_Id = {2}, Sub_Category_3_Id = {3}, Sub_Category_4_Id = {4}, Item_Name='{5}', Seller_Id={6}, Purchase_Price='{7}', Retail_Price='{8}', Wholesale_Price='{9}', Service_Price='{10}', FirmPrice='{11}', Storage='{12}', Note='{13}', Quantity={14}, Residue={15} , SearchAllowed={16}, ChangeDate = NOW() WHERE id = " + updateId;
+                 
                 // Подсчет остатка 
                 if (item != null)
                     CalcResidue();
@@ -247,30 +247,7 @@ namespace SparesBaseAdministrator
 
         #region Вспомогательные методы
 
-        // Загрузка превью-фотографии
-        private void DownloadPreviewImage(int id)
-        {
-            PhotoEditor pe = null;
-            if (item == null)
-                pe = new PhotoEditor();
-            else
-                pe = new PhotoEditor(item.Id);
 
-            if (pe.ShowDialog() == DialogResult.OK)
-            {
-                imagesEdited = true;
-                images = pe.Images;
-                pbPhoto.Image = null;
-                foreach (Image image in images)
-                {
-                    if (image != null)
-                    {
-                        pbPhoto.Image = image;
-                        break;
-                    }
-                }
-            }
-        }
 
         // Подсчет остатка
         private void CalcResidue()
@@ -307,6 +284,12 @@ namespace SparesBaseAdministrator
 
         }
 
+        private void GetResidue()
+        {
+            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT Residue FROM Items WHERE(id = " + item.Id + ")");
+            residue = int.Parse(dt.Rows[0].ItemArray[0].ToString());
+        }
+
         #endregion Вспомогательные методы  
 
 
@@ -316,9 +299,7 @@ namespace SparesBaseAdministrator
         // Загрузка формы
         private void Form1_Load(object sender, EventArgs e)
         {
-
-            //DownloadPreviewImage(item.Id);
-            CalcResidue();
+            GetResidue();
         }
 
         // Смена выделенного индекса поставщика
@@ -341,8 +322,26 @@ namespace SparesBaseAdministrator
         // Просмотр фотографий предмета
         private void btnPhoto_Click(object sender, EventArgs e)
         {
-            PhotoEditor pe = new PhotoEditor(item.Id);
-            pe.ShowDialog();
+            PhotoEditor pe = null;
+            if (item == null)
+                pe = new PhotoEditor();
+            else
+                pe = new PhotoEditor(item.Id);
+
+            if (pe.ShowDialog() == DialogResult.OK)
+            {
+                imagesEdited = true;
+                images = pe.Images;
+                pbPhoto.Image = null;
+                foreach (Image image in images)
+                {
+                    if (image != null)
+                    {
+                        pbPhoto.Image = image;
+                        break;
+                    }
+                }
+            }
         }
 
         // Клик на кнопку Добавления / Изменения

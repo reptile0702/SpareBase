@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SparesBase
+namespace SparesBaseAdministrator
 {
     public partial class UpdateProgramForm : Form
     {
@@ -27,12 +27,12 @@ namespace SparesBase
         {
             WebClient webcl = new WebClient();
             webcl.DownloadFileCompleted += Webcl_DownloadFileCompleted; ;
-            webcl.DownloadFileAsync(new System.Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Client/Versions/CurrentVersion/SparesBase.exe"), "SparesBase.update");
+            webcl.DownloadFileAsync(new System.Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru//SparesBase/Admin/Versions/CurrentVersion/SparesBaseAdministrator.exe"), "SparesBaseAdministrator.update");
         }
 
         private void Webcl_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            Process.Start("Updater.exe", "SparesBase.exe SparesBase.update");
+            Process.Start("Updater.exe", "SparesBaseAdministrator.exe SparesBaseAdministrator.update");
             Process.GetCurrentProcess().Kill();
         }
 

@@ -15,7 +15,7 @@ namespace SparesBaseAdministrator
         static string server = "status.nvhost.ru";
         static string username = "sh61018001";
         static string password = "lfybkrf";
-        static string remotePath = "Photos/";
+        static string remotePath = "SparesBase/Photos/";
         static FtpClient client;
 
         // Коннект к серверу
