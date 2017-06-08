@@ -221,21 +221,6 @@ namespace SparesBase
 
         #endregion Методы
 
-        public static bool CheckUpdate()
-        {
-            try
-            {
-                
-                
-            }
-            catch (System.Exception)
-            {
-
-                throw;
-            }
-            return true;
-
-        }
 
         #region Вспомогательные методы
 

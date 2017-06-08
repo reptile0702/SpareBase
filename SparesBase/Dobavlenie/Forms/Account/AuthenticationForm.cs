@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Data;
+using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Windows.Forms;
 using System.Xml;
@@ -12,7 +14,7 @@ namespace SparesBase.Forms
         public AuthenticationForm()
         {
             InitializeComponent();
-            bwUpdater.RunWorkerAsync();
+            
         }
         
 
@@ -107,47 +109,33 @@ namespace SparesBase.Forms
 
         private void AuthenticationForm_Load(object sender, EventArgs e)
         {
-           
+            bwUpdater.RunWorkerAsync();
         }
 
         private void bwUpdater_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
+            File.Delete("Version.xml");
 
-            //Connect();
-            //client.GetFile(timeout, "SparesBase/Versions/CurrentVersion/Version.xml", Application.StartupPath);
-            //client.Disconnect(timeout);
             WebClient webcl = new WebClient();
-            webcl.DownloadFile(new System.Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Versions/CurrentVersion/Version.xml"), "Version.xml");
+            webcl.DownloadFileCompleted += Webcl_DownloadFileCompleted;
+            webcl.DownloadFileAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Versions/CurrentVersion/Version.xml"), "Version.xml");
+        }
 
+        private void Webcl_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        {
             XmlDocument xDoc = new XmlDocument();
             xDoc.Load("Version.xml");
             XmlElement xRoot = xDoc.DocumentElement;
-            double version = Convert.ToDouble(xRoot["Version"].InnerText.Replace(".", ""));
+
+            File.Delete("Version.xml");
+
+            double remoteVersion = Convert.ToDouble(xRoot["Version"].InnerText.Replace(".", ""));
             double thisVersion = Convert.ToDouble(Application.ProductVersion.Replace(".", ""));
-            if (thisVersion < version )
+            if (thisVersion < remoteVersion)
             {
-                e.Result = new ProgramUpdate(xRoot["Version"].InnerText, xRoot["ChangeLog"].InnerText);
-               // e.Cancel = true;
-            }
-           
-
-        }
-
-        private void bwUpdater_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
-        {
-
-        }
-
-        private void bwUpdater_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
-        {
-
-            ProgramUpdate pu = (ProgramUpdate)e.Result;
-            if (pu != null)
-            {
-                UpdateProgramForm upf = new UpdateProgramForm(pu.Version, pu.ChangeLog);
+                UpdateProgramForm upf = new UpdateProgramForm(xRoot["Version"].InnerText, xRoot["Date"].InnerText, xRoot["ChangeLog"].InnerText);
                 upf.ShowDialog();
             }
-            
         }
     }
 }

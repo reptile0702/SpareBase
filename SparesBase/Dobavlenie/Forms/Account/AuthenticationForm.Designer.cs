@@ -94,8 +94,6 @@
             // bwUpdater
             // 
             this.bwUpdater.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwUpdater_DoWork);
-            this.bwUpdater.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bwUpdater_ProgressChanged);
-            this.bwUpdater.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwUpdater_RunWorkerCompleted);
             // 
             // AuthenticationForm
             // 
