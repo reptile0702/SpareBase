@@ -32,7 +32,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnSparesBaseAddVersion = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.tbAdmin = new System.Windows.Forms.TreeView();
+            this.tvAdmin = new System.Windows.Forms.TreeView();
             this.btnAdminAddVersion = new System.Windows.Forms.Button();
             this.btnAdminDeleteVersion = new System.Windows.Forms.Button();
             this.btnSparesBaseDeleteVersion = new System.Windows.Forms.Button();
@@ -44,6 +44,7 @@
             this.tvSparesBase.Name = "tvSparesBase";
             this.tvSparesBase.Size = new System.Drawing.Size(158, 223);
             this.tvSparesBase.TabIndex = 2;
+            this.tvSparesBase.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvSparesBase_NodeMouseDoubleClick);
             // 
             // label1
             // 
@@ -62,6 +63,7 @@
             this.btnSparesBaseAddVersion.TabIndex = 4;
             this.btnSparesBaseAddVersion.Text = "Добавить новую версию";
             this.btnSparesBaseAddVersion.UseVisualStyleBackColor = true;
+            this.btnSparesBaseAddVersion.Click += new System.EventHandler(this.btnSparesBaseAddVersion_Click);
             // 
             // label2
             // 
@@ -72,12 +74,12 @@
             this.label2.TabIndex = 6;
             this.label2.Text = "Spares Base Administrator";
             // 
-            // tbAdmin
+            // tvAdmin
             // 
-            this.tbAdmin.Location = new System.Drawing.Point(176, 25);
-            this.tbAdmin.Name = "tbAdmin";
-            this.tbAdmin.Size = new System.Drawing.Size(158, 223);
-            this.tbAdmin.TabIndex = 5;
+            this.tvAdmin.Location = new System.Drawing.Point(176, 25);
+            this.tvAdmin.Name = "tvAdmin";
+            this.tvAdmin.Size = new System.Drawing.Size(158, 223);
+            this.tvAdmin.TabIndex = 5;
             // 
             // btnAdminAddVersion
             // 
@@ -115,12 +117,13 @@
             this.Controls.Add(this.btnSparesBaseDeleteVersion);
             this.Controls.Add(this.btnAdminAddVersion);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.tbAdmin);
+            this.Controls.Add(this.tvAdmin);
             this.Controls.Add(this.btnSparesBaseAddVersion);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tvSparesBase);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -131,7 +134,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnSparesBaseAddVersion;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TreeView tbAdmin;
+        private System.Windows.Forms.TreeView tvAdmin;
         private System.Windows.Forms.Button btnAdminAddVersion;
         private System.Windows.Forms.Button btnAdminDeleteVersion;
         private System.Windows.Forms.Button btnSparesBaseDeleteVersion;
