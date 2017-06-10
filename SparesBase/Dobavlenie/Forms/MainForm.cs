@@ -82,6 +82,8 @@ namespace SparesBase
                     item.ChangeDate.Date.ToShortDateString() + " " + item.ChangeDate.TimeOfDay,
                     item.Residue);
 
+                
+
 #else
                 dgv.Rows.Add(                    
                     item.Name,
@@ -652,9 +654,5 @@ namespace SparesBase
             }
         }
 
-        private void EditItem_Click(object sender, DataGridViewCellMouseEventArgs e)
-        {
-
-        }
-    }
+     }
 }
