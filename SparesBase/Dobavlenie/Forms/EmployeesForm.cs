@@ -13,6 +13,7 @@ namespace SparesBase.Forms
 
         private void FillEmployees()
         {
+            dgv.Rows.Clear();
             DataTable employees = DatabaseWorker.SqlSelectQuery("SELECT a.id, a.FirstName, a.LastName, a.SecondName, a.Login, c.City, a.Phone, a.Email, a.Admin, o.id, o.Name, o.Site, o.Telephone, oc.City  FROM Accounts a LEFT JOIN Cities c ON c.id=a.CityId LEFT JOIN Organizations o ON o.id=a.OrganizationId LEFT JOIN Cities oc ON oc.id=o.CityId WHERE(OrganizationId=" + EnteredUser.OrganizationId + ")");
             foreach (DataRow row in employees.Rows)
             {
@@ -48,6 +49,41 @@ namespace SparesBase.Forms
             
             AccountCardForm acf = new AccountCardForm((Account)dgv.Rows[e.RowIndex].Tag);
             acf.ShowDialog();
+            
+
+        }
+
+        private void tsmiAdd_Click(object sender, System.EventArgs e)
+        {
+            RegistrationForm reg = new RegistrationForm();
+            reg.ShowDialog();
+            FillEmployees();
+        }
+
+        private void tsmiEdit_Click(object sender, System.EventArgs e)
+        {
+            AccountEditor ae = new AccountEditor((Account)dgv.CurrentRow.Tag);
+            ae.ShowDialog();
+            FillEmployees();
+        }
+
+        private void tsmiDelete_Click(object sender, System.EventArgs e)
+        {
+            
+            if (dgv.SelectedRows.Count > 0)
+            {
+                Account account = (Account)dgv.CurrentRow.Tag;
+                if (!account.Admin)
+                {
+                    DatabaseWorker.SqlQuery("DELETE FROM Accounts WHERE(id=" + account.Id + ")");
+                    FillEmployees();
+                }
+                else
+                {
+                    MessageBox.Show("Удаление админа произвести невозможно");
+                }
+               
+            }
 
         }
     }

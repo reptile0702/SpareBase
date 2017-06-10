@@ -40,7 +40,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.btnFinishRegistration = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.tbPhone = new System.Windows.Forms.TextBox();
@@ -52,7 +51,6 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.cbCity = new System.Windows.Forms.ComboBox();
-            this.cbOrganization = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -142,7 +140,7 @@
             // 
             // btnFinishRegistration
             // 
-            this.btnFinishRegistration.Location = new System.Drawing.Point(12, 368);
+            this.btnFinishRegistration.Location = new System.Drawing.Point(12, 334);
             this.btnFinishRegistration.Name = "btnFinishRegistration";
             this.btnFinishRegistration.Size = new System.Drawing.Size(293, 23);
             this.btnFinishRegistration.TabIndex = 11;
@@ -152,7 +150,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(12, 397);
+            this.btnCancel.Location = new System.Drawing.Point(12, 363);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(293, 23);
             this.btnCancel.TabIndex = 12;
@@ -160,19 +158,10 @@
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(13, 34);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(74, 13);
-            this.label4.TabIndex = 16;
-            this.label4.Text = "Организация";
-            // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(13, 61);
+            this.label7.Location = new System.Drawing.Point(13, 23);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(37, 13);
             this.label7.TabIndex = 18;
@@ -181,7 +170,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(12, 87);
+            this.label8.Location = new System.Drawing.Point(12, 49);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(52, 13);
             this.label8.TabIndex = 20;
@@ -189,14 +178,14 @@
             // 
             // tbPhone
             // 
-            this.tbPhone.Location = new System.Drawing.Point(116, 84);
+            this.tbPhone.Location = new System.Drawing.Point(116, 46);
             this.tbPhone.Name = "tbPhone";
             this.tbPhone.Size = new System.Drawing.Size(158, 20);
             this.tbPhone.TabIndex = 9;
             // 
             // tbMail
             // 
-            this.tbMail.Location = new System.Drawing.Point(116, 110);
+            this.tbMail.Location = new System.Drawing.Point(116, 72);
             this.tbMail.Name = "tbMail";
             this.tbMail.Size = new System.Drawing.Size(158, 20);
             this.tbMail.TabIndex = 10;
@@ -204,7 +193,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(13, 113);
+            this.label9.Location = new System.Drawing.Point(13, 75);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(35, 13);
             this.label9.TabIndex = 22;
@@ -259,8 +248,6 @@
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.cbCity);
-            this.groupBox3.Controls.Add(this.cbOrganization);
-            this.groupBox3.Controls.Add(this.label4);
             this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Controls.Add(this.tbMail);
             this.groupBox3.Controls.Add(this.label9);
@@ -268,7 +255,7 @@
             this.groupBox3.Controls.Add(this.tbPhone);
             this.groupBox3.Location = new System.Drawing.Point(12, 222);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(293, 140);
+            this.groupBox3.Size = new System.Drawing.Size(293, 106);
             this.groupBox3.TabIndex = 28;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Дополнительные сведения";
@@ -277,26 +264,17 @@
             // 
             this.cbCity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbCity.FormattingEnabled = true;
-            this.cbCity.Location = new System.Drawing.Point(116, 57);
+            this.cbCity.Location = new System.Drawing.Point(116, 19);
             this.cbCity.Name = "cbCity";
             this.cbCity.Size = new System.Drawing.Size(158, 21);
             this.cbCity.TabIndex = 8;
-            // 
-            // cbOrganization
-            // 
-            this.cbOrganization.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbOrganization.FormattingEnabled = true;
-            this.cbOrganization.Location = new System.Drawing.Point(116, 31);
-            this.cbOrganization.Name = "cbOrganization";
-            this.cbOrganization.Size = new System.Drawing.Size(158, 21);
-            this.cbOrganization.TabIndex = 7;
             // 
             // RegistrationForm
             // 
             this.AcceptButton = this.btnFinishRegistration;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(319, 435);
+            this.ClientSize = new System.Drawing.Size(319, 398);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -307,7 +285,6 @@
             this.Name = "RegistrationForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Регистрация";
-            this.Load += new System.EventHandler(this.RegistrationForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -332,7 +309,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button btnFinishRegistration;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox tbPhone;
@@ -343,7 +319,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.ComboBox cbOrganization;
         private System.Windows.Forms.ComboBox cbCity;
     }
 }

@@ -87,12 +87,7 @@ namespace SparesBase.Forms
             Authentification();
         }
 
-        // Клик на кнопку "Регистрация"
-        private void btnRegistration_Click(object sender, EventArgs e)
-        {
-            RegistrationForm reg = new RegistrationForm(this);
-            reg.ShowDialog();
-        }
+       
 
         public void InitializeForm()
         {

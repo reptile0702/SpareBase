@@ -265,14 +265,14 @@
             // tsmiUsers
             // 
             this.tsmiUsers.Name = "tsmiUsers";
-            this.tsmiUsers.Size = new System.Drawing.Size(144, 22);
+            this.tsmiUsers.Size = new System.Drawing.Size(152, 22);
             this.tsmiUsers.Text = "Сотрудники";
             this.tsmiUsers.Click += new System.EventHandler(this.tsmiUsers_Click);
             // 
             // tsmiSellers
             // 
             this.tsmiSellers.Name = "tsmiSellers";
-            this.tsmiSellers.Size = new System.Drawing.Size(144, 22);
+            this.tsmiSellers.Size = new System.Drawing.Size(152, 22);
             this.tsmiSellers.Text = "Поставщики";
             this.tsmiSellers.Click += new System.EventHandler(this.tsmiSellers_Click);
             // 

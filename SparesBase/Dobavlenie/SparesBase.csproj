@@ -70,8 +70,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\AccountEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AccountEditor.Designer.cs">
+      <DependentUpon>AccountEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Custom Components\CategoriesTreeView.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Forms\ChangePasswordForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ChangePasswordForm.Designer.cs">
+      <DependentUpon>ChangePasswordForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Item Editing\ChangeCategoriesForm.cs">
       <SubType>Form</SubType>
@@ -196,6 +208,12 @@
       <DependentUpon>SellerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="StringValidation.cs" />
+    <EmbeddedResource Include="Forms\AccountEditor.resx">
+      <DependentUpon>AccountEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ChangePasswordForm.resx">
+      <DependentUpon>ChangePasswordForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Item Editing\ChangeCategoriesForm.resx">
       <DependentUpon>ChangeCategoriesForm.cs</DependentUpon>
     </EmbeddedResource>
