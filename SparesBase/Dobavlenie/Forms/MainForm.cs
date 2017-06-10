@@ -41,6 +41,7 @@ namespace SparesBase
 
             treeView.FillCategories(EnteredUser.OrganizationId, cmsCategory);
             InitializeDataGridView();
+            ClearInfoAboutItem();
         }
 
 
@@ -101,6 +102,15 @@ namespace SparesBase
 #endif
 
                 dgv.Rows[dgv.Rows.Count - 1].Tag = item;
+            }
+            if (dgv.Rows.Count > 0)
+            {
+                ClearInfoAboutItem();
+                InsertInfoAboutItem((Item)dgv.Rows[0].Tag);
+            }
+            else
+            {
+                ClearInfoAboutItem();
             }
         }
 
@@ -263,9 +273,8 @@ namespace SparesBase
         }
 
         // Обновляет информацию о выделенном предмете в панели информации
-        private void InsertInfoAboutItem()
+        private void InsertInfoAboutItem(Item selItem)
         {
-            Item selItem = SelectedItem;
             lname.Text = "Имя: " + selItem.Name;
             lseller.Text = "Поставщик: " + selItem.Seller.Name;
             lpurchase.Text = "Закупка: " + selItem.PurchasePrice;
@@ -287,6 +296,31 @@ namespace SparesBase
                 lSub3.Text = "Подкатегория 3: " + selItem.SubCategory3.Name;
             if (selItem.SubCategory4 != null)
                 lSub4.Text = "Подкатегория 4: " + selItem.SubCategory4.Name;
+        }
+        private void ClearInfoAboutItem()
+        {
+            
+            lname.Text = "Имя: ";
+            lseller.Text = "Поставщик: ";
+            lpurchase.Text = "Закупка: ";
+            lretail.Text = "Розница: ";
+            lwhole.Text = "Мелкий опт: ";
+            lservice.Text = "Сервисы: ";
+            lfirm.Text = "Фирменная цена: ";
+            lstorage.Text = "Хранение: \n";
+            lnote.Text = "Описание: \n";
+            lquantity.Text = "Количество: ";
+            lresidue.Text = "Остаток: ";
+
+            lMainCat.Text = "Главная категория: ";
+            
+                lSub1.Text = "Подкатегория 1: ";
+        
+                lSub2.Text = "Подкатегория 2: ";
+            
+                lSub3.Text = "Подкатегория 3: ";
+            
+                lSub4.Text = "Подкатегория 4: ";
         }
 
         // Поиск предмета
@@ -443,6 +477,10 @@ namespace SparesBase
         private void treeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
             FillItemsByCategory();
+            if (dgv.Rows.Count <= 0)
+            {
+               // ClearInfoAboutItem();
+            }
         }
 
 
@@ -648,11 +686,15 @@ namespace SparesBase
 
         private void dgv_SelectionChanged(object sender, EventArgs e)
         {
-            if (SelectedItem != null)
-            {
-                InsertInfoAboutItem();
-            }
+           
         }
 
-     }
+        private void dgv_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (SelectedItem != null)
+            {
+                 InsertInfoAboutItem(SelectedItem);
+            }
+        }
+    }
 }
