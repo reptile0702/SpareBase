@@ -18,7 +18,8 @@ namespace SparesBase
         static string server = "status.nvhost.ru";
         static string username = "sh61018001";
         static string password = "lfybkrf";
-        static string remotePath = "SparesBase/Photos/";
+        static string photosPath = "SparesBase/Photos/";
+        static string remotePath = "SparesBase/";
         static FtpClient client;
 
         // Коннект к серверу
@@ -47,20 +48,20 @@ namespace SparesBase
             if (imagesCounter != 0)
             {
                 // Поиск папки с предметом, если ее нет, то создать
-                string[] folders = GetFilesFromServer("");
+                string[] folders = GetFilesFromServer(photosPath);
                 string createFolder = "";
                 for (int i = 0; i < folders.Length; i++)
                     if (folders[i] == "item_" + id)
                         createFolder = folders[i];
 
                 if (createFolder == "")
-                    client.CreateDirectory(timeout, remotePath + "item_" + id);
+                    client.CreateDirectory(timeout, photosPath + "item_" + id);
                 else
                 {
                     // Удаление всех фоток до загрузки новых
-                    string[] photos = GetFilesFromServer("item_" + id);
+                    string[] photos = GetFilesFromServer(photosPath + "item_" + id);
                     for (int i = 0; i < photos.Length; i++)
-                        client.DeleteFile(timeout, remotePath + "item_" + id + "/" + photos[i]);
+                        client.DeleteFile(timeout, photosPath + "item_" + id + "/" + photos[i]);
                 }
 
                 // Cоздание временной папки 
@@ -78,7 +79,7 @@ namespace SparesBase
                         if (!pCreated)
                         {
                             previewImage = ResizeImage(images[i], 200, 200);
-                            previewImage.Tag = remotePath + "item_" + id + "/preview.jpg";
+                            previewImage.Tag = photosPath + "item_" + id + "/preview.jpg";
                             previewImage.Save(Application.StartupPath + "/Temp/" + Path.GetFileName(previewImage.Tag.ToString()));
                             byte[] previewBytes = File.ReadAllBytes(Application.StartupPath + "/Temp/" + Path.GetFileName(previewImage.Tag.ToString()));
                             client.PutFile(timeout, previewImage.Tag.ToString(), previewBytes, 0, previewBytes.Length);
@@ -86,7 +87,7 @@ namespace SparesBase
                         }
 
                         Image resizedImage = ResizeImage(images[i], 400, 400);
-                        resizedImage.Tag = remotePath + "item_" + id + "/" + (i + 1) + ".jpg";
+                        resizedImage.Tag = photosPath + "item_" + id + "/" + (i + 1) + ".jpg";
                         resizedImage.Save(Application.StartupPath + "/Temp/" + Path.GetFileName(resizedImage.Tag.ToString()));
                         byte[] bytes = File.ReadAllBytes(Application.StartupPath + "/Temp/" + Path.GetFileName(resizedImage.Tag.ToString()));
                         client.PutFile(timeout, resizedImage.Tag.ToString(), bytes, 0, bytes.Length);
@@ -106,12 +107,12 @@ namespace SparesBase
             else
             {
                 // Удаление всех фоток из папки
-                string[] photos = GetFilesFromServer("item_" + id);
+                string[] photos = GetFilesFromServer(photosPath + "item_" + id);
                 for (int i = 0; i < photos.Length; i++)
-                    client.DeleteFile(timeout, remotePath + "item_" + id + "/" + photos[i]);
+                    client.DeleteFile(timeout, photosPath + "item_" + id + "/" + photos[i]);
 
                 // Удаление директории предмета
-                client.DeleteDirectory(timeout, remotePath + "item_" + id);
+                client.DeleteDirectory(timeout, photosPath + "item_" + id);
             }
         }
 
@@ -122,7 +123,7 @@ namespace SparesBase
             Image[] images = new Image[5];
 
             // Проверка на существование папки предмета.
-            string[] names = GetFilesFromServer("");
+            string[] names = GetFilesFromServer(photosPath);
             for (int i = 0; i < names.Length; i++)
                 if (names[i] == "item_" + id)
                     folderName = names[i];
@@ -131,17 +132,17 @@ namespace SparesBase
             {
                 Connect();
 
-                string[] imgName = GetFilesFromServer(folderName);
+                string[] imgName = GetFilesFromServer(photosPath + folderName); 
 
                 for (int i = 0; i < imgName.Length; i++)
                 {
                     if (imgName[i] != "preview.jpg")
                     {
-                        byte[] imageBytes = client.GetFile(timeout, remotePath + folderName + "/" + imgName[i]);
+                        byte[] imageBytes = client.GetFile(timeout, photosPath + folderName + "/" + imgName[i]);
                         MemoryStream memoryStream = new MemoryStream(imageBytes);
                         Image img = Image.FromStream(memoryStream);
                         string imageIndex = imgName[i][0].ToString();
-                        img.Tag = remotePath + folderName + "/" + imgName[i];
+                        img.Tag = photosPath + folderName + "/" + imgName[i];
                         images[int.Parse(imageIndex) - 1] = img;
                     }
                 }
@@ -158,7 +159,7 @@ namespace SparesBase
             Connect();
 
             // поиск папки предмета
-            string[] folders = GetFilesFromServer("");
+            string[] folders = GetFilesFromServer(photosPath);
             string folder = "";
             for (int i = 0; i < folders.Length; i++)
                 if (folders[i] == "item_" + id)
@@ -169,7 +170,7 @@ namespace SparesBase
 
             if (folder != "")
             {
-                string[] files = GetFilesFromServer(folder);
+                string[] files = GetFilesFromServer(photosPath + folder);
                 string file = "";
                 for (int i = 0; i < files.Length; i++)
                 {
@@ -182,7 +183,7 @@ namespace SparesBase
 
                 if (file != "")
                 {
-                    byte[] imageBytes = client.GetFile(timeout, remotePath + folder + "/" + file);
+                    byte[] imageBytes = client.GetFile(timeout, photosPath + folder + "/" + file);
                     MemoryStream memoryStream = new MemoryStream(imageBytes);
                     return Image.FromStream(memoryStream);
                 }
@@ -197,7 +198,7 @@ namespace SparesBase
             Connect();
 
             // Поиск папки предмета 
-            string[] folders = GetFilesFromServer("");
+            string[] folders = GetFilesFromServer(photosPath);
             string folder = "";
             for (int i = 0; i < folders.Length; i++)
                 if (folders[i] == "item_" + id)
@@ -209,13 +210,13 @@ namespace SparesBase
             if (folder != "")
             {
                 // Удаление всех фото 
-                string[] files = GetFilesFromServer(folder);
+                string[] files = GetFilesFromServer(photosPath + folder);
                 for (int i = 0; i < files.Length; i++)
                     if (files[i] != "." && files[i] != "..")
-                        client.DeleteFile(timeout, remotePath + "item_" + id + "/" + files[i]);
+                        client.DeleteFile(timeout, photosPath + "item_" + id + "/" + files[i]);
 
                 // удаление папки предмета
-                client.DeleteDirectory(timeout, remotePath + "item_" + id);
+                client.DeleteDirectory(timeout, photosPath + "item_" + id);
             }
         }
 
@@ -225,7 +226,7 @@ namespace SparesBase
         #region Вспомогательные методы
 
         // Получение файлов с сервера по определенному пути
-        private static string[] GetFilesFromServer(string path)
+        public static string[] GetFilesFromServer(string path)
         {
             FtpClient client = new FtpClient();
             client.PassiveMode = true;

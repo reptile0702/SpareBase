@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Windows.Forms;
+using System.Drawing;
+using System.Xml;
+using System.Diagnostics;
 
 namespace SparesBase
 {
@@ -9,8 +14,12 @@ namespace SparesBase
         public SearchingForm()
         {
             InitializeComponent();
+            banners = new List<Banner>();
+            bannerCounter = 0;
         }
-
+        List<Banner> banners;
+        int bannerCounter;
+            
         private void FillOrganizations()
         {
             DataTable dt = new DataTable();
@@ -81,9 +90,22 @@ namespace SparesBase
                 dgv.Rows[dgv.Rows.Count - 1].Tag = item;
             }
         }
+        private void LoadBanners()
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load("Banners/Banners.xml");
+            XmlElement element = doc.DocumentElement;
+            foreach (XmlNode node in element.ChildNodes)
+            {
+                banners.Add(new Banner(node["Link"].Attributes["value"].Value, Image.FromFile("Banners/" + node["PhotoName"].Attributes["value"].Value)));
+            }
+          
+        }
+
 
         private void SearchingForm_Load(object sender, EventArgs e)
         {
+            loadBannersDelay.Start();
 #if DEBUG
             dgv.Columns.Add("Id", "ID");
 #endif
@@ -96,6 +118,7 @@ namespace SparesBase
 
             FillOrganizations();
             Search("", 0);
+            
         }
 
         private void tbSearching_KeyDown(object sender, KeyEventArgs e)
@@ -120,6 +143,34 @@ namespace SparesBase
                 OrganizationCardForm ocf = new OrganizationCardForm(item.Organization);
                 ocf.ShowDialog();
             }            
+        }
+        
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            pbBanner.Image = banners[bannerCounter].Image;
+            pbBanner.Tag = banners[bannerCounter].Link;
+            bannerCounter++;
+            if (bannerCounter == banners.Count)
+            {
+                bannerCounter = 0;
+            }
+        }
+
+        private void loadBannersDelay_Tick(object sender, EventArgs e)
+        {
+            LoadBanners();            
+            timer.Interval = 5000;
+            timer.Start();
+            loadBannersDelay.Stop();
+        }
+
+        private void pbBanner_Click(object sender, EventArgs e)
+        {
+            if (pbBanner.Tag != null)
+            {
+                Process.Start(pbBanner.Tag.ToString());
+            }
+            
         }
     }
 }

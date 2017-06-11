@@ -28,14 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SearchingForm));
             this.tbSearching = new System.Windows.Forms.TextBox();
             this.cbOrganizations = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.pbBanner = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.dgv = new SparesBase.ItemsDataGridView();
+            this.timer = new System.Windows.Forms.Timer(this.components);
+            this.loadBannersDelay = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbBanner)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
             this.SuspendLayout();
             // 
@@ -43,7 +48,7 @@
             // 
             this.tbSearching.Location = new System.Drawing.Point(15, 25);
             this.tbSearching.Name = "tbSearching";
-            this.tbSearching.Size = new System.Drawing.Size(148, 20);
+            this.tbSearching.Size = new System.Drawing.Size(150, 20);
             this.tbSearching.TabIndex = 0;
             this.tbSearching.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbSearching_KeyDown);
             // 
@@ -53,7 +58,7 @@
             this.cbOrganizations.FormattingEnabled = true;
             this.cbOrganizations.Location = new System.Drawing.Point(15, 64);
             this.cbOrganizations.Name = "cbOrganizations";
-            this.cbOrganizations.Size = new System.Drawing.Size(148, 21);
+            this.cbOrganizations.Size = new System.Drawing.Size(150, 21);
             this.cbOrganizations.TabIndex = 2;
             this.cbOrganizations.SelectedIndexChanged += new System.EventHandler(this.cbOrganizations_SelectedIndexChanged);
             // 
@@ -68,6 +73,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.pbBanner);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.tbSearching);
@@ -77,6 +83,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(184, 695);
             this.panel1.TabIndex = 5;
+            // 
+            // pbBanner
+            // 
+            this.pbBanner.Location = new System.Drawing.Point(15, 169);
+            this.pbBanner.Name = "pbBanner";
+            this.pbBanner.Size = new System.Drawing.Size(150, 250);
+            this.pbBanner.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbBanner.TabIndex = 6;
+            this.pbBanner.TabStop = false;
+            this.pbBanner.Click += new System.EventHandler(this.pbBanner_Click);
             // 
             // label2
             // 
@@ -105,6 +121,15 @@
             this.dgv.TabIndex = 6;
             this.dgv.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgv_CellMouseDoubleClick);
             // 
+            // timer
+            // 
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            // 
+            // loadBannersDelay
+            // 
+            this.loadBannersDelay.Interval = 3000;
+            this.loadBannersDelay.Tick += new System.EventHandler(this.loadBannersDelay_Tick);
+            // 
             // SearchingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -119,6 +144,7 @@
             this.Load += new System.EventHandler(this.SearchingForm_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbBanner)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).EndInit();
             this.ResumeLayout(false);
 
@@ -132,5 +158,8 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label2;
         private ItemsDataGridView dgv;
+        private System.Windows.Forms.PictureBox pbBanner;
+        private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.Timer loadBannersDelay;
     }
 }

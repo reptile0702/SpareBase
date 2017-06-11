@@ -105,6 +105,7 @@ namespace SparesBase.Forms
         private void AuthenticationForm_Load(object sender, EventArgs e)
         {
             bwUpdater.RunWorkerAsync();
+
         }
 
         private void bwUpdater_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
@@ -114,6 +115,89 @@ namespace SparesBase.Forms
             WebClient webcl = new WebClient();
             webcl.DownloadFileCompleted += Webcl_DownloadFileCompleted;
             webcl.DownloadFileAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Client/Versions/CurrentVersion/Version.xml"), "Version.xml");
+
+            WebClient wc = new WebClient();
+            wc.DownloadFileCompleted += Wc_DownloadFileCompleted;
+            wc.DownloadFileAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Banners/Banners.xml"), "Banners/Banners.xml");
+
+            
+        }
+
+        private bool PhotoChecking(string fileName)
+        {
+            DirectoryInfo di = new DirectoryInfo("Banners");
+            FileInfo[] files = di.GetFiles();
+
+           
+            foreach (FileInfo file in files)
+            {
+                if (file.Name == fileName)
+                {
+                    return true;
+                }
+
+            }
+            return false;
+        }
+        private bool FileChecking(string fileName)
+        {
+            XmlDocument xDoc = new XmlDocument();
+            xDoc.Load("Banners/Banners.xml");
+            XmlElement xRoot = xDoc.DocumentElement;
+
+            foreach (XmlNode node in xRoot.ChildNodes)
+            {
+                if (node["PhotoName"].Attributes["value"].Value == fileName)
+                {
+                   return true;
+                }
+            }
+            return false;
+        }
+
+        private void Wc_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        {
+            
+
+            if (!Directory.Exists("Banners"))
+            {
+                Directory.CreateDirectory("Banners");
+            }
+            
+            
+            string[] images = FtpManager.GetFilesFromServer("Banners");
+            foreach (string img in images)
+            {
+                if (!PhotoChecking(img))
+                {
+                    WebClient webclient = new WebClient();
+                    webclient.DownloadFileCompleted += Webclient_DownloadFileCompleted;
+
+                    webclient.DownloadFileAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Banners/" + img), "Banners/" + img);
+                }
+                             
+            }
+            DirectoryInfo di = new DirectoryInfo("Banners");
+            FileInfo[] files = di.GetFiles();
+
+            foreach (FileInfo file in files)
+            {
+                if (file.Name != "Banners.xml")
+                {
+                    if (!FileChecking(file.Name))
+                    {
+                        file.Delete();
+                    }
+
+                }
+               
+            }
+
+        }
+
+        private void Webclient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        {
+            
         }
 
         private void Webcl_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
