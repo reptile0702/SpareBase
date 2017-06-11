@@ -12,12 +12,14 @@ namespace SparesBase
             InitializeComponent();
         }
 
+        #region Методы
 
         // Получение логов из базы по фильтрам
         private void GetLogs(int actionId, int accountId)
         {           
             lbLogs.Items.Clear();
 
+            // Даты
             string dateFrom = dtpFrom.Value.Date.ToString("yyyy-MM-dd 23:59:59");
             string dateTo = dtpTo.Value.Date.ToString("yyyy-MM-dd 23:59:59");
 
@@ -26,10 +28,8 @@ namespace SparesBase
             where = " WHERE(((ActionLogs.OrganizationId=" + EnteredUser.OrganizationId + ") AND (Date BETWEEN '" + dateFrom + "' AND '" + dateTo + "')) AND";
             if (actionId != 0 || accountId != 0)
             {
-               
                 where += actionId != 0 ? " ActionLogs.ActionId= " + actionId + " AND " : "";               
-                where += accountId != 0 ? " ActionLogs.AccountId=" + accountId + " AND " : "";
-               
+                where += accountId != 0 ? " ActionLogs.AccountId=" + accountId + " AND " : "";  
             }
             where = where.Remove(where.Length - 4, 4) + ") ORDER BY ActionLogs.Date";
 
@@ -60,15 +60,8 @@ namespace SparesBase
                     case "6":
                         lbLogs.Items.Add("[" + date.Date.ToShortDateString() + " " + date.TimeOfDay + "] Обнаружен брак в предмете \"" + row.ItemArray[4] + "\" пользователем " + row.ItemArray[1] + " " + row.ItemArray[2] + " " + row.ItemArray[3]);
                         break;
-
-
-
                 }
-                
-
-                //lbLogs.Items.Add(row.ItemArray[0] + " " + row.ItemArray[1] + " " + row.ItemArray[2] + " " + row.ItemArray[3]);
             }
-               
         }
 
         // Заполнение ComboBox'ов действий и аккаунтов
@@ -106,7 +99,12 @@ namespace SparesBase
             cbAccount.SelectedIndexChanged += CbAccount_SelectedIndexChanged;
         }
 
-        
+        #endregion Методы
+
+
+
+        #region События
+
         // Загрузка формы
         private void ActionLogsForm_Load(object sender, EventArgs e)
         {
@@ -126,14 +124,18 @@ namespace SparesBase
             GetLogs(int.Parse(cbAction.SelectedValue.ToString()), int.Parse(cbAccount.SelectedValue.ToString()));
         }
 
+        // Изменение даты "C"
         private void dtpFrom_ValueChanged(object sender, EventArgs e)
         {
             GetLogs(int.Parse(cbAction.SelectedValue.ToString()), int.Parse(cbAccount.SelectedValue.ToString()));
         }
 
+        // Изменение даты "По"
         private void dtpTo_ValueChanged(object sender, EventArgs e)
         {
             GetLogs(int.Parse(cbAction.SelectedValue.ToString()), int.Parse(cbAccount.SelectedValue.ToString()));
         }
+
+        #endregion События
     }
 }

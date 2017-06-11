@@ -11,6 +11,8 @@ namespace SparesBase
         bool rename;
         string oldName;
 
+        #region Конструкторы
+
         // Конструктор для добавления главной категории
         public EditCategory(MainForm mf)
         {
@@ -29,7 +31,12 @@ namespace SparesBase
             this.oldName = oldName;
         }
 
+        #endregion Конструкторы
 
+
+
+        #region События
+        
         // Загрузка формы
         private void EditCategory_Load(object sender, EventArgs e)
         {
@@ -77,5 +84,7 @@ namespace SparesBase
             DialogResult = DialogResult.Cancel;
             Close();
         }
+
+        #endregion События
     }
 }

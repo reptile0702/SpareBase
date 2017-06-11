@@ -13,22 +13,16 @@ namespace SparesBase
             set { tvSellers.SelectedNode.Tag = value; }
         }
 
-
         // Конструктор
         public SellerForm()
         {
             InitializeComponent();
-
-           
             FillSellers();
         }
 
 
         #region Заполнение данных
-
-      
-       
-
+        
         // Получение данных о выделенном поставщике из базы и вывод данных во все TextBox'ы
         private void FillSellerData()
         {

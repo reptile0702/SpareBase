@@ -5,8 +5,10 @@ namespace SparesBase
 {
     public enum SellerState
     {
-        Insert, Update
+        Insert,
+        Update
     }
+
     public partial class SellerEdit : Form
     {
         SellerState state;
@@ -43,8 +45,6 @@ namespace SparesBase
 
         #region Заполнение данных
 
-       
-      
         // Заполнение данных о поставщике
         private void FillSellerData(Seller seller)
         {
@@ -54,7 +54,6 @@ namespace SparesBase
             tbFirstName.Text = seller.ContactFirstName;
             tbLastName.Text = seller.ContactLastName;
             tbSecondName.Text = seller.ContactSecondName;
-           
         }
 
         #endregion Заполнение данных
@@ -80,7 +79,7 @@ namespace SparesBase
                 MessageBox.Show("Заполнены не все поля");
         }
 
-        
+        // Показ формы
         public SellerState ShowForm()
         {
             ShowDialog();            

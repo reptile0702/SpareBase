@@ -16,7 +16,6 @@ namespace SparesBase
             this.id = id;
         }
 
-
         // Заполнение ComboBox с количеством
         private void FillQuantity()
         {

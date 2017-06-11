@@ -4,9 +4,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 using System.Drawing.Drawing2D;
-using System.Xml;
-using System.Net;
-using System.Threading;
 
 namespace SparesBase
 {
@@ -48,7 +45,7 @@ namespace SparesBase
             if (imagesCounter != 0)
             {
                 // Поиск папки с предметом, если ее нет, то создать
-                string[] folders = GetFilesFromServer(photosPath);
+                string[] folders = GetFilesFromServer("Photos/");
                 string createFolder = "";
                 for (int i = 0; i < folders.Length; i++)
                     if (folders[i] == "item_" + id)
@@ -123,7 +120,7 @@ namespace SparesBase
             Image[] images = new Image[5];
 
             // Проверка на существование папки предмета.
-            string[] names = GetFilesFromServer(photosPath);
+            string[] names = GetFilesFromServer("Photos/");
             for (int i = 0; i < names.Length; i++)
                 if (names[i] == "item_" + id)
                     folderName = names[i];
@@ -159,7 +156,7 @@ namespace SparesBase
             Connect();
 
             // поиск папки предмета
-            string[] folders = GetFilesFromServer(photosPath);
+            string[] folders = GetFilesFromServer("Photos/");
             string folder = "";
             for (int i = 0; i < folders.Length; i++)
                 if (folders[i] == "item_" + id)
@@ -198,7 +195,7 @@ namespace SparesBase
             Connect();
 
             // Поиск папки предмета 
-            string[] folders = GetFilesFromServer(photosPath);
+            string[] folders = GetFilesFromServer("Photos/");
             string folder = "";
             for (int i = 0; i < folders.Length; i++)
                 if (folders[i] == "item_" + id)

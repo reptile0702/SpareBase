@@ -30,9 +30,7 @@ namespace SparesBase
                 DatabaseWorker.InsertAction(4, itemId);
             }
             else
-            {
                 MessageBox.Show("Введите номер заказа");
-            }
         }
 
 

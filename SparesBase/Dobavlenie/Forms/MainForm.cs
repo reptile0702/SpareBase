@@ -10,19 +10,17 @@ namespace SparesBase
     public partial class MainForm : Form
     {
         // TODO: Добавть журнал поисков 
-
+        // TODO: Проверить на существование введенного поставщика
         // TODO: в "поиске по организациям", буду его Глобальным дальше называть, поле ID уменьшить, за счёт него расширить наименование
-        // TODO: надо.. разместить модуль проверки версии..сейчас версия 0.0001A и будем повышать циферку с каждым исправлением) Должна совершать запрос к сайту, проверять актуальную версию, если версия программы ниже актуальной, то не давать запуск, а требовать обновить.
-        
 
+
+        AuthenticationForm au;
 
         // Выбранная категория в TreeView
         public Category SelectedCategory { get { return (Category)treeView.SelectedNode.Tag; } }
 
         // Выбранный предмет в DataGridView
         public Item SelectedItem { get { return (Item)dgv.CurrentRow.Tag; } }
-
-        AuthenticationForm au;
 
         // Конструктор
         public MainForm(AuthenticationForm au)
@@ -467,22 +465,61 @@ namespace SparesBase
 
         #region События
 
+        #region Разные
+
         // Загрузка формы
         private void MainForm_Load(object sender, EventArgs e)
         {
             treeView.FillCategories(EnteredUser.OrganizationId, cmsCategory);
         }
 
+        // Закрытие формы
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (!au.Visible)
+                Application.Exit();
+        }
+
         // Выделение нода в TreeView
         private void treeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
             FillItemsByCategory();
-            if (dgv.Rows.Count <= 0)
-            {
-               // ClearInfoAboutItem();
-            }
         }
 
+        // Журнал действий
+        private void tsmiActionLogs_Click(object sender, EventArgs e)
+        {
+            ActionLogsForm alf = new ActionLogsForm();
+            alf.ShowDialog();
+        }
+
+        private void tsmiChangeAccount_Click(object sender, EventArgs e)
+        {
+            au.AccountExit();
+            au.Show();
+            Close();
+        }
+
+        private void tsmiExit_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void tsmiUsers_Click(object sender, EventArgs e)
+        {
+            EmployeesForm employees = new EmployeesForm();
+            employees.ShowDialog();
+        }
+
+        private void tsmiSellers_Click(object sender, EventArgs e)
+        {
+            SellerForm sf = new SellerForm();
+            sf.ShowDialog();
+        }
+
+        #endregion Разные
+
+        #region Категории
 
         // Клик на кнопку "Добавить главную категорию"
         private void AddMainCategory_Click(object sender, EventArgs e)
@@ -517,8 +554,9 @@ namespace SparesBase
                 DeleteCategory(treeView.SelectedNode.FullPath.Split('\\').Length, SelectedCategory.Id);
         }
 
+        #endregion Категории
 
-
+        #region Предметы
 
         // Клик на кнопку "Добавить предмет"
         private void AddItem_Click(object sender, EventArgs e)
@@ -537,6 +575,16 @@ namespace SparesBase
         {
             DeleteItem();
         }
+
+        private void dgv_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (SelectedItem != null)
+                InsertInfoAboutItem(SelectedItem);
+        }
+
+        #endregion Предметы
+
+        #region TreeView
 
         // Раскрытие выделенного нода в TreeView
         private void cmsExpandNode_Click(object sender, EventArgs e)
@@ -562,28 +610,9 @@ namespace SparesBase
             treeView.CollapseAll();
         }
 
+        #endregion TreeView
 
-
-
-        // Закрытие формы
-        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            if (!au.Visible)
-            {
-                Application.Exit();
-            }
-
-        }
-
-        // Журнал действий
-        private void tsmiActionLogs_Click(object sender, EventArgs e)
-        {
-            ActionLogsForm alf = new ActionLogsForm();
-            alf.ShowDialog();
-        }
-
-        #endregion События
-
+        #region Drag'n'Drop
 
         private void treeView_DragEnter(object sender, DragEventArgs e)
         {
@@ -592,66 +621,33 @@ namespace SparesBase
 
         private void treeView_DragDrop(object sender, DragEventArgs e)
         {
-
             Point pt = treeView.PointToClient(Cursor.Position);
             TreeNode node = treeView.GetNodeAt(pt);
             if (node != null)
             {
-                //MessageBox.Show(e.Data.GetData(DataFormats.Text).ToString() + " " + node.Text);
                 if (MessageBox.Show("Вы уверены, что хотите переместить предмет из категорий \"" + treeView.SelectedNode.FullPath.Replace("\\", " - ") + "\" в категории \"" + node.FullPath.Replace("\\", " - ") + "\"?", "Вы уверены?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                 {
                     ChangeCategories(FormCategories(node), int.Parse(e.Data.GetData(DataFormats.Text).ToString()));
                     FillItemsByCategory();
-
                 }
-
             }
         }
 
         private void dgv_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
-            {
                 if (dgv.CurrentRow != null)
-                {
                     dgv.DoDragDrop(dgv.CurrentRow.Cells[0].Value.ToString(), DragDropEffects.Copy);
-                }
-
-            }
         }
 
-        private void treeView_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
+        #endregion Drag'n'Drop
 
-            }
-        }
+        #region Поиск
 
         private void tbSearch_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
-            {
                 SearchItems(tbSearch.Text);
-            }
-        }
-
-        private void tsmiChangeAccount_Click(object sender, EventArgs e)
-        {
-            au.InitializeForm();
-            au.Show();
-            Close();
-        }
-
-        private void tsmiExit_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void tsmiUsers_Click(object sender, EventArgs e)
-        {
-            EmployeesForm employees = new EmployeesForm();
-            employees.ShowDialog();
         }
 
         private void tsmiSearch_Click(object sender, EventArgs e)
@@ -678,23 +674,8 @@ namespace SparesBase
             }
         }
 
-        private void tsmiSellers_Click(object sender, EventArgs e)
-        {
-            SellerForm sf = new SellerForm();
-            sf.ShowDialog();
-        }
+        #endregion Поиск
 
-        private void dgv_SelectionChanged(object sender, EventArgs e)
-        {
-           
-        }
-
-        private void dgv_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (SelectedItem != null)
-            {
-                 InsertInfoAboutItem(SelectedItem);
-            }
-        }
+        #endregion События
     }
 }

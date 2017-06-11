@@ -13,6 +13,7 @@ namespace SparesBase
         // Категории текущего предмета
         int[] categories;
 
+        // Фотографии предмета
         Image[] images;
         bool imagesEdited;
 
@@ -27,7 +28,6 @@ namespace SparesBase
             InitializeComponent();
 
             this.categories = categories;
-
 
             // Выключение кнопок: В заказ, продажа, брак
             btnInOrder.Enabled = false;
@@ -52,6 +52,7 @@ namespace SparesBase
             FillSellersComboBox();
             GetItemData(item);
 
+            // Загрузка превью-фотографии
             pbPhoto.Image = FtpManager.DownloadPreviewImage(item.Id);
         }
 
@@ -122,6 +123,8 @@ namespace SparesBase
 
                 // Выполнение запроса
                 DatabaseWorker.SqlQuery(query);
+
+                // Добавление фотографий на FTP сервер если они были редактированы
                 if (updateId == 0)
                 {
                     if (imagesEdited)
@@ -129,8 +132,8 @@ namespace SparesBase
                         int itemId = int.Parse(DatabaseWorker.SqlScalarQuery("SELECT id FROM Items WHERE(id = LAST_INSERT_ID())").ToString());
                         FtpManager.UploadImages(images, itemId);
                     }
-                    DatabaseWorker.InsertAction(1, int.Parse(DatabaseWorker.SqlScalarQuery("SELECT LAST_INSERT_ID() FROM Items").ToString()));
 
+                    DatabaseWorker.InsertAction(1, int.Parse(DatabaseWorker.SqlScalarQuery("SELECT LAST_INSERT_ID() FROM Items").ToString()));
                 }
                 else
                 {
@@ -163,6 +166,7 @@ namespace SparesBase
             FillCategoriesInfo();
         }
 
+        // Заполнение строки категорий
         private void FillCategoriesInfo()
         {
             lMainCategory.Text = "Категории: ";
@@ -177,6 +181,7 @@ namespace SparesBase
                 lMainCategory.Text += " - " + item.SubCategory4.Name;
         }
 
+        // Смена категорий
         public void ChangeCategories(Category[] categories)
         {
             for (int i = 0; i < this.categories.Length; i++)
@@ -204,7 +209,6 @@ namespace SparesBase
             int selectedId = 0;
             if (cbSeller.SelectedValue != null)
                 selectedId = int.Parse(cbSeller.SelectedValue.ToString());
-
 
             DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT id, name FROM Sellers WHERE(OrganizationId=" + EnteredUser.OrganizationId + ") ORDER BY name");
             DataTable source = new DataTable();
@@ -253,7 +257,6 @@ namespace SparesBase
                 int defect = 0;
 
                 // Подсчет всех строк
-
                 // В заказ
                 DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT Quantity FROM Purchase WHERE(ItemId=" + item.Id + ")");
                 foreach (DataRow row in dt.Rows)
@@ -278,6 +281,7 @@ namespace SparesBase
 
         }
 
+        // Получение остатка из базы
         private void GetResidue()
         {
             DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT Residue FROM Items WHERE(id = " + item.Id + ")");
@@ -291,7 +295,7 @@ namespace SparesBase
         #region Разные события
 
         // Загрузка формы
-        private void Form1_Load(object sender, EventArgs e)
+        private void EditForm_Load(object sender, EventArgs e)
         {       
             if (item != null)
                 GetResidue();
@@ -311,7 +315,7 @@ namespace SparesBase
             }
         }
 
-        // Открывание ComboBox'а с поставщиками
+        // Открытие ComboBox'а с поставщиками
         private void cbSeller_DropDown(object sender, EventArgs e)
         {
             FillSellersComboBox();
@@ -393,13 +397,13 @@ namespace SparesBase
                 MessageBox.Show("Остаток данного предмета равен нулю");
         }
 
-
-        #endregion Разные события
-
+        // Смена категорий
         private void btnChangeCategories_Click(object sender, EventArgs e)
         {
             ChangeCategoriesForm ccf = new ChangeCategoriesForm(this, item.Organization.Id);
             ccf.ShowDialog();
         }
+
+        #endregion Разные события
     }
 }
