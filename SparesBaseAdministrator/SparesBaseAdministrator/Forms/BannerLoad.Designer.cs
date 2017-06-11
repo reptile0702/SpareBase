@@ -114,10 +114,6 @@
             this.label1.TabIndex = 7;
             this.label1.Text = "ссылка";
             // 
-            // bw
-            // 
-            this.bw.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bw_DoWork);
-            // 
             // BannerLoad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);

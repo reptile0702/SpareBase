@@ -4,6 +4,9 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 using System.Drawing.Drawing2D;
+using System.Net;
+using System;
+using System.Xml;
 
 namespace SparesBaseAdministrator
 {
@@ -15,7 +18,9 @@ namespace SparesBaseAdministrator
         static string server = "status.nvhost.ru";
         static string username = "sh61018001";
         static string password = "lfybkrf";
-        static string remotePath = "SparesBase/Photos/";
+        static string remotePath = "SparesBase/";
+        static string photosPath = "SparesBase/Photos";
+        static string bannersPath = "SparesBase/Banners/";
         static FtpClient client;
 
         // Коннект к серверу
@@ -28,7 +33,7 @@ namespace SparesBaseAdministrator
         }
 
 
-        #region Методы
+        #region Фото
 
         // Загрузка фото на сервер
         public static void UploadImages(Image[] images, int id)
@@ -51,13 +56,13 @@ namespace SparesBaseAdministrator
                         createFolder = folders[i];
 
                 if (createFolder == "")
-                    client.CreateDirectory(timeout, remotePath + "item_" + id);
+                    client.CreateDirectory(timeout, photosPath + "item_" + id);
                 else
                 {
                     // Удаление всех фоток до загрузки новых
                     string[] photos = GetFilesFromServer("item_" + id);
                     for (int i = 0; i < photos.Length; i++)
-                        client.DeleteFile(timeout, remotePath + "item_" + id + "/" + photos[i]);
+                        client.DeleteFile(timeout, photosPath + "item_" + id + "/" + photos[i]);
                 }
 
                 // Cоздание временной папки 
@@ -75,7 +80,7 @@ namespace SparesBaseAdministrator
                         if (!pCreated)
                         {
                             previewImage = ResizeImage(images[i], 200, 200);
-                            previewImage.Tag = remotePath + "item_" + id + "/preview.jpg";
+                            previewImage.Tag = photosPath + "item_" + id + "/preview.jpg";
                             previewImage.Save(Application.StartupPath + "/Temp/" + Path.GetFileName(previewImage.Tag.ToString()));
                             byte[] previewBytes = File.ReadAllBytes(Application.StartupPath + "/Temp/" + Path.GetFileName(previewImage.Tag.ToString()));
                             client.PutFile(timeout, previewImage.Tag.ToString(), previewBytes, 0, previewBytes.Length);
@@ -83,7 +88,7 @@ namespace SparesBaseAdministrator
                         }
 
                         Image resizedImage = ResizeImage(images[i], 400, 400);
-                        resizedImage.Tag = remotePath + "item_" + id + "/" + (i + 1) + ".jpg";
+                        resizedImage.Tag = photosPath + "item_" + id + "/" + (i + 1) + ".jpg";
                         resizedImage.Save(Application.StartupPath + "/Temp/" + Path.GetFileName(resizedImage.Tag.ToString()));
                         byte[] bytes = File.ReadAllBytes(Application.StartupPath + "/Temp/" + Path.GetFileName(resizedImage.Tag.ToString()));
                         client.PutFile(timeout, resizedImage.Tag.ToString(), bytes, 0, bytes.Length);
@@ -105,10 +110,10 @@ namespace SparesBaseAdministrator
                 // Удаление всех фоток из папки
                 string[] photos = GetFilesFromServer("item_" + id);
                 for (int i = 0; i < photos.Length; i++)
-                    client.DeleteFile(timeout, remotePath + "item_" + id + "/" + photos[i]);
+                    client.DeleteFile(timeout, photosPath + "item_" + id + "/" + photos[i]);
 
                 // Удаление директории предмета
-                client.DeleteDirectory(timeout, remotePath + "item_" + id);
+                client.DeleteDirectory(timeout, photosPath + "item_" + id);
             }
         }
 
@@ -134,11 +139,11 @@ namespace SparesBaseAdministrator
                 {
                     if (imgName[i] != "preview.jpg")
                     {
-                        byte[] imageBytes = client.GetFile(timeout, remotePath + folderName + "/" + imgName[i]);
+                        byte[] imageBytes = client.GetFile(timeout, photosPath + folderName + "/" + imgName[i]);
                         MemoryStream memoryStream = new MemoryStream(imageBytes);
                         Image img = Image.FromStream(memoryStream);
                         string imageIndex = imgName[i][0].ToString();
-                        img.Tag = remotePath + folderName + "/" + imgName[i];
+                        img.Tag = photosPath + folderName + "/" + imgName[i];
                         images[int.Parse(imageIndex) - 1] = img;
                     }
                 }
@@ -179,7 +184,7 @@ namespace SparesBaseAdministrator
 
                 if (file != "")
                 {
-                    byte[] imageBytes = client.GetFile(timeout, remotePath + folder + "/" + file);
+                    byte[] imageBytes = client.GetFile(timeout, photosPath + folder + "/" + file);
                     MemoryStream memoryStream = new MemoryStream(imageBytes);
                     return Image.FromStream(memoryStream);
                 }
@@ -209,15 +214,88 @@ namespace SparesBaseAdministrator
                 string[] files = GetFilesFromServer(folder);
                 for (int i = 0; i < files.Length; i++)
                     if (files[i] != "." && files[i] != "..")
-                        client.DeleteFile(timeout, remotePath + "item_" + id + "/" + files[i]);
+                        client.DeleteFile(timeout, photosPath + "item_" + id + "/" + files[i]);
 
                 // удаление папки предмета
-                client.DeleteDirectory(timeout, remotePath + "item_" + id);
+                client.DeleteDirectory(timeout, photosPath + "item_" + id);
             }
         }
 
-        #endregion Методы
+        #endregion Фото
 
+        #region Баннеры
+
+        public static void UploadBanners(Banner[] banners)
+        {
+            XmlDocument bannersDoc = new XmlDocument();
+            bannersDoc.Load("Banners.xml");
+            XmlElement element = bannersDoc.DocumentElement;
+
+            // Удаление всех нодов баннера для добавления новых
+            element.RemoveAll();
+
+            foreach (Banner banner in banners)
+            {
+                XmlNode bannerNode = bannersDoc.CreateElement("Banner");
+
+                // Имя фото
+                XmlNode bannerName = bannersDoc.CreateElement("PhotoName");
+                XmlAttribute nameAttr = bannersDoc.CreateAttribute("value");
+                nameAttr.Value = banner.PhotoName;
+                bannerName.Attributes.Append(nameAttr);
+
+                // Ссылка
+                XmlNode bannerLink = bannersDoc.CreateElement("Link");
+                XmlAttribute LinkAttr = bannersDoc.CreateAttribute("value");
+                LinkAttr.Value = banner.Link;
+                bannerLink.Attributes.Append(LinkAttr);
+
+                bannerNode.AppendChild(bannerName);
+                bannerNode.AppendChild(bannerLink);
+
+                element.AppendChild(bannerNode);
+            }
+
+            MemoryStream xmlFileStream = new MemoryStream();
+            bannersDoc.Save(xmlFileStream);
+
+            Connect();
+
+            // Удаление всех файлов из папки баннеров
+            string[] files = GetFilesFromServer("Banners/");
+            foreach (string file in files)
+                client.DeleteFile(timeout, bannersPath + file);
+
+            // Заливка файла XML на сервер
+            client.PutFile(timeout, bannersPath + "Banners.xml", xmlFileStream.GetBuffer());
+
+            // Заливка всех баннеров на сервер
+            foreach (Banner banner in banners)
+            {
+                MemoryStream imageStream = new MemoryStream();
+                banner.Image.Save(imageStream, System.Drawing.Imaging.ImageFormat.Jpeg);
+                client.PutFile(timeout, bannersPath + banner.PhotoName, imageStream.GetBuffer());
+            }
+            client.Disconnect(timeout);
+        }
+
+        public static void DownloadBannersFile()
+        {
+            WebClient wc = new WebClient();
+            wc.DownloadFile(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Banners/Banners.xml"), "Banners.xml");
+            wc.Dispose();
+        }
+
+        public static Image DownloadBannerImage(string imageName)
+        {
+            WebClient pics = new WebClient();
+            byte[] imageBytes = pics.DownloadData(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Banners/" + imageName));
+            pics.Dispose();
+            MemoryStream ms = new MemoryStream(imageBytes);
+            return Image.FromStream(ms);
+        }
+
+        #endregion Баннеры
 
 
         #region Вспомогательные методы
