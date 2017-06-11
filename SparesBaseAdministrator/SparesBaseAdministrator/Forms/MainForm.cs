@@ -63,5 +63,11 @@ namespace SparesBaseAdministrator
             ItemsForm itemsForm = new ItemsForm();
             itemsForm.ShowDialog();
         }
+
+        private void btnBanners_Click(object sender, System.EventArgs e)
+        {
+            BannerLoad bannerLoad = new BannerLoad();
+            bannerLoad.ShowDialog();
+        }
     }
 }

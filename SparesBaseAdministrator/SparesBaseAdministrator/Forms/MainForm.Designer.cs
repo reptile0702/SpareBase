@@ -39,6 +39,7 @@
             this.lItemsCount = new System.Windows.Forms.Label();
             this.lActionsCount = new System.Windows.Forms.Label();
             this.lSellersCount = new System.Windows.Forms.Label();
+            this.btnBanners = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnAccounts
@@ -136,11 +137,22 @@
             this.lSellersCount.TabIndex = 10;
             this.lSellersCount.Text = "Количество поставщиков в базе";
             // 
+            // btnBanners
+            // 
+            this.btnBanners.Location = new System.Drawing.Point(12, 158);
+            this.btnBanners.Name = "btnBanners";
+            this.btnBanners.Size = new System.Drawing.Size(283, 23);
+            this.btnBanners.TabIndex = 11;
+            this.btnBanners.Text = "Рекламные баннеры";
+            this.btnBanners.UseVisualStyleBackColor = true;
+            this.btnBanners.Click += new System.EventHandler(this.btnBanners_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(613, 161);
+            this.ClientSize = new System.Drawing.Size(613, 191);
+            this.Controls.Add(this.btnBanners);
             this.Controls.Add(this.lSellersCount);
             this.Controls.Add(this.lActionsCount);
             this.Controls.Add(this.lItemsCount);
@@ -175,6 +187,7 @@
         private System.Windows.Forms.Label lItemsCount;
         private System.Windows.Forms.Label lActionsCount;
         private System.Windows.Forms.Label lSellersCount;
+        private System.Windows.Forms.Button btnBanners;
     }
 }
 

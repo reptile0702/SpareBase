@@ -28,14 +28,14 @@ namespace SparesBaseAdministrator
             }
 
             // Проверка логина
-            if (tbLogIn.Text != "login")
+            if (tbLogIn.Text != "1")
             {
                 MessageBox.Show("Пользователь с таким логином не зарегистрирован");
                 return;
             }
 
             // Проверка пароля
-            if (tbPassword.Text != "password")
+            if (tbPassword.Text != "1")
             {
                 MessageBox.Show("Не верно введён пароль");
                 return;
