@@ -115,10 +115,10 @@ namespace SparesBase
         }
 
         // Загрузка фото с сервера
-        public static Image[] DownloadImages(int id)
+        public static string[] DownloadImages(int id)
         {
             string folderName = "";
-            Image[] images = new Image[5];
+            List<string> images = new List<string>();
 
             // Проверка на существование папки предмета.
             string[] names = GetFilesFromServer(photosString);
@@ -136,19 +136,22 @@ namespace SparesBase
                 {
                     if (imgName[i] != "preview.jpg")
                     {
-                        byte[] imageBytes = client.GetFile(timeout, photosPath + folderName + "/" + imgName[i]);
-                        MemoryStream memoryStream = new MemoryStream(imageBytes);
-                        Image img = Image.FromStream(memoryStream);
-                        string imageIndex = imgName[i][0].ToString();
-                        img.Tag = photosPath + folderName + "/" + imgName[i];
-                        images[int.Parse(imageIndex) - 1] = img;
+                        images.Add(imgName[i]);
+
+
+                        //byte[] imageBytes = client.GetFile(timeout, photosPath + folderName + "/" + imgName[i]);
+                        //MemoryStream memoryStream = new MemoryStream(imageBytes);
+                        //Image img = Image.FromStream(memoryStream);
+                        //string imageIndex = imgName[i][0].ToString();
+                        //img.Tag = photosPath + folderName + "/" + imgName[i];
+                        //images[int.Parse(imageIndex) - 1] = img;
                     }
                 }
                 client.Disconnect(timeout);
-                return images;
+                return images.ToArray();
             }
             else
-                return images;
+                return images.ToArray();
         }
 
         // Загрузка превью-фото
