@@ -163,7 +163,15 @@ namespace SparesBase.Forms
             // Создание папки Banners если ее нет
             if (!Directory.Exists("Banners"))
                 Directory.CreateDirectory("Banners");
-            
+
+            // Удаление всех старых баннеров
+            DirectoryInfo di = new DirectoryInfo("Banners");
+            FileInfo[] files = di.GetFiles();
+            foreach (FileInfo file in files)
+                if (file.Name != "Banners.xml")
+                    if (!FileChecking(file.Name) || file.Length <= 0)
+                        file.Delete();
+
             // Загрузка баннеров, которых нет на компьютере
             string[] images = FtpManager.GetFilesFromServer("Banners");
             foreach (string img in images)
@@ -171,17 +179,16 @@ namespace SparesBase.Forms
                 if (!FolderBannerCheck(img))
                 {
                     WebClient webclient = new WebClient();
+                    webclient.DownloadFileCompleted += Webclient_DownloadFileCompleted;
                     webclient.DownloadFileAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Banners/" + img), "Banners/" + img);
                 }                
             }
+        }
 
-            // Удаление всех старых баннеров
-            DirectoryInfo di = new DirectoryInfo("Banners");
-            FileInfo[] files = di.GetFiles();
-            foreach (FileInfo file in files)
-                if (file.Name != "Banners.xml")
-                    if (!FileChecking(file.Name))
-                        file.Delete();
+        private void Webclient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        {
+            if (e.Error != null)
+                MessageBox.Show(e.Error.Message);   
         }
 
         // Вызывается, когда загрузится файл Version.xml

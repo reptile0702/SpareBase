@@ -36,25 +36,27 @@ namespace SparesBase
             InitializeComponent();
             this.id = id;
             images = new Image[5];
-            pbPreview.SizeMode = PictureBoxSizeMode.CenterImage;
-            pbPreview.Image = Properties.Resources.LoadGif;
-            btnBrowseImg.Enabled = false;
-            btnClearImg.Enabled = false;
-            btnOk.Enabled = false;
-            lbImages.Enabled = false;
-
+            
             string[] photos = FtpManager.DownloadImages(id);
 
-            this.counter = 0;
+            counter = 0;
             imagesCount = photos.Length;
+            if (imagesCount > 0)
+            {
+                pbPreview.SizeMode = PictureBoxSizeMode.CenterImage;
+                pbPreview.Image = Properties.Resources.LoadGif;
+                btnBrowseImg.Enabled = false;
+                btnClearImg.Enabled = false;
+                btnOk.Enabled = false;
+                lbImages.Enabled = false;
+            }
+
             foreach (string photo in photos)
             {
                 WebClient webclient = new WebClient();
                 webclient.DownloadDataCompleted += Webclient_DownloadDataCompleted;
                 webclient.DownloadDataAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Photos/" + "item_" + id + "/" + photo), photo);
             }
-
-           
         }
 
         private void Webclient_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
