@@ -12,7 +12,7 @@ namespace SparesBase
         // TODO: Добавть журнал поисков 
         // TODO: Проверить на существование введенного поставщика
         // TODO: в "поиске по организациям", буду его Глобальным дальше называть, поле ID уменьшить, за счёт него расширить наименование
-
+        // TODO: измеять сотрудников можнт только адмни
 
         AuthenticationForm au;
 
@@ -40,6 +40,8 @@ namespace SparesBase
             treeView.FillCategories(EnteredUser.OrganizationId, cmsCategory);
             InitializeDataGridView();
             ClearInfoAboutItem();
+
+            
         }
 
 
@@ -69,6 +71,8 @@ namespace SparesBase
            
             
             Item[] items = dgv.FillItems(where);
+
+            
             foreach (Item item in items)
             {
 #if DEBUG
@@ -106,6 +110,10 @@ namespace SparesBase
 #endif
 
                 dgv.Rows[dgv.Rows.Count - 1].Tag = item;
+                if (dgv.RowCount == 1)
+                {
+                    dgv.ClearSelection();
+                }
                 if (selectedItem != null)
                 {
                     if (item.Id == selectedItem.Id)
@@ -172,13 +180,13 @@ namespace SparesBase
             
             dgv.Columns[0].Width = 150;
             dgv.Columns[1].Width = 120;
-            dgv.Columns[2].Width = 90;
-            dgv.Columns[3].Width = 90;
-            dgv.Columns[4].Width = 90;
-            dgv.Columns[5].Width = 90;
-            dgv.Columns[6].Width = 90;
+            dgv.Columns[2].Width = 50;
+            dgv.Columns[3].Width = 50;
+            dgv.Columns[4].Width = 50;
+            dgv.Columns[5].Width = 50;
+            dgv.Columns[6].Width = 50;
             dgv.Columns[7].Width = 90;
-            dgv.Columns[8].Width = 90;
+            dgv.Columns[8].Width = 50;
             dgv.Columns[9].Width = 120;
             dgv.Columns[10].Width = 120;
             dgv.Columns[11].Width = 70;
@@ -646,7 +654,10 @@ namespace SparesBase
         {
             if (e.Button == MouseButtons.Left)
                 if (dgv.CurrentRow != null)
+                    if (dgv.HitTest(e.X, e.Y).RowIndex != -1)
+                  
                     dgv.DoDragDrop(dgv.CurrentRow.Cells[0].Value.ToString(), DragDropEffects.Copy);
+
         }
 
         #endregion Drag'n'Drop
@@ -686,5 +697,15 @@ namespace SparesBase
         #endregion Поиск
 
         #endregion События
+
+        private void dgv_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void EditItem_Click(object sender, DataGridViewCellMouseEventArgs e)
+        {
+
+        }
     }
 }
