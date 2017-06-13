@@ -2,6 +2,8 @@
 using System.Data;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Net;
+using System.IO;
 
 namespace SparesBase
 {
@@ -52,7 +54,23 @@ namespace SparesBase
             FillSellersComboBox();
             GetItemData(item);
 
-            pbPhoto.Image = FtpManager.DownloadPreviewImage(item.Id);
+            //pbPhoto.Image = FtpManager.DownloadPreviewImage(item.Id);
+            if (FtpManager.PreviewExists(item.Id))
+            {
+                pbPhoto.SizeMode = PictureBoxSizeMode.CenterImage;
+                pbPhoto.Image = Properties.Resources.LoadGif;
+                WebClient webclient = new WebClient();
+                webclient.DownloadDataCompleted += Webclient_DownloadDataCompleted;
+                webclient.DownloadDataAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Photos/item_" + item.Id + "/preview.jpg"));
+
+            }
+        }
+
+        private void Webclient_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
+        {
+            MemoryStream mem = new MemoryStream(e.Result);
+            pbPhoto.SizeMode = PictureBoxSizeMode.Zoom;
+            pbPhoto.Image = Image.FromStream(mem);
         }
 
         #endregion Конструкторы

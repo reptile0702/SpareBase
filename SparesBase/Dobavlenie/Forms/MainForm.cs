@@ -63,7 +63,13 @@ namespace SparesBase
                 if (i == 4) where += " AND i.Sub_Category_4_Id=(SELECT id FROM Sub_Category_4 WHERE(id=" + selectedCategories[i] + "))";
             }
             where += ") AND (i.Residue > 0) AND (i.Deleted <> 1))";
-
+            Item selectedItem = null;
+            if (dgv.CurrentRow != null)
+            {
+                selectedItem = (Item)dgv.CurrentRow.Tag;
+            }
+           
+            
             Item[] items = dgv.FillItems(where);
             foreach (Item item in items)
             {
@@ -102,6 +108,14 @@ namespace SparesBase
 #endif
 
                 dgv.Rows[dgv.Rows.Count - 1].Tag = item;
+                if (selectedItem != null)
+                {
+                    if (item.Id == selectedItem.Id)
+                    {
+                        dgv.Rows[dgv.Rows.Count - 1].Selected = true;
+                    }
+                }
+                
             }
             if (dgv.Rows.Count > 0)
             {
@@ -112,6 +126,7 @@ namespace SparesBase
             {
                 ClearInfoAboutItem();
             }
+
         }
 
         #endregion Заполнение данных
@@ -287,15 +302,15 @@ namespace SparesBase
             lquantity.Text = "Количество: " + selItem.Quantity;
             lresidue.Text = "Остаток: " + selItem.Residue;
 
-            lMainCat.Text = "Главная категория: " + selItem.MainCategory.Name;
+            lMainCat.Text = "Категории: " + selItem.MainCategory.Name;
             if (selItem.SubCategory1 != null)
-                lSub1.Text = "Подкатегория 1: " + selItem.SubCategory1.Name;
+                lMainCat.Text += " => " + selItem.SubCategory1.Name;
             if (selItem.SubCategory2 != null)
-                lSub2.Text = "Подкатегория 2: " + selItem.SubCategory2.Name;
+                lMainCat.Text += " => " + selItem.SubCategory2.Name;
             if (selItem.SubCategory3 != null)
-                lSub3.Text = "Подкатегория 3: " + selItem.SubCategory3.Name;
+                lMainCat.Text += " => : " + selItem.SubCategory3.Name;
             if (selItem.SubCategory4 != null)
-                lSub4.Text = "Подкатегория 4: " + selItem.SubCategory4.Name;
+                lMainCat.Text += " => : " + selItem.SubCategory4.Name;
         }
         private void ClearInfoAboutItem()
         {
@@ -312,15 +327,9 @@ namespace SparesBase
             lquantity.Text = "Количество: ";
             lresidue.Text = "Остаток: ";
 
-            lMainCat.Text = "Главная категория: ";
+            lMainCat.Text = "Категория: ";
             
-                lSub1.Text = "Подкатегория 1: ";
-        
-                lSub2.Text = "Подкатегория 2: ";
-            
-                lSub3.Text = "Подкатегория 3: ";
-            
-                lSub4.Text = "Подкатегория 4: ";
+               
         }
 
         // Поиск предмета
@@ -696,5 +705,6 @@ namespace SparesBase
                  InsertInfoAboutItem(SelectedItem);
             }
         }
+
     }
 }
