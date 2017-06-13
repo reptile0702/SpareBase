@@ -585,7 +585,7 @@ namespace SparesBase
             DeleteItem();
         }
 
-        private void dgv_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void dgv_CellClick(object sender, EventArgs e)
         {
             if (SelectedItem != null)
                 InsertInfoAboutItem(SelectedItem);
@@ -685,13 +685,6 @@ namespace SparesBase
 
         #endregion Поиск
 
-        private void dgv_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (SelectedItem != null)
-            {
-                 InsertInfoAboutItem(SelectedItem);
-            }
-        }
-
+        #endregion События
     }
 }
