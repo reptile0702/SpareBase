@@ -296,7 +296,8 @@
             // 
             // cbSeller
             // 
-            this.cbSeller.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSeller.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cbSeller.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbSeller.FormattingEnabled = true;
             this.cbSeller.Location = new System.Drawing.Point(404, 59);
             this.cbSeller.Name = "cbSeller";
@@ -404,7 +405,7 @@
             this.Name = "EditForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "ДОБАВИТЬ / ИЗМЕНИТЬ ПРЕДМЕТ";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.EditForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pbPhoto)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

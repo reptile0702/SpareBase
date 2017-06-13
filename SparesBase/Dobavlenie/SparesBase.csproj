@@ -48,7 +48,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Spare Parts 72px.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\Spare Parts 72px.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BytesRoad.Net.Ftp">
@@ -70,7 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Banner.cs" />
+    <Compile Include="Misc\Banner.cs" />
     <Compile Include="Forms\AccountEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -189,12 +189,12 @@
     <Compile Include="Forms\Cards\OrganizationCardForm.designer.cs">
       <DependentUpon>OrganizationCardForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="FtpManager.cs" />
+    <Compile Include="Misc\FtpManager.cs" />
     <Compile Include="Custom Components\ItemsDataGridView.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Program.cs" />
-    <Compile Include="ProgramUpdate.cs" />
+    <Compile Include="Misc\ProgramUpdate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Forms\Item Editing\SellerEdit.cs">
       <SubType>Form</SubType>
@@ -208,7 +208,7 @@
     <Compile Include="Forms\Item Editing\SellerForm.designer.cs">
       <DependentUpon>SellerForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="StringValidation.cs" />
+    <Compile Include="Misc\StringValidation.cs" />
     <EmbeddedResource Include="Forms\AccountEditor.resx">
       <DependentUpon>AccountEditor.cs</DependentUpon>
     </EmbeddedResource>

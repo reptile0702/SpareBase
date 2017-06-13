@@ -4,12 +4,14 @@ namespace SparesBase
 {
     public partial class AccountCardForm : Form
     {
+        // Конструктор
         public AccountCardForm(Account account)
         {
             InitializeComponent();
             InitializeCard(account);
         }
 
+        // Инициализация карточки
         private void InitializeCard(Account account)
         {
             lFirstName.Text = "Имя: " + account.FirstName;

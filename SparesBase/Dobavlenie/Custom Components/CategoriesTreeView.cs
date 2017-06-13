@@ -6,11 +6,11 @@ namespace SparesBase
 {
     class CategoriesTreeView : TreeView
     {
-        public CategoriesTreeView()
-        {
-                
-        }
+        // Конструктор
+        public CategoriesTreeView() { }
 
+
+        // Заполнение категорий
         public void FillCategories(int organizationId, ContextMenuStrip cmsCategory)
         {
             Nodes.Clear();

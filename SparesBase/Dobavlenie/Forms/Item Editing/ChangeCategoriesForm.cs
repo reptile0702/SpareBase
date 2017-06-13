@@ -5,6 +5,8 @@ namespace SparesBase
     public partial class ChangeCategoriesForm : Form
     {
         EditForm ef;
+
+        // Конструктор
         public ChangeCategoriesForm(EditForm ef, int organizationId)
         {
             InitializeComponent();
@@ -13,6 +15,7 @@ namespace SparesBase
             tvCategories.ExpandAll();
         }
 
+        // Двойной клик на нод
         private void tvCategories_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             ef.ChangeCategories(tvCategories.GetCategories());

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Windows.Forms;
@@ -14,9 +13,9 @@ namespace SparesBase.Forms
         public AuthenticationForm()
         {
             InitializeComponent();
-            
         }
-        
+
+        #region Методы
 
         // Аунтентификация
         private void Authentification()
@@ -80,16 +79,8 @@ namespace SparesBase.Forms
             Hide();
         }
 
-
-        // Клик на кнопку "Вход"
-        private void btnEnter_Click(object sender, EventArgs e)
-        {
-            Authentification();
-        }
-
-       
-
-        public void InitializeForm()
+        // Выход из аккаунта
+        public void AccountExit()
         {
             tbLogIn.Clear();
             tbPassword.Clear();
@@ -99,108 +90,102 @@ namespace SparesBase.Forms
             EnteredUser.LogIn = "";
             EnteredUser.OrganizationId = 0;
             EnteredUser.Admin = false;
-
         }
 
-        private void AuthenticationForm_Load(object sender, EventArgs e)
-        {
-            bwUpdater.RunWorkerAsync();
+        #endregion Методы
 
-        }
 
-        private void bwUpdater_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
-        {
-            File.Delete("Version.xml");
 
-            WebClient webcl = new WebClient();
-            webcl.DownloadFileCompleted += Webcl_DownloadFileCompleted;
-            webcl.DownloadFileAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Client/Versions/CurrentVersion/Version.xml"), "Version.xml");
+        #region Вспомогательные методы
 
-            WebClient wc = new WebClient();
-            wc.DownloadFileCompleted += Wc_DownloadFileCompleted;
-            wc.DownloadFileAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Banners/Banners.xml"), "Banners/Banners.xml");
-
-            
-        }
-
-        private bool PhotoChecking(string fileName)
+        // Проверка: есть ли фото с данным именем в папке Banners
+        private bool FolderBannerCheck(string fileName)
         {
             DirectoryInfo di = new DirectoryInfo("Banners");
             FileInfo[] files = di.GetFiles();
-
-           
             foreach (FileInfo file in files)
-            {
                 if (file.Name == fileName)
-                {
                     return true;
-                }
 
-            }
             return false;
         }
+
+        // Проверка: есть ли фото с данным именем в файле Banners.xml
         private bool FileChecking(string fileName)
         {
             XmlDocument xDoc = new XmlDocument();
             xDoc.Load("Banners/Banners.xml");
             XmlElement xRoot = xDoc.DocumentElement;
-
             foreach (XmlNode node in xRoot.ChildNodes)
-            {
                 if (node["PhotoName"].Attributes["value"].Value == fileName)
-                {
-                   return true;
-                }
-            }
+                    return true;
+
             return false;
         }
 
-        private void Wc_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
-        {
-            
+        #endregion Вспомогательные методы
 
+
+
+        #region События
+
+        // Загрузка формы
+        private void AuthenticationForm_Load(object sender, EventArgs e)
+        {
+            bwUpdater.RunWorkerAsync();
+        }
+
+        // Клик на кнопку "Вход"
+        private void btnEnter_Click(object sender, EventArgs e)
+        {
+            Authentification();
+        }
+   
+        // Отдельный поток
+        private void bwUpdater_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            File.Delete("Version.xml");
+
+            // Загрузка Version.xml
+            WebClient wcVersion = new WebClient();
+            wcVersion.DownloadFileCompleted += WcVersion_DownloadFileCompleted;
+            wcVersion.DownloadFileAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Client/Versions/CurrentVersion/Version.xml"), "Version.xml");
+
+            // Загрузка Banners.xml
+            WebClient wcBanners = new WebClient();
+            wcBanners.DownloadFileCompleted += WcBanners_DownloadFileCompleted;
+            wcBanners.DownloadFileAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Banners/Banners.xml"), "Banners/Banners.xml");
+        }
+
+        // Вызывается, когда загрузится файл Banners.xml
+        private void WcBanners_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        {
+            // Создание папки Banners если ее нет
             if (!Directory.Exists("Banners"))
-            {
                 Directory.CreateDirectory("Banners");
-            }
             
-            
+            // Загрузка баннеров, которых нет на компьютере
             string[] images = FtpManager.GetFilesFromServer("Banners");
             foreach (string img in images)
             {
-                if (!PhotoChecking(img))
+                if (!FolderBannerCheck(img))
                 {
                     WebClient webclient = new WebClient();
-                    webclient.DownloadFileCompleted += Webclient_DownloadFileCompleted;
-
                     webclient.DownloadFileAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Banners/" + img), "Banners/" + img);
-                }
-                             
+                }                
             }
+
+            // Удаление всех старых баннеров
             DirectoryInfo di = new DirectoryInfo("Banners");
             FileInfo[] files = di.GetFiles();
-
             foreach (FileInfo file in files)
-            {
                 if (file.Name != "Banners.xml")
-                {
                     if (!FileChecking(file.Name))
-                    {
                         file.Delete();
-                    }
-
-                }
-               
-            }
-
         }
 
-        private void Webclient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
-        {
-            
-        }
-
-        private void Webcl_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        // Вызывается, когда загрузится файл Version.xml
+        private void WcVersion_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
         {
             XmlDocument xDoc = new XmlDocument();
             xDoc.Load("Version.xml");
@@ -216,5 +201,7 @@ namespace SparesBase.Forms
                 upf.ShowDialog();
             }
         }
+
+        #endregion События
     }
 }

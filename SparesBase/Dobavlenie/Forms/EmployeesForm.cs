@@ -5,12 +5,15 @@ namespace SparesBase.Forms
 {
     public partial class EmployeesForm : Form
     {
+        // Конструктор
         public EmployeesForm()
         {
             InitializeComponent();
             FillEmployees();
         }
 
+
+        // Заполнение сотрудников
         private void FillEmployees()
         {
             dgv.Rows.Clear();
@@ -28,6 +31,7 @@ namespace SparesBase.Forms
                      row.ItemArray[7].ToString(),
                      row.ItemArray[8].ToString() == "1" ? true : false,
                      null);
+
                 Organization org = new Organization(
                     int.Parse(row.ItemArray[9].ToString()),
                     row.ItemArray[10].ToString(),
@@ -39,20 +43,18 @@ namespace SparesBase.Forms
 
                 dgv.Rows.Add(account.LastName, account.FirstName, account.SecondName);
                 dgv.Rows[dgv.Rows.Count - 1].Tag = account;
-
             }
-            
         }
 
+
+        // Двойной клик на сотруднике
         private void dgv_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            
             AccountCardForm acf = new AccountCardForm((Account)dgv.Rows[e.RowIndex].Tag);
             acf.ShowDialog();
-            
-
         }
 
+        // Добавление сотрудника
         private void tsmiAdd_Click(object sender, System.EventArgs e)
         {
             RegistrationForm reg = new RegistrationForm();
@@ -60,6 +62,7 @@ namespace SparesBase.Forms
             FillEmployees();
         }
 
+        // Редактирование сотрудника
         private void tsmiEdit_Click(object sender, System.EventArgs e)
         {
             AccountEditor ae = new AccountEditor((Account)dgv.CurrentRow.Tag);
@@ -67,9 +70,9 @@ namespace SparesBase.Forms
             FillEmployees();
         }
 
+        // Удаление сотрудника
         private void tsmiDelete_Click(object sender, System.EventArgs e)
         {
-            
             if (dgv.SelectedRows.Count > 0)
             {
                 Account account = (Account)dgv.CurrentRow.Tag;
@@ -79,12 +82,8 @@ namespace SparesBase.Forms
                     FillEmployees();
                 }
                 else
-                {
-                    MessageBox.Show("Удаление админа произвести невозможно");
-                }
-               
+                    MessageBox.Show("Удаление админа произвести невозможно");   
             }
-
         }
     }
 }

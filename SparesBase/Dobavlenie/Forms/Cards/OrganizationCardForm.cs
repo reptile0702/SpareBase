@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace SparesBase
 {
@@ -6,6 +7,7 @@ namespace SparesBase
     {
         Organization organization;
 
+        // Конструктор
         public OrganizationCardForm(Organization organization)
         {
             InitializeComponent();
@@ -13,9 +15,10 @@ namespace SparesBase
             this.organization = organization;
         }
 
+
+        // Инициализация карточки
         public void InitializeCard(Organization organization)
         {
-            
             lName.Text = "Название:\n" + organization.Name;
             lSite.Text = "Сайт:";
             lSiteLink.Text = organization.Site;
@@ -36,15 +39,18 @@ namespace SparesBase
             }
         }
 
+
+        // Клик на "Карточка администратора"
         private void btnAdminCard_Click(object sender, System.EventArgs e)
         {
             AccountCardForm acf = new AccountCardForm(organization.Admin);
             acf.ShowDialog();
         }
 
+        // Клик на сайт
         private void lSiteLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start(lSiteLink.Text);
+            Process.Start(lSiteLink.Text);
         }
     }
 }

@@ -4,9 +4,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 using System.Drawing.Drawing2D;
-using System.Xml;
-using System.Net;
-using System.Threading;
 
 namespace SparesBase
 {

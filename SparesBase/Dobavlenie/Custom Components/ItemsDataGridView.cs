@@ -1,6 +1,4 @@
-﻿#define DEV
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -10,6 +8,7 @@ namespace SparesBase
 {
     class ItemsDataGridView : DataGridView
     {
+        // Конструктор
         public ItemsDataGridView()
         {
             Sorted += ItemsDataGridView_Sorted;
@@ -17,29 +16,8 @@ namespace SparesBase
             RowsRemoved += ItemsDataGridView_RowsRemoved;
         }
 
-        private void ItemsDataGridView_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
-        {
-            for (int i = 0; i < Rows.Count; i++)
-                if (i % 2 != 0)
-                    Rows[i].DefaultCellStyle.BackColor = Color.LightGray;
-        }
 
-        private void ItemsDataGridView_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
-        {
-            for (int i = 0; i < Rows.Count; i++)
-                if (i % 2 != 0)
-                    Rows[i].DefaultCellStyle.BackColor = Color.LightGray;
-        }
-
-        private void ItemsDataGridView_Sorted(object sender, EventArgs e)
-        {
-            for (int i = 0; i < Rows.Count; i++)
-                if (i % 2 != 0)
-                    Rows[i].DefaultCellStyle.BackColor = Color.LightGray;
-                else
-                    Rows[i].DefaultCellStyle.BackColor = Color.White;
-        }
-
+        // Заполнение предметов
         public Item[] FillItems(string where)
         {
             Rows.Clear();
@@ -160,6 +138,30 @@ namespace SparesBase
             }
 
             return resItems.ToArray();
+        }
+
+
+        private void ItemsDataGridView_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        {
+            for (int i = 0; i < Rows.Count; i++)
+                if (i % 2 != 0)
+                    Rows[i].DefaultCellStyle.BackColor = Color.LightGray;
+        }
+
+        private void ItemsDataGridView_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            for (int i = 0; i < Rows.Count; i++)
+                if (i % 2 != 0)
+                    Rows[i].DefaultCellStyle.BackColor = Color.LightGray;
+        }
+
+        private void ItemsDataGridView_Sorted(object sender, EventArgs e)
+        {
+            for (int i = 0; i < Rows.Count; i++)
+                if (i % 2 != 0)
+                    Rows[i].DefaultCellStyle.BackColor = Color.LightGray;
+                else
+                    Rows[i].DefaultCellStyle.BackColor = Color.White;
         }
     }
 }

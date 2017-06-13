@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SparesBase
@@ -13,6 +7,8 @@ namespace SparesBase
     public partial class AccountEditor : Form
     {
         private Account account;
+
+        // Конструктор
         public AccountEditor(Account account)
         {
             InitializeComponent();
@@ -21,8 +17,10 @@ namespace SparesBase
             FillData();
         }
 
+        #region Методы
+
         // Редактирование аккаунта
-        private void Edit()
+        private void EditAccount()
         {
             // Проверка на введенность полей
             if (tbName.Text == "" ||
@@ -51,13 +49,11 @@ namespace SparesBase
                 }
             }
             
-
             // Изменение аккаунта
             DatabaseWorker.SqlQuery("UPDATE Accounts SET FirstName='" + tbName.Text + "', LastName='" + tbLastName.Text + "', SecondName='" + tbSecondName.Text + "', Login='" + tbLogIn.Text.Trim() + "', CityId=" + (cbCity.SelectedIndex + 1) + ", Phone='" + tbPhone.Text + "', Email='" + tbMail.Text + "' WHERE(id=" + account.Id + ")");
 
             Close();
         }
-
 
         // Заполнение ComboBox'а с городами
         private void FillComboBoxes()
@@ -69,6 +65,8 @@ namespace SparesBase
 
             cbCity.SelectedIndex = 0;
         }
+
+        // Заполнение данных об аккаунте
         private void FillData()
         {
             tbLogIn.Text = account.Login;
@@ -77,25 +75,34 @@ namespace SparesBase
             tbSecondName.Text = account.SecondName;
             cbCity.Text = account.City;
             tbPhone.Text = account.Phone;
-            tbMail.Text = account.Email;
-            
+            tbMail.Text = account.Email;   
         }
 
+        #endregion Методы
 
+
+
+        #region События
+
+        // Редактировать сотрудника
         private void btnEditEmployee_Click(object sender, EventArgs e)
         {
-            Edit();
+            EditAccount();
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
+        // Смена пароля
         private void btnChangePassword_Click(object sender, EventArgs e)
         {
             ChangePasswordForm cpf = new ChangePasswordForm(account);
             cpf.ShowDialog();
         }
+
+        // Отмена
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        #endregion События
     }
 }
