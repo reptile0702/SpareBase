@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.tsmiAccount = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,16 +54,14 @@
             this.tsmiSellers = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.treeView = new SparesBase.CategoriesTreeView();
             this.cmsMainCategory = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmsAddMainCategory = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsExpandAllNodes = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsCollapseAllNodes = new System.Windows.Forms.ToolStripMenuItem();
             this.tbSearch = new System.Windows.Forms.TextBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.cmsItem = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.cmsAddItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmsEditItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmsDeleteItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dgv = new SparesBase.ItemsDataGridView();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lMainCat = new System.Windows.Forms.Label();
@@ -78,14 +76,21 @@
             this.lpurchase = new System.Windows.Forms.Label();
             this.lseller = new System.Windows.Forms.Label();
             this.lname = new System.Windows.Forms.Label();
+            this.cmsItem = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmsAddItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsEditItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsDeleteItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsCategory = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmsAddSubCategory = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsRenameCategory = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsDeleteCategory = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsExpandNode = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsCollapseNode = new System.Windows.Forms.ToolStripMenuItem();
-            this.treeView = new SparesBase.CategoriesTreeView();
-            this.dgv = new SparesBase.ItemsDataGridView();
+            this.cmsWriteOff = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmsSelling = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsDefect = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsInOrder = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsReserve = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -96,11 +101,12 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
-            this.cmsItem.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.cmsItem.SuspendLayout();
             this.cmsCategory.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
+            this.cmsWriteOff.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -298,6 +304,19 @@
             this.splitContainer1.SplitterDistance = 170;
             this.splitContainer1.TabIndex = 1;
             // 
+            // treeView
+            // 
+            this.treeView.AllowDrop = true;
+            this.treeView.ContextMenuStrip = this.cmsMainCategory;
+            this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeView.Location = new System.Drawing.Point(0, 20);
+            this.treeView.Name = "treeView";
+            this.treeView.Size = new System.Drawing.Size(170, 500);
+            this.treeView.TabIndex = 2;
+            this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
+            this.treeView.DragDrop += new System.Windows.Forms.DragEventHandler(this.treeView_DragDrop);
+            this.treeView.DragEnter += new System.Windows.Forms.DragEventHandler(this.treeView_DragEnter);
+            // 
             // cmsMainCategory
             // 
             this.cmsMainCategory.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -360,35 +379,35 @@
             this.splitContainer2.SplitterDistance = 319;
             this.splitContainer2.TabIndex = 1;
             // 
-            // cmsItem
+            // dgv
             // 
-            this.cmsItem.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cmsAddItem,
-            this.cmsEditItem,
-            this.cmsDeleteItem});
-            this.cmsItem.Name = "cmsItem";
-            this.cmsItem.Size = new System.Drawing.Size(204, 70);
-            // 
-            // cmsAddItem
-            // 
-            this.cmsAddItem.Name = "cmsAddItem";
-            this.cmsAddItem.Size = new System.Drawing.Size(203, 22);
-            this.cmsAddItem.Text = "Добавить предмет";
-            this.cmsAddItem.Click += new System.EventHandler(this.AddItem_Click);
-            // 
-            // cmsEditItem
-            // 
-            this.cmsEditItem.Name = "cmsEditItem";
-            this.cmsEditItem.Size = new System.Drawing.Size(203, 22);
-            this.cmsEditItem.Text = "Редактировать предмет";
-            this.cmsEditItem.Click += new System.EventHandler(this.EditItem_Click);
-            // 
-            // cmsDeleteItem
-            // 
-            this.cmsDeleteItem.Name = "cmsDeleteItem";
-            this.cmsDeleteItem.Size = new System.Drawing.Size(203, 22);
-            this.cmsDeleteItem.Text = "Удалить предмет";
-            this.cmsDeleteItem.Click += new System.EventHandler(this.DeleteItem_Click);
+            this.dgv.AllowUserToAddRows = false;
+            this.dgv.AllowUserToDeleteRows = false;
+            this.dgv.AllowUserToResizeRows = false;
+            this.dgv.BackgroundColor = System.Drawing.Color.White;
+            this.dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv.ContextMenuStrip = this.cmsItem;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dgv.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv.Location = new System.Drawing.Point(0, 0);
+            this.dgv.MultiSelect = false;
+            this.dgv.Name = "dgv";
+            this.dgv.ReadOnly = true;
+            this.dgv.RowTemplate.Height = 30;
+            this.dgv.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgv.Size = new System.Drawing.Size(1180, 319);
+            this.dgv.TabIndex = 0;
+            this.dgv.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.EditItem_Click);
+            this.dgv.SelectionChanged += new System.EventHandler(this.dgv_CellClick);
+            this.dgv.MouseMove += new System.Windows.Forms.MouseEventHandler(this.dgv_MouseMove);
             // 
             // flowLayoutPanel1
             // 
@@ -532,6 +551,36 @@
             this.lname.TabIndex = 5;
             this.lname.Text = "Название";
             // 
+            // cmsItem
+            // 
+            this.cmsItem.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmsAddItem,
+            this.cmsEditItem,
+            this.cmsDeleteItem});
+            this.cmsItem.Name = "cmsItem";
+            this.cmsItem.Size = new System.Drawing.Size(204, 70);
+            // 
+            // cmsAddItem
+            // 
+            this.cmsAddItem.Name = "cmsAddItem";
+            this.cmsAddItem.Size = new System.Drawing.Size(203, 22);
+            this.cmsAddItem.Text = "Добавить предмет";
+            this.cmsAddItem.Click += new System.EventHandler(this.AddItem_Click);
+            // 
+            // cmsEditItem
+            // 
+            this.cmsEditItem.Name = "cmsEditItem";
+            this.cmsEditItem.Size = new System.Drawing.Size(203, 22);
+            this.cmsEditItem.Text = "Редактировать предмет";
+            this.cmsEditItem.Click += new System.EventHandler(this.EditItem_Click);
+            // 
+            // cmsDeleteItem
+            // 
+            this.cmsDeleteItem.Name = "cmsDeleteItem";
+            this.cmsDeleteItem.Size = new System.Drawing.Size(203, 22);
+            this.cmsDeleteItem.Text = "Удалить предмет";
+            this.cmsDeleteItem.Click += new System.EventHandler(this.DeleteItem_Click);
+            // 
             // cmsCategory
             // 
             this.cmsCategory.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -578,49 +627,44 @@
             this.cmsCollapseNode.Text = "Скрыть узел";
             this.cmsCollapseNode.Click += new System.EventHandler(this.cmsCollapseNode_Click);
             // 
-            // treeView
+            // cmsWriteOff
             // 
-            this.treeView.AllowDrop = true;
-            this.treeView.ContextMenuStrip = this.cmsMainCategory;
-            this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeView.Location = new System.Drawing.Point(0, 20);
-            this.treeView.Name = "treeView";
-            this.treeView.Size = new System.Drawing.Size(170, 500);
-            this.treeView.TabIndex = 2;
-            this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
-            this.treeView.DragDrop += new System.Windows.Forms.DragEventHandler(this.treeView_DragDrop);
-            this.treeView.DragEnter += new System.Windows.Forms.DragEventHandler(this.treeView_DragEnter);
+            this.cmsWriteOff.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmsSelling,
+            this.cmsDefect,
+            this.cmsInOrder,
+            this.cmsReserve});
+            this.cmsWriteOff.Name = "cmsItem";
+            this.cmsWriteOff.Size = new System.Drawing.Size(133, 92);
             // 
-            // dgv
+            // cmsSelling
             // 
-            this.dgv.AllowUserToAddRows = false;
-            this.dgv.AllowUserToDeleteRows = false;
-            this.dgv.AllowUserToResizeRows = false;
-            this.dgv.BackgroundColor = System.Drawing.Color.White;
-            this.dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv.ContextMenuStrip = this.cmsItem;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv.DefaultCellStyle = dataGridViewCellStyle1;
-            this.dgv.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv.Location = new System.Drawing.Point(0, 0);
-            this.dgv.MultiSelect = false;
-            this.dgv.Name = "dgv";
-            this.dgv.ReadOnly = true;
-            this.dgv.RowTemplate.Height = 44;
-            this.dgv.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv.Size = new System.Drawing.Size(1180, 319);
-            this.dgv.TabIndex = 0;
-            this.dgv.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellClick);
-            this.dgv.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.EditItem_Click);
-            this.dgv.SelectionChanged += new System.EventHandler(this.dgv_CellClick);
-            this.dgv.MouseMove += new System.Windows.Forms.MouseEventHandler(this.dgv_MouseMove);
+            this.cmsSelling.Name = "cmsSelling";
+            this.cmsSelling.Size = new System.Drawing.Size(132, 22);
+            this.cmsSelling.Text = "В продажу";
+            this.cmsSelling.Click += new System.EventHandler(this.cmsSelling_Click);
+            // 
+            // cmsDefect
+            // 
+            this.cmsDefect.Name = "cmsDefect";
+            this.cmsDefect.Size = new System.Drawing.Size(132, 22);
+            this.cmsDefect.Text = "В брак";
+            this.cmsDefect.Click += new System.EventHandler(this.cmsDefect_Click);
+            // 
+            // cmsInOrder
+            // 
+            this.cmsInOrder.Name = "cmsInOrder";
+            this.cmsInOrder.Size = new System.Drawing.Size(132, 22);
+            this.cmsInOrder.Text = "В заказ";
+            this.cmsInOrder.Click += new System.EventHandler(this.cmsInOrder_Click);
+            // 
+            // cmsReserve
+            // 
+            this.cmsReserve.AccessibleDescription = "";
+            this.cmsReserve.Name = "cmsReserve";
+            this.cmsReserve.Size = new System.Drawing.Size(132, 22);
+            this.cmsReserve.Text = "В резерв";
+            this.cmsReserve.Click += new System.EventHandler(this.cmsReserve_Click);
             // 
             // MainForm
             // 
@@ -648,12 +692,13 @@
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
-            this.cmsItem.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.cmsItem.ResumeLayout(false);
             this.cmsCategory.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgv)).EndInit();
+            this.cmsWriteOff.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -716,5 +761,10 @@
         private System.Windows.Forms.Label lMainCat;
         private ItemsDataGridView dgv;
         private CategoriesTreeView treeView;
+        private System.Windows.Forms.ContextMenuStrip cmsWriteOff;
+        private System.Windows.Forms.ToolStripMenuItem cmsSelling;
+        private System.Windows.Forms.ToolStripMenuItem cmsDefect;
+        private System.Windows.Forms.ToolStripMenuItem cmsInOrder;
+        private System.Windows.Forms.ToolStripMenuItem cmsReserve;
     }
 }

@@ -24,7 +24,7 @@ namespace SparesBase
 
             List<Item> resItems = new List<Item>();
             // Выполнение запроса
-            DataTable items = DatabaseWorker.SqlSelectQuery("SELECT i.id, mc.id, mc.Name, mc.OrganizationId, sc1.id, sc1.Name, sc1.MainCatId, sc1.OrganizationId, sc2.id, sc2.Name, sc2.SubCat1Id, sc2.OrganizationId, sc3.id, sc3.Name, sc3.SubCat2Id, sc3.OrganizationId, sc4.id, sc4.Name, sc4.SubCat3Id, sc4.OrganizationId, i.Item_Name, s.id, s.name, s.site, s.telephone, s.contactFirstName, s.contactLastName, s.contactSecondName, s.OrganizationId, i.Purchase_Price, i.Retail_Price, i.Wholesale_Price, i.Service_Price, i.FirmPrice, i.Storage, i.Note, i.Quantity, i.Residue, i.Upload_Date, o.id, o.Name, o.Site, o.Telephone, oc.City, oa.id, oa.FirstName, oa.LastName, oa.SecondName, oa.Login, oac.City, oa.Phone, oa.Email, oa.Admin, i.SearchAllowed, i.ChangeDate FROM Items i LEFT JOIN Main_Category mc ON mc.id = i.Main_Category_Id LEFT JOIN Sub_Category_1 sc1 ON sc1.id = i.Sub_Category_1_Id LEFT JOIN Sub_Category_2 sc2 ON sc2.id = i.Sub_Category_2_Id LEFT JOIN Sub_Category_3 sc3 ON sc3.id = i.Sub_Category_3_Id LEFT JOIN Sub_Category_4 sc4 ON sc4.id = i.Sub_Category_4_Id LEFT JOIN Sellers s ON s.id = i.Seller_Id LEFT JOIN Organizations o ON o.id = i.OrganizationId LEFT JOIN Cities oc ON oc.id = o.CityId LEFT JOIN Accounts oa ON oa.id = o.AdminAccountId LEFT JOIN Cities oac ON oac.id = oa.CityId " + where);
+            DataTable items = DatabaseWorker.SqlSelectQuery("SELECT i.id, mc.id, mc.Name, mc.OrganizationId, sc1.id, sc1.Name, sc1.MainCatId, sc1.OrganizationId, sc2.id, sc2.Name, sc2.SubCat1Id, sc2.OrganizationId, sc3.id, sc3.Name, sc3.SubCat2Id, sc3.OrganizationId, sc4.id, sc4.Name, sc4.SubCat3Id, sc4.OrganizationId, i.Item_Name, s.id, s.name, s.site, s.telephone, s.contactFirstName, s.contactLastName, s.contactSecondName, s.OrganizationId, i.Purchase_Price, i.Retail_Price, i.Wholesale_Price, i.Service_Price, i.FirmPrice, i.Storage, i.Note, i.Quantity, i.Residue, i.Upload_Date, o.id, o.Name, o.Site, o.Telephone, oc.City, oa.id, oa.FirstName, oa.LastName, oa.SecondName, oa.Login, oac.City, oa.Phone, oa.Email, oa.Admin, i.SearchAllowed, i.ChangeDate, status.Status FROM Items i LEFT JOIN Main_Category mc ON mc.id = i.Main_Category_Id LEFT JOIN Sub_Category_1 sc1 ON sc1.id = i.Sub_Category_1_Id LEFT JOIN Sub_Category_2 sc2 ON sc2.id = i.Sub_Category_2_Id LEFT JOIN Sub_Category_3 sc3 ON sc3.id = i.Sub_Category_3_Id LEFT JOIN Sub_Category_4 sc4 ON sc4.id = i.Sub_Category_4_Id LEFT JOIN Sellers s ON s.id = i.Seller_Id LEFT JOIN Organizations o ON o.id = i.OrganizationId LEFT JOIN Cities oc ON oc.id = o.CityId LEFT JOIN Accounts oa ON oa.id = o.AdminAccountId LEFT JOIN Cities oac ON oac.id = oa.CityId LEFT JOIN ItemStatus status ON status.id = i.StatusId " + where);
 
             foreach (DataRow row in items.Rows)
             {
@@ -132,7 +132,8 @@ namespace SparesBase
                     DateTime.Parse(row.ItemArray[38].ToString()),
                     DateTime.Parse(row.ItemArray[54].ToString()),
                     organization,
-                    row.ItemArray[53].ToString() == "1" ? true : false);
+                    row.ItemArray[53].ToString() == "1" ? true : false,
+                    row.ItemArray[55].ToString());
 
                 resItems.Add(item);
             }

@@ -9,7 +9,7 @@ namespace SparesBase
 {
     public partial class MainForm : Form
     {
-        // TODO: Добавть журнал поисков 
+        // TODO: Добавть журнал поисков  ???
         // TODO: Проверить на существование введенного поставщика
         // TODO: в "поиске по организациям", буду его Глобальным дальше называть, поле ID уменьшить, за счёт него расширить наименование
         // TODO: измеять сотрудников можнт только адмни
@@ -89,7 +89,8 @@ namespace SparesBase
                     item.Quantity,
                     item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay,
                     item.ChangeDate.Date.ToShortDateString() + " " + item.ChangeDate.TimeOfDay,
-                    item.Residue);
+                    item.Residue,
+                    item.Status);
 
                 
 
@@ -106,7 +107,8 @@ namespace SparesBase
                     item.Quantity,
                     item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay,
                     item.ChangeDate.Date.ToShortDateString() + " " + item.ChangeDate.TimeOfDay,
-                    item.Residue);
+                    item.Residue,
+                    item.Status);
 #endif
 
                 dgv.Rows[dgv.Rows.Count - 1].Tag = item;
@@ -131,6 +133,11 @@ namespace SparesBase
             else
             {
                 ClearInfoAboutItem();
+            }
+
+            foreach (DataGridViewRow row in dgv.Rows)
+            {
+                row.Cells[11].ContextMenuStrip = cmsWriteOff;
             }
 
         }
@@ -161,6 +168,7 @@ namespace SparesBase
             dgv.Columns.Add("uploadDate", "Дата добавления");
             dgv.Columns.Add("changeDate", "Дата изменения");
             dgv.Columns.Add("residue", "Остаток");
+            dgv.Columns.Add("status", "Статус");
 
 #if DEBUG
             dgv.Columns[0].Width = 50;
@@ -176,8 +184,9 @@ namespace SparesBase
             dgv.Columns[10].Width = 120;
             dgv.Columns[11].Width = 120;
             dgv.Columns[12].Width = 70;
+            dgv.Columns[13].Width = 90;
 #else
-            
+
             dgv.Columns[0].Width = 150;
             dgv.Columns[1].Width = 120;
             dgv.Columns[2].Width = 50;
@@ -190,6 +199,7 @@ namespace SparesBase
             dgv.Columns[9].Width = 120;
             dgv.Columns[10].Width = 120;
             dgv.Columns[11].Width = 70;
+            dgv.Columns[12].Width = 90;
 #endif
         }
 
@@ -700,12 +710,39 @@ namespace SparesBase
 
         private void dgv_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-
+            dgv[e.ColumnIndex, e.RowIndex].Selected = true;
         }
 
-        private void EditItem_Click(object sender, DataGridViewCellMouseEventArgs e)
+      
+
+        private void cmsSelling_Click(object sender, EventArgs e)
+        {
+            Item item = SelectedItem;
+            SellingForm sel = new SellingForm(item.Quantity, int.Parse(item.RetailPrice), int.Parse(item.WholesalePrice), int.Parse(item.ServicePrice), item.Id);
+            sel.ShowDialog();
+        }
+
+        private void cmsDefect_Click(object sender, EventArgs e)
+        {
+            Item item = SelectedItem;
+            DefectForm defect = new DefectForm(item.Quantity, item.Id);
+            defect.ShowDialog();
+        }
+
+        private void cmsInOrder_Click(object sender, EventArgs e)
+        {
+            Item item = SelectedItem;
+            InOrder inorder = new InOrder(item.Id, item.Quantity, int.Parse(item.FirmPrice));
+            inorder.ShowDialog();
+        }
+
+        private void cmsReserve_Click(object sender, EventArgs e)
         {
 
         }
+
+       
+
+        
     }
 }
