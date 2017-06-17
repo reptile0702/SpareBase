@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VersionEditor));
             this.tbVersion = new System.Windows.Forms.TextBox();
             this.tbDate = new System.Windows.Forms.TextBox();
             this.rtbChangeLog = new System.Windows.Forms.RichTextBox();
@@ -120,8 +121,12 @@
             this.Controls.Add(this.rtbChangeLog);
             this.Controls.Add(this.tbDate);
             this.Controls.Add(this.tbVersion);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "VersionEditor";
-            this.Text = "VersionEditor";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Редактор версии";
             this.ResumeLayout(false);
             this.PerformLayout();
 

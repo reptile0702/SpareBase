@@ -1,6 +1,6 @@
 ﻿namespace UpdateToFtpServer
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Обязательная переменная конструктора.
@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tvSparesBase = new System.Windows.Forms.TreeView();
             this.label1 = new System.Windows.Forms.Label();
             this.btnSparesBaseAddVersion = new System.Windows.Forms.Button();
@@ -108,7 +109,7 @@
             this.btnSparesBaseDeleteVersion.Text = "Удалить версию";
             this.btnSparesBaseDeleteVersion.UseVisualStyleBackColor = true;
             // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -121,8 +122,12 @@
             this.Controls.Add(this.btnSparesBaseAddVersion);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tvSparesBase);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Версии \"Базы запчастей\"";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

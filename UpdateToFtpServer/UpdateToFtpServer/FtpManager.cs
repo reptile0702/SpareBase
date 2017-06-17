@@ -1,10 +1,6 @@
 ﻿using BytesRoad.Net.Ftp;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace UpdateToFtpServer
@@ -100,10 +96,10 @@ namespace UpdateToFtpServer
             newVersionXml.Save("Version.xml");
 
             client.PutFile(timeout, remotePath + path + "CurrentVersion/Version.xml", File.ReadAllBytes("Version.xml"));
+
             byte[] fileBytes = File.ReadAllBytes(newVersionFilePath);
             MemoryStream str = new MemoryStream(fileBytes);
-            client.PutFile(timeout, remotePath + path + "CurrentVersion/" + programType == "Client" ? "SparesBase.exe" : "SparesBaseAdministrator.exe", str);
-
+            client.PutFile(timeout, remotePath + path + "CurrentVersion/" + (programType == "Client" ? "SparesBase.exe" : "SparesBaseAdministrator.exe"), str);
             client.Disconnect(timeout);
         }
 
