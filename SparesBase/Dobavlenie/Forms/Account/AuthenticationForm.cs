@@ -13,8 +13,6 @@ namespace SparesBase.Forms
         public AuthenticationForm()
         {
             InitializeComponent();
-            tf1 = new TestForm();
-            tf2 = new TestForm();
         }
 
         #region Методы
@@ -134,10 +132,7 @@ namespace SparesBase.Forms
         // Загрузка формы
         private void AuthenticationForm_Load(object sender, EventArgs e)
         {
-            //tf2.Show();
             bwUpdater.RunWorkerAsync();
-            tf1.Show();
-            
         }
 
         // Клик на кнопку "Вход"
@@ -145,9 +140,6 @@ namespace SparesBase.Forms
         {
             Authentification();
         }
-
-        TestForm tf1;
-        TestForm tf2;
 
         // Отдельный поток
         private void bwUpdater_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
@@ -157,20 +149,12 @@ namespace SparesBase.Forms
             // Загрузка Version.xml
             WebClient wcVersion = new WebClient();
             wcVersion.DownloadFileCompleted += WcVersion_DownloadFileCompleted;
-            wcVersion.DownloadProgressChanged += WcVersion_DownloadProgressChanged;
             wcVersion.DownloadFileAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Client/Versions/CurrentVersion/Version.xml"), "Version.xml");
             
-            
-
             // Загрузка Banners.xml
             WebClient wcBanners = new WebClient();
             wcBanners.DownloadFileCompleted += WcBanners_DownloadFileCompleted;
             wcBanners.DownloadFileAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Banners/Banners.xml"), "Banners/Banners.xml");
-        }
-
-        private void WcVersion_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-        {
-            
         }
 
         // Вызывается, когда загрузится файл Banners.xml
@@ -195,7 +179,6 @@ namespace SparesBase.Forms
                 if (!FolderBannerCheck(img))
                 {
                     WebClient webclient = new WebClient();
-                    webclient.DownloadProgressChanged += Webclient_DownloadProgressChanged;
                     webclient.DownloadFileAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Banners/" + img), "Banners/" + img);
                 }                
             }
@@ -205,25 +188,6 @@ namespace SparesBase.Forms
         {
             if (e.Error != null)
                 MessageBox.Show(e.Error.Message);   
-        }
-
-        private void Webclient_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-        {
-            if (tf1.IsHandleCreated)
-            {
-                tf1.Invoke(new Action(() =>
-                {
-
-                    tf1.progressBar.Maximum = 1;
-                    tf1.progressBar.Value = 1 / (int)e.BytesReceived;
-                    tf1.label1.Text = (e.BytesReceived / 1000).ToString();
-                }));
-            }
-        }
-
-        void AddProgress(string text)
-        {
-            tf1.label1.Text = text;
         }
 
         // Вызывается, когда загрузится файл Version.xml
