@@ -38,13 +38,15 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.tbSerial = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // cbQuantity
             // 
             this.cbQuantity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbQuantity.FormattingEnabled = true;
-            this.cbQuantity.Location = new System.Drawing.Point(12, 59);
+            this.cbQuantity.Location = new System.Drawing.Point(12, 98);
             this.cbQuantity.Name = "cbQuantity";
             this.cbQuantity.Size = new System.Drawing.Size(156, 21);
             this.cbQuantity.TabIndex = 0;
@@ -52,7 +54,7 @@
             // 
             // tbPrice
             // 
-            this.tbPrice.Location = new System.Drawing.Point(13, 99);
+            this.tbPrice.Location = new System.Drawing.Point(13, 138);
             this.tbPrice.Name = "tbPrice";
             this.tbPrice.ReadOnly = true;
             this.tbPrice.Size = new System.Drawing.Size(155, 20);
@@ -60,7 +62,7 @@
             // 
             // tbTotal
             // 
-            this.tbTotal.Location = new System.Drawing.Point(13, 142);
+            this.tbTotal.Location = new System.Drawing.Point(13, 181);
             this.tbTotal.Name = "tbTotal";
             this.tbTotal.ReadOnly = true;
             this.tbTotal.Size = new System.Drawing.Size(155, 20);
@@ -68,7 +70,7 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(12, 180);
+            this.btnOK.Location = new System.Drawing.Point(12, 219);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 3;
@@ -78,7 +80,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(93, 180);
+            this.btnCancel.Location = new System.Drawing.Point(93, 219);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 4;
@@ -105,7 +107,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 44);
+            this.label2.Location = new System.Drawing.Point(12, 83);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(66, 13);
             this.label2.TabIndex = 7;
@@ -114,7 +116,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 83);
+            this.label3.Location = new System.Drawing.Point(12, 122);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(33, 13);
             this.label3.TabIndex = 8;
@@ -123,18 +125,36 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 126);
+            this.label4.Location = new System.Drawing.Point(12, 165);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(82, 13);
             this.label4.TabIndex = 9;
             this.label4.Text = "Итоговая ценя";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(14, 44);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(93, 13);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "Серийный номер";
+            // 
+            // tbSerial
+            // 
+            this.tbSerial.Location = new System.Drawing.Point(15, 60);
+            this.tbSerial.Name = "tbSerial";
+            this.tbSerial.Size = new System.Drawing.Size(155, 20);
+            this.tbSerial.TabIndex = 10;
             // 
             // InOrder
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(183, 215);
+            this.ClientSize = new System.Drawing.Size(183, 260);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.tbSerial);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -167,5 +187,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox tbSerial;
     }
 }
