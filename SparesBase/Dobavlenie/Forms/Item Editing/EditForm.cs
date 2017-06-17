@@ -2,6 +2,8 @@
 using System.Data;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Net;
+using System.IO;
 
 namespace SparesBase
 {
@@ -37,6 +39,7 @@ namespace SparesBase
             Text = "Добавление предмета";
             btnEdit.Text = "Добавить предмет";
             FillSellersComboBox();
+            FillStatuses();
         }
 
         // Конструктор для изменения предмета
@@ -50,10 +53,26 @@ namespace SparesBase
             Text = "Изменение предмета";
             btnEdit.Text = "Изменить предмет";
             FillSellersComboBox();
+            FillStatuses();
             GetItemData(item);
 
-            // Загрузка превью-фотографии
-            pbPhoto.Image = FtpManager.DownloadPreviewImage(item.Id);
+            //pbPhoto.Image = FtpManager.DownloadPreviewImage(item.Id);
+            if (FtpManager.PreviewExists(item.Id))
+            {
+                pbPhoto.SizeMode = PictureBoxSizeMode.CenterImage;
+                pbPhoto.Image = Properties.Resources.LoadGif;
+                WebClient webclient = new WebClient();
+                webclient.DownloadDataCompleted += Webclient_DownloadDataCompleted;
+                webclient.DownloadDataAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Photos/item_" + item.Id + "/preview.jpg"));
+
+            }
+        }
+
+        private void Webclient_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
+        {
+            MemoryStream mem = new MemoryStream(e.Result);
+            pbPhoto.SizeMode = PictureBoxSizeMode.Zoom;
+            pbPhoto.Image = Image.FromStream(mem);
         }
 
         #endregion Конструкторы
@@ -83,17 +102,19 @@ namespace SparesBase
                 tbPurchasePrice.Text != "" &&
                 tbRetailPrice.Text != "" &&
                 tbServicePrice.Text != "" &&
-                tbQuantity.Text != "")
+                tbQuantity.Text != "" &&
+                cbSeller.SelectedValue != null)
             {
+
                 // Идентификатор поставщика
                 int id = int.Parse(cbSeller.SelectedValue.ToString());
 
                 // Формирование запроса
                 string query = "";
                 if (operation == "INSERT")
-                    query = "INSERT INTO Items VALUES('', {0}, {1}, {2}, {3}, {4}, '{5}', {6}, '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', {14}, NOW(), NOW(), {15}, " + EnteredUser.OrganizationId + ", {16}, 0)";
+                    query = "INSERT INTO Items VALUES('', {0}, {1}, {2}, {3}, {4}, '{5}', {6}, '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', {14}, NOW(), NOW(), {15}, " + EnteredUser.OrganizationId + ", {16}, 0, {17})";
                 else
-                    query = "UPDATE Items SET Main_Category_Id = {0}, Sub_Category_1_Id = {1}, Sub_Category_2_Id = {2}, Sub_Category_3_Id = {3}, Sub_Category_4_Id = {4}, Item_Name='{5}', Seller_Id={6}, Purchase_Price='{7}', Retail_Price='{8}', Wholesale_Price='{9}', Service_Price='{10}', FirmPrice='{11}', Storage='{12}', Note='{13}', Quantity={14}, Residue={15} , SearchAllowed={16}, ChangeDate = NOW() WHERE id = " + updateId;
+                    query = "UPDATE Items SET Main_Category_Id = {0}, Sub_Category_1_Id = {1}, Sub_Category_2_Id = {2}, Sub_Category_3_Id = {3}, Sub_Category_4_Id = {4}, Item_Name='{5}', Seller_Id={6}, Purchase_Price='{7}', Retail_Price='{8}', Wholesale_Price='{9}', Service_Price='{10}', FirmPrice='{11}', Storage='{12}', Note='{13}', Quantity={14}, Residue={15} , SearchAllowed={16}, ChangeDate = NOW(), StatusId = {17} WHERE id = " + updateId;
 
                 // Подсчет остатка 
                 if (item != null)
@@ -119,7 +140,8 @@ namespace SparesBase
                     tbNote.Text,
                     int.Parse(tbQuantity.Text),
                     residue,
-                    chbSearchAllowed.Checked ? "1" : "0");
+                    chbSearchAllowed.Checked ? "1" : "0",
+                    cbStatus.SelectedValue);
 
                 // Выполнение запроса
                 DatabaseWorker.SqlQuery(query);
@@ -163,6 +185,7 @@ namespace SparesBase
             tbNote.Text = item.Note;
             tbQuantity.Text = item.Quantity.ToString();
             chbSearchAllowed.Checked = item.SearchAllowed;
+            cbStatus.Text = item.Status;
             FillCategoriesInfo();
         }
 
@@ -239,6 +262,14 @@ namespace SparesBase
                 cbSeller.SelectedValue = selectedId;
             else
                 cbSeller.SelectedIndex = 0;
+        }
+
+        private void FillStatuses()
+        {
+            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT id, Status FROM ItemStatus ORDER BY Status");
+            cbStatus.DataSource = dt;
+            cbStatus.DisplayMember = "Status";
+            cbStatus.ValueMember = "id";
         }
 
         #endregion Заполнение элеметов данными

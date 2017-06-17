@@ -18,6 +18,7 @@ namespace SparesBase
         static string photosPath = "SparesBase/Photos/";
         static string remotePath = "SparesBase/";
         static FtpClient client;
+        static string photosString = "Photos/";
 
         // Коннект к серверу
         private static void Connect()
@@ -45,7 +46,7 @@ namespace SparesBase
             if (imagesCounter != 0)
             {
                 // Поиск папки с предметом, если ее нет, то создать
-                string[] folders = GetFilesFromServer("Photos/");
+                string[] folders = GetFilesFromServer(photosString);
                 string createFolder = "";
                 for (int i = 0; i < folders.Length; i++)
                     if (folders[i] == "item_" + id)
@@ -56,7 +57,7 @@ namespace SparesBase
                 else
                 {
                     // Удаление всех фоток до загрузки новых
-                    string[] photos = GetFilesFromServer(photosPath + "item_" + id);
+                    string[] photos = GetFilesFromServer(photosString + "item_" + id);
                     for (int i = 0; i < photos.Length; i++)
                         client.DeleteFile(timeout, photosPath + "item_" + id + "/" + photos[i]);
                 }
@@ -104,7 +105,7 @@ namespace SparesBase
             else
             {
                 // Удаление всех фоток из папки
-                string[] photos = GetFilesFromServer(photosPath + "item_" + id);
+                string[] photos = GetFilesFromServer(photosString + "item_" + id);
                 for (int i = 0; i < photos.Length; i++)
                     client.DeleteFile(timeout, photosPath + "item_" + id + "/" + photos[i]);
 
@@ -114,13 +115,13 @@ namespace SparesBase
         }
 
         // Загрузка фото с сервера
-        public static Image[] DownloadImages(int id)
+        public static string[] DownloadImages(int id)
         {
             string folderName = "";
-            Image[] images = new Image[5];
+            List<string> images = new List<string>();
 
             // Проверка на существование папки предмета.
-            string[] names = GetFilesFromServer("Photos/");
+            string[] names = GetFilesFromServer(photosString);
             for (int i = 0; i < names.Length; i++)
                 if (names[i] == "item_" + id)
                     folderName = names[i];
@@ -129,25 +130,28 @@ namespace SparesBase
             {
                 Connect();
 
-                string[] imgName = GetFilesFromServer(photosPath + folderName); 
+                string[] imgName = GetFilesFromServer(photosString + folderName); 
 
                 for (int i = 0; i < imgName.Length; i++)
                 {
                     if (imgName[i] != "preview.jpg")
                     {
-                        byte[] imageBytes = client.GetFile(timeout, photosPath + folderName + "/" + imgName[i]);
-                        MemoryStream memoryStream = new MemoryStream(imageBytes);
-                        Image img = Image.FromStream(memoryStream);
-                        string imageIndex = imgName[i][0].ToString();
-                        img.Tag = photosPath + folderName + "/" + imgName[i];
-                        images[int.Parse(imageIndex) - 1] = img;
+                        images.Add(imgName[i]);
+
+
+                        //byte[] imageBytes = client.GetFile(timeout, photosPath + folderName + "/" + imgName[i]);
+                        //MemoryStream memoryStream = new MemoryStream(imageBytes);
+                        //Image img = Image.FromStream(memoryStream);
+                        //string imageIndex = imgName[i][0].ToString();
+                        //img.Tag = photosPath + folderName + "/" + imgName[i];
+                        //images[int.Parse(imageIndex) - 1] = img;
                     }
                 }
                 client.Disconnect(timeout);
-                return images;
+                return images.ToArray();
             }
             else
-                return images;
+                return images.ToArray();
         }
 
         // Загрузка превью-фото
@@ -156,7 +160,7 @@ namespace SparesBase
             Connect();
 
             // поиск папки предмета
-            string[] folders = GetFilesFromServer("Photos/");
+            string[] folders = GetFilesFromServer(photosString);
             string folder = "";
             for (int i = 0; i < folders.Length; i++)
                 if (folders[i] == "item_" + id)
@@ -167,7 +171,7 @@ namespace SparesBase
 
             if (folder != "")
             {
-                string[] files = GetFilesFromServer(photosPath + folder);
+                string[] files = GetFilesFromServer(photosString + folder);
                 string file = "";
                 for (int i = 0; i < files.Length; i++)
                 {
@@ -189,13 +193,23 @@ namespace SparesBase
             return null;
         }
 
+        public static bool PreviewExists(int itemid)
+        {
+            string[] folders = GetFilesFromServer("Photos/");
+            foreach (string folder in folders)           
+                if (folder == "item_" + itemid)               
+                    return true;
+                          
+            return false;
+        }
+
         // Удаление картинок предмета и его папки
         public static void DeleteItemImages(int id)
         {
             Connect();
 
             // Поиск папки предмета 
-            string[] folders = GetFilesFromServer("Photos/");
+            string[] folders = GetFilesFromServer(photosString);
             string folder = "";
             for (int i = 0; i < folders.Length; i++)
                 if (folders[i] == "item_" + id)
@@ -207,7 +221,7 @@ namespace SparesBase
             if (folder != "")
             {
                 // Удаление всех фото 
-                string[] files = GetFilesFromServer(photosPath + folder);
+                string[] files = GetFilesFromServer(photosString + folder);
                 for (int i = 0; i < files.Length; i++)
                     if (files[i] != "." && files[i] != "..")
                         client.DeleteFile(timeout, photosPath + "item_" + id + "/" + files[i]);

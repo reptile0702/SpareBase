@@ -23,7 +23,8 @@
             System.DateTime uploadDate,
             System.DateTime changeDate,
             Organization organization,
-            bool searchAllowed)
+            bool searchAllowed,
+            string status)
         {
             Id = id;
 
@@ -54,6 +55,8 @@
             Organization = organization;
 
             SearchAllowed = searchAllowed;
+
+            Status = status;
         }
 
         public int Id { get; set; }
@@ -85,5 +88,7 @@
         public Organization Organization { get; set; }
 
         public bool SearchAllowed { get; set; }
+
+        public string Status { get; set; }
     }
 }

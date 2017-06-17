@@ -52,7 +52,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BytesRoad.Net.Ftp">
-      <HintPath>..\..\..\..\..\..\YandexDisk\C# Libraries\BytesRoad.NetSuit_2_0\Bin\BytesRoad.Net.Ftp.dll</HintPath>
+      <HintPath>..\..\..\..\библиотечки\BytesRoad.NetSuit_2_0\Bin\BytesRoad.Net.Ftp.dll</HintPath>
     </Reference>
     <Reference Include="mysql.data">
       <HintPath>bin\Debug\mysql.data.dll</HintPath>
@@ -314,7 +314,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\Spare Parts 72px.ico" />
+    <None Include="Resources\LoadGif.gif" />
+    <Content Include="Spare Parts 72px.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

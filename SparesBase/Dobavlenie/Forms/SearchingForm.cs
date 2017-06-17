@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Xml;
 using System.Diagnostics;
+using System.IO;
 
 namespace SparesBase
 {
@@ -94,6 +95,7 @@ namespace SparesBase
             doc.Load("Banners/Banners.xml");
             XmlElement element = doc.DocumentElement;
             foreach (XmlNode node in element.ChildNodes)
+                if (File.Exists("Banners/" + node["PhotoName"].Attributes["value"].Value))
                 banners.Add(new Banner(node["Link"].Attributes["value"].Value, Image.FromFile("Banners/" + node["PhotoName"].Attributes["value"].Value)));
         }
 

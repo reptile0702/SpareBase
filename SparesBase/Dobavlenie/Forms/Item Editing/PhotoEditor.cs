@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
+using System.Net;
 
 namespace SparesBase
 {
@@ -12,6 +13,10 @@ namespace SparesBase
 
         // ID предмета
         private int id;
+
+
+        private int counter;
+        private int imagesCount;
 
         public Image[] Images { get { return images; } }
 
@@ -30,7 +35,48 @@ namespace SparesBase
         {
             InitializeComponent();
             this.id = id;
-            images = FtpManager.DownloadImages(id);
+            images = new Image[5];
+            
+            string[] photos = FtpManager.DownloadImages(id);
+
+            counter = 0;
+            imagesCount = photos.Length;
+            if (imagesCount > 0)
+            {
+                pbPreview.SizeMode = PictureBoxSizeMode.CenterImage;
+                pbPreview.Image = Properties.Resources.LoadGif;
+                btnBrowseImg.Enabled = false;
+                btnClearImg.Enabled = false;
+                btnOk.Enabled = false;
+                lbImages.Enabled = false;
+            }
+
+            foreach (string photo in photos)
+            {
+                WebClient webclient = new WebClient();
+                webclient.DownloadDataCompleted += Webclient_DownloadDataCompleted;
+                webclient.DownloadDataAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Photos/" + "item_" + id + "/" + photo), photo);
+            }
+        }
+
+        private void Webclient_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
+        {
+            
+            MemoryStream memoryStream = new MemoryStream(e.Result);
+            Image img = Image.FromStream(memoryStream);
+            string imageIndex = e.UserState.ToString()[0].ToString();
+            img.Tag = "SparesBase/Photos/" + "item_" + id + "/" + e.UserState.ToString();
+            images[int.Parse(imageIndex) - 1] = img;
+            counter++;
+            if (counter == imagesCount)
+            {
+                pbPreview.SizeMode = PictureBoxSizeMode.Zoom;
+                lbImages.SelectedIndex = 0;
+                btnBrowseImg.Enabled = true;
+                btnClearImg.Enabled = true;
+                btnOk.Enabled = true;
+                lbImages.Enabled = true;
+            }
         }
 
         #endregion Конструкторы

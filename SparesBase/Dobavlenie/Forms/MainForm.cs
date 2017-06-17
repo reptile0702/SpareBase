@@ -9,10 +9,10 @@ namespace SparesBase
 {
     public partial class MainForm : Form
     {
-        // TODO: Добавть журнал поисков 
+        // TODO: Добавть журнал поисков  ???
         // TODO: Проверить на существование введенного поставщика
         // TODO: в "поиске по организациям", буду его Глобальным дальше называть, поле ID уменьшить, за счёт него расширить наименование
-
+        // TODO: измеять сотрудников можнт только адмни
 
         AuthenticationForm au;
 
@@ -40,6 +40,8 @@ namespace SparesBase
             treeView.FillCategories(EnteredUser.OrganizationId, cmsCategory);
             InitializeDataGridView();
             ClearInfoAboutItem();
+
+            
         }
 
 
@@ -61,8 +63,16 @@ namespace SparesBase
                 if (i == 4) where += " AND i.Sub_Category_4_Id=(SELECT id FROM Sub_Category_4 WHERE(id=" + selectedCategories[i] + "))";
             }
             where += ") AND (i.Residue > 0) AND (i.Deleted <> 1))";
-
+            Item selectedItem = null;
+            if (dgv.CurrentRow != null)
+            {
+                selectedItem = (Item)dgv.CurrentRow.Tag;
+            }
+           
+            
             Item[] items = dgv.FillItems(where);
+
+            
             foreach (Item item in items)
             {
 #if DEBUG
@@ -79,7 +89,8 @@ namespace SparesBase
                     item.Quantity,
                     item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay,
                     item.ChangeDate.Date.ToShortDateString() + " " + item.ChangeDate.TimeOfDay,
-                    item.Residue);
+                    item.Residue,
+                    item.Status);
 
                 
 
@@ -96,10 +107,23 @@ namespace SparesBase
                     item.Quantity,
                     item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay,
                     item.ChangeDate.Date.ToShortDateString() + " " + item.ChangeDate.TimeOfDay,
-                    item.Residue);
+                    item.Residue,
+                    item.Status);
 #endif
 
                 dgv.Rows[dgv.Rows.Count - 1].Tag = item;
+                if (dgv.RowCount == 1)
+                {
+                    dgv.ClearSelection();
+                }
+                if (selectedItem != null)
+                {
+                    if (item.Id == selectedItem.Id)
+                    {
+                        dgv.Rows[dgv.Rows.Count - 1].Selected = true;
+                    }
+                }
+                
             }
             if (dgv.Rows.Count > 0)
             {
@@ -110,6 +134,12 @@ namespace SparesBase
             {
                 ClearInfoAboutItem();
             }
+
+            foreach (DataGridViewRow row in dgv.Rows)
+            {
+                row.Cells[11].ContextMenuStrip = cmsWriteOff;
+            }
+
         }
 
         #endregion Заполнение данных
@@ -138,6 +168,7 @@ namespace SparesBase
             dgv.Columns.Add("uploadDate", "Дата добавления");
             dgv.Columns.Add("changeDate", "Дата изменения");
             dgv.Columns.Add("residue", "Остаток");
+            dgv.Columns.Add("status", "Статус");
 
 #if DEBUG
             dgv.Columns[0].Width = 50;
@@ -153,20 +184,22 @@ namespace SparesBase
             dgv.Columns[10].Width = 120;
             dgv.Columns[11].Width = 120;
             dgv.Columns[12].Width = 70;
+            dgv.Columns[13].Width = 90;
 #else
-            
+
             dgv.Columns[0].Width = 150;
             dgv.Columns[1].Width = 120;
-            dgv.Columns[2].Width = 90;
-            dgv.Columns[3].Width = 90;
-            dgv.Columns[4].Width = 90;
-            dgv.Columns[5].Width = 90;
-            dgv.Columns[6].Width = 90;
+            dgv.Columns[2].Width = 50;
+            dgv.Columns[3].Width = 50;
+            dgv.Columns[4].Width = 50;
+            dgv.Columns[5].Width = 50;
+            dgv.Columns[6].Width = 50;
             dgv.Columns[7].Width = 90;
-            dgv.Columns[8].Width = 90;
+            dgv.Columns[8].Width = 50;
             dgv.Columns[9].Width = 120;
             dgv.Columns[10].Width = 120;
             dgv.Columns[11].Width = 70;
+            dgv.Columns[12].Width = 90;
 #endif
         }
 
@@ -285,15 +318,15 @@ namespace SparesBase
             lquantity.Text = "Количество: " + selItem.Quantity;
             lresidue.Text = "Остаток: " + selItem.Residue;
 
-            lMainCat.Text = "Главная категория: " + selItem.MainCategory.Name;
+            lMainCat.Text = "Категории: " + selItem.MainCategory.Name;
             if (selItem.SubCategory1 != null)
-                lSub1.Text = "Подкатегория 1: " + selItem.SubCategory1.Name;
+                lMainCat.Text += " => " + selItem.SubCategory1.Name;
             if (selItem.SubCategory2 != null)
-                lSub2.Text = "Подкатегория 2: " + selItem.SubCategory2.Name;
+                lMainCat.Text += " => " + selItem.SubCategory2.Name;
             if (selItem.SubCategory3 != null)
-                lSub3.Text = "Подкатегория 3: " + selItem.SubCategory3.Name;
+                lMainCat.Text += " => : " + selItem.SubCategory3.Name;
             if (selItem.SubCategory4 != null)
-                lSub4.Text = "Подкатегория 4: " + selItem.SubCategory4.Name;
+                lMainCat.Text += " => : " + selItem.SubCategory4.Name;
         }
         private void ClearInfoAboutItem()
         {
@@ -310,15 +343,9 @@ namespace SparesBase
             lquantity.Text = "Количество: ";
             lresidue.Text = "Остаток: ";
 
-            lMainCat.Text = "Главная категория: ";
+            lMainCat.Text = "Категория: ";
             
-                lSub1.Text = "Подкатегория 1: ";
-        
-                lSub2.Text = "Подкатегория 2: ";
-            
-                lSub3.Text = "Подкатегория 3: ";
-            
-                lSub4.Text = "Подкатегория 4: ";
+               
         }
 
         // Поиск предмета
@@ -576,7 +603,7 @@ namespace SparesBase
             DeleteItem();
         }
 
-        private void dgv_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void dgv_CellClick(object sender, EventArgs e)
         {
             if (SelectedItem != null)
                 InsertInfoAboutItem(SelectedItem);
@@ -637,7 +664,10 @@ namespace SparesBase
         {
             if (e.Button == MouseButtons.Left)
                 if (dgv.CurrentRow != null)
+                    if (dgv.HitTest(e.X, e.Y).RowIndex != -1)
+                  
                     dgv.DoDragDrop(dgv.CurrentRow.Cells[0].Value.ToString(), DragDropEffects.Copy);
+
         }
 
         #endregion Drag'n'Drop
@@ -677,5 +707,42 @@ namespace SparesBase
         #endregion Поиск
 
         #endregion События
+
+        private void dgv_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            dgv[e.ColumnIndex, e.RowIndex].Selected = true;
+        }
+
+      
+
+        private void cmsSelling_Click(object sender, EventArgs e)
+        {
+            Item item = SelectedItem;
+            SellingForm sel = new SellingForm(item.Quantity, int.Parse(item.RetailPrice), int.Parse(item.WholesalePrice), int.Parse(item.ServicePrice), item.Id);
+            sel.ShowDialog();
+        }
+
+        private void cmsDefect_Click(object sender, EventArgs e)
+        {
+            Item item = SelectedItem;
+            DefectForm defect = new DefectForm(item.Quantity, item.Id);
+            defect.ShowDialog();
+        }
+
+        private void cmsInOrder_Click(object sender, EventArgs e)
+        {
+            Item item = SelectedItem;
+            InOrder inorder = new InOrder(item.Id, item.Quantity, int.Parse(item.FirmPrice));
+            inorder.ShowDialog();
+        }
+
+        private void cmsReserve_Click(object sender, EventArgs e)
+        {
+
+        }
+
+       
+
+        
     }
 }

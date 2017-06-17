@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.tsmiAccount = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,16 +62,8 @@
             this.tbSearch = new System.Windows.Forms.TextBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.dgv = new SparesBase.ItemsDataGridView();
-            this.cmsItem = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.cmsAddItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmsEditItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmsDeleteItem = new System.Windows.Forms.ToolStripMenuItem();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.lSub4 = new System.Windows.Forms.Label();
-            this.lSub3 = new System.Windows.Forms.Label();
-            this.lSub2 = new System.Windows.Forms.Label();
-            this.lSub1 = new System.Windows.Forms.Label();
             this.lMainCat = new System.Windows.Forms.Label();
             this.lresidue = new System.Windows.Forms.Label();
             this.lquantity = new System.Windows.Forms.Label();
@@ -83,12 +76,21 @@
             this.lpurchase = new System.Windows.Forms.Label();
             this.lseller = new System.Windows.Forms.Label();
             this.lname = new System.Windows.Forms.Label();
+            this.cmsItem = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmsAddItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsEditItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsDeleteItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsCategory = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmsAddSubCategory = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsRenameCategory = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsDeleteCategory = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsExpandNode = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsCollapseNode = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsWriteOff = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmsSelling = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsDefect = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsInOrder = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsReserve = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -100,10 +102,11 @@
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
-            this.cmsItem.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.cmsItem.SuspendLayout();
             this.cmsCategory.SuspendLayout();
+            this.cmsWriteOff.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -380,22 +383,172 @@
             // 
             this.dgv.AllowUserToAddRows = false;
             this.dgv.AllowUserToDeleteRows = false;
-            this.dgv.AllowUserToResizeColumns = false;
             this.dgv.AllowUserToResizeRows = false;
             this.dgv.BackgroundColor = System.Drawing.Color.White;
             this.dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv.ContextMenuStrip = this.cmsItem;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgv.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgv.Location = new System.Drawing.Point(0, 0);
             this.dgv.MultiSelect = false;
             this.dgv.Name = "dgv";
             this.dgv.ReadOnly = true;
+            this.dgv.RowTemplate.Height = 30;
+            this.dgv.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv.Size = new System.Drawing.Size(1180, 319);
             this.dgv.TabIndex = 0;
-            this.dgv.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellClick);
             this.dgv.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.EditItem_Click);
             this.dgv.MouseMove += new System.Windows.Forms.MouseEventHandler(this.dgv_MouseMove);
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.AutoScroll = true;
+            this.flowLayoutPanel1.Controls.Add(this.groupBox1);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1180, 197);
+            this.flowLayoutPanel1.TabIndex = 1;
+            this.flowLayoutPanel1.WrapContents = false;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.lMainCat);
+            this.groupBox1.Controls.Add(this.lresidue);
+            this.groupBox1.Controls.Add(this.lquantity);
+            this.groupBox1.Controls.Add(this.lnote);
+            this.groupBox1.Controls.Add(this.lstorage);
+            this.groupBox1.Controls.Add(this.lfirm);
+            this.groupBox1.Controls.Add(this.lservice);
+            this.groupBox1.Controls.Add(this.lwhole);
+            this.groupBox1.Controls.Add(this.lretail);
+            this.groupBox1.Controls.Add(this.lpurchase);
+            this.groupBox1.Controls.Add(this.lseller);
+            this.groupBox1.Controls.Add(this.lname);
+            this.groupBox1.Location = new System.Drawing.Point(3, 3);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(585, 188);
+            this.groupBox1.TabIndex = 0;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Предмет";
+            // 
+            // lMainCat
+            // 
+            this.lMainCat.AutoSize = true;
+            this.lMainCat.Location = new System.Drawing.Point(12, 16);
+            this.lMainCat.Name = "lMainCat";
+            this.lMainCat.Size = new System.Drawing.Size(87, 13);
+            this.lMainCat.TabIndex = 16;
+            this.lMainCat.Text = "Глав.Категория";
+            // 
+            // lresidue
+            // 
+            this.lresidue.AutoSize = true;
+            this.lresidue.Location = new System.Drawing.Point(182, 68);
+            this.lresidue.Name = "lresidue";
+            this.lresidue.Size = new System.Drawing.Size(49, 13);
+            this.lresidue.TabIndex = 15;
+            this.lresidue.Text = "Остаток";
+            // 
+            // lquantity
+            // 
+            this.lquantity.AutoSize = true;
+            this.lquantity.Location = new System.Drawing.Point(182, 55);
+            this.lquantity.Name = "lquantity";
+            this.lquantity.Size = new System.Drawing.Size(66, 13);
+            this.lquantity.TabIndex = 14;
+            this.lquantity.Text = "Количество";
+            // 
+            // lnote
+            // 
+            this.lnote.AutoSize = true;
+            this.lnote.Location = new System.Drawing.Point(182, 116);
+            this.lnote.MaximumSize = new System.Drawing.Size(150, 0);
+            this.lnote.Name = "lnote";
+            this.lnote.Size = new System.Drawing.Size(57, 13);
+            this.lnote.TabIndex = 13;
+            this.lnote.Text = "Описание";
+            // 
+            // lstorage
+            // 
+            this.lstorage.AutoSize = true;
+            this.lstorage.Location = new System.Drawing.Point(183, 90);
+            this.lstorage.MaximumSize = new System.Drawing.Size(150, 0);
+            this.lstorage.Name = "lstorage";
+            this.lstorage.Size = new System.Drawing.Size(56, 13);
+            this.lstorage.TabIndex = 12;
+            this.lstorage.Text = "Хранение";
+            // 
+            // lfirm
+            // 
+            this.lfirm.AutoSize = true;
+            this.lfirm.Location = new System.Drawing.Point(12, 129);
+            this.lfirm.Name = "lfirm";
+            this.lfirm.Size = new System.Drawing.Size(72, 13);
+            this.lfirm.TabIndex = 11;
+            this.lfirm.Text = "Цена фирмы";
+            // 
+            // lservice
+            // 
+            this.lservice.AutoSize = true;
+            this.lservice.Location = new System.Drawing.Point(12, 116);
+            this.lservice.Name = "lservice";
+            this.lservice.Size = new System.Drawing.Size(52, 13);
+            this.lservice.TabIndex = 10;
+            this.lservice.Text = "Сервисы";
+            // 
+            // lwhole
+            // 
+            this.lwhole.AutoSize = true;
+            this.lwhole.Location = new System.Drawing.Point(12, 103);
+            this.lwhole.Name = "lwhole";
+            this.lwhole.Size = new System.Drawing.Size(66, 13);
+            this.lwhole.TabIndex = 9;
+            this.lwhole.Text = "Мелкий опт";
+            // 
+            // lretail
+            // 
+            this.lretail.AutoSize = true;
+            this.lretail.Location = new System.Drawing.Point(12, 90);
+            this.lretail.Name = "lretail";
+            this.lretail.Size = new System.Drawing.Size(50, 13);
+            this.lretail.TabIndex = 8;
+            this.lretail.Text = "Розница";
+            // 
+            // lpurchase
+            // 
+            this.lpurchase.AutoSize = true;
+            this.lpurchase.Location = new System.Drawing.Point(12, 77);
+            this.lpurchase.Name = "lpurchase";
+            this.lpurchase.Size = new System.Drawing.Size(49, 13);
+            this.lpurchase.TabIndex = 7;
+            this.lpurchase.Text = "Закупка";
+            // 
+            // lseller
+            // 
+            this.lseller.AutoSize = true;
+            this.lseller.Location = new System.Drawing.Point(12, 55);
+            this.lseller.Name = "lseller";
+            this.lseller.Size = new System.Drawing.Size(65, 13);
+            this.lseller.TabIndex = 6;
+            this.lseller.Text = "Поставщик";
+            // 
+            // lname
+            // 
+            this.lname.AutoSize = true;
+            this.lname.Location = new System.Drawing.Point(12, 42);
+            this.lname.Name = "lname";
+            this.lname.Size = new System.Drawing.Size(57, 13);
+            this.lname.TabIndex = 5;
+            this.lname.Text = "Название";
             // 
             // cmsItem
             // 
@@ -426,188 +579,6 @@
             this.cmsDeleteItem.Size = new System.Drawing.Size(203, 22);
             this.cmsDeleteItem.Text = "Удалить предмет";
             this.cmsDeleteItem.Click += new System.EventHandler(this.DeleteItem_Click);
-            // 
-            // flowLayoutPanel1
-            // 
-            this.flowLayoutPanel1.AutoScroll = true;
-            this.flowLayoutPanel1.Controls.Add(this.groupBox1);
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1180, 197);
-            this.flowLayoutPanel1.TabIndex = 1;
-            this.flowLayoutPanel1.WrapContents = false;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.lSub4);
-            this.groupBox1.Controls.Add(this.lSub3);
-            this.groupBox1.Controls.Add(this.lSub2);
-            this.groupBox1.Controls.Add(this.lSub1);
-            this.groupBox1.Controls.Add(this.lMainCat);
-            this.groupBox1.Controls.Add(this.lresidue);
-            this.groupBox1.Controls.Add(this.lquantity);
-            this.groupBox1.Controls.Add(this.lnote);
-            this.groupBox1.Controls.Add(this.lstorage);
-            this.groupBox1.Controls.Add(this.lfirm);
-            this.groupBox1.Controls.Add(this.lservice);
-            this.groupBox1.Controls.Add(this.lwhole);
-            this.groupBox1.Controls.Add(this.lretail);
-            this.groupBox1.Controls.Add(this.lpurchase);
-            this.groupBox1.Controls.Add(this.lseller);
-            this.groupBox1.Controls.Add(this.lname);
-            this.groupBox1.Location = new System.Drawing.Point(3, 3);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(585, 188);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Предмет";
-            // 
-            // lSub4
-            // 
-            this.lSub4.AutoSize = true;
-            this.lSub4.Location = new System.Drawing.Point(12, 67);
-            this.lSub4.Name = "lSub4";
-            this.lSub4.Size = new System.Drawing.Size(85, 13);
-            this.lSub4.TabIndex = 20;
-            this.lSub4.Text = "Подкатегория4";
-            // 
-            // lSub3
-            // 
-            this.lSub3.AutoSize = true;
-            this.lSub3.Location = new System.Drawing.Point(12, 55);
-            this.lSub3.Name = "lSub3";
-            this.lSub3.Size = new System.Drawing.Size(85, 13);
-            this.lSub3.TabIndex = 19;
-            this.lSub3.Text = "Подкатегория3";
-            // 
-            // lSub2
-            // 
-            this.lSub2.AutoSize = true;
-            this.lSub2.Location = new System.Drawing.Point(12, 42);
-            this.lSub2.Name = "lSub2";
-            this.lSub2.Size = new System.Drawing.Size(85, 13);
-            this.lSub2.TabIndex = 18;
-            this.lSub2.Text = "Подкатегория2";
-            // 
-            // lSub1
-            // 
-            this.lSub1.AutoSize = true;
-            this.lSub1.Location = new System.Drawing.Point(12, 29);
-            this.lSub1.Name = "lSub1";
-            this.lSub1.Size = new System.Drawing.Size(85, 13);
-            this.lSub1.TabIndex = 17;
-            this.lSub1.Text = "Подкатегория1";
-            // 
-            // lMainCat
-            // 
-            this.lMainCat.AutoSize = true;
-            this.lMainCat.Location = new System.Drawing.Point(12, 16);
-            this.lMainCat.Name = "lMainCat";
-            this.lMainCat.Size = new System.Drawing.Size(87, 13);
-            this.lMainCat.TabIndex = 16;
-            this.lMainCat.Text = "Глав.Категория";
-            // 
-            // lresidue
-            // 
-            this.lresidue.AutoSize = true;
-            this.lresidue.Location = new System.Drawing.Point(403, 29);
-            this.lresidue.Name = "lresidue";
-            this.lresidue.Size = new System.Drawing.Size(49, 13);
-            this.lresidue.TabIndex = 15;
-            this.lresidue.Text = "Остаток";
-            // 
-            // lquantity
-            // 
-            this.lquantity.AutoSize = true;
-            this.lquantity.Location = new System.Drawing.Point(403, 16);
-            this.lquantity.Name = "lquantity";
-            this.lquantity.Size = new System.Drawing.Size(66, 13);
-            this.lquantity.TabIndex = 14;
-            this.lquantity.Text = "Количество";
-            // 
-            // lnote
-            // 
-            this.lnote.AutoSize = true;
-            this.lnote.Location = new System.Drawing.Point(403, 90);
-            this.lnote.MaximumSize = new System.Drawing.Size(150, 0);
-            this.lnote.Name = "lnote";
-            this.lnote.Size = new System.Drawing.Size(57, 13);
-            this.lnote.TabIndex = 13;
-            this.lnote.Text = "Описание";
-            // 
-            // lstorage
-            // 
-            this.lstorage.AutoSize = true;
-            this.lstorage.Location = new System.Drawing.Point(404, 51);
-            this.lstorage.MaximumSize = new System.Drawing.Size(150, 0);
-            this.lstorage.Name = "lstorage";
-            this.lstorage.Size = new System.Drawing.Size(56, 13);
-            this.lstorage.TabIndex = 12;
-            this.lstorage.Text = "Хранение";
-            // 
-            // lfirm
-            // 
-            this.lfirm.AutoSize = true;
-            this.lfirm.Location = new System.Drawing.Point(233, 103);
-            this.lfirm.Name = "lfirm";
-            this.lfirm.Size = new System.Drawing.Size(72, 13);
-            this.lfirm.TabIndex = 11;
-            this.lfirm.Text = "Цена фирмы";
-            // 
-            // lservice
-            // 
-            this.lservice.AutoSize = true;
-            this.lservice.Location = new System.Drawing.Point(233, 90);
-            this.lservice.Name = "lservice";
-            this.lservice.Size = new System.Drawing.Size(52, 13);
-            this.lservice.TabIndex = 10;
-            this.lservice.Text = "Сервисы";
-            // 
-            // lwhole
-            // 
-            this.lwhole.AutoSize = true;
-            this.lwhole.Location = new System.Drawing.Point(233, 77);
-            this.lwhole.Name = "lwhole";
-            this.lwhole.Size = new System.Drawing.Size(66, 13);
-            this.lwhole.TabIndex = 9;
-            this.lwhole.Text = "Мелкий опт";
-            // 
-            // lretail
-            // 
-            this.lretail.AutoSize = true;
-            this.lretail.Location = new System.Drawing.Point(233, 64);
-            this.lretail.Name = "lretail";
-            this.lretail.Size = new System.Drawing.Size(50, 13);
-            this.lretail.TabIndex = 8;
-            this.lretail.Text = "Розница";
-            // 
-            // lpurchase
-            // 
-            this.lpurchase.AutoSize = true;
-            this.lpurchase.Location = new System.Drawing.Point(233, 51);
-            this.lpurchase.Name = "lpurchase";
-            this.lpurchase.Size = new System.Drawing.Size(49, 13);
-            this.lpurchase.TabIndex = 7;
-            this.lpurchase.Text = "Закупка";
-            // 
-            // lseller
-            // 
-            this.lseller.AutoSize = true;
-            this.lseller.Location = new System.Drawing.Point(233, 29);
-            this.lseller.Name = "lseller";
-            this.lseller.Size = new System.Drawing.Size(65, 13);
-            this.lseller.TabIndex = 6;
-            this.lseller.Text = "Поставщик";
-            // 
-            // lname
-            // 
-            this.lname.AutoSize = true;
-            this.lname.Location = new System.Drawing.Point(233, 16);
-            this.lname.Name = "lname";
-            this.lname.Size = new System.Drawing.Size(57, 13);
-            this.lname.TabIndex = 5;
-            this.lname.Text = "Название";
             // 
             // cmsCategory
             // 
@@ -655,6 +626,45 @@
             this.cmsCollapseNode.Text = "Скрыть узел";
             this.cmsCollapseNode.Click += new System.EventHandler(this.cmsCollapseNode_Click);
             // 
+            // cmsWriteOff
+            // 
+            this.cmsWriteOff.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmsSelling,
+            this.cmsDefect,
+            this.cmsInOrder,
+            this.cmsReserve});
+            this.cmsWriteOff.Name = "cmsItem";
+            this.cmsWriteOff.Size = new System.Drawing.Size(133, 92);
+            // 
+            // cmsSelling
+            // 
+            this.cmsSelling.Name = "cmsSelling";
+            this.cmsSelling.Size = new System.Drawing.Size(132, 22);
+            this.cmsSelling.Text = "В продажу";
+            this.cmsSelling.Click += new System.EventHandler(this.cmsSelling_Click);
+            // 
+            // cmsDefect
+            // 
+            this.cmsDefect.Name = "cmsDefect";
+            this.cmsDefect.Size = new System.Drawing.Size(132, 22);
+            this.cmsDefect.Text = "В брак";
+            this.cmsDefect.Click += new System.EventHandler(this.cmsDefect_Click);
+            // 
+            // cmsInOrder
+            // 
+            this.cmsInOrder.Name = "cmsInOrder";
+            this.cmsInOrder.Size = new System.Drawing.Size(132, 22);
+            this.cmsInOrder.Text = "В заказ";
+            this.cmsInOrder.Click += new System.EventHandler(this.cmsInOrder_Click);
+            // 
+            // cmsReserve
+            // 
+            this.cmsReserve.AccessibleDescription = "";
+            this.cmsReserve.Name = "cmsReserve";
+            this.cmsReserve.Size = new System.Drawing.Size(132, 22);
+            this.cmsReserve.Text = "В резерв";
+            this.cmsReserve.Click += new System.EventHandler(this.cmsReserve_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -682,11 +692,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).EndInit();
-            this.cmsItem.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.cmsItem.ResumeLayout(false);
             this.cmsCategory.ResumeLayout(false);
+            this.cmsWriteOff.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -746,12 +757,13 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiUsers;
         private System.Windows.Forms.ToolStripMenuItem tsmiSearch;
         private System.Windows.Forms.ToolStripMenuItem tsmiSellers;
-        private System.Windows.Forms.Label lSub4;
-        private System.Windows.Forms.Label lSub3;
-        private System.Windows.Forms.Label lSub2;
-        private System.Windows.Forms.Label lSub1;
         private System.Windows.Forms.Label lMainCat;
         private ItemsDataGridView dgv;
         private CategoriesTreeView treeView;
+        private System.Windows.Forms.ContextMenuStrip cmsWriteOff;
+        private System.Windows.Forms.ToolStripMenuItem cmsSelling;
+        private System.Windows.Forms.ToolStripMenuItem cmsDefect;
+        private System.Windows.Forms.ToolStripMenuItem cmsInOrder;
+        private System.Windows.Forms.ToolStripMenuItem cmsReserve;
     }
 }
