@@ -121,6 +121,24 @@ namespace SparesBase
             dgv.Columns.Add("date", "Дата добавления");
             dgv.Columns.Add("changeDate", "Дата изменения");
 
+#if DEBUG
+
+            dgv.Columns[0].Width = 50;
+            dgv.Columns[1].Width = 150;
+            dgv.Columns[2].Width = 80;
+            dgv.Columns[3].Width = 80;
+            dgv.Columns[4].Width = 80;
+            dgv.Columns[5].Width = 130;
+            dgv.Columns[6].Width = 130;
+#else
+            dgv.Columns[0].Width = 150;
+            dgv.Columns[1].Width = 80;
+            dgv.Columns[2].Width = 80;
+            dgv.Columns[3].Width = 80;
+            dgv.Columns[4].Width = 130;
+            dgv.Columns[5].Width = 130;
+#endif
+
             FillOrganizations();
             Search("", 0);   
         }

@@ -12,7 +12,6 @@ namespace SparesBase
         // TODO: Добавть журнал поисков  ???
         // TODO: Проверить на существование введенного поставщика
         // TODO: в "поиске по организациям", буду его Глобальным дальше называть, поле ID уменьшить, за счёт него расширить наименование
-        // TODO: измеять сотрудников можнт только адмни
 
         AuthenticationForm au;
 
@@ -33,6 +32,12 @@ namespace SparesBase
             Text = "База запчастей - " + dt.Rows[0].ItemArray[0] + " " + dt.Rows[0].ItemArray[1] + " " + dt.Rows[0].ItemArray[2] + " - " + dt.Rows[0].ItemArray[3];
             if (dt.Rows[0].ItemArray[4].ToString() != "1")
                 tsmiLogs.Visible = false;
+
+            if (!EnteredUser.Admin)
+            {
+                tsmiLogs.Visible = false;
+                tsmiUsers.Visible = false;
+            }
 
             tbSearch.Text = "Поиск";
             tbSearch.ForeColor = Color.Gray;
@@ -607,6 +612,8 @@ namespace SparesBase
         {
             if (SelectedItem != null)
                 InsertInfoAboutItem(SelectedItem);
+
+            //dgv[e.ColumnIndex, e.RowIndex].Selected = true;
         }
 
         #endregion Предметы
@@ -707,12 +714,6 @@ namespace SparesBase
         #endregion Поиск
 
         #endregion События
-
-        private void dgv_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            dgv[e.ColumnIndex, e.RowIndex].Selected = true;
-        }
-
       
 
         private void cmsSelling_Click(object sender, EventArgs e)
@@ -741,8 +742,53 @@ namespace SparesBase
 
         }
 
-       
+        private void tsmiAccountInfo_Click(object sender, EventArgs e)
+        {
+            DataTable employees = DatabaseWorker.SqlSelectQuery("SELECT " +
+                "a.id, " +
+                "a.FirstName, " +
+                "a.LastName, " +
+                "a.SecondName, " +
+                "a.Login, " +
+                "c.City, " +
+                "a.Phone, " +
+                "a.Email, " +
+                "a.Admin, " +
+                "o.id, " +
+                "o.Name, " +
+                "o.Site, " +
+                "o.Telephone, " +
+                "oc.City " +
+                "FROM Accounts a " +
+                "LEFT JOIN Cities c ON c.id = a.CityId " +
+                "LEFT JOIN Organizations o ON o.id = a.OrganizationId " +
+                "LEFT JOIN Cities oc ON oc.id = o.CityId " +
+                "WHERE(a.id = " + EnteredUser.id + ")");
 
-        
+            Account account = new Account(
+                    int.Parse(employees.Rows[0].ItemArray[0].ToString()),
+                    employees.Rows[0].ItemArray[1].ToString(),
+                    employees.Rows[0].ItemArray[2].ToString(),
+                    employees.Rows[0].ItemArray[3].ToString(),
+                    employees.Rows[0].ItemArray[4].ToString(),
+                    employees.Rows[0].ItemArray[5].ToString(),
+                    employees.Rows[0].ItemArray[6].ToString(),
+                    employees.Rows[0].ItemArray[7].ToString(),
+                    employees.Rows[0].ItemArray[8].ToString() == "1" ? true : false,
+                    null);
+
+            Organization org = new Organization(
+                int.Parse(employees.Rows[0].ItemArray[9].ToString()),
+                employees.Rows[0].ItemArray[10].ToString(),
+                employees.Rows[0].ItemArray[11].ToString(),
+                employees.Rows[0].ItemArray[12].ToString(),
+                employees.Rows[0].ItemArray[13].ToString(),
+                account);
+
+            account.Organization = org;
+
+            AccountEditor ae = new AccountEditor(account);
+            ae.ShowDialog();
+        }
     }
 }

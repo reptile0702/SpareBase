@@ -29,10 +29,11 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.tsmiAccount = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiAccountInfo = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiChangeAccount = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiExit = new System.Windows.Forms.ToolStripMenuItem();
             this.категорииToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,6 +63,10 @@
             this.tbSearch = new System.Windows.Forms.TextBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.dgv = new SparesBase.ItemsDataGridView();
+            this.cmsItem = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmsAddItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsEditItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsDeleteItem = new System.Windows.Forms.ToolStripMenuItem();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lMainCat = new System.Windows.Forms.Label();
@@ -76,10 +81,6 @@
             this.lpurchase = new System.Windows.Forms.Label();
             this.lseller = new System.Windows.Forms.Label();
             this.lname = new System.Windows.Forms.Label();
-            this.cmsItem = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.cmsAddItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmsEditItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmsDeleteItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsCategory = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmsAddSubCategory = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsRenameCategory = new System.Windows.Forms.ToolStripMenuItem();
@@ -102,9 +103,9 @@
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
+            this.cmsItem.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.cmsItem.SuspendLayout();
             this.cmsCategory.SuspendLayout();
             this.cmsWriteOff.SuspendLayout();
             this.SuspendLayout();
@@ -128,23 +129,31 @@
             // tsmiAccount
             // 
             this.tsmiAccount.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiAccountInfo,
             this.tsmiChangeAccount,
             this.tsmiExit});
             this.tsmiAccount.Name = "tsmiAccount";
             this.tsmiAccount.Size = new System.Drawing.Size(63, 20);
             this.tsmiAccount.Text = "Аккаунт";
             // 
+            // tsmiAccountInfo
+            // 
+            this.tsmiAccountInfo.Name = "tsmiAccountInfo";
+            this.tsmiAccountInfo.Size = new System.Drawing.Size(216, 22);
+            this.tsmiAccountInfo.Text = "Информация об аккаунте";
+            this.tsmiAccountInfo.Click += new System.EventHandler(this.tsmiAccountInfo_Click);
+            // 
             // tsmiChangeAccount
             // 
             this.tsmiChangeAccount.Name = "tsmiChangeAccount";
-            this.tsmiChangeAccount.Size = new System.Drawing.Size(188, 22);
+            this.tsmiChangeAccount.Size = new System.Drawing.Size(216, 22);
             this.tsmiChangeAccount.Text = "Смена пользователя";
             this.tsmiChangeAccount.Click += new System.EventHandler(this.tsmiChangeAccount_Click);
             // 
             // tsmiExit
             // 
             this.tsmiExit.Name = "tsmiExit";
-            this.tsmiExit.Size = new System.Drawing.Size(188, 22);
+            this.tsmiExit.Size = new System.Drawing.Size(216, 22);
             this.tsmiExit.Text = "Выход";
             this.tsmiExit.Click += new System.EventHandler(this.tsmiExit_Click);
             // 
@@ -268,14 +277,14 @@
             // tsmiUsers
             // 
             this.tsmiUsers.Name = "tsmiUsers";
-            this.tsmiUsers.Size = new System.Drawing.Size(144, 22);
+            this.tsmiUsers.Size = new System.Drawing.Size(152, 22);
             this.tsmiUsers.Text = "Сотрудники";
             this.tsmiUsers.Click += new System.EventHandler(this.tsmiUsers_Click);
             // 
             // tsmiSellers
             // 
             this.tsmiSellers.Name = "tsmiSellers";
-            this.tsmiSellers.Size = new System.Drawing.Size(144, 22);
+            this.tsmiSellers.Size = new System.Drawing.Size(152, 22);
             this.tsmiSellers.Text = "Поставщики";
             this.tsmiSellers.Click += new System.EventHandler(this.tsmiSellers_Click);
             // 
@@ -387,14 +396,14 @@
             this.dgv.BackgroundColor = System.Drawing.Color.White;
             this.dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv.ContextMenuStrip = this.cmsItem;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgv.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgv.Location = new System.Drawing.Point(0, 0);
             this.dgv.MultiSelect = false;
@@ -405,8 +414,39 @@
             this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv.Size = new System.Drawing.Size(1180, 319);
             this.dgv.TabIndex = 0;
+            this.dgv.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellClick);
             this.dgv.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.EditItem_Click);
             this.dgv.MouseMove += new System.Windows.Forms.MouseEventHandler(this.dgv_MouseMove);
+            // 
+            // cmsItem
+            // 
+            this.cmsItem.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmsAddItem,
+            this.cmsEditItem,
+            this.cmsDeleteItem});
+            this.cmsItem.Name = "cmsItem";
+            this.cmsItem.Size = new System.Drawing.Size(204, 70);
+            // 
+            // cmsAddItem
+            // 
+            this.cmsAddItem.Name = "cmsAddItem";
+            this.cmsAddItem.Size = new System.Drawing.Size(203, 22);
+            this.cmsAddItem.Text = "Добавить предмет";
+            this.cmsAddItem.Click += new System.EventHandler(this.AddItem_Click);
+            // 
+            // cmsEditItem
+            // 
+            this.cmsEditItem.Name = "cmsEditItem";
+            this.cmsEditItem.Size = new System.Drawing.Size(203, 22);
+            this.cmsEditItem.Text = "Редактировать предмет";
+            this.cmsEditItem.Click += new System.EventHandler(this.EditItem_Click);
+            // 
+            // cmsDeleteItem
+            // 
+            this.cmsDeleteItem.Name = "cmsDeleteItem";
+            this.cmsDeleteItem.Size = new System.Drawing.Size(203, 22);
+            this.cmsDeleteItem.Text = "Удалить предмет";
+            this.cmsDeleteItem.Click += new System.EventHandler(this.DeleteItem_Click);
             // 
             // flowLayoutPanel1
             // 
@@ -550,36 +590,6 @@
             this.lname.TabIndex = 5;
             this.lname.Text = "Название";
             // 
-            // cmsItem
-            // 
-            this.cmsItem.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cmsAddItem,
-            this.cmsEditItem,
-            this.cmsDeleteItem});
-            this.cmsItem.Name = "cmsItem";
-            this.cmsItem.Size = new System.Drawing.Size(204, 70);
-            // 
-            // cmsAddItem
-            // 
-            this.cmsAddItem.Name = "cmsAddItem";
-            this.cmsAddItem.Size = new System.Drawing.Size(203, 22);
-            this.cmsAddItem.Text = "Добавить предмет";
-            this.cmsAddItem.Click += new System.EventHandler(this.AddItem_Click);
-            // 
-            // cmsEditItem
-            // 
-            this.cmsEditItem.Name = "cmsEditItem";
-            this.cmsEditItem.Size = new System.Drawing.Size(203, 22);
-            this.cmsEditItem.Text = "Редактировать предмет";
-            this.cmsEditItem.Click += new System.EventHandler(this.EditItem_Click);
-            // 
-            // cmsDeleteItem
-            // 
-            this.cmsDeleteItem.Name = "cmsDeleteItem";
-            this.cmsDeleteItem.Size = new System.Drawing.Size(203, 22);
-            this.cmsDeleteItem.Text = "Удалить предмет";
-            this.cmsDeleteItem.Click += new System.EventHandler(this.DeleteItem_Click);
-            // 
             // cmsCategory
             // 
             this.cmsCategory.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -692,10 +702,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).EndInit();
+            this.cmsItem.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.cmsItem.ResumeLayout(false);
             this.cmsCategory.ResumeLayout(false);
             this.cmsWriteOff.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -765,5 +775,6 @@
         private System.Windows.Forms.ToolStripMenuItem cmsDefect;
         private System.Windows.Forms.ToolStripMenuItem cmsInOrder;
         private System.Windows.Forms.ToolStripMenuItem cmsReserve;
+        private System.Windows.Forms.ToolStripMenuItem tsmiAccountInfo;
     }
 }
