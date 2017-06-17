@@ -62,7 +62,7 @@ namespace SparesBase
             where += organizationId != 0 ? " (i.OrganizationId = " + organizationId + ") AND" : "";
             where += " (i.SearchAllowed = 1) AND (i.Residue > 0) AND (i.Deleted <> 1))";
 
-            Item[] items = dgv.FillItems(where);
+            Item[] items = dgv.FillItems(where, false);
             foreach (Item item in items)
             {
 #if DEBUG

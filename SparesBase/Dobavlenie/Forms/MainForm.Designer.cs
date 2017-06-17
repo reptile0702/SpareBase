@@ -55,12 +55,13 @@
             this.tsmiSellers = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.tbSearch = new System.Windows.Forms.TextBox();
+            this.cbSerial = new System.Windows.Forms.CheckBox();
             this.treeView = new SparesBase.CategoriesTreeView();
             this.cmsMainCategory = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmsAddMainCategory = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsExpandAllNodes = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsCollapseAllNodes = new System.Windows.Forms.ToolStripMenuItem();
-            this.tbSearch = new System.Windows.Forms.TextBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.dgv = new SparesBase.ItemsDataGridView();
             this.cmsItem = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -277,14 +278,14 @@
             // tsmiUsers
             // 
             this.tsmiUsers.Name = "tsmiUsers";
-            this.tsmiUsers.Size = new System.Drawing.Size(152, 22);
+            this.tsmiUsers.Size = new System.Drawing.Size(144, 22);
             this.tsmiUsers.Text = "Сотрудники";
             this.tsmiUsers.Click += new System.EventHandler(this.tsmiUsers_Click);
             // 
             // tsmiSellers
             // 
             this.tsmiSellers.Name = "tsmiSellers";
-            this.tsmiSellers.Size = new System.Drawing.Size(152, 22);
+            this.tsmiSellers.Size = new System.Drawing.Size(144, 22);
             this.tsmiSellers.Text = "Поставщики";
             this.tsmiSellers.Click += new System.EventHandler(this.tsmiSellers_Click);
             // 
@@ -305,6 +306,7 @@
             // 
             this.splitContainer1.Panel1.Controls.Add(this.treeView);
             this.splitContainer1.Panel1.Controls.Add(this.tbSearch);
+            this.splitContainer1.Panel1.Controls.Add(this.cbSerial);
             // 
             // splitContainer1.Panel2
             // 
@@ -313,14 +315,38 @@
             this.splitContainer1.SplitterDistance = 170;
             this.splitContainer1.TabIndex = 1;
             // 
+            // tbSearch
+            // 
+            this.tbSearch.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tbSearch.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.tbSearch.Location = new System.Drawing.Point(0, 17);
+            this.tbSearch.Name = "tbSearch";
+            this.tbSearch.Size = new System.Drawing.Size(170, 20);
+            this.tbSearch.TabIndex = 1;
+            this.tbSearch.Enter += new System.EventHandler(this.tbSearch_Enter);
+            this.tbSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbSearch_KeyDown);
+            this.tbSearch.Leave += new System.EventHandler(this.tbSearch_Leave);
+            // 
+            // cbSerial
+            // 
+            this.cbSerial.AutoSize = true;
+            this.cbSerial.Dock = System.Windows.Forms.DockStyle.Top;
+            this.cbSerial.Location = new System.Drawing.Point(0, 0);
+            this.cbSerial.Name = "cbSerial";
+            this.cbSerial.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+            this.cbSerial.Size = new System.Drawing.Size(170, 17);
+            this.cbSerial.TabIndex = 3;
+            this.cbSerial.Text = "Серийный номер";
+            this.cbSerial.UseVisualStyleBackColor = true;
+            // 
             // treeView
             // 
             this.treeView.AllowDrop = true;
             this.treeView.ContextMenuStrip = this.cmsMainCategory;
             this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeView.Location = new System.Drawing.Point(0, 20);
+            this.treeView.Location = new System.Drawing.Point(0, 37);
             this.treeView.Name = "treeView";
-            this.treeView.Size = new System.Drawing.Size(170, 500);
+            this.treeView.Size = new System.Drawing.Size(170, 483);
             this.treeView.TabIndex = 2;
             this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
             this.treeView.DragDrop += new System.Windows.Forms.DragEventHandler(this.treeView_DragDrop);
@@ -355,18 +381,6 @@
             this.cmsCollapseAllNodes.Size = new System.Drawing.Size(238, 22);
             this.cmsCollapseAllNodes.Text = "Скрыть все узлы";
             this.cmsCollapseAllNodes.Click += new System.EventHandler(this.CollapseAllNodes_Click);
-            // 
-            // tbSearch
-            // 
-            this.tbSearch.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tbSearch.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.tbSearch.Location = new System.Drawing.Point(0, 0);
-            this.tbSearch.Name = "tbSearch";
-            this.tbSearch.Size = new System.Drawing.Size(170, 20);
-            this.tbSearch.TabIndex = 1;
-            this.tbSearch.Enter += new System.EventHandler(this.tbSearch_Enter);
-            this.tbSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbSearch_KeyDown);
-            this.tbSearch.Leave += new System.EventHandler(this.tbSearch_Leave);
             // 
             // splitContainer2
             // 
@@ -776,5 +790,6 @@
         private System.Windows.Forms.ToolStripMenuItem cmsInOrder;
         private System.Windows.Forms.ToolStripMenuItem cmsReserve;
         private System.Windows.Forms.ToolStripMenuItem tsmiAccountInfo;
+        private System.Windows.Forms.CheckBox cbSerial;
     }
 }

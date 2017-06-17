@@ -112,15 +112,69 @@ namespace SparesBase
                 // Формирование запроса
                 string query = "";
                 if (operation == "INSERT")
-                    query = "INSERT INTO Items VALUES('', {0}, {1}, {2}, {3}, {4}, '{5}', {6}, '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', {14}, NOW(), NOW(), {15}, " + EnteredUser.OrganizationId + ", {16}, 0, {17})";
+                    query = "INSERT INTO Items VALUES(" +
+                        "'', " +
+                        "{0}, " +
+                        "{1}, " +
+                        "{2}, " +
+                        "{3}, " +
+                        "{4}, " +
+                        "'{5}', " +
+                        "{6}, " +
+                        "'{7}', " +
+                        "'{8}', " +
+                        "'{9}', " +
+                        "'{10}', " +
+                        "'{11}', " +
+                        "'{12}', " +
+                        "'{13}', " +
+                        "{14}, " +
+                        "NOW(), NOW(), " +
+                        "{15}, " +
+                        EnteredUser.OrganizationId + ", " +
+                        "{16}, " +
+                        "0, " +
+                        "{17}," +
+                        "{18})";
                 else
-                    query = "UPDATE Items SET Main_Category_Id = {0}, Sub_Category_1_Id = {1}, Sub_Category_2_Id = {2}, Sub_Category_3_Id = {3}, Sub_Category_4_Id = {4}, Item_Name='{5}', Seller_Id={6}, Purchase_Price='{7}', Retail_Price='{8}', Wholesale_Price='{9}', Service_Price='{10}', FirmPrice='{11}', Storage='{12}', Note='{13}', Quantity={14}, Residue={15} , SearchAllowed={16}, ChangeDate = NOW(), StatusId = {17} WHERE id = " + updateId;
+                    query = "UPDATE Items SET " +
+                        "Main_Category_Id = {0}, " +
+                        "Sub_Category_1_Id = {1}, " +
+                        "Sub_Category_2_Id = {2}, " +
+                        "Sub_Category_3_Id = {3}, " +
+                        "Sub_Category_4_Id = {4}, " +
+                        "Item_Name='{5}', " +
+                        "Seller_Id={6}, " +
+                        "Purchase_Price='{7}', " +
+                        "Retail_Price='{8}', " +
+                        "Wholesale_Price='{9}', " +
+                        "Service_Price='{10}', " +
+                        "FirmPrice='{11}', " +
+                        "Storage='{12}', " +
+                        "Note='{13}', " +
+                        "Quantity={14}, " +
+                        "Residue={15} , " +
+                        "SearchAllowed={16}, " +
+                        "ChangeDate = NOW(), " +
+                        "StatusId = {17} " +
+                        "WHERE id = " + updateId;
+
+                int inventNumber = 0;
 
                 // Подсчет остатка 
                 if (item != null)
+                {
                     CalcResidue();
+                    inventNumber = int.Parse(DatabaseWorker.SqlScalarQuery("SELECT Counter FROM ItemsCounters WHERE(OrganizationId = " + EnteredUser.OrganizationId + ")").ToString());
+                }
                 else
+                {
                     residue = int.Parse(tbQuantity.Text);
+                    inventNumber = int.Parse(DatabaseWorker.SqlScalarQuery("SELECT Counter FROM ItemsCounters WHERE(OrganizationId = " + EnteredUser.OrganizationId + ")").ToString()) + 1;
+                    DatabaseWorker.SqlQuery("UPDATE ItemsCounters SET Counter = " + inventNumber + " WHERE(OrganizationId = " + EnteredUser.OrganizationId + ")");
+                }
+
+                 
 
                 // Вставка данных о предмете в стороку запроса
                 query = string.Format(query,
@@ -141,7 +195,8 @@ namespace SparesBase
                     int.Parse(tbQuantity.Text),
                     residue,
                     chbSearchAllowed.Checked ? "1" : "0",
-                    cbStatus.SelectedValue);
+                    cbStatus.SelectedValue,
+                    inventNumber);
 
                 // Выполнение запроса
                 DatabaseWorker.SqlQuery(query);
@@ -186,6 +241,7 @@ namespace SparesBase
             tbQuantity.Text = item.Quantity.ToString();
             chbSearchAllowed.Checked = item.SearchAllowed;
             cbStatus.Text = item.Status;
+            lInventNumber.Text = "Инвентарный номер: " + item.InventNumber.ToString();
             FillCategoriesInfo();
         }
 
@@ -327,7 +383,7 @@ namespace SparesBase
 
         // Загрузка формы
         private void EditForm_Load(object sender, EventArgs e)
-        {       
+        {
             if (item != null)
                 GetResidue();
         }

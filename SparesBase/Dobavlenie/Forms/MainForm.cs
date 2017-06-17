@@ -75,7 +75,7 @@ namespace SparesBase
             }
            
             
-            Item[] items = dgv.FillItems(where);
+            Item[] items = dgv.FillItems(where, false);
 
             
             foreach (Item item in items)
@@ -356,27 +356,32 @@ namespace SparesBase
         // Поиск предмета
         private void SearchItems(string query)
         {
-            string where = "WHERE(";//organizationId != 0 ? "WHERE((i.Item_Name LIKE \"%" + searchStr + "%\" OR i.Note LIKE \"%" + searchStr + "%\") AND (i.OrganizationId = " + organizationId + ") AND (i.SearchAllowed = 1) AND (i.Residue > 0) AND (i.Deleted <> 1))" : "WHERE((i.Item_Name LIKE \"%" + searchStr + "%\" OR i.Note LIKE \"%" + searchStr + "%\") AND (i.SearchAllowed = 1) AND (i.Residue > 0) AND (i.Deleted <> 1))";
-            string[] searchWords = tbSearch.Text.Split(' ');
-            if (tbSearch.Text != "")
+            Item[] items;
+            string where = "WHERE(";
+            if (cbSerial.Checked)
             {
-                where += "(";
+                where += "p.SerialNumber LIKE'%" + tbSearch.Text + "%')";
+                items = dgv.FillItems(where, true);
             }
-            foreach (string word in searchWords)
+            else
             {
-                if (word != "")
-                {
-                    where += "i.Item_Name LIKE \"%" + word + "%\" OR ";
-                }
+                string[] searchWords = tbSearch.Text.Split(' ');
+                if (tbSearch.Text != "")
+                    where += "(";
+
+                foreach (string word in searchWords)
+                    if (word != "")
+                        where += "i.Item_Name LIKE \"%" + word + "%\" OR ";
+
+                if (tbSearch.Text != "")
+                    where = where.Remove(where.Length - 3, 3) + ") AND";
+
+                where += " (i.OrganizationId = " + EnteredUser.OrganizationId + ") AND";
+                where += " (i.Residue > 0) AND (i.Deleted <> 1))";
+                items = dgv.FillItems(where, false);
             }
-            if (tbSearch.Text != "")
-            {
-                where = where.Remove(where.Length - 3, 3) + ") AND";
-            }
-            where += " (i.OrganizationId = " + EnteredUser.OrganizationId + ") AND";
-            //where += searchStr != "" || organizationId != 0 ? " AND ": 
-            where += " (i.Residue > 0) AND (i.Deleted <> 1))";
-            Item[] items = dgv.FillItems(where);
+
+             
             foreach (Item item in items)
             {
 #if DEBUG
@@ -392,7 +397,11 @@ namespace SparesBase
                     item.Storage,
                     item.Quantity,
                     item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay,
-                    item.Residue);
+                    item.ChangeDate.Date.ToShortDateString() + " " + item.ChangeDate.TimeOfDay,
+                    item.Residue,
+                    item.Status);
+
+
 
 #else
                 dgv.Rows.Add(                    
@@ -406,7 +415,9 @@ namespace SparesBase
                     item.Storage,
                     item.Quantity,
                     item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay,
-                    item.Residue);
+                    item.ChangeDate.Date.ToShortDateString() + " " + item.ChangeDate.TimeOfDay,
+                    item.Residue,
+                    item.Status);
 #endif
 
                 dgv.Rows[dgv.Rows.Count - 1].Tag = item;

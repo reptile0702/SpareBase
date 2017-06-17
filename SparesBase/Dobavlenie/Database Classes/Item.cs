@@ -24,7 +24,8 @@
             System.DateTime changeDate,
             Organization organization,
             bool searchAllowed,
-            string status)
+            string status,
+            int inventNumber)
         {
             Id = id;
 
@@ -57,6 +58,8 @@
             SearchAllowed = searchAllowed;
 
             Status = status;
+
+            InventNumber = inventNumber;
         }
 
         public int Id { get; set; }
@@ -90,5 +93,7 @@
         public bool SearchAllowed { get; set; }
 
         public string Status { get; set; }
+
+        public int InventNumber { get; set; }
     }
 }
