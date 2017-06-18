@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace Updater
 {
@@ -25,15 +26,17 @@ namespace Updater
                 }
 
                 Console.WriteLine("Удаление оригинального файла...");
-                if (File.Exists(args[0]))
-                    File.Delete(args[0]);
+                //while (File.Exists(Application.StartupPath + "\\" + args[0]))
+                //{
+                File.Move(args[0], args[0] + ".bak");
+                //}
+                
 
                 Console.WriteLine("Копирование файла обновления...");
                 File.Move(args[1], args[0]);
 
                 Console.WriteLine("Удаление файла обновления...");
-                if (File.Exists(args[1]))
-                    File.Delete(args[1]);
+                File.Delete(args[0] + ".bak");
 
                 Console.WriteLine("Запуск программы " + args[0] + "...");
                 Process.Start(args[0]);
