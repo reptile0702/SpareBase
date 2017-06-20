@@ -70,6 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CryptographyClass.cs" />
     <Compile Include="Misc\Banner.cs" />
     <Compile Include="Forms\AccountEditor.cs">
       <SubType>Form</SubType>

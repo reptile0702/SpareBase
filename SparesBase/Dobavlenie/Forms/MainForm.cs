@@ -144,7 +144,7 @@ namespace SparesBase
 
             foreach (DataGridViewRow row in dgv.Rows)
             {
-                row.Cells[11].ContextMenuStrip = cmsWriteOff;
+                row.Cells[12].ContextMenuStrip = cmsWriteOff;
             }
 
         }
