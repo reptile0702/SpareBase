@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Data;
-using System.Drawing;
 using System.Windows.Forms;
+using System.Drawing;
+using System.Net;
+using System.IO;
 
 namespace SparesBaseAdministrator
 {
@@ -13,9 +15,9 @@ namespace SparesBaseAdministrator
         // Категории текущего предмета
         int[] categories;
 
-        // Идентификатор организации
         int organizationId;
 
+        // Фотографии предмета
         Image[] images;
         bool imagesEdited;
 
@@ -40,6 +42,7 @@ namespace SparesBaseAdministrator
             Text = "Добавление предмета";
             btnEdit.Text = "Добавить предмет";
             FillSellersComboBox();
+            FillStatuses();
         }
 
         // Конструктор для изменения предмета
@@ -53,9 +56,26 @@ namespace SparesBaseAdministrator
             Text = "Изменение предмета";
             btnEdit.Text = "Изменить предмет";
             FillSellersComboBox();
+            FillStatuses();
             GetItemData(item);
 
-            pbPhoto.Image = FtpManager.DownloadPreviewImage(item.Id);
+            //pbPhoto.Image = FtpManager.DownloadPreviewImage(item.Id);
+            if (FtpManager.PreviewExists(item.Id))
+            {
+                pbPhoto.SizeMode = PictureBoxSizeMode.CenterImage;
+                pbPhoto.Image = Properties.Resources.LoadGif;
+                WebClient webclient = new WebClient();
+                webclient.DownloadDataCompleted += Webclient_DownloadDataCompleted;
+                webclient.DownloadDataAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Photos/item_" + item.Id + "/preview.jpg"));
+
+            }
+        }
+
+        private void Webclient_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
+        {
+            MemoryStream mem = new MemoryStream(e.Result);
+            pbPhoto.SizeMode = PictureBoxSizeMode.Zoom;
+            pbPhoto.Image = Image.FromStream(mem);
         }
 
         #endregion Конструкторы
@@ -85,23 +105,79 @@ namespace SparesBaseAdministrator
                 tbPurchasePrice.Text != "" &&
                 tbRetailPrice.Text != "" &&
                 tbServicePrice.Text != "" &&
-                tbQuantity.Text != "")
+                tbQuantity.Text != "" &&
+                cbSeller.SelectedValue != null)
             {
+
                 // Идентификатор поставщика
                 int id = int.Parse(cbSeller.SelectedValue.ToString());
 
                 // Формирование запроса
                 string query = "";
                 if (operation == "INSERT")
-                    query = "INSERT INTO Items VALUES('', {0}, {1}, {2}, {3}, {4}, '{5}', {6}, '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', {14}, NOW(), NOW(), {15}, " + organizationId + ", {16}, 0)";
+                    query = "INSERT INTO Items VALUES(" +
+                        "'', " +
+                        "{0}, " +
+                        "{1}, " +
+                        "{2}, " +
+                        "{3}, " +
+                        "{4}, " +
+                        "'{5}', " +
+                        "{6}, " +
+                        "'{7}', " +
+                        "'{8}', " +
+                        "'{9}', " +
+                        "'{10}', " +
+                        "'{11}', " +
+                        "'{12}', " +
+                        "'{13}', " +
+                        "{14}, " +
+                        "NOW(), NOW(), " +
+                        "{15}, " +
+                        organizationId + ", " +
+                        "{16}, " +
+                        "0, " +
+                        "{17}," +
+                        "{18})";
                 else
-                    query = "UPDATE Items SET Main_Category_Id = {0}, Sub_Category_1_Id = {1}, Sub_Category_2_Id = {2}, Sub_Category_3_Id = {3}, Sub_Category_4_Id = {4}, Item_Name='{5}', Seller_Id={6}, Purchase_Price='{7}', Retail_Price='{8}', Wholesale_Price='{9}', Service_Price='{10}', FirmPrice='{11}', Storage='{12}', Note='{13}', Quantity={14}, Residue={15} , SearchAllowed={16}, ChangeDate = NOW() WHERE id = " + updateId;
-                 
+                    query = "UPDATE Items SET " +
+                        "Main_Category_Id = {0}, " +
+                        "Sub_Category_1_Id = {1}, " +
+                        "Sub_Category_2_Id = {2}, " +
+                        "Sub_Category_3_Id = {3}, " +
+                        "Sub_Category_4_Id = {4}, " +
+                        "Item_Name='{5}', " +
+                        "Seller_Id={6}, " +
+                        "Purchase_Price='{7}', " +
+                        "Retail_Price='{8}', " +
+                        "Wholesale_Price='{9}', " +
+                        "Service_Price='{10}', " +
+                        "FirmPrice='{11}', " +
+                        "Storage='{12}', " +
+                        "Note='{13}', " +
+                        "Quantity={14}, " +
+                        "Residue={15} , " +
+                        "SearchAllowed={16}, " +
+                        "ChangeDate = NOW(), " +
+                        "StatusId = {17} " +
+                        "WHERE id = " + updateId;
+
+                int inventNumber = 0;
+
                 // Подсчет остатка 
                 if (item != null)
+                {
                     CalcResidue();
+                    inventNumber = int.Parse(DatabaseWorker.SqlScalarQuery("SELECT Counter FROM ItemsCounters WHERE(OrganizationId = " + organizationId + ")").ToString());
+                }
                 else
+                {
                     residue = int.Parse(tbQuantity.Text);
+                    inventNumber = int.Parse(DatabaseWorker.SqlScalarQuery("SELECT Counter FROM ItemsCounters WHERE(OrganizationId = " + organizationId + ")").ToString()) + 1;
+                    DatabaseWorker.SqlQuery("UPDATE ItemsCounters SET Counter = " + inventNumber + " WHERE(OrganizationId = " + organizationId + ")");
+                }
+
+                 
 
                 // Вставка данных о предмете в стороку запроса
                 query = string.Format(query,
@@ -121,10 +197,14 @@ namespace SparesBaseAdministrator
                     tbNote.Text,
                     int.Parse(tbQuantity.Text),
                     residue,
-                    chbSearchAllowed.Checked ? "1" : "0");
+                    chbSearchAllowed.Checked ? "1" : "0",
+                    cbStatus.SelectedValue,
+                    inventNumber);
 
                 // Выполнение запроса
                 DatabaseWorker.SqlQuery(query);
+
+                // Добавление фотографий на FTP сервер если они были редактированы
                 if (updateId == 0)
                 {
                     if (imagesEdited)
@@ -134,7 +214,6 @@ namespace SparesBaseAdministrator
                     }
 
                     DatabaseWorker.InsertAction(1, int.Parse(DatabaseWorker.SqlScalarQuery("SELECT LAST_INSERT_ID() FROM Items").ToString()));
-
                 }
                 else
                 {
@@ -164,9 +243,12 @@ namespace SparesBaseAdministrator
             tbNote.Text = item.Note;
             tbQuantity.Text = item.Quantity.ToString();
             chbSearchAllowed.Checked = item.SearchAllowed;
+            cbStatus.Text = item.Status;
+            lInventNumber.Text = "Инвентарный номер: " + item.InventNumber.ToString();
             FillCategoriesInfo();
         }
 
+        // Заполнение строки категорий
         private void FillCategoriesInfo()
         {
             lMainCategory.Text = "Категории: ";
@@ -181,6 +263,7 @@ namespace SparesBaseAdministrator
                 lMainCategory.Text += " - " + item.SubCategory4.Name;
         }
 
+        // Смена категорий
         public void ChangeCategories(Category[] categories)
         {
             for (int i = 0; i < this.categories.Length; i++)
@@ -209,8 +292,7 @@ namespace SparesBaseAdministrator
             if (cbSeller.SelectedValue != null)
                 selectedId = int.Parse(cbSeller.SelectedValue.ToString());
 
-            string where = organizationId != 0 ? "WHERE(OrganizationId = " + organizationId + ")" : "WHERE(OrganizationId = " + item.Organization.Id + ")";
-            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT id, name FROM Sellers " + where);
+            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT id, name FROM Sellers WHERE(OrganizationId=" + organizationId + ") ORDER BY name");
             DataTable source = new DataTable();
             source.Columns.Add("id");
             source.Columns.Add("name");
@@ -241,13 +323,19 @@ namespace SparesBaseAdministrator
                 cbSeller.SelectedIndex = 0;
         }
 
+        private void FillStatuses()
+        {
+            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT id, Status FROM ItemStatus ORDER BY Status");
+            cbStatus.DataSource = dt;
+            cbStatus.DisplayMember = "Status";
+            cbStatus.ValueMember = "id";
+        }
+
         #endregion Заполнение элеметов данными
 
 
 
         #region Вспомогательные методы
-
-
 
         // Подсчет остатка
         private void CalcResidue()
@@ -259,7 +347,6 @@ namespace SparesBaseAdministrator
                 int defect = 0;
 
                 // Подсчет всех строк
-
                 // В заказ
                 DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT Quantity FROM Purchase WHERE(ItemId=" + item.Id + ")");
                 foreach (DataRow row in dt.Rows)
@@ -284,6 +371,7 @@ namespace SparesBaseAdministrator
 
         }
 
+        // Получение остатка из базы
         private void GetResidue()
         {
             DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT Residue FROM Items WHERE(id = " + item.Id + ")");
@@ -297,9 +385,10 @@ namespace SparesBaseAdministrator
         #region Разные события
 
         // Загрузка формы
-        private void Form1_Load(object sender, EventArgs e)
+        private void EditForm_Load(object sender, EventArgs e)
         {
-            GetResidue();
+            if (item != null)
+                GetResidue();
         }
 
         // Смена выделенного индекса поставщика
@@ -308,12 +397,15 @@ namespace SparesBaseAdministrator
             if (cbSeller.Text == "Добавить нового поставщика...")
             {
                 SellerEdit sf = new SellerEdit();
-                if (sf.ShowDialog() == DialogResult.OK)
-                    cbSeller.SelectedIndex = cbSeller.Items.Count - 2;
+                if (sf.ShowForm() == SellerState.Insert)
+                {
+                    FillSellersComboBox();
+                    cbSeller.SelectedValue = sf.sellerId;
+                }
             }
         }
 
-        // Открывание ComboBox'а с поставщиками
+        // Открытие ComboBox'а с поставщиками
         private void cbSeller_DropDown(object sender, EventArgs e)
         {
             FillSellersComboBox();
@@ -395,13 +487,13 @@ namespace SparesBaseAdministrator
                 MessageBox.Show("Остаток данного предмета равен нулю");
         }
 
-
-        #endregion Разные события
-
+        // Смена категорий
         private void btnChangeCategories_Click(object sender, EventArgs e)
         {
             ChangeCategoriesForm ccf = new ChangeCategoriesForm(this, item.Organization.Id);
             ccf.ShowDialog();
         }
+
+        #endregion Разные события
     }
 }

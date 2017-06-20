@@ -60,7 +60,10 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.cbStatus = new System.Windows.Forms.ComboBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.lInventNumber = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbPhoto)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -69,35 +72,35 @@
             // 
             // tbItemName
             // 
-            this.tbItemName.Location = new System.Drawing.Point(111, 59);
+            this.tbItemName.Location = new System.Drawing.Point(111, 71);
             this.tbItemName.Name = "tbItemName";
             this.tbItemName.Size = new System.Drawing.Size(169, 20);
             this.tbItemName.TabIndex = 0;
             // 
             // tbPurchasePrice
             // 
-            this.tbPurchasePrice.Location = new System.Drawing.Point(111, 85);
+            this.tbPurchasePrice.Location = new System.Drawing.Point(111, 97);
             this.tbPurchasePrice.Name = "tbPurchasePrice";
             this.tbPurchasePrice.Size = new System.Drawing.Size(169, 20);
             this.tbPurchasePrice.TabIndex = 2;
             // 
             // tbQuantity
             // 
-            this.tbQuantity.Location = new System.Drawing.Point(403, 88);
+            this.tbQuantity.Location = new System.Drawing.Point(403, 100);
             this.tbQuantity.Name = "tbQuantity";
             this.tbQuantity.Size = new System.Drawing.Size(248, 20);
             this.tbQuantity.TabIndex = 3;
             // 
             // tbRetailPrice
             // 
-            this.tbRetailPrice.Location = new System.Drawing.Point(111, 116);
+            this.tbRetailPrice.Location = new System.Drawing.Point(111, 128);
             this.tbRetailPrice.Name = "tbRetailPrice";
             this.tbRetailPrice.Size = new System.Drawing.Size(83, 20);
             this.tbRetailPrice.TabIndex = 4;
             // 
             // tbWholesalePrice
             // 
-            this.tbWholesalePrice.Location = new System.Drawing.Point(269, 116);
+            this.tbWholesalePrice.Location = new System.Drawing.Point(269, 128);
             this.tbWholesalePrice.Name = "tbWholesalePrice";
             this.tbWholesalePrice.Size = new System.Drawing.Size(83, 20);
             this.tbWholesalePrice.TabIndex = 5;
@@ -131,7 +134,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(22, 62);
+            this.label1.Location = new System.Drawing.Point(22, 74);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(83, 13);
             this.label1.TabIndex = 15;
@@ -140,7 +143,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(56, 88);
+            this.label2.Location = new System.Drawing.Point(56, 100);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(49, 13);
             this.label2.TabIndex = 16;
@@ -149,7 +152,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(55, 119);
+            this.label3.Location = new System.Drawing.Point(55, 131);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(50, 13);
             this.label3.TabIndex = 17;
@@ -176,7 +179,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(197, 119);
+            this.label6.Location = new System.Drawing.Point(197, 131);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(66, 13);
             this.label6.TabIndex = 20;
@@ -185,7 +188,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(331, 91);
+            this.label7.Location = new System.Drawing.Point(331, 103);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(66, 13);
             this.label7.TabIndex = 20;
@@ -194,7 +197,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(332, 62);
+            this.label8.Location = new System.Drawing.Point(332, 74);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(65, 13);
             this.label8.TabIndex = 21;
@@ -214,7 +217,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(359, 119);
+            this.label10.Location = new System.Drawing.Point(359, 131);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(52, 13);
             this.label10.TabIndex = 26;
@@ -222,7 +225,7 @@
             // 
             // tbServicePrice
             // 
-            this.tbServicePrice.Location = new System.Drawing.Point(417, 116);
+            this.tbServicePrice.Location = new System.Drawing.Point(417, 128);
             this.tbServicePrice.Name = "tbServicePrice";
             this.tbServicePrice.Size = new System.Drawing.Size(83, 20);
             this.tbServicePrice.TabIndex = 6;
@@ -250,7 +253,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(519, 114);
+            this.label11.Location = new System.Drawing.Point(519, 126);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(43, 26);
             this.label11.TabIndex = 32;
@@ -259,7 +262,7 @@
             // 
             // tbFirmPrice
             // 
-            this.tbFirmPrice.Location = new System.Drawing.Point(568, 116);
+            this.tbFirmPrice.Location = new System.Drawing.Point(568, 128);
             this.tbFirmPrice.Name = "tbFirmPrice";
             this.tbFirmPrice.Size = new System.Drawing.Size(83, 20);
             this.tbFirmPrice.TabIndex = 7;
@@ -296,9 +299,10 @@
             // 
             // cbSeller
             // 
-            this.cbSeller.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSeller.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cbSeller.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbSeller.FormattingEnabled = true;
-            this.cbSeller.Location = new System.Drawing.Point(404, 59);
+            this.cbSeller.Location = new System.Drawing.Point(404, 71);
             this.cbSeller.Name = "cbSeller";
             this.cbSeller.Size = new System.Drawing.Size(247, 21);
             this.cbSeller.TabIndex = 1;
@@ -326,6 +330,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.lInventNumber);
             this.groupBox1.Controls.Add(this.lMainCategory);
             this.groupBox1.Controls.Add(this.cbSeller);
             this.groupBox1.Controls.Add(this.label3);
@@ -361,6 +366,8 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label9);
+            this.groupBox3.Controls.Add(this.cbStatus);
             this.groupBox3.Controls.Add(this.tbStorage);
             this.groupBox3.Controls.Add(this.label4);
             this.groupBox3.Controls.Add(this.label5);
@@ -373,6 +380,24 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Дополнительная информация";
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(64, 164);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(41, 13);
+            this.label9.TabIndex = 34;
+            this.label9.Text = "Статус";
+            // 
+            // cbStatus
+            // 
+            this.cbStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbStatus.FormattingEnabled = true;
+            this.cbStatus.Location = new System.Drawing.Point(111, 161);
+            this.cbStatus.Name = "cbStatus";
+            this.cbStatus.Size = new System.Drawing.Size(121, 21);
+            this.cbStatus.TabIndex = 33;
+            // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.pbPhoto);
@@ -383,6 +408,15 @@
             this.groupBox4.TabIndex = 42;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Фото";
+            // 
+            // lInventNumber
+            // 
+            this.lInventNumber.AutoSize = true;
+            this.lInventNumber.Location = new System.Drawing.Point(22, 48);
+            this.lInventNumber.Name = "lInventNumber";
+            this.lInventNumber.Size = new System.Drawing.Size(111, 13);
+            this.lInventNumber.TabIndex = 36;
+            this.lInventNumber.Text = "Инвентарный номер";
             // 
             // EditForm
             // 
@@ -404,7 +438,7 @@
             this.Name = "EditForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "ДОБАВИТЬ / ИЗМЕНИТЬ ПРЕДМЕТ";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.EditForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pbPhoto)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -449,6 +483,9 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ComboBox cbStatus;
+        private System.Windows.Forms.Label lInventNumber;
     }
 }
 

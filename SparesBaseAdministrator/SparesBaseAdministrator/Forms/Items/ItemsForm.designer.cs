@@ -48,6 +48,10 @@
             this.tsmiDeletedItems = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView = new SparesBaseAdministrator.CategoriesTreeView();
+            this.cmsMainCategory = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmsAddMainCategory = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsExpandAllNodes = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsCollapseAllNodes = new System.Windows.Forms.ToolStripMenuItem();
             this.tbSearch = new System.Windows.Forms.TextBox();
             this.cbOrganizations = new System.Windows.Forms.ComboBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
@@ -74,21 +78,19 @@
             this.lpurchase = new System.Windows.Forms.Label();
             this.lseller = new System.Windows.Forms.Label();
             this.lname = new System.Windows.Forms.Label();
-            this.cmsMainCategory = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.cmsAddMainCategory = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmsExpandAllNodes = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmsCollapseAllNodes = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsCategory = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmsAddSubCategory = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsRenameCategory = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsDeleteCategory = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsExpandNode = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsCollapseNode = new System.Windows.Forms.ToolStripMenuItem();
+            this.cbSerial = new System.Windows.Forms.CheckBox();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.cmsMainCategory.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -97,7 +99,6 @@
             this.cmsItem.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.cmsMainCategory.SuspendLayout();
             this.cmsCategory.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -247,6 +248,7 @@
             this.splitContainer1.Panel1.Controls.Add(this.treeView);
             this.splitContainer1.Panel1.Controls.Add(this.tbSearch);
             this.splitContainer1.Panel1.Controls.Add(this.cbOrganizations);
+            this.splitContainer1.Panel1.Controls.Add(this.cbSerial);
             // 
             // splitContainer1.Panel2
             // 
@@ -260,19 +262,49 @@
             this.treeView.AllowDrop = true;
             this.treeView.ContextMenuStrip = this.cmsMainCategory;
             this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeView.Location = new System.Drawing.Point(0, 41);
+            this.treeView.Location = new System.Drawing.Point(0, 58);
             this.treeView.Name = "treeView";
-            this.treeView.Size = new System.Drawing.Size(170, 477);
+            this.treeView.Size = new System.Drawing.Size(170, 460);
             this.treeView.TabIndex = 2;
             this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
             this.treeView.DragDrop += new System.Windows.Forms.DragEventHandler(this.treeView_DragDrop);
             this.treeView.DragEnter += new System.Windows.Forms.DragEventHandler(this.treeView_DragEnter);
             // 
+            // cmsMainCategory
+            // 
+            this.cmsMainCategory.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmsAddMainCategory,
+            this.cmsExpandAllNodes,
+            this.cmsCollapseAllNodes});
+            this.cmsMainCategory.Name = "cmsCategory";
+            this.cmsMainCategory.Size = new System.Drawing.Size(239, 70);
+            // 
+            // cmsAddMainCategory
+            // 
+            this.cmsAddMainCategory.Name = "cmsAddMainCategory";
+            this.cmsAddMainCategory.Size = new System.Drawing.Size(238, 22);
+            this.cmsAddMainCategory.Text = "Добавить главную категорию";
+            this.cmsAddMainCategory.Click += new System.EventHandler(this.AddMainCategory_Click);
+            // 
+            // cmsExpandAllNodes
+            // 
+            this.cmsExpandAllNodes.Name = "cmsExpandAllNodes";
+            this.cmsExpandAllNodes.Size = new System.Drawing.Size(238, 22);
+            this.cmsExpandAllNodes.Text = "Раскрыть все узлы";
+            this.cmsExpandAllNodes.Click += new System.EventHandler(this.ExpandAllNodes_Click);
+            // 
+            // cmsCollapseAllNodes
+            // 
+            this.cmsCollapseAllNodes.Name = "cmsCollapseAllNodes";
+            this.cmsCollapseAllNodes.Size = new System.Drawing.Size(238, 22);
+            this.cmsCollapseAllNodes.Text = "Скрыть все узлы";
+            this.cmsCollapseAllNodes.Click += new System.EventHandler(this.CollapseAllNodes_Click);
+            // 
             // tbSearch
             // 
             this.tbSearch.Dock = System.Windows.Forms.DockStyle.Top;
             this.tbSearch.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.tbSearch.Location = new System.Drawing.Point(0, 21);
+            this.tbSearch.Location = new System.Drawing.Point(0, 38);
             this.tbSearch.Name = "tbSearch";
             this.tbSearch.Size = new System.Drawing.Size(170, 20);
             this.tbSearch.TabIndex = 2;
@@ -285,7 +317,7 @@
             this.cbOrganizations.Dock = System.Windows.Forms.DockStyle.Top;
             this.cbOrganizations.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbOrganizations.FormattingEnabled = true;
-            this.cbOrganizations.Location = new System.Drawing.Point(0, 0);
+            this.cbOrganizations.Location = new System.Drawing.Point(0, 17);
             this.cbOrganizations.Name = "cbOrganizations";
             this.cbOrganizations.Size = new System.Drawing.Size(170, 21);
             this.cbOrganizations.TabIndex = 3;
@@ -544,36 +576,6 @@
             this.lname.TabIndex = 5;
             this.lname.Text = "Название";
             // 
-            // cmsMainCategory
-            // 
-            this.cmsMainCategory.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cmsAddMainCategory,
-            this.cmsExpandAllNodes,
-            this.cmsCollapseAllNodes});
-            this.cmsMainCategory.Name = "cmsCategory";
-            this.cmsMainCategory.Size = new System.Drawing.Size(239, 70);
-            // 
-            // cmsAddMainCategory
-            // 
-            this.cmsAddMainCategory.Name = "cmsAddMainCategory";
-            this.cmsAddMainCategory.Size = new System.Drawing.Size(238, 22);
-            this.cmsAddMainCategory.Text = "Добавить главную категорию";
-            this.cmsAddMainCategory.Click += new System.EventHandler(this.AddMainCategory_Click);
-            // 
-            // cmsExpandAllNodes
-            // 
-            this.cmsExpandAllNodes.Name = "cmsExpandAllNodes";
-            this.cmsExpandAllNodes.Size = new System.Drawing.Size(238, 22);
-            this.cmsExpandAllNodes.Text = "Раскрыть все узлы";
-            this.cmsExpandAllNodes.Click += new System.EventHandler(this.ExpandAllNodes_Click);
-            // 
-            // cmsCollapseAllNodes
-            // 
-            this.cmsCollapseAllNodes.Name = "cmsCollapseAllNodes";
-            this.cmsCollapseAllNodes.Size = new System.Drawing.Size(238, 22);
-            this.cmsCollapseAllNodes.Text = "Скрыть все узлы";
-            this.cmsCollapseAllNodes.Click += new System.EventHandler(this.CollapseAllNodes_Click);
-            // 
             // cmsCategory
             // 
             this.cmsCategory.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -620,6 +622,17 @@
             this.cmsCollapseNode.Text = "Скрыть узел";
             this.cmsCollapseNode.Click += new System.EventHandler(this.cmsCollapseNode_Click);
             // 
+            // cbSerial
+            // 
+            this.cbSerial.AutoSize = true;
+            this.cbSerial.Dock = System.Windows.Forms.DockStyle.Top;
+            this.cbSerial.Location = new System.Drawing.Point(0, 0);
+            this.cbSerial.Name = "cbSerial";
+            this.cbSerial.Size = new System.Drawing.Size(170, 17);
+            this.cbSerial.TabIndex = 4;
+            this.cbSerial.Text = "Серийный номер";
+            this.cbSerial.UseVisualStyleBackColor = true;
+            // 
             // ItemsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -639,6 +652,7 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.cmsMainCategory.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
@@ -648,7 +662,6 @@
             this.flowLayoutPanel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.cmsMainCategory.ResumeLayout(false);
             this.cmsCategory.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -711,5 +724,6 @@
         private System.Windows.Forms.Label lMainCategory;
         private CategoriesTreeView treeView;
         private ItemsDataGridView dgv;
+        private System.Windows.Forms.CheckBox cbSerial;
     }
 }
