@@ -1,11 +1,19 @@
 ﻿using System;
-using System.Data;
 using System.Windows.Forms;
 
 namespace SparesBaseAdministrator
 {
+    public enum SellerState
+    {
+        Insert,
+        Update
+    }
+
     public partial class SellerEdit : Form
     {
+        SellerState state;
+        public int sellerId;
+    
         // Поставщик
         Seller seller;
 
@@ -16,7 +24,7 @@ namespace SparesBaseAdministrator
         {
             InitializeComponent();
             Text = "Новый поставщик";
-            FillOrganizations();
+            state = SellerState.Insert;
         }
 
         // Конструктор для редактирования поставщика
@@ -24,9 +32,11 @@ namespace SparesBaseAdministrator
         {
             InitializeComponent();
             this.seller = seller;
-            FillOrganizations();
+            
             FillSellerData(seller);
             Text = "Редактирование поставщика";
+
+            state = SellerState.Update;
         }
 
         #endregion Конструкторы
@@ -34,16 +44,6 @@ namespace SparesBaseAdministrator
 
 
         #region Заполнение данных
-
-        // Заполнение ComboBox'а с организациями
-        private void FillOrganizations()
-        {
-            DataTable organizations = DatabaseWorker.SqlSelectQuery("SELECT id, Name FROM Organizations");
-
-            cbOrganizations.ValueMember = "id";
-            cbOrganizations.DisplayMember = "Name";
-            cbOrganizations.DataSource = organizations;
-        }
 
         // Заполнение данных о поставщике
         private void FillSellerData(Seller seller)
@@ -54,7 +54,6 @@ namespace SparesBaseAdministrator
             tbFirstName.Text = seller.ContactFirstName;
             tbLastName.Text = seller.ContactLastName;
             tbSecondName.Text = seller.ContactSecondName;
-            cbOrganizations.SelectedValue = seller.OrganizationId;
         }
 
         #endregion Заполнение данных
@@ -80,6 +79,13 @@ namespace SparesBaseAdministrator
                 MessageBox.Show("Заполнены не все поля");
         }
 
+        // Показ формы
+        public SellerState ShowForm()
+        {
+            ShowDialog();            
+            return state;
+        }
+
         #endregion Методы
 
 
@@ -90,11 +96,15 @@ namespace SparesBaseAdministrator
         private void btnOk_Click(object sender, EventArgs e)
         {
             if (seller == null)
-                SellerOperation("INSERT INTO Sellers VALUES(NULL, '" + tbName.Text + "', '" + tbSite.Text + "', '" + tbTelephone.Text + "', '" + tbFirstName.Text + "', '" + tbLastName.Text + "', '" + tbSecondName.Text + "', " + cbOrganizations.SelectedValue + ")");
+            {
+                SellerOperation("INSERT INTO Sellers VALUES(NULL, '" + tbName.Text + "', '" + tbSite.Text + "', '" + tbTelephone.Text + "', '" + tbFirstName.Text + "', '" + tbLastName.Text + "', '" + tbSecondName.Text + "', " + seller.OrganizationId + ")");
+                sellerId = int.Parse(DatabaseWorker.SqlScalarQuery("SELECT id FROM Sellers WHERE(id=LAST_INSERT_ID())").ToString());
+            }
             else
-                SellerOperation("UPDATE Sellers SET name='" + tbName.Text + "', site='" + tbSite.Text + "', telephone='" + tbTelephone.Text + "', contactFirstName='" + tbFirstName.Text + "', contactLastName='" + tbLastName.Text + "', contactSecondName='" + tbSecondName.Text + "', OrganizationId = " + cbOrganizations.SelectedValue + " WHERE(id = " + seller.Id + ")");
-
-            DialogResult = DialogResult.OK;
+            {
+                SellerOperation("UPDATE Sellers SET name='" + tbName.Text + "', site='" + tbSite.Text + "', telephone='" + tbTelephone.Text + "', contactFirstName='" + tbFirstName.Text + "', contactLastName='" + tbLastName.Text + "', contactSecondName='" + tbSecondName.Text + "', OrganizationId = " + seller.OrganizationId + " WHERE(id = " + seller.Id + ")");
+                sellerId = seller.Id;
+            }
         }
 
         // Клик на кнопку "Отмена"

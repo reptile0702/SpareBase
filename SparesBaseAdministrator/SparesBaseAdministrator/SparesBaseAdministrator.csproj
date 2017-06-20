@@ -64,6 +64,12 @@
     <Compile Include="Database Classes\Category.cs" />
     <Compile Include="Database Classes\Item.cs" />
     <Compile Include="Database Classes\Seller.cs" />
+    <Compile Include="Forms\Items\EditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Items\EditForm.designer.cs">
+      <DependentUpon>EditForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Action Logs\ActionEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -88,23 +94,11 @@
     <Compile Include="Forms\Items\EditCategory.Designer.cs">
       <DependentUpon>EditCategory.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Items\PhotoEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Items\PhotoEditor.designer.cs">
-      <DependentUpon>PhotoEditor.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Items\Write-off\DefectForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Items\Write-off\DefectForm.designer.cs">
       <DependentUpon>DefectForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Items\EditForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Items\EditForm.designer.cs">
-      <DependentUpon>EditForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Action Logs\ActionsEditorForm.cs">
       <SubType>Form</SubType>
@@ -190,7 +184,19 @@
     <Compile Include="Custom Components\ItemsDataGridView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Forms\Sellers\SellerEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Sellers\SellerEdit.Designer.cs">
+      <DependentUpon>SellerEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="FtpManager.cs" />
+    <Compile Include="Forms\Items\PhotoEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Items\PhotoEditor.designer.cs">
+      <DependentUpon>PhotoEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="ProgramUpdate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -199,12 +205,6 @@
     </Compile>
     <Compile Include="Forms\Organizations\Accounts\AccountEditForm.designer.cs">
       <DependentUpon>AccountEditForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Sellers\SellerEdit.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Sellers\SellerEdit.designer.cs">
-      <DependentUpon>SellerEdit.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Sellers\SellerForm.cs">
       <SubType>Form</SubType>
@@ -225,6 +225,9 @@
     <Compile Include="UpdateProgramForm.designer.cs">
       <DependentUpon>UpdateProgramForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Forms\Items\EditForm.resx">
+      <DependentUpon>EditForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Action Logs\ActionEditor.resx">
       <DependentUpon>ActionEditor.cs</DependentUpon>
     </EmbeddedResource>
@@ -237,14 +240,8 @@
     <EmbeddedResource Include="Forms\Items\EditCategory.resx">
       <DependentUpon>EditCategory.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Items\PhotoEditor.resx">
-      <DependentUpon>PhotoEditor.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Items\Write-off\DefectForm.resx">
       <DependentUpon>DefectForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Items\EditForm.resx">
-      <DependentUpon>EditForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Action Logs\ActionsEditorForm.resx">
       <DependentUpon>ActionsEditorForm.cs</DependentUpon>
@@ -285,6 +282,12 @@
     <EmbeddedResource Include="Forms\Items\ItemsForm.resx">
       <DependentUpon>ItemsForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Items\PhotoEditor.resx">
+      <DependentUpon>PhotoEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Sellers\SellerEdit.resx">
+      <DependentUpon>SellerEdit.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -293,12 +296,10 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="Forms\Organizations\Accounts\AccountEditForm.resx">
       <DependentUpon>AccountEditForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Sellers\SellerEdit.resx">
-      <DependentUpon>SellerEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Sellers\SellerForm.resx">
       <DependentUpon>SellerForm.cs</DependentUpon>
@@ -323,6 +324,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\LoadGif.gif" />
     <Content Include="Spare Parts 72px.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

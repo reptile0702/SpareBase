@@ -41,8 +41,6 @@
             this.tbTelephone = new System.Windows.Forms.MaskedTextBox();
             this.tbSite = new System.Windows.Forms.TextBox();
             this.tbName = new System.Windows.Forms.TextBox();
-            this.cbOrganizations = new System.Windows.Forms.ComboBox();
-            this.label8 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -52,7 +50,7 @@
             // 
             // btnOk
             // 
-            this.btnOk.Location = new System.Drawing.Point(94, 368);
+            this.btnOk.Location = new System.Drawing.Point(94, 340);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(87, 23);
             this.btnOk.TabIndex = 35;
@@ -157,37 +155,17 @@
             this.tbName.Size = new System.Drawing.Size(241, 20);
             this.tbName.TabIndex = 20;
             // 
-            // cbOrganizations
-            // 
-            this.cbOrganizations.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbOrganizations.FormattingEnabled = true;
-            this.cbOrganizations.Location = new System.Drawing.Point(9, 156);
-            this.cbOrganizations.Name = "cbOrganizations";
-            this.cbOrganizations.Size = new System.Drawing.Size(241, 21);
-            this.cbOrganizations.TabIndex = 36;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 140);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(74, 13);
-            this.label8.TabIndex = 37;
-            this.label8.Text = "Организация";
-            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.tbName);
-            this.groupBox2.Controls.Add(this.label8);
-            this.groupBox2.Controls.Add(this.cbOrganizations);
             this.groupBox2.Controls.Add(this.tbSite);
             this.groupBox2.Controls.Add(this.tbTelephone);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Location = new System.Drawing.Point(12, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(262, 190);
+            this.groupBox2.Size = new System.Drawing.Size(262, 152);
             this.groupBox2.TabIndex = 39;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Информация";
@@ -200,7 +178,7 @@
             this.groupBox1.Controls.Add(this.tbSecondName);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Location = new System.Drawing.Point(12, 208);
+            this.groupBox1.Location = new System.Drawing.Point(12, 180);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(262, 154);
             this.groupBox1.TabIndex = 38;
@@ -209,7 +187,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(187, 368);
+            this.btnCancel.Location = new System.Drawing.Point(187, 340);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(87, 23);
             this.btnCancel.TabIndex = 40;
@@ -222,7 +200,7 @@
             this.AcceptButton = this.btnOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(286, 401);
+            this.ClientSize = new System.Drawing.Size(286, 372);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -255,8 +233,6 @@
         private System.Windows.Forms.MaskedTextBox tbTelephone;
         private System.Windows.Forms.TextBox tbSite;
         private System.Windows.Forms.TextBox tbName;
-        private System.Windows.Forms.ComboBox cbOrganizations;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btnCancel;

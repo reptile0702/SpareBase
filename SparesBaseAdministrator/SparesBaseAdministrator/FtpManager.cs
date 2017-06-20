@@ -4,9 +4,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 using System.Drawing.Drawing2D;
-using System.Net;
-using System;
-using System.Xml;
 
 namespace SparesBaseAdministrator
 {
@@ -18,10 +15,10 @@ namespace SparesBaseAdministrator
         static string server = "status.nvhost.ru";
         static string username = "sh61018001";
         static string password = "lfybkrf";
+        static string photosPath = "SparesBase/Photos/";
         static string remotePath = "SparesBase/";
-        static string photosPath = "SparesBase/Photos";
-        static string bannersPath = "SparesBase/Banners/";
         static FtpClient client;
+        static string photosString = "Photos/";
 
         // Коннект к серверу
         private static void Connect()
@@ -33,7 +30,7 @@ namespace SparesBaseAdministrator
         }
 
 
-        #region Фото
+        #region Методы
 
         // Загрузка фото на сервер
         public static void UploadImages(Image[] images, int id)
@@ -49,7 +46,7 @@ namespace SparesBaseAdministrator
             if (imagesCounter != 0)
             {
                 // Поиск папки с предметом, если ее нет, то создать
-                string[] folders = GetFilesFromServer("");
+                string[] folders = GetFilesFromServer(photosString);
                 string createFolder = "";
                 for (int i = 0; i < folders.Length; i++)
                     if (folders[i] == "item_" + id)
@@ -60,7 +57,7 @@ namespace SparesBaseAdministrator
                 else
                 {
                     // Удаление всех фоток до загрузки новых
-                    string[] photos = GetFilesFromServer("item_" + id);
+                    string[] photos = GetFilesFromServer(photosString + "item_" + id);
                     for (int i = 0; i < photos.Length; i++)
                         client.DeleteFile(timeout, photosPath + "item_" + id + "/" + photos[i]);
                 }
@@ -108,7 +105,7 @@ namespace SparesBaseAdministrator
             else
             {
                 // Удаление всех фоток из папки
-                string[] photos = GetFilesFromServer("item_" + id);
+                string[] photos = GetFilesFromServer(photosString + "item_" + id);
                 for (int i = 0; i < photos.Length; i++)
                     client.DeleteFile(timeout, photosPath + "item_" + id + "/" + photos[i]);
 
@@ -118,13 +115,13 @@ namespace SparesBaseAdministrator
         }
 
         // Загрузка фото с сервера
-        public static Image[] DownloadImages(int id)
+        public static string[] DownloadImages(int id)
         {
             string folderName = "";
-            Image[] images = new Image[5];
+            List<string> images = new List<string>();
 
             // Проверка на существование папки предмета.
-            string[] names = GetFilesFromServer("");
+            string[] names = GetFilesFromServer(photosString);
             for (int i = 0; i < names.Length; i++)
                 if (names[i] == "item_" + id)
                     folderName = names[i];
@@ -133,25 +130,28 @@ namespace SparesBaseAdministrator
             {
                 Connect();
 
-                string[] imgName = GetFilesFromServer(folderName);
+                string[] imgName = GetFilesFromServer(photosString + folderName);
 
                 for (int i = 0; i < imgName.Length; i++)
                 {
                     if (imgName[i] != "preview.jpg")
                     {
-                        byte[] imageBytes = client.GetFile(timeout, photosPath + folderName + "/" + imgName[i]);
-                        MemoryStream memoryStream = new MemoryStream(imageBytes);
-                        Image img = Image.FromStream(memoryStream);
-                        string imageIndex = imgName[i][0].ToString();
-                        img.Tag = photosPath + folderName + "/" + imgName[i];
-                        images[int.Parse(imageIndex) - 1] = img;
+                        images.Add(imgName[i]);
+
+
+                        //byte[] imageBytes = client.GetFile(timeout, photosPath + folderName + "/" + imgName[i]);
+                        //MemoryStream memoryStream = new MemoryStream(imageBytes);
+                        //Image img = Image.FromStream(memoryStream);
+                        //string imageIndex = imgName[i][0].ToString();
+                        //img.Tag = photosPath + folderName + "/" + imgName[i];
+                        //images[int.Parse(imageIndex) - 1] = img;
                     }
                 }
                 client.Disconnect(timeout);
-                return images;
+                return images.ToArray();
             }
             else
-                return images;
+                return images.ToArray();
         }
 
         // Загрузка превью-фото
@@ -160,7 +160,7 @@ namespace SparesBaseAdministrator
             Connect();
 
             // поиск папки предмета
-            string[] folders = GetFilesFromServer("");
+            string[] folders = GetFilesFromServer(photosString);
             string folder = "";
             for (int i = 0; i < folders.Length; i++)
                 if (folders[i] == "item_" + id)
@@ -171,7 +171,7 @@ namespace SparesBaseAdministrator
 
             if (folder != "")
             {
-                string[] files = GetFilesFromServer(folder);
+                string[] files = GetFilesFromServer(photosString + folder);
                 string file = "";
                 for (int i = 0; i < files.Length; i++)
                 {
@@ -193,13 +193,23 @@ namespace SparesBaseAdministrator
             return null;
         }
 
+        public static bool PreviewExists(int itemid)
+        {
+            string[] folders = GetFilesFromServer("Photos/");
+            foreach (string folder in folders)
+                if (folder == "item_" + itemid)
+                    return true;
+
+            return false;
+        }
+
         // Удаление картинок предмета и его папки
         public static void DeleteItemImages(int id)
         {
             Connect();
 
             // Поиск папки предмета 
-            string[] folders = GetFilesFromServer("");
+            string[] folders = GetFilesFromServer(photosString);
             string folder = "";
             for (int i = 0; i < folders.Length; i++)
                 if (folders[i] == "item_" + id)
@@ -211,7 +221,7 @@ namespace SparesBaseAdministrator
             if (folder != "")
             {
                 // Удаление всех фото 
-                string[] files = GetFilesFromServer(folder);
+                string[] files = GetFilesFromServer(photosString + folder);
                 for (int i = 0; i < files.Length; i++)
                     if (files[i] != "." && files[i] != "..")
                         client.DeleteFile(timeout, photosPath + "item_" + id + "/" + files[i]);
@@ -221,87 +231,13 @@ namespace SparesBaseAdministrator
             }
         }
 
-        #endregion Фото
-
-        #region Баннеры
-
-        public static void UploadBanners(Banner[] banners)
-        {
-            XmlDocument bannersDoc = new XmlDocument();
-            bannersDoc.Load("Banners.xml");
-            XmlElement element = bannersDoc.DocumentElement;
-
-            // Удаление всех нодов баннера для добавления новых
-            element.RemoveAll();
-
-            foreach (Banner banner in banners)
-            {
-                XmlNode bannerNode = bannersDoc.CreateElement("Banner");
-
-                // Имя фото
-                XmlNode bannerName = bannersDoc.CreateElement("PhotoName");
-                XmlAttribute nameAttr = bannersDoc.CreateAttribute("value");
-                nameAttr.Value = banner.PhotoName;
-                bannerName.Attributes.Append(nameAttr);
-
-                // Ссылка
-                XmlNode bannerLink = bannersDoc.CreateElement("Link");
-                XmlAttribute LinkAttr = bannersDoc.CreateAttribute("value");
-                LinkAttr.Value = banner.Link;
-                bannerLink.Attributes.Append(LinkAttr);
-
-                bannerNode.AppendChild(bannerName);
-                bannerNode.AppendChild(bannerLink);
-
-                element.AppendChild(bannerNode);
-            }
-
-            MemoryStream xmlFileStream = new MemoryStream();
-            bannersDoc.Save(xmlFileStream);
-
-            Connect();
-
-            // Удаление всех файлов из папки баннеров
-            string[] files = GetFilesFromServer("Banners/");
-            foreach (string file in files)
-                client.DeleteFile(timeout, bannersPath + file);
-
-            // Заливка файла XML на сервер
-            client.PutFile(timeout, bannersPath + "Banners.xml", xmlFileStream.GetBuffer());
-
-            // Заливка всех баннеров на сервер
-            foreach (Banner banner in banners)
-            {
-                MemoryStream imageStream = new MemoryStream();
-                banner.Image.Save(imageStream, System.Drawing.Imaging.ImageFormat.Jpeg);
-                client.PutFile(timeout, bannersPath + banner.PhotoName, imageStream.GetBuffer());
-            }
-            client.Disconnect(timeout);
-        }
-
-        public static void DownloadBannersFile()
-        {
-            WebClient wc = new WebClient();
-            wc.DownloadFile(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Banners/Banners.xml"), "Banners.xml");
-            wc.Dispose();
-        }
-
-        public static Image DownloadBannerImage(string imageName)
-        {
-            WebClient pics = new WebClient();
-            byte[] imageBytes = pics.DownloadData(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Banners/" + imageName));
-            pics.Dispose();
-            MemoryStream ms = new MemoryStream(imageBytes);
-            return Image.FromStream(ms);
-        }
-
-        #endregion Баннеры
+        #endregion Методы
 
 
         #region Вспомогательные методы
 
         // Получение файлов с сервера по определенному пути
-        private static string[] GetFilesFromServer(string path)
+        public static string[] GetFilesFromServer(string path)
         {
             FtpClient client = new FtpClient();
             client.PassiveMode = true;
