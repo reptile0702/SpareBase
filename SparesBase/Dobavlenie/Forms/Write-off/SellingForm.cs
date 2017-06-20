@@ -57,6 +57,7 @@ namespace SparesBase
         private void btnOK_Click(object sender, EventArgs e)
         {
             AddSell();
+            DialogResult = DialogResult.OK;
             Close();
         }
 

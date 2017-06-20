@@ -83,6 +83,7 @@ namespace SparesBase
 #if DEBUG
                 dgv.Rows.Add(
                     item.Id,
+                    item.InventNumber,
                     item.Name,
                     item.Seller.Name,
                     item.PurchasePrice,
@@ -100,8 +101,9 @@ namespace SparesBase
                 
 
 #else
-                dgv.Rows.Add(                    
-                    item.Name,
+                dgv.Rows.Add(
+                    item.InventNumber,
+                    item.Name,                    
                     item.Seller.Name,
                     item.PurchasePrice,
                     item.RetailPrice,
@@ -161,6 +163,7 @@ namespace SparesBase
 #if DEBUG
             dgv.Columns.Add("id", "ID");
 #endif
+            dgv.Columns.Add("inventNumber", "Номер");
             dgv.Columns.Add("name", "Наименование");
             dgv.Columns.Add("seller", "Поставщик");
             dgv.Columns.Add("purchasePrice", "Закупка");
@@ -177,34 +180,35 @@ namespace SparesBase
 
 #if DEBUG
             dgv.Columns[0].Width = 50;
-            dgv.Columns[1].Width = 150;
-            dgv.Columns[2].Width = 120;
-            dgv.Columns[3].Width = 90;
+            dgv.Columns[1].Width = 50;
+            dgv.Columns[2].Width = 150;
+            dgv.Columns[3].Width = 120;
             dgv.Columns[4].Width = 90;
             dgv.Columns[5].Width = 90;
             dgv.Columns[6].Width = 90;
             dgv.Columns[7].Width = 90;
             dgv.Columns[8].Width = 90;
             dgv.Columns[9].Width = 90;
-            dgv.Columns[10].Width = 120;
+            dgv.Columns[10].Width = 90;
             dgv.Columns[11].Width = 120;
-            dgv.Columns[12].Width = 70;
-            dgv.Columns[13].Width = 90;
+            dgv.Columns[12].Width = 120;
+            dgv.Columns[13].Width = 70;
+            dgv.Columns[14].Width = 90;
 #else
-
-            dgv.Columns[0].Width = 150;
-            dgv.Columns[1].Width = 120;
-            dgv.Columns[2].Width = 50;
+            dgv.Columns[0].Width = 50;
+            dgv.Columns[1].Width = 150;
+            dgv.Columns[2].Width = 120;
             dgv.Columns[3].Width = 50;
             dgv.Columns[4].Width = 50;
             dgv.Columns[5].Width = 50;
             dgv.Columns[6].Width = 50;
-            dgv.Columns[7].Width = 90;
-            dgv.Columns[8].Width = 50;
-            dgv.Columns[9].Width = 120;
+            dgv.Columns[7].Width = 50;
+            dgv.Columns[8].Width = 90;
+            dgv.Columns[9].Width = 50;
             dgv.Columns[10].Width = 120;
-            dgv.Columns[11].Width = 70;
-            dgv.Columns[12].Width = 90;
+            dgv.Columns[11].Width = 120;
+            dgv.Columns[12].Width = 70;
+            dgv.Columns[13].Width = 90;
 #endif
         }
 
@@ -274,6 +278,38 @@ namespace SparesBase
             }
 
             return categories;
+        }
+
+        private void CalcResidue(int quantity, int itemId)
+        {
+            
+                int purchase = 0;
+                int selling = 0;
+                int defect = 0;
+
+                // Подсчет всех строк
+                // В заказ
+                DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT Quantity FROM Purchase WHERE(ItemId=" + itemId + ")");
+                foreach (DataRow row in dt.Rows)
+                    purchase += row.ItemArray[0].ToString() != "" ? int.Parse(row.ItemArray[0].ToString()) : 0;
+
+                // Продажа
+                dt = DatabaseWorker.SqlSelectQuery("SELECT Quantity FROM Selling WHERE(ItemId=" + itemId + ")");
+                foreach (DataRow row in dt.Rows)
+                    selling += row.ItemArray[0].ToString() != "" ? int.Parse(row.ItemArray[0].ToString()) : 0;
+
+                // Брак
+                dt = DatabaseWorker.SqlSelectQuery("SELECT QuantityOfDefect FROM Defect WHERE(ItemId=" + itemId + ")");
+                foreach (DataRow row in dt.Rows)
+                    defect += row.ItemArray[0].ToString() != "" ? int.Parse(row.ItemArray[0].ToString()) : 0;
+
+                // Остаток                            
+               int residue = quantity - (purchase + selling + defect);
+
+                // Занесение остатка в базу
+                DatabaseWorker.SqlQuery("UPDATE Items SET Residue = " + residue + " WHERE(id = " + itemId + ")");
+           
+
         }
 
         #endregion Вспомогательные методы
@@ -731,21 +767,35 @@ namespace SparesBase
         {
             Item item = SelectedItem;
             SellingForm sel = new SellingForm(item.Quantity, int.Parse(item.RetailPrice), int.Parse(item.WholesalePrice), int.Parse(item.ServicePrice), item.Id);
-            sel.ShowDialog();
+            if (sel.ShowDialog() == DialogResult.OK)
+            {
+                CalcResidue(item.Quantity, item.Id);
+                FillItemsByCategory();
+            }
+           
+           
         }
 
         private void cmsDefect_Click(object sender, EventArgs e)
         {
             Item item = SelectedItem;
-            DefectForm defect = new DefectForm(item.Quantity, item.Id);
-            defect.ShowDialog();
+            DefectForm defect = new DefectForm(item.Quantity, item.Id);            
+            if (defect.ShowDialog() == DialogResult.OK)
+            {
+                CalcResidue(item.Quantity, item.Id);
+                FillItemsByCategory();
+            }
         }
 
         private void cmsInOrder_Click(object sender, EventArgs e)
         {
             Item item = SelectedItem;
-            InOrder inorder = new InOrder(item.Id, item.Quantity, int.Parse(item.FirmPrice));
-            inorder.ShowDialog();
+            InOrder inorder = new InOrder(item.Id, item.Quantity, int.Parse(item.FirmPrice));            
+            if (inorder.ShowDialog() == DialogResult.OK)
+            {
+                CalcResidue(item.Quantity, item.Id);
+                FillItemsByCategory();
+            }
         }
 
         private void cmsReserve_Click(object sender, EventArgs e)
