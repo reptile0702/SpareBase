@@ -30,7 +30,7 @@ namespace UpdateToFtpServer
             }
         }
 
-        private void UploadNewVersion()
+        private void UploadNewVersion(string programType)
         {
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "Файлы программ *.exe | *.exe";
@@ -41,14 +41,15 @@ namespace UpdateToFtpServer
                     DateTime.Now.ToShortDateString(),
                     "",
                     true),
-                    ofd.FileName);
+                    ofd.FileName,
+                    programType);
                 ve.ShowDialog();
             }
         }
 
-        private void EditVersion()
+        private void EditVersion(string programType)
         {
-            VersionEditor ve = new VersionEditor((ProgramVersion)tvSparesBase.SelectedNode.Tag, "");
+            VersionEditor ve = new VersionEditor((ProgramVersion)tvSparesBase.SelectedNode.Tag, "", programType);
             ve.ShowDialog();
         }
 
@@ -59,12 +60,23 @@ namespace UpdateToFtpServer
 
         private void tvSparesBase_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            EditVersion();
+            EditVersion("Client");
         }
 
         private void btnSparesBaseAddVersion_Click(object sender, EventArgs e)
         {
-            UploadNewVersion();
+            UploadNewVersion("Client");
+        }
+
+        private void tvAdmin_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            VersionEditor ve = new VersionEditor((ProgramVersion)tvAdmin.SelectedNode.Tag, "", "Admin");
+            ve.ShowDialog();
+        }
+
+        private void btnAdminAddVersion_Click(object sender, EventArgs e)
+        {
+            UploadNewVersion("Admin");
         }
     }
 }

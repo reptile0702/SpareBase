@@ -109,7 +109,12 @@ namespace SparesBaseAdministrator
         // ОК
         private void btnOK_Click(object sender, EventArgs e)
         {
-            UploadBannersToServer();
+            try
+            {
+                UploadBannersToServer();
+                Close();
+            }
+            catch (Exception) {}
         }
 
         // Отмена

@@ -20,6 +20,7 @@ namespace SparesBase.Forms
             {
                 tbLogIn.Text = lastUserKey.GetValue("Login").ToString();
                 lastUserKey.Close();
+                tbPassword.Select();
             }
            
         }

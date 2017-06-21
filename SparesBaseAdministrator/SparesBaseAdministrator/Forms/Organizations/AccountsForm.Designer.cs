@@ -57,10 +57,15 @@
             this.cmsRegisterOrganization = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsEditOrganization = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsDeleteOrganization = new System.Windows.Forms.ToolStripMenuItem();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAccounts)).BeginInit();
             this.cmsAccount.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.cmsOrganization.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // dgvAccounts
@@ -81,12 +86,12 @@
             this.admin});
             this.dgvAccounts.ContextMenuStrip = this.cmsAccount;
             this.dgvAccounts.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvAccounts.Location = new System.Drawing.Point(121, 24);
+            this.dgvAccounts.Location = new System.Drawing.Point(0, 0);
             this.dgvAccounts.MultiSelect = false;
             this.dgvAccounts.Name = "dgvAccounts";
             this.dgvAccounts.ReadOnly = true;
             this.dgvAccounts.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvAccounts.Size = new System.Drawing.Size(741, 396);
+            this.dgvAccounts.Size = new System.Drawing.Size(516, 527);
             this.dgvAccounts.TabIndex = 0;
             this.dgvAccounts.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvAccounts_CellDoubleClick);
             // 
@@ -177,7 +182,7 @@
             this.tsmiAccount});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(862, 24);
+            this.menuStrip.Size = new System.Drawing.Size(726, 24);
             this.menuStrip.TabIndex = 2;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -253,11 +258,11 @@
             // 
             // tvOrganizations
             // 
-            this.tvOrganizations.Dock = System.Windows.Forms.DockStyle.Left;
-            this.tvOrganizations.Location = new System.Drawing.Point(0, 24);
+            this.tvOrganizations.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tvOrganizations.Location = new System.Drawing.Point(0, 0);
             this.tvOrganizations.Name = "tvOrganizations";
             this.tvOrganizations.ShowRootLines = false;
-            this.tvOrganizations.Size = new System.Drawing.Size(121, 396);
+            this.tvOrganizations.Size = new System.Drawing.Size(206, 527);
             this.tvOrganizations.TabIndex = 3;
             this.tvOrganizations.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvOrganizations_AfterSelect);
             this.tvOrganizations.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvOrganizations_NodeMouseDoubleClick);
@@ -292,13 +297,30 @@
             this.cmsDeleteOrganization.Text = "Удалить";
             this.cmsDeleteOrganization.Click += new System.EventHandler(this.DeleteOrganization_Click);
             // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 24);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.tvOrganizations);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.dgvAccounts);
+            this.splitContainer1.Size = new System.Drawing.Size(726, 527);
+            this.splitContainer1.SplitterDistance = 206;
+            this.splitContainer1.TabIndex = 4;
+            // 
             // AccountsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(862, 420);
-            this.Controls.Add(this.dgvAccounts);
-            this.Controls.Add(this.tvOrganizations);
+            this.ClientSize = new System.Drawing.Size(726, 551);
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
@@ -311,6 +333,10 @@
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.cmsOrganization.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -345,5 +371,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn secondName;
         private System.Windows.Forms.DataGridViewTextBoxColumn login;
         private System.Windows.Forms.DataGridViewCheckBoxColumn admin;
+        private System.Windows.Forms.SplitContainer splitContainer1;
     }
 }

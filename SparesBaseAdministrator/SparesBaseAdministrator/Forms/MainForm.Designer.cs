@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.btnAccounts = new System.Windows.Forms.Button();
             this.btnActionLogs = new System.Windows.Forms.Button();
-            this.btnCities = new System.Windows.Forms.Button();
             this.btnItems = new System.Windows.Forms.Button();
             this.btnSellers = new System.Windows.Forms.Button();
             this.lOrgCount = new System.Windows.Forms.Label();
@@ -61,16 +60,6 @@
             this.btnActionLogs.Text = "Журнал действий";
             this.btnActionLogs.UseVisualStyleBackColor = true;
             this.btnActionLogs.Click += new System.EventHandler(this.btnActionLogs_Click);
-            // 
-            // btnCities
-            // 
-            this.btnCities.Location = new System.Drawing.Point(12, 128);
-            this.btnCities.Name = "btnCities";
-            this.btnCities.Size = new System.Drawing.Size(283, 23);
-            this.btnCities.TabIndex = 4;
-            this.btnCities.Text = "Города";
-            this.btnCities.UseVisualStyleBackColor = true;
-            this.btnCities.Click += new System.EventHandler(this.btnCities_Click);
             // 
             // btnItems
             // 
@@ -139,7 +128,7 @@
             // 
             // btnBanners
             // 
-            this.btnBanners.Location = new System.Drawing.Point(12, 158);
+            this.btnBanners.Location = new System.Drawing.Point(12, 128);
             this.btnBanners.Name = "btnBanners";
             this.btnBanners.Size = new System.Drawing.Size(283, 23);
             this.btnBanners.TabIndex = 11;
@@ -151,7 +140,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(613, 191);
+            this.ClientSize = new System.Drawing.Size(613, 160);
             this.Controls.Add(this.btnBanners);
             this.Controls.Add(this.lSellersCount);
             this.Controls.Add(this.lActionsCount);
@@ -160,7 +149,6 @@
             this.Controls.Add(this.lOrgCount);
             this.Controls.Add(this.btnSellers);
             this.Controls.Add(this.btnItems);
-            this.Controls.Add(this.btnCities);
             this.Controls.Add(this.btnActionLogs);
             this.Controls.Add(this.btnAccounts);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -180,7 +168,6 @@
 
         private System.Windows.Forms.Button btnAccounts;
         private System.Windows.Forms.Button btnActionLogs;
-        private System.Windows.Forms.Button btnCities;
         private System.Windows.Forms.Button btnItems;
         private System.Windows.Forms.Button btnSellers;
         private System.Windows.Forms.Label lOrgCount;

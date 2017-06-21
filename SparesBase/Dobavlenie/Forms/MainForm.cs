@@ -397,7 +397,7 @@ namespace SparesBase
             string where = "WHERE(";
             if (cbSerial.Checked)
             {
-                where += "p.SerialNumber LIKE'%" + tbSearch.Text + "%')";
+                where += "i.SerialNumber LIKE'%" + tbSearch.Text + "%' AND i.OrganizationId = " + EnteredUser.id + ")";
                 items = dgv.FillItems(where);
             }
             else

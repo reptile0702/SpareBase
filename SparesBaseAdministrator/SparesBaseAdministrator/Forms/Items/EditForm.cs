@@ -52,6 +52,7 @@ namespace SparesBaseAdministrator
 
             this.item = item;
             this.categories = categories;
+            this.organizationId = item.Organization.Id;
 
             Text = "Изменение предмета";
             btnEdit.Text = "Изменить предмет";
@@ -138,7 +139,8 @@ namespace SparesBaseAdministrator
                         "{16}, " +
                         "0, " +
                         "{17}," +
-                        "{18})";
+                        "{18}, " +
+                        "{19})";
                 else
                     query = "UPDATE Items SET " +
                         "Main_Category_Id = {0}, " +
@@ -159,7 +161,8 @@ namespace SparesBaseAdministrator
                         "Residue={15} , " +
                         "SearchAllowed={16}, " +
                         "ChangeDate = NOW(), " +
-                        "StatusId = {17} " +
+                        "StatusId = {17}, " +
+                        "SerialNumber = {19} " +
                         "WHERE id = " + updateId;
 
                 int inventNumber = 0;
@@ -178,7 +181,6 @@ namespace SparesBaseAdministrator
                 }
 
                  
-
                 // Вставка данных о предмете в стороку запроса
                 query = string.Format(query,
                     categories[0],
@@ -199,7 +201,8 @@ namespace SparesBaseAdministrator
                     residue,
                     chbSearchAllowed.Checked ? "1" : "0",
                     cbStatus.SelectedValue,
-                    inventNumber);
+                    inventNumber,
+                    tbSerialNumber.Text);
 
                 // Выполнение запроса
                 DatabaseWorker.SqlQuery(query);
@@ -245,6 +248,7 @@ namespace SparesBaseAdministrator
             chbSearchAllowed.Checked = item.SearchAllowed;
             cbStatus.Text = item.Status;
             lInventNumber.Text = "Инвентарный номер: " + item.InventNumber.ToString();
+            tbSerialNumber.Text = item.SerialNumber.ToString();
             FillCategoriesInfo();
         }
 

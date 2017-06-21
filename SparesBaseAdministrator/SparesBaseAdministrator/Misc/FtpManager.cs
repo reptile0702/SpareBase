@@ -4,6 +4,10 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 using System.Drawing.Drawing2D;
+using System.Net;
+using System;
+using System.Drawing.Imaging;
+using System.Xml;
 
 namespace SparesBaseAdministrator
 {
@@ -233,6 +237,71 @@ namespace SparesBaseAdministrator
 
         #endregion Методы
 
+        #region Баннеры
+
+        public static void DownloadBannersFile()
+        {
+            // Загрузка Banners.xml
+            WebClient wcBanners = new WebClient();
+            wcBanners.DownloadFile(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Banners/Banners.xml"), "Banners.xml");
+        }
+
+        public static Image DownloadBannerImage(string bannerName)
+        {
+            WebClient wcBanner = new WebClient();
+            byte[] imageBytes = wcBanner.DownloadData(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Banners/" + bannerName));
+            MemoryStream ms = new MemoryStream(imageBytes);
+            return Image.FromStream(ms);
+        }
+
+        public static void UploadBanners(Banner[] banners)
+        {
+            WebClient wcBanners = new WebClient();
+            Connect();
+            string[] files = GetFilesFromServer("Banners");
+            foreach (string file in files)                
+                client.DeleteFile(timeout, remotePath + "Banners/" + file);
+            client.Disconnect(timeout);
+
+            
+            foreach (Banner banner in banners)
+            {
+                MemoryStream ms = new MemoryStream();
+                banner.Image.Save(ms, ImageFormat.Jpeg);
+                wcBanners.UploadData(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Banners/" + banner.PhotoName), ms.GetBuffer());
+            }
+
+            XmlDocument bannersDoc = new XmlDocument();
+            bannersDoc.CreateXmlDeclaration("1.0", "UTF-8", "");
+            XmlElement bannersRoot = bannersDoc.CreateElement("SparesBase");
+            foreach (Banner banner in banners)
+            {
+                XmlElement bannerElement = bannersDoc.CreateElement("Banner");
+
+                XmlElement bannerName = bannersDoc.CreateElement("PhotoName");
+                XmlAttribute bannerNameAttr = bannersDoc.CreateAttribute("value");
+                bannerNameAttr.Value = banner.PhotoName;
+                bannerName.Attributes.Append(bannerNameAttr);
+
+                XmlElement bannerLink = bannersDoc.CreateElement("Link");
+                XmlAttribute bannerLinkAttr = bannersDoc.CreateAttribute("value");
+                bannerLinkAttr.Value = banner.Link;
+                bannerLink.Attributes.Append(bannerLinkAttr);
+
+                bannerElement.AppendChild(bannerName);
+                bannerElement.AppendChild(bannerLink);
+
+                bannersRoot.AppendChild(bannerElement);
+            }
+
+            bannersDoc.AppendChild(bannersRoot);
+            MemoryStream xmlMs = new MemoryStream();
+            bannersDoc.Save(xmlMs);
+
+            wcBanners.UploadData(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Banners/Banners.xml"), xmlMs.GetBuffer());
+        }
+
+        #endregion Баннеры
 
         #region Вспомогательные методы
 

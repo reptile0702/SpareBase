@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
-using System.Windows.Forms;
 
 namespace Updater
 {
@@ -15,7 +14,6 @@ namespace Updater
                 string process = args[0].Replace(".exe", "");
 
                 Console.WriteLine("Удаление процессов...");
-                Console.WriteLine(process);
                 while (Process.GetProcessesByName(process).Length > 0)
                 {
                     Process[] myProcesses2 = Process.GetProcessesByName(process);
@@ -26,11 +24,7 @@ namespace Updater
                 }
 
                 Console.WriteLine("Удаление оригинального файла...");
-                //while (File.Exists(Application.StartupPath + "\\" + args[0]))
-                //{
                 File.Move(args[0], args[0] + ".bak");
-                //}
-                
 
                 Console.WriteLine("Копирование файла обновления...");
                 File.Move(args[1], args[0]);

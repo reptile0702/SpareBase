@@ -81,6 +81,7 @@
             this.tvAdmin.Name = "tvAdmin";
             this.tvAdmin.Size = new System.Drawing.Size(158, 223);
             this.tvAdmin.TabIndex = 5;
+            this.tvAdmin.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvAdmin_NodeMouseDoubleClick);
             // 
             // btnAdminAddVersion
             // 
@@ -90,6 +91,7 @@
             this.btnAdminAddVersion.TabIndex = 7;
             this.btnAdminAddVersion.Text = "Добавить новую версию";
             this.btnAdminAddVersion.UseVisualStyleBackColor = true;
+            this.btnAdminAddVersion.Click += new System.EventHandler(this.btnAdminAddVersion_Click);
             // 
             // btnAdminDeleteVersion
             // 

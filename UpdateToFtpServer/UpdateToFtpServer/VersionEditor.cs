@@ -7,12 +7,14 @@ namespace UpdateToFtpServer
     {
         ProgramVersion programVersion;
         string newFileVersionPath;
+        string programType;
 
-        public VersionEditor(ProgramVersion version, string newFileVersionPath)
+        public VersionEditor(ProgramVersion version, string newFileVersionPath, string programType)
         {
             InitializeComponent();
             programVersion = version;
             this.newFileVersionPath = newFileVersionPath;
+            this.programType = programType;
             FillData();
         }
 
@@ -25,7 +27,7 @@ namespace UpdateToFtpServer
 
         private void UploadVersion()
         {
-            FtpManager.UploadNewVersion("Client", new ProgramVersion(tbVersion.Text, tbDate.Text, rtbChangeLog.Text, true), newFileVersionPath);
+            FtpManager.UploadNewVersion(programType, new ProgramVersion(tbVersion.Text, tbDate.Text, rtbChangeLog.Text, true), newFileVersionPath);
         }
 
         private void btnUpload_Click(object sender, EventArgs e)

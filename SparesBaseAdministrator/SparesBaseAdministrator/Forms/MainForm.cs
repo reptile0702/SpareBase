@@ -4,8 +4,6 @@ namespace SparesBaseAdministrator
 {
     public partial class MainForm : Form
     {
-        // TODO: Доделать вход в программу
-
         // Конструктор
         public MainForm()
         {
@@ -41,13 +39,6 @@ namespace SparesBaseAdministrator
         {
             ActionLogsForm alf = new ActionLogsForm();
             alf.ShowDialog();
-        }
-
-        // Клик на кнопку "Города"
-        private void btnCities_Click(object sender, System.EventArgs e)
-        {
-            CitiesForm cf = new CitiesForm();
-            cf.ShowDialog();
         }
 
         // Клик на кнопку "Поставщики"

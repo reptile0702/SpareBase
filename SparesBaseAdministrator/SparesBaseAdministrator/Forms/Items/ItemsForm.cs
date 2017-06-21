@@ -57,12 +57,19 @@ namespace SparesBaseAdministrator
             if (!tsmiDeletedItems.Checked)
                 where += " AND (i.Deleted <> 1)";
 
+            Item selectedItem = null;
+            if (dgv.CurrentRow != null)
+            {
+                selectedItem = (Item)dgv.CurrentRow.Tag;
+            }
+
 
             Item[] items = dgv.FillItems(where);
             foreach (Item item in items)
             {
                 dgv.Rows.Add(
                     item.Id,
+                    item.InventNumber,
                     item.Name,
                     item.Seller.Name,
                     item.PurchasePrice,
@@ -74,23 +81,32 @@ namespace SparesBaseAdministrator
                     item.Quantity,
                     item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay,
                     item.ChangeDate.Date.ToShortDateString() + " " + item.ChangeDate.TimeOfDay,
-                    item.Residue);
+                    item.Residue,
+                    item.Status);
 
                 dgv.Rows[dgv.Rows.Count - 1].Tag = item;
-            }
+                if (dgv.RowCount == 1)
+                    dgv.ClearSelection();
 
-            if (dgv.Rows.Count == 0)
+                if (selectedItem != null)
+                    if (item.Id == selectedItem.Id)
+                        dgv.Rows[dgv.Rows.Count - 1].Selected = true;
+
+            }
+            if (dgv.Rows.Count > 0)
             {
-                cmsDeleteItem.Enabled = false;
-                cmsEditItem.Enabled = false;
+                ClearInfoAboutItem();
+                InsertInfoAboutItem((Item)dgv.Rows[0].Tag);
             }
             else
             {
-                cmsEditItem.Enabled = true;
-                cmsDeleteItem.Enabled = true;
+                ClearInfoAboutItem();
             }
 
-            cmsAddItem.Enabled = true;
+            foreach (DataGridViewRow row in dgv.Rows)
+            {
+                row.Cells[12].ContextMenuStrip = cmsWriteOff;
+            }
         }
 
         #endregion Заполнение данных
@@ -104,7 +120,10 @@ namespace SparesBaseAdministrator
         {
             dgv.Columns.Clear();
 
+            dgv.Columns.Clear();
+
             dgv.Columns.Add("id", "ID");
+            dgv.Columns.Add("inventNumber", "Номер");
             dgv.Columns.Add("name", "Наименование");
             dgv.Columns.Add("seller", "Поставщик");
             dgv.Columns.Add("purchasePrice", "Закупка");
@@ -117,20 +136,23 @@ namespace SparesBaseAdministrator
             dgv.Columns.Add("uploadDate", "Дата добавления");
             dgv.Columns.Add("changeDate", "Дата изменения");
             dgv.Columns.Add("residue", "Остаток");
+            dgv.Columns.Add("status", "Статус");
 
             dgv.Columns[0].Width = 50;
-            dgv.Columns[1].Width = 150;
-            dgv.Columns[2].Width = 120;
-            dgv.Columns[3].Width = 90;
+            dgv.Columns[1].Width = 50;
+            dgv.Columns[2].Width = 150;
+            dgv.Columns[3].Width = 120;
             dgv.Columns[4].Width = 90;
             dgv.Columns[5].Width = 90;
             dgv.Columns[6].Width = 90;
             dgv.Columns[7].Width = 90;
             dgv.Columns[8].Width = 90;
             dgv.Columns[9].Width = 90;
-            dgv.Columns[10].Width = 120;
+            dgv.Columns[10].Width = 90;
             dgv.Columns[11].Width = 120;
-            dgv.Columns[12].Width = 70;
+            dgv.Columns[12].Width = 120;
+            dgv.Columns[13].Width = 70;
+            dgv.Columns[14].Width = 90;
         }
 
         // Поиск и выделение нода по пути
@@ -180,9 +202,8 @@ namespace SparesBaseAdministrator
         }
 
         // Обновляет информацию о выделенном предмете в панели информации
-        private void InsertInfoAboutItem()
+        private void InsertInfoAboutItem(Item selItem)
         {
-            Item selItem = SelectedItem;
             lname.Text = "Имя: " + selItem.Name;
             lseller.Text = "Поставщик: " + selItem.Seller.Name;
             lpurchase.Text = "Закупка: " + selItem.PurchasePrice;
@@ -195,52 +216,80 @@ namespace SparesBaseAdministrator
             lquantity.Text = "Количество: " + selItem.Quantity;
             lresidue.Text = "Остаток: " + selItem.Residue;
 
-            lMainCategory.Text = "Главная категория: " + selItem.MainCategory.Name;
+            lMainCat.Text = "Категории: " + selItem.MainCategory.Name;
             if (selItem.SubCategory1 != null)
-                lSubCategory1.Text = "Подкатегория 1: " + selItem.SubCategory1.Name;
+                lMainCat.Text += " => " + selItem.SubCategory1.Name;
             if (selItem.SubCategory2 != null)
-                lSubCategory2.Text = "Подкатегория 2: " + selItem.SubCategory2.Name;
+                lMainCat.Text += " => " + selItem.SubCategory2.Name;
             if (selItem.SubCategory3 != null)
-                lSubCategory3.Text = "Подкатегория 3: " + selItem.SubCategory3.Name;
+                lMainCat.Text += " => : " + selItem.SubCategory3.Name;
             if (selItem.SubCategory4 != null)
-                lSubCategory4.Text = "Подкатегория 4: " + selItem.SubCategory4.Name;
+                lMainCat.Text += " => : " + selItem.SubCategory4.Name;
+        }
+        private void ClearInfoAboutItem()
+        {
+            lname.Text = "Имя: ";
+            lseller.Text = "Поставщик: ";
+            lpurchase.Text = "Закупка: ";
+            lretail.Text = "Розница: ";
+            lwhole.Text = "Мелкий опт: ";
+            lservice.Text = "Сервисы: ";
+            lfirm.Text = "Фирменная цена: ";
+            lstorage.Text = "Хранение: \n";
+            lnote.Text = "Описание: \n";
+            lquantity.Text = "Количество: ";
+            lresidue.Text = "Остаток: ";
+
+            lMainCat.Text = "Категория: ";
         }
 
         // Поиск предмета
         private void SearchItems(string query, int organizationId)
         {
+            Item[] items;
             string where = "WHERE(";
-            string[] searchWords = query.Split(' ');
-            if (query != "")
+            if (cbSerial.Checked)
             {
-                where += "(";
+                where += "i.SerialNumber LIKE'%" + tbSearch.Text + "%' AND i.OrganizationId = " + organizationId + ")";
+                items = dgv.FillItems(where);
             }
-            foreach (string word in searchWords)
+            else
             {
-                if (word != "")
-                {
-                    where += "i.Item_Name LIKE \"%" + word + "%\" OR ";
-                }
-            }
-            if (query != "")
-            {
-                where = where.Remove(where.Length - 3, 3) + ") AND";
-            }
-            where += organizationId != 0 ? " (i.OrganizationId = " + organizationId + ") AND" : "";
-            where += " (i.SearchAllowed = 1) AND (i.Residue > 0) AND (i.Deleted <> 1))";
+                string[] searchWords = tbSearch.Text.Split(' ');
+                if (tbSearch.Text != "")
+                    where += "(";
 
-            Item[] items = dgv.FillItems(where);
+                foreach (string word in searchWords)
+                    if (word != "")
+                        where += "i.Item_Name LIKE \"%" + word + "%\" OR ";
+
+                if (tbSearch.Text != "")
+                    where = where.Remove(where.Length - 3, 3) + ") AND";
+
+                where += " (i.OrganizationId = " + organizationId + ") AND";
+                where += " (i.Residue > 0) AND (i.Deleted <> 1))";
+                items = dgv.FillItems(where);
+            }
+
 
             foreach (Item item in items)
             {
                 dgv.Rows.Add(
                     item.Id,
+                    item.InventNumber,
                     item.Name,
+                    item.Seller.Name,
+                    item.PurchasePrice,
                     item.RetailPrice,
+                    item.WholesalePrice,
                     item.ServicePrice,
+                    item.FirmPrice,
+                    item.Storage,
                     item.Quantity,
                     item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay,
-                    item.ChangeDate.Date.ToShortDateString() + " " + item.ChangeDate.TimeOfDay);
+                    item.ChangeDate.Date.ToShortDateString() + " " + item.ChangeDate.TimeOfDay,
+                    item.Residue,
+                    item.Status);
 
                 dgv.Rows[dgv.Rows.Count - 1].Tag = item;
             }
@@ -402,7 +451,7 @@ namespace SparesBaseAdministrator
         private void dgv_SelectionChanged(object sender, EventArgs e)
         {
             if (SelectedItem != null)
-                InsertInfoAboutItem();
+                InsertInfoAboutItem(SelectedItem);
         }
 
         // Отображение предметов с остатком 0

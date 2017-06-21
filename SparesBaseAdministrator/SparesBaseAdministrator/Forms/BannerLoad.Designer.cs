@@ -110,9 +110,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 249);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(45, 13);
+            this.label1.Size = new System.Drawing.Size(46, 13);
             this.label1.TabIndex = 7;
-            this.label1.Text = "ссылка";
+            this.label1.Text = "Ссылка";
             // 
             // BannerLoad
             // 
@@ -127,8 +127,11 @@
             this.Controls.Add(this.tbLink);
             this.Controls.Add(this.pbBanner);
             this.Controls.Add(this.tvBanners);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
             this.Name = "BannerLoad";
-            this.Text = "BannerLoad";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Баннеры";
             this.Load += new System.EventHandler(this.BannerLoad_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pbBanner)).EndInit();
             this.ResumeLayout(false);
