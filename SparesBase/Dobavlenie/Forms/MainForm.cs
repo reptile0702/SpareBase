@@ -12,7 +12,7 @@ namespace SparesBase
         // TODO: Добавть журнал поисков  ???
         // TODO: Проверить на существование введенного поставщика
         // TODO: в "поиске по организациям", буду его Глобальным дальше называть, поле ID уменьшить, за счёт него расширить наименование
-
+        // TODO: шаблоны для цветов на ячейки статуса
         AuthenticationForm au;
 
         // Выбранная категория в TreeView
@@ -75,7 +75,7 @@ namespace SparesBase
             }
            
             
-            Item[] items = dgv.FillItems(where, false);
+            Item[] items = dgv.FillItems(where);
 
             
             foreach (Item item in items)
@@ -233,13 +233,14 @@ namespace SparesBase
             List<int> cats = new List<int>();
             TreeNode parent = treeView.SelectedNode;
 
-            do
+            while (parent != null) 
             {
+                
                 Category category = (Category)parent.Tag;
                 cats.Add(category.Id);
                 parent = parent.Parent;
             }
-            while (parent != null);
+            
 
             cats.Reverse();
             for (int i = 0; i < categories.Length; i++)
@@ -397,7 +398,7 @@ namespace SparesBase
             if (cbSerial.Checked)
             {
                 where += "p.SerialNumber LIKE'%" + tbSearch.Text + "%')";
-                items = dgv.FillItems(where, true);
+                items = dgv.FillItems(where);
             }
             else
             {
@@ -414,7 +415,7 @@ namespace SparesBase
 
                 where += " (i.OrganizationId = " + EnteredUser.OrganizationId + ") AND";
                 where += " (i.Residue > 0) AND (i.Deleted <> 1))";
-                items = dgv.FillItems(where, false);
+                items = dgv.FillItems(where);
             }
 
              

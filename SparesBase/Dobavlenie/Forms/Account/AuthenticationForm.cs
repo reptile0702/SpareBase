@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Data;
 using System.IO;
 using System.Net;
@@ -13,6 +14,14 @@ namespace SparesBase.Forms
         public AuthenticationForm()
         {
             InitializeComponent();
+            RegistryKey currentUserKey = Registry.CurrentUser;
+            RegistryKey lastUserKey = currentUserKey.OpenSubKey("SparesBase");
+            if (lastUserKey != null)
+            {
+                tbLogIn.Text = lastUserKey.GetValue("Login").ToString();
+                lastUserKey.Close();
+            }
+           
         }
 
         #region Методы
@@ -45,7 +54,7 @@ namespace SparesBase.Forms
             }
 
             // Проверка пароля
-            if (dr.Rows[0].ItemArray[2].ToString() != tbPassword.Text.Trim())
+            if (!MD5hash.VerifyMD5Hash(tbPassword.Text.Trim(), dr.Rows[0].ItemArray[2].ToString()))
             {
                 MessageBox.Show("Не верно введён пароль");
                 return;
@@ -73,6 +82,11 @@ namespace SparesBase.Forms
             EnteredUser.LogIn = login;
             EnteredUser.OrganizationId = organizationId;
             EnteredUser.Admin = admin;
+
+            RegistryKey currentUserKey = Registry.CurrentUser;
+            RegistryKey lastUserKey = currentUserKey.CreateSubKey("SparesBase");
+            lastUserKey.SetValue("Login", EnteredUser.LogIn);
+            lastUserKey.Close();
 
             MainForm mf = new MainForm(this);
             mf.Show();

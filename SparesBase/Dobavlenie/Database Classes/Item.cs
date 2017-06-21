@@ -25,7 +25,8 @@
             Organization organization,
             bool searchAllowed,
             string status,
-            int inventNumber)
+            int inventNumber,
+            int serialNumber)
         {
             Id = id;
 
@@ -60,6 +61,8 @@
             Status = status;
 
             InventNumber = inventNumber;
+
+            SerialNumber = serialNumber;
         }
 
         public int Id { get; set; }
@@ -95,5 +98,7 @@
         public string Status { get; set; }
 
         public int InventNumber { get; set; }
+
+        public int SerialNumber { get; set; }
     }
 }

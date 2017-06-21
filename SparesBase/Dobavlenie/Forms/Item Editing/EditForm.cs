@@ -103,7 +103,8 @@ namespace SparesBase
                 tbRetailPrice.Text != "" &&
                 tbServicePrice.Text != "" &&
                 tbQuantity.Text != "" &&
-                cbSeller.SelectedValue != null)
+                cbSeller.SelectedValue != null &&
+                tbSerial.Text != "")
             {
 
                 // Идентификатор поставщика
@@ -135,7 +136,8 @@ namespace SparesBase
                         "{16}, " +
                         "0, " +
                         "{17}," +
-                        "{18})";
+                        "{18}," +
+                        "{19})";
                 else
                     query = "UPDATE Items SET " +
                         "Main_Category_Id = {0}, " +
@@ -156,7 +158,8 @@ namespace SparesBase
                         "Residue={15} , " +
                         "SearchAllowed={16}, " +
                         "ChangeDate = NOW(), " +
-                        "StatusId = {17} " +
+                        "StatusId = {17}, " +
+                        "SerialNumber = {19}" +
                         "WHERE id = " + updateId;
 
                 int inventNumber = 0;
@@ -196,7 +199,8 @@ namespace SparesBase
                     residue,
                     chbSearchAllowed.Checked ? "1" : "0",
                     cbStatus.SelectedValue,
-                    inventNumber);
+                    inventNumber,
+                    tbSerial.Text);
 
                 // Выполнение запроса
                 DatabaseWorker.SqlQuery(query);
@@ -242,6 +246,7 @@ namespace SparesBase
             chbSearchAllowed.Checked = item.SearchAllowed;
             cbStatus.Text = item.Status;
             lInventNumber.Text = "Инвентарный номер: " + item.InventNumber.ToString();
+            tbSerial.Text = item.SerialNumber.ToString();
             FillCategoriesInfo();
         }
 
@@ -492,5 +497,7 @@ namespace SparesBase
         }
 
         #endregion Разные события
+
+       
     }
 }

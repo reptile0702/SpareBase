@@ -13,6 +13,7 @@ namespace SparesBase
     {
         List<Banner> banners;
         int bannerCounter;
+        int selectedOrganization;
 
         // Конструктор
         public SearchingForm()
@@ -20,6 +21,7 @@ namespace SparesBase
             InitializeComponent();
             banners = new List<Banner>();
             bannerCounter = 0;
+            selectedOrganization = 0;
         }
 
         #region Методы
@@ -62,7 +64,7 @@ namespace SparesBase
             where += organizationId != 0 ? " (i.OrganizationId = " + organizationId + ") AND" : "";
             where += " (i.SearchAllowed = 1) AND (i.Residue > 0) AND (i.Deleted <> 1))";
 
-            Item[] items = dgv.FillItems(where, false);
+            Item[] items = dgv.FillItems(where);
             foreach (Item item in items)
             {
 #if DEBUG
@@ -147,7 +149,7 @@ namespace SparesBase
         private void tbSearching_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
-                Search(tbSearching.Text, int.Parse(cbOrganizations.SelectedValue.ToString()));
+                Search(tbSearching.Text, selectedOrganization);
         }
 
         // Смена организации
@@ -195,5 +197,31 @@ namespace SparesBase
         }
 
         #endregion События
+
+        private void dgv_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dgv.CurrentRow != null)
+            {
+                Item item = (Item)dgv.CurrentRow.Tag;
+                lNameSC.Text = "Название СЦ:\n" + item.Organization.Name;
+                lPhoneSC.Text = "Телефон СЦ: " + item.Organization.Telephone;
+
+            }
+        }
+
+        private void cbSearchByOrganization_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbSearchByOrganization.Checked)
+            {
+                Item item = (Item)dgv.CurrentRow.Tag;
+                selectedOrganization = item.Organization.Id;
+                Search(tbSearching.Text, selectedOrganization);
+            }
+            else
+            {
+                selectedOrganization = 0;
+                Search(tbSearching.Text, selectedOrganization);
+            }
+        }
     }
 }

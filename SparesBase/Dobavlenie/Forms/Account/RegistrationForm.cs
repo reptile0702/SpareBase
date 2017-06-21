@@ -52,7 +52,7 @@ namespace SparesBase.Forms
             }
 
             // Добавление аккаунта в базу
-            DatabaseWorker.SqlQuery("INSERT INTO Accounts VALUES('','" + tbName.Text + "', '" + tbLastName.Text + "', '" + tbSecondName.Text + "', '" + tbLogIn.Text.Trim() + "', '" + tbPassword.Text.Trim() + "', " + EnteredUser.OrganizationId + ", " + (cbCity.SelectedIndex + 1) + ", '" + tbPhone.Text + "', '" + tbMail.Text + "', 0)");
+            DatabaseWorker.SqlQuery("INSERT INTO Accounts VALUES('','" + tbName.Text + "', '" + tbLastName.Text + "', '" + tbSecondName.Text + "', '" + tbLogIn.Text.Trim() + "', '" + MD5hash.GetMD5Hash(tbPassword.Text.Trim()) + "', " + EnteredUser.OrganizationId + ", " + (cbCity.SelectedIndex + 1) + ", '" + tbPhone.Text + "', '" + tbMail.Text + "', 0)");
 
             Close();
         }

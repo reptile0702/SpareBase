@@ -58,12 +58,14 @@
             this.btnChangeCategories = new System.Windows.Forms.Button();
             this.lMainCategory = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lInventNumber = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label9 = new System.Windows.Forms.Label();
             this.cbStatus = new System.Windows.Forms.ComboBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.lInventNumber = new System.Windows.Forms.Label();
+            this.tbSerial = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbPhoto)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -330,6 +332,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label12);
+            this.groupBox1.Controls.Add(this.tbSerial);
             this.groupBox1.Controls.Add(this.lInventNumber);
             this.groupBox1.Controls.Add(this.lMainCategory);
             this.groupBox1.Controls.Add(this.cbSeller);
@@ -354,6 +358,15 @@
             this.groupBox1.TabIndex = 40;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Информация о предмете";
+            // 
+            // lInventNumber
+            // 
+            this.lInventNumber.AutoSize = true;
+            this.lInventNumber.Location = new System.Drawing.Point(22, 48);
+            this.lInventNumber.Name = "lInventNumber";
+            this.lInventNumber.Size = new System.Drawing.Size(111, 13);
+            this.lInventNumber.TabIndex = 36;
+            this.lInventNumber.Text = "Инвентарный номер";
             // 
             // button1
             // 
@@ -409,14 +422,22 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Фото";
             // 
-            // lInventNumber
+            // tbSerial
             // 
-            this.lInventNumber.AutoSize = true;
-            this.lInventNumber.Location = new System.Drawing.Point(22, 48);
-            this.lInventNumber.Name = "lInventNumber";
-            this.lInventNumber.Size = new System.Drawing.Size(111, 13);
-            this.lInventNumber.TabIndex = 36;
-            this.lInventNumber.Text = "Инвентарный номер";
+            this.tbSerial.Location = new System.Drawing.Point(404, 45);
+            this.tbSerial.Name = "tbSerial";
+            this.tbSerial.Size = new System.Drawing.Size(247, 20);
+            this.tbSerial.TabIndex = 37;
+            
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(304, 48);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(93, 13);
+            this.label12.TabIndex = 38;
+            this.label12.Text = "Серийный номер";
             // 
             // EditForm
             // 
@@ -486,6 +507,8 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox cbStatus;
         private System.Windows.Forms.Label lInventNumber;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox tbSerial;
     }
 }
 

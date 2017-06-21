@@ -39,6 +39,9 @@
             this.dgv = new SparesBase.ItemsDataGridView();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.loadBannersDelay = new System.Windows.Forms.Timer(this.components);
+            this.cbSearchByOrganization = new System.Windows.Forms.CheckBox();
+            this.lNameSC = new System.Windows.Forms.Label();
+            this.lPhoneSC = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbBanner)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
@@ -73,6 +76,9 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.lPhoneSC);
+            this.panel1.Controls.Add(this.lNameSC);
+            this.panel1.Controls.Add(this.cbSearchByOrganization);
             this.panel1.Controls.Add(this.pbBanner);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label1);
@@ -119,6 +125,7 @@
             this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv.Size = new System.Drawing.Size(747, 602);
             this.dgv.TabIndex = 6;
+            this.dgv.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellClick);
             this.dgv.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgv_CellMouseDoubleClick);
             // 
             // timer
@@ -129,6 +136,35 @@
             // 
             this.loadBannersDelay.Interval = 3000;
             this.loadBannersDelay.Tick += new System.EventHandler(this.loadBannersDelay_Tick);
+            // 
+            // cbSearchByOrganization
+            // 
+            this.cbSearchByOrganization.AutoSize = true;
+            this.cbSearchByOrganization.Location = new System.Drawing.Point(15, 92);
+            this.cbSearchByOrganization.Name = "cbSearchByOrganization";
+            this.cbSearchByOrganization.Size = new System.Drawing.Size(141, 17);
+            this.cbSearchByOrganization.TabIndex = 7;
+            this.cbSearchByOrganization.Text = "Поиск по организации";
+            this.cbSearchByOrganization.UseVisualStyleBackColor = true;
+            this.cbSearchByOrganization.CheckedChanged += new System.EventHandler(this.cbSearchByOrganization_CheckedChanged);
+            // 
+            // lNameSC
+            // 
+            this.lNameSC.AutoSize = true;
+            this.lNameSC.Location = new System.Drawing.Point(12, 114);
+            this.lNameSC.Name = "lNameSC";
+            this.lNameSC.Size = new System.Drawing.Size(78, 13);
+            this.lNameSC.TabIndex = 8;
+            this.lNameSC.Text = "Название СЦ:";
+            // 
+            // lPhoneSC
+            // 
+            this.lPhoneSC.AutoSize = true;
+            this.lPhoneSC.Location = new System.Drawing.Point(12, 143);
+            this.lPhoneSC.Name = "lPhoneSC";
+            this.lPhoneSC.Size = new System.Drawing.Size(73, 13);
+            this.lPhoneSC.TabIndex = 9;
+            this.lPhoneSC.Text = "Телефон СЦ:";
             // 
             // SearchingForm
             // 
@@ -161,5 +197,8 @@
         private System.Windows.Forms.PictureBox pbBanner;
         private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.Timer loadBannersDelay;
+        private System.Windows.Forms.Label lPhoneSC;
+        private System.Windows.Forms.Label lNameSC;
+        private System.Windows.Forms.CheckBox cbSearchByOrganization;
     }
 }

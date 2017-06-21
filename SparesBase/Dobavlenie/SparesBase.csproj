@@ -194,6 +194,7 @@
     <Compile Include="Custom Components\ItemsDataGridView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Misc\MD5hash.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Misc\ProgramUpdate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
