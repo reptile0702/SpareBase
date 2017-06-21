@@ -364,9 +364,9 @@
             this.lInventNumber.AutoSize = true;
             this.lInventNumber.Location = new System.Drawing.Point(483, 16);
             this.lInventNumber.Name = "lInventNumber";
-            this.lInventNumber.Size = new System.Drawing.Size(111, 13);
+            this.lInventNumber.Size = new System.Drawing.Size(114, 13);
             this.lInventNumber.TabIndex = 36;
-            this.lInventNumber.Text = "Инвентарный номер";
+            this.lInventNumber.Text = "Инвентарный номер:";
             // 
             // button1
             // 
