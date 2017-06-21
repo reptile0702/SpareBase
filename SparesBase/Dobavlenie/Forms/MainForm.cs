@@ -4,6 +4,9 @@ using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 using SparesBase.Forms;
+using System.Net;
+using System.IO;
+using System.Threading;
 
 namespace SparesBase
 {
@@ -14,7 +17,8 @@ namespace SparesBase
         // TODO: в "поиске по организациям", буду его Глобальным дальше называть, поле ID уменьшить, за счёт него расширить наименование
         // TODO: шаблоны для цветов на ячейки статуса
         AuthenticationForm au;
-
+        WebClient webclient;
+        Thread previewThread;
         // Выбранная категория в TreeView
         public Category SelectedCategory { get { return (Category)treeView.SelectedNode.Tag; } }
 
@@ -26,6 +30,8 @@ namespace SparesBase
         {
             InitializeComponent();
             this.au = au;
+            webclient = new WebClient();
+            webclient.DownloadDataCompleted += Webclient_DownloadDataCompleted;
 
             // Заполнение заголовка формы именем пользовалеля и названием организации
             DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT Accounts.LastName, Accounts.FirstName, Accounts.SecondName, Organizations.Name, Accounts.Admin FROM Accounts LEFT JOIN Organizations ON Organizations.id = Accounts.OrganizationId WHERE(Accounts.id=" + EnteredUser.id + ")");
@@ -46,7 +52,8 @@ namespace SparesBase
             InitializeDataGridView();
             ClearInfoAboutItem();
 
-            
+
+
         }
 
 
@@ -73,11 +80,11 @@ namespace SparesBase
             {
                 selectedItem = (Item)dgv.CurrentRow.Tag;
             }
-           
-            
+
+
             Item[] items = dgv.FillItems(where);
 
-            
+
             foreach (Item item in items)
             {
 #if DEBUG
@@ -98,7 +105,7 @@ namespace SparesBase
                     item.Residue,
                     item.Status);
 
-                
+
 
 #else
                 dgv.Rows.Add(
@@ -130,7 +137,7 @@ namespace SparesBase
                         dgv.Rows[dgv.Rows.Count - 1].Selected = true;
                     }
                 }
-                
+
             }
             if (dgv.Rows.Count > 0)
             {
@@ -233,14 +240,14 @@ namespace SparesBase
             List<int> cats = new List<int>();
             TreeNode parent = treeView.SelectedNode;
 
-            while (parent != null) 
+            while (parent != null)
             {
-                
+
                 Category category = (Category)parent.Tag;
                 cats.Add(category.Id);
                 parent = parent.Parent;
             }
-            
+
 
             cats.Reverse();
             for (int i = 0; i < categories.Length; i++)
@@ -283,33 +290,33 @@ namespace SparesBase
 
         private void CalcResidue(int quantity, int itemId)
         {
-            
-                int purchase = 0;
-                int selling = 0;
-                int defect = 0;
 
-                // Подсчет всех строк
-                // В заказ
-                DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT Quantity FROM Purchase WHERE(ItemId=" + itemId + ")");
-                foreach (DataRow row in dt.Rows)
-                    purchase += row.ItemArray[0].ToString() != "" ? int.Parse(row.ItemArray[0].ToString()) : 0;
+            int purchase = 0;
+            int selling = 0;
+            int defect = 0;
 
-                // Продажа
-                dt = DatabaseWorker.SqlSelectQuery("SELECT Quantity FROM Selling WHERE(ItemId=" + itemId + ")");
-                foreach (DataRow row in dt.Rows)
-                    selling += row.ItemArray[0].ToString() != "" ? int.Parse(row.ItemArray[0].ToString()) : 0;
+            // Подсчет всех строк
+            // В заказ
+            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT Quantity FROM Purchase WHERE(ItemId=" + itemId + ")");
+            foreach (DataRow row in dt.Rows)
+                purchase += row.ItemArray[0].ToString() != "" ? int.Parse(row.ItemArray[0].ToString()) : 0;
 
-                // Брак
-                dt = DatabaseWorker.SqlSelectQuery("SELECT QuantityOfDefect FROM Defect WHERE(ItemId=" + itemId + ")");
-                foreach (DataRow row in dt.Rows)
-                    defect += row.ItemArray[0].ToString() != "" ? int.Parse(row.ItemArray[0].ToString()) : 0;
+            // Продажа
+            dt = DatabaseWorker.SqlSelectQuery("SELECT Quantity FROM Selling WHERE(ItemId=" + itemId + ")");
+            foreach (DataRow row in dt.Rows)
+                selling += row.ItemArray[0].ToString() != "" ? int.Parse(row.ItemArray[0].ToString()) : 0;
 
-                // Остаток                            
-               int residue = quantity - (purchase + selling + defect);
+            // Брак
+            dt = DatabaseWorker.SqlSelectQuery("SELECT QuantityOfDefect FROM Defect WHERE(ItemId=" + itemId + ")");
+            foreach (DataRow row in dt.Rows)
+                defect += row.ItemArray[0].ToString() != "" ? int.Parse(row.ItemArray[0].ToString()) : 0;
 
-                // Занесение остатка в базу
-                DatabaseWorker.SqlQuery("UPDATE Items SET Residue = " + residue + " WHERE(id = " + itemId + ")");
-           
+            // Остаток                            
+            int residue = quantity - (purchase + selling + defect);
+
+            // Занесение остатка в базу
+            DatabaseWorker.SqlQuery("UPDATE Items SET Residue = " + residue + " WHERE(id = " + itemId + ")");
+
 
         }
 
@@ -372,7 +379,7 @@ namespace SparesBase
         }
         private void ClearInfoAboutItem()
         {
-            
+
             lname.Text = "Имя: ";
             lseller.Text = "Поставщик: ";
             lpurchase.Text = "Закупка: ";
@@ -386,8 +393,8 @@ namespace SparesBase
             lresidue.Text = "Остаток: ";
 
             lMainCat.Text = "Категория: ";
-            
-               
+
+
         }
 
         // Поиск предмета
@@ -418,7 +425,7 @@ namespace SparesBase
                 items = dgv.FillItems(where);
             }
 
-             
+
             foreach (Item item in items)
             {
 #if DEBUG
@@ -661,7 +668,54 @@ namespace SparesBase
             if (SelectedItem != null)
                 InsertInfoAboutItem(SelectedItem);
 
-            //dgv[e.ColumnIndex, e.RowIndex].Selected = true;
+            pbPreview.Image = null;
+            // webclient.CancelAsync();
+            // webclient.Dispose();
+
+            if (previewThread != null)
+            {
+                previewThread.Abort();
+            }
+
+
+
+
+
+            previewThread = new Thread(() =>
+            {
+                pbPreview.SizeMode = PictureBoxSizeMode.CenterImage;
+                pbPreview.Image = Properties.Resources.LoadGif;
+
+
+                if (FtpManager.PreviewExists(SelectedItem.Id))
+                {
+                    WebClient webclient = new WebClient();
+                    byte[] imageBytes = webclient.DownloadData(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Photos/item_" + SelectedItem.Id + "/preview.jpg"));
+                    MemoryStream ms = new MemoryStream(imageBytes);
+                    pbPreview.SizeMode = PictureBoxSizeMode.Zoom;
+                    pbPreview.Image = Image.FromStream(ms);
+                }
+                else
+                {
+                    pbPreview.Image = null;
+                }
+            });
+            previewThread.Start();
+        }
+
+        private void Webclient_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
+        {
+            if (e.Error == null)
+            {
+                MemoryStream ms = new MemoryStream(e.Result);
+                pbPreview.SizeMode = PictureBoxSizeMode.Zoom;
+                pbPreview.Image = Image.FromStream(ms);
+            }
+            else
+            {
+                pbPreview.Image = null;
+            }
+
         }
 
         #endregion Предметы
@@ -720,8 +774,8 @@ namespace SparesBase
             if (e.Button == MouseButtons.Left)
                 if (dgv.CurrentRow != null)
                     if (dgv.HitTest(e.X, e.Y).RowIndex != -1)
-                  
-                    dgv.DoDragDrop(dgv.CurrentRow.Cells[0].Value.ToString(), DragDropEffects.Copy);
+
+                        dgv.DoDragDrop(dgv.CurrentRow.Cells[0].Value.ToString(), DragDropEffects.Copy);
 
         }
 
@@ -762,7 +816,7 @@ namespace SparesBase
         #endregion Поиск
 
         #endregion События
-      
+
 
         private void cmsSelling_Click(object sender, EventArgs e)
         {
@@ -773,14 +827,14 @@ namespace SparesBase
                 CalcResidue(item.Quantity, item.Id);
                 FillItemsByCategory();
             }
-           
-           
+
+
         }
 
         private void cmsDefect_Click(object sender, EventArgs e)
         {
             Item item = SelectedItem;
-            DefectForm defect = new DefectForm(item.Quantity, item.Id);            
+            DefectForm defect = new DefectForm(item.Quantity, item.Id);
             if (defect.ShowDialog() == DialogResult.OK)
             {
                 CalcResidue(item.Quantity, item.Id);
@@ -791,7 +845,7 @@ namespace SparesBase
         private void cmsInOrder_Click(object sender, EventArgs e)
         {
             Item item = SelectedItem;
-            InOrder inorder = new InOrder(item.Id, item.Quantity, int.Parse(item.FirmPrice));            
+            InOrder inorder = new InOrder(item.Id, item.Quantity, int.Parse(item.FirmPrice));
             if (inorder.ShowDialog() == DialogResult.OK)
             {
                 CalcResidue(item.Quantity, item.Id);
@@ -851,6 +905,12 @@ namespace SparesBase
 
             AccountEditor ae = new AccountEditor(account);
             ae.ShowDialog();
+        }
+
+        private void tsmiAbout_Click(object sender, EventArgs e)
+        {
+            AboutForm about = new AboutForm();
+            about.Show();
         }
     }
 }

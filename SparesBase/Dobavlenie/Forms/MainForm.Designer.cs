@@ -55,15 +55,13 @@
             this.tsmiSellers = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.tbSearch = new System.Windows.Forms.TextBox();
-            this.cbSerial = new System.Windows.Forms.CheckBox();
-            this.treeView = new SparesBase.CategoriesTreeView();
             this.cmsMainCategory = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmsAddMainCategory = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsExpandAllNodes = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsCollapseAllNodes = new System.Windows.Forms.ToolStripMenuItem();
+            this.tbSearch = new System.Windows.Forms.TextBox();
+            this.cbSerial = new System.Windows.Forms.CheckBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.dgv = new SparesBase.ItemsDataGridView();
             this.cmsItem = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmsAddItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsEditItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -82,6 +80,8 @@
             this.lpurchase = new System.Windows.Forms.Label();
             this.lseller = new System.Windows.Forms.Label();
             this.lname = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.pbPreview = new System.Windows.Forms.PictureBox();
             this.cmsCategory = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmsAddSubCategory = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsRenameCategory = new System.Windows.Forms.ToolStripMenuItem();
@@ -93,6 +93,10 @@
             this.cmsDefect = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsInOrder = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsReserve = new System.Windows.Forms.ToolStripMenuItem();
+            this.treeView = new SparesBase.CategoriesTreeView();
+            this.dgv = new SparesBase.ItemsDataGridView();
+            this.tsmiHelp = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -103,12 +107,14 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
             this.cmsItem.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).BeginInit();
             this.cmsCategory.SuspendLayout();
             this.cmsWriteOff.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -120,7 +126,8 @@
             this.деревоToolStripMenuItem,
             this.tsmiLogs,
             this.организацияToolStripMenuItem,
-            this.tsmiSearch});
+            this.tsmiSearch,
+            this.tsmiHelp});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(1354, 24);
@@ -140,21 +147,21 @@
             // tsmiAccountInfo
             // 
             this.tsmiAccountInfo.Name = "tsmiAccountInfo";
-            this.tsmiAccountInfo.Size = new System.Drawing.Size(216, 22);
-            this.tsmiAccountInfo.Text = "Информация об аккаунте";
+            this.tsmiAccountInfo.Size = new System.Drawing.Size(225, 22);
+            this.tsmiAccountInfo.Text = "Информация об аккаунте...";
             this.tsmiAccountInfo.Click += new System.EventHandler(this.tsmiAccountInfo_Click);
             // 
             // tsmiChangeAccount
             // 
             this.tsmiChangeAccount.Name = "tsmiChangeAccount";
-            this.tsmiChangeAccount.Size = new System.Drawing.Size(216, 22);
+            this.tsmiChangeAccount.Size = new System.Drawing.Size(225, 22);
             this.tsmiChangeAccount.Text = "Смена пользователя";
             this.tsmiChangeAccount.Click += new System.EventHandler(this.tsmiChangeAccount_Click);
             // 
             // tsmiExit
             // 
             this.tsmiExit.Name = "tsmiExit";
-            this.tsmiExit.Size = new System.Drawing.Size(216, 22);
+            this.tsmiExit.Size = new System.Drawing.Size(225, 22);
             this.tsmiExit.Text = "Выход";
             this.tsmiExit.Click += new System.EventHandler(this.tsmiExit_Click);
             // 
@@ -172,28 +179,28 @@
             // tsmiAddMainCategory
             // 
             this.tsmiAddMainCategory.Name = "tsmiAddMainCategory";
-            this.tsmiAddMainCategory.Size = new System.Drawing.Size(238, 22);
-            this.tsmiAddMainCategory.Text = "Добавить главную категорию";
+            this.tsmiAddMainCategory.Size = new System.Drawing.Size(247, 22);
+            this.tsmiAddMainCategory.Text = "Добавить главную категорию...";
             this.tsmiAddMainCategory.Click += new System.EventHandler(this.AddMainCategory_Click);
             // 
             // tsmiAddSubCategory
             // 
             this.tsmiAddSubCategory.Name = "tsmiAddSubCategory";
-            this.tsmiAddSubCategory.Size = new System.Drawing.Size(238, 22);
-            this.tsmiAddSubCategory.Text = "Добавить подкатегорию";
+            this.tsmiAddSubCategory.Size = new System.Drawing.Size(247, 22);
+            this.tsmiAddSubCategory.Text = "Добавить подкатегорию...";
             this.tsmiAddSubCategory.Click += new System.EventHandler(this.AddSubCategory_Click);
             // 
             // tsmiRenameCategory
             // 
             this.tsmiRenameCategory.Name = "tsmiRenameCategory";
-            this.tsmiRenameCategory.Size = new System.Drawing.Size(238, 22);
-            this.tsmiRenameCategory.Text = "Переименовать категорию";
+            this.tsmiRenameCategory.Size = new System.Drawing.Size(247, 22);
+            this.tsmiRenameCategory.Text = "Переименовать категорию...";
             this.tsmiRenameCategory.Click += new System.EventHandler(this.RenameCategory_Click);
             // 
             // tsmiDeleteCategory
             // 
             this.tsmiDeleteCategory.Name = "tsmiDeleteCategory";
-            this.tsmiDeleteCategory.Size = new System.Drawing.Size(238, 22);
+            this.tsmiDeleteCategory.Size = new System.Drawing.Size(247, 22);
             this.tsmiDeleteCategory.Text = "Удалить категорию";
             this.tsmiDeleteCategory.Click += new System.EventHandler(this.DeleteCategory_Click);
             // 
@@ -210,21 +217,21 @@
             // tsmiAddItem
             // 
             this.tsmiAddItem.Name = "tsmiAddItem";
-            this.tsmiAddItem.Size = new System.Drawing.Size(203, 22);
-            this.tsmiAddItem.Text = "Добавить предмет";
+            this.tsmiAddItem.Size = new System.Drawing.Size(212, 22);
+            this.tsmiAddItem.Text = "Добавить предмет...";
             this.tsmiAddItem.Click += new System.EventHandler(this.AddItem_Click);
             // 
             // tsmiEditItem
             // 
             this.tsmiEditItem.Name = "tsmiEditItem";
-            this.tsmiEditItem.Size = new System.Drawing.Size(203, 22);
-            this.tsmiEditItem.Text = "Редактировать предмет";
+            this.tsmiEditItem.Size = new System.Drawing.Size(212, 22);
+            this.tsmiEditItem.Text = "Редактировать предмет...";
             this.tsmiEditItem.Click += new System.EventHandler(this.EditItem_Click);
             // 
             // tsmiDeleteItem
             // 
             this.tsmiDeleteItem.Name = "tsmiDeleteItem";
-            this.tsmiDeleteItem.Size = new System.Drawing.Size(203, 22);
+            this.tsmiDeleteItem.Size = new System.Drawing.Size(212, 22);
             this.tsmiDeleteItem.Text = "Удалить предмет";
             this.tsmiDeleteItem.Click += new System.EventHandler(this.DeleteItem_Click);
             // 
@@ -262,8 +269,8 @@
             // tsmiActionLogs
             // 
             this.tsmiActionLogs.Name = "tsmiActionLogs";
-            this.tsmiActionLogs.Size = new System.Drawing.Size(171, 22);
-            this.tsmiActionLogs.Text = "Журнал действий";
+            this.tsmiActionLogs.Size = new System.Drawing.Size(180, 22);
+            this.tsmiActionLogs.Text = "Журнал действий...";
             this.tsmiActionLogs.Click += new System.EventHandler(this.tsmiActionLogs_Click);
             // 
             // организацияToolStripMenuItem
@@ -278,15 +285,15 @@
             // tsmiUsers
             // 
             this.tsmiUsers.Name = "tsmiUsers";
-            this.tsmiUsers.Size = new System.Drawing.Size(144, 22);
-            this.tsmiUsers.Text = "Сотрудники";
+            this.tsmiUsers.Size = new System.Drawing.Size(153, 22);
+            this.tsmiUsers.Text = "Сотрудники...";
             this.tsmiUsers.Click += new System.EventHandler(this.tsmiUsers_Click);
             // 
             // tsmiSellers
             // 
             this.tsmiSellers.Name = "tsmiSellers";
-            this.tsmiSellers.Size = new System.Drawing.Size(144, 22);
-            this.tsmiSellers.Text = "Поставщики";
+            this.tsmiSellers.Size = new System.Drawing.Size(153, 22);
+            this.tsmiSellers.Text = "Поставщики...";
             this.tsmiSellers.Click += new System.EventHandler(this.tsmiSellers_Click);
             // 
             // tsmiSearch
@@ -314,43 +321,6 @@
             this.splitContainer1.Size = new System.Drawing.Size(1354, 520);
             this.splitContainer1.SplitterDistance = 170;
             this.splitContainer1.TabIndex = 1;
-            // 
-            // tbSearch
-            // 
-            this.tbSearch.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tbSearch.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.tbSearch.Location = new System.Drawing.Point(0, 17);
-            this.tbSearch.Name = "tbSearch";
-            this.tbSearch.Size = new System.Drawing.Size(170, 20);
-            this.tbSearch.TabIndex = 1;
-            this.tbSearch.Enter += new System.EventHandler(this.tbSearch_Enter);
-            this.tbSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbSearch_KeyDown);
-            this.tbSearch.Leave += new System.EventHandler(this.tbSearch_Leave);
-            // 
-            // cbSerial
-            // 
-            this.cbSerial.AutoSize = true;
-            this.cbSerial.Dock = System.Windows.Forms.DockStyle.Top;
-            this.cbSerial.Location = new System.Drawing.Point(0, 0);
-            this.cbSerial.Name = "cbSerial";
-            this.cbSerial.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.cbSerial.Size = new System.Drawing.Size(170, 17);
-            this.cbSerial.TabIndex = 3;
-            this.cbSerial.Text = "Серийный номер";
-            this.cbSerial.UseVisualStyleBackColor = true;
-            // 
-            // treeView
-            // 
-            this.treeView.AllowDrop = true;
-            this.treeView.ContextMenuStrip = this.cmsMainCategory;
-            this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeView.Location = new System.Drawing.Point(0, 37);
-            this.treeView.Name = "treeView";
-            this.treeView.Size = new System.Drawing.Size(170, 483);
-            this.treeView.TabIndex = 2;
-            this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
-            this.treeView.DragDrop += new System.Windows.Forms.DragEventHandler(this.treeView_DragDrop);
-            this.treeView.DragEnter += new System.Windows.Forms.DragEventHandler(this.treeView_DragEnter);
             // 
             // cmsMainCategory
             // 
@@ -382,6 +352,30 @@
             this.cmsCollapseAllNodes.Text = "Скрыть все узлы";
             this.cmsCollapseAllNodes.Click += new System.EventHandler(this.CollapseAllNodes_Click);
             // 
+            // tbSearch
+            // 
+            this.tbSearch.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tbSearch.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.tbSearch.Location = new System.Drawing.Point(0, 17);
+            this.tbSearch.Name = "tbSearch";
+            this.tbSearch.Size = new System.Drawing.Size(170, 20);
+            this.tbSearch.TabIndex = 1;
+            this.tbSearch.Enter += new System.EventHandler(this.tbSearch_Enter);
+            this.tbSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbSearch_KeyDown);
+            this.tbSearch.Leave += new System.EventHandler(this.tbSearch_Leave);
+            // 
+            // cbSerial
+            // 
+            this.cbSerial.AutoSize = true;
+            this.cbSerial.Dock = System.Windows.Forms.DockStyle.Top;
+            this.cbSerial.Location = new System.Drawing.Point(0, 0);
+            this.cbSerial.Name = "cbSerial";
+            this.cbSerial.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+            this.cbSerial.Size = new System.Drawing.Size(170, 17);
+            this.cbSerial.TabIndex = 3;
+            this.cbSerial.Text = "Серийный номер";
+            this.cbSerial.UseVisualStyleBackColor = true;
+            // 
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -401,36 +395,6 @@
             this.splitContainer2.Size = new System.Drawing.Size(1180, 520);
             this.splitContainer2.SplitterDistance = 319;
             this.splitContainer2.TabIndex = 1;
-            // 
-            // dgv
-            // 
-            this.dgv.AllowUserToAddRows = false;
-            this.dgv.AllowUserToDeleteRows = false;
-            this.dgv.AllowUserToResizeRows = false;
-            this.dgv.BackgroundColor = System.Drawing.Color.White;
-            this.dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv.ContextMenuStrip = this.cmsItem;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv.DefaultCellStyle = dataGridViewCellStyle1;
-            this.dgv.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv.Location = new System.Drawing.Point(0, 0);
-            this.dgv.MultiSelect = false;
-            this.dgv.Name = "dgv";
-            this.dgv.ReadOnly = true;
-            this.dgv.RowTemplate.Height = 30;
-            this.dgv.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv.Size = new System.Drawing.Size(1180, 319);
-            this.dgv.TabIndex = 0;
-            this.dgv.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellClick);
-            this.dgv.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.EditItem_Click);
-            this.dgv.MouseMove += new System.Windows.Forms.MouseEventHandler(this.dgv_MouseMove);
             // 
             // cmsItem
             // 
@@ -466,6 +430,7 @@
             // 
             this.flowLayoutPanel1.AutoScroll = true;
             this.flowLayoutPanel1.Controls.Add(this.groupBox1);
+            this.flowLayoutPanel1.Controls.Add(this.groupBox2);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -489,7 +454,7 @@
             this.groupBox1.Controls.Add(this.lname);
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(585, 188);
+            this.groupBox1.Size = new System.Drawing.Size(544, 188);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Предмет";
@@ -604,6 +569,26 @@
             this.lname.TabIndex = 5;
             this.lname.Text = "Название";
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.pbPreview);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Left;
+            this.groupBox2.Location = new System.Drawing.Point(553, 3);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(254, 188);
+            this.groupBox2.TabIndex = 1;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Превью-фото";
+            // 
+            // pbPreview
+            // 
+            this.pbPreview.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbPreview.Location = new System.Drawing.Point(3, 16);
+            this.pbPreview.Name = "pbPreview";
+            this.pbPreview.Size = new System.Drawing.Size(248, 169);
+            this.pbPreview.TabIndex = 0;
+            this.pbPreview.TabStop = false;
+            // 
             // cmsCategory
             // 
             this.cmsCategory.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -689,6 +674,64 @@
             this.cmsReserve.Text = "В резерв";
             this.cmsReserve.Click += new System.EventHandler(this.cmsReserve_Click);
             // 
+            // treeView
+            // 
+            this.treeView.AllowDrop = true;
+            this.treeView.ContextMenuStrip = this.cmsMainCategory;
+            this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeView.Location = new System.Drawing.Point(0, 37);
+            this.treeView.Name = "treeView";
+            this.treeView.Size = new System.Drawing.Size(170, 483);
+            this.treeView.TabIndex = 2;
+            this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
+            this.treeView.DragDrop += new System.Windows.Forms.DragEventHandler(this.treeView_DragDrop);
+            this.treeView.DragEnter += new System.Windows.Forms.DragEventHandler(this.treeView_DragEnter);
+            // 
+            // dgv
+            // 
+            this.dgv.AllowUserToAddRows = false;
+            this.dgv.AllowUserToDeleteRows = false;
+            this.dgv.AllowUserToResizeRows = false;
+            this.dgv.BackgroundColor = System.Drawing.Color.White;
+            this.dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv.ContextMenuStrip = this.cmsItem;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv.DefaultCellStyle = dataGridViewCellStyle1;
+            this.dgv.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv.Location = new System.Drawing.Point(0, 0);
+            this.dgv.MultiSelect = false;
+            this.dgv.Name = "dgv";
+            this.dgv.ReadOnly = true;
+            this.dgv.RowTemplate.Height = 30;
+            this.dgv.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgv.Size = new System.Drawing.Size(1180, 319);
+            this.dgv.TabIndex = 0;
+            this.dgv.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellClick);
+            this.dgv.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.EditItem_Click);
+            this.dgv.MouseMove += new System.Windows.Forms.MouseEventHandler(this.dgv_MouseMove);
+            // 
+            // tsmiHelp
+            // 
+            this.tsmiHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiAbout});
+            this.tsmiHelp.Name = "tsmiHelp";
+            this.tsmiHelp.Size = new System.Drawing.Size(65, 20);
+            this.tsmiHelp.Text = "Справка";
+            // 
+            // tsmiAbout
+            // 
+            this.tsmiAbout.Name = "tsmiAbout";
+            this.tsmiAbout.Size = new System.Drawing.Size(158, 22);
+            this.tsmiAbout.Text = "О программе...";
+            this.tsmiAbout.Click += new System.EventHandler(this.tsmiAbout_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -715,13 +758,15 @@
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgv)).EndInit();
             this.cmsItem.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).EndInit();
             this.cmsCategory.ResumeLayout(false);
             this.cmsWriteOff.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -791,5 +836,9 @@
         private System.Windows.Forms.ToolStripMenuItem cmsReserve;
         private System.Windows.Forms.ToolStripMenuItem tsmiAccountInfo;
         private System.Windows.Forms.CheckBox cbSerial;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.PictureBox pbPreview;
+        private System.Windows.Forms.ToolStripMenuItem tsmiHelp;
+        private System.Windows.Forms.ToolStripMenuItem tsmiAbout;
     }
 }

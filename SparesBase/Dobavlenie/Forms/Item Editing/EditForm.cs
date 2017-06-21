@@ -4,11 +4,13 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Net;
 using System.IO;
+using System.Threading;
 
 namespace SparesBase
 {
     public partial class EditForm : Form
     {
+        
         // Предмет
         Item item;
 
@@ -18,7 +20,9 @@ namespace SparesBase
         // Фотографии предмета
         Image[] images;
         bool imagesEdited;
-
+        int counter = 1;
+        int imagesCount = 0;
+        int selectedImage = 0;
         // Остаток
         int residue = 0;
 
@@ -47,6 +51,7 @@ namespace SparesBase
         {
             InitializeComponent();
 
+            images = new Image[5];
             this.item = item;
             this.categories = categories;
 
@@ -55,24 +60,70 @@ namespace SparesBase
             FillSellersComboBox();
             FillStatuses();
             GetItemData(item);
+            DownloadPictures();
 
             //pbPhoto.Image = FtpManager.DownloadPreviewImage(item.Id);
-            if (FtpManager.PreviewExists(item.Id))
+            //if (FtpManager.PreviewExists(item.Id))
+            //{
+            //    pbPhoto.SizeMode = PictureBoxSizeMode.CenterImage;
+            //    pbPhoto.Image = Properties.Resources.LoadGif;
+            //    WebClient webclient = new WebClient();
+            //    webclient.DownloadDataCompleted += Webclient_DownloadDataCompleted;
+            //    webclient.DownloadDataAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Photos/item_" + item.Id + "/preview.jpg"));
+
+            //}
+        }
+        private void DownloadPictures()
+        {
+            string[] photos = FtpManager.DownloadImages(item.Id);
+
+            counter = 0;
+            imagesCount = photos.Length;
+            if (imagesCount > 0)
             {
                 pbPhoto.SizeMode = PictureBoxSizeMode.CenterImage;
                 pbPhoto.Image = Properties.Resources.LoadGif;
+                btnImg1.Enabled = false;
+                btnImg2.Enabled = false;
+                btnImg3.Enabled = false;
+                btnImg4.Enabled = false;
+                btnImg5.Enabled = false;
+                btnClearPhoto.Enabled = false;
+                btnBrowsePhoto.Enabled = false;
+
+            }
+
+            foreach (string photo in photos)
+            {
                 WebClient webclient = new WebClient();
                 webclient.DownloadDataCompleted += Webclient_DownloadDataCompleted;
-                webclient.DownloadDataAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Photos/item_" + item.Id + "/preview.jpg"));
-
+                webclient.DownloadDataAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Photos/" + "item_" + item.Id + "/" + photo), photo);
             }
         }
 
         private void Webclient_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
         {
-            MemoryStream mem = new MemoryStream(e.Result);
-            pbPhoto.SizeMode = PictureBoxSizeMode.Zoom;
-            pbPhoto.Image = Image.FromStream(mem);
+            MemoryStream memoryStream = new MemoryStream(e.Result);
+            Image img = Image.FromStream(memoryStream);
+            string imageIndex = e.UserState.ToString()[0].ToString();
+            img.Tag = "SparesBase/Photos/" + "item_" + item.Id + "/" + e.UserState.ToString();
+            images[int.Parse(imageIndex) - 1] = img;
+            counter++;
+            if (counter == imagesCount)
+            {
+                pbPhoto.SizeMode = PictureBoxSizeMode.Zoom;
+                btnImg1.Enabled = true;
+                btnImg2.Enabled = true;
+                btnImg3.Enabled = true;
+                btnImg4.Enabled = true;
+                btnImg5.Enabled = true;
+                btnClearPhoto.Enabled = true;
+                btnBrowsePhoto.Enabled = true;
+
+                pbPhoto.Image = images[0];
+                btnImg1.BackColor = Color.Green;
+            }
+
         }
 
         #endregion Конструкторы
@@ -103,8 +154,7 @@ namespace SparesBase
                 tbRetailPrice.Text != "" &&
                 tbServicePrice.Text != "" &&
                 tbQuantity.Text != "" &&
-                cbSeller.SelectedValue != null &&
-                tbSerial.Text != "")
+                cbSeller.SelectedValue != null)
             {
 
                 // Идентификатор поставщика
@@ -159,7 +209,7 @@ namespace SparesBase
                         "SearchAllowed={16}, " +
                         "ChangeDate = NOW(), " +
                         "StatusId = {17}, " +
-                        "SerialNumber = {19}" +
+                        "SerialNumber = {19} " +
                         "WHERE id = " + updateId;
 
                 int inventNumber = 0;
@@ -496,8 +546,53 @@ namespace SparesBase
             ccf.ShowDialog();
         }
 
+
         #endregion Разные события
 
-       
+        private void btnImg_Click(object sender, EventArgs e)
+        {
+           
+
+            btnImg1.BackColor = SystemColors.Control;
+            btnImg2.BackColor = SystemColors.Control;
+            btnImg3.BackColor = SystemColors.Control;
+            btnImg4.BackColor = SystemColors.Control;
+            btnImg5.BackColor = SystemColors.Control;
+
+            Button but = (Button)sender;
+            but.BackColor = Color.Green;
+
+            pbPhoto.Image = images[int.Parse(but.Text) - 1];
+
+            selectedImage = int.Parse(but.Text) - 1;
+            
+        }
+
+        private void btnBrowsePhoto_Click(object sender, EventArgs e)
+        {
+
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Файлы изображений| *.jpg; *.jpeg; *.png";
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                
+                Image img = Image.FromFile(ofd.FileName);
+                string fileExtension = Path.GetExtension(ofd.FileName);
+                img.Tag = "Photos/item_" + item.Id + "/" + selectedImage + fileExtension;
+                images[selectedImage] = img;
+                pbPhoto.Image = img;
+                imagesEdited = true;
+              
+            }
+        }
+
+        private void btnClearPhoto_Click(object sender, EventArgs e)
+        {
+           
+            images[selectedImage] = null;
+            pbPhoto.Image = null;
+            imagesEdited = true;
+            
+        }
     }
 }
