@@ -64,13 +64,13 @@
             this.label9 = new System.Windows.Forms.Label();
             this.cbStatus = new System.Windows.Forms.ComboBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.btnClearPhoto = new System.Windows.Forms.Button();
+            this.btnBrowsePhoto = new System.Windows.Forms.Button();
             this.btnImg5 = new System.Windows.Forms.Button();
             this.btnImg4 = new System.Windows.Forms.Button();
             this.btnImg3 = new System.Windows.Forms.Button();
             this.btnImg2 = new System.Windows.Forms.Button();
             this.btnImg1 = new System.Windows.Forms.Button();
-            this.btnBrowsePhoto = new System.Windows.Forms.Button();
-            this.btnClearPhoto = new System.Windows.Forms.Button();
             this.pbPhoto = new System.Windows.Forms.PictureBox();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -94,21 +94,21 @@
             // 
             // tbQuantity
             // 
-            this.tbQuantity.Location = new System.Drawing.Point(403, 121);
+            this.tbQuantity.Location = new System.Drawing.Point(403, 118);
             this.tbQuantity.Name = "tbQuantity";
             this.tbQuantity.Size = new System.Drawing.Size(248, 20);
             this.tbQuantity.TabIndex = 3;
             // 
             // tbRetailPrice
             // 
-            this.tbRetailPrice.Location = new System.Drawing.Point(111, 149);
+            this.tbRetailPrice.Location = new System.Drawing.Point(111, 148);
             this.tbRetailPrice.Name = "tbRetailPrice";
             this.tbRetailPrice.Size = new System.Drawing.Size(83, 20);
             this.tbRetailPrice.TabIndex = 4;
             // 
             // tbWholesalePrice
             // 
-            this.tbWholesalePrice.Location = new System.Drawing.Point(269, 149);
+            this.tbWholesalePrice.Location = new System.Drawing.Point(269, 148);
             this.tbWholesalePrice.Name = "tbWholesalePrice";
             this.tbWholesalePrice.Size = new System.Drawing.Size(83, 20);
             this.tbWholesalePrice.TabIndex = 5;
@@ -140,7 +140,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(56, 115);
+            this.label2.Location = new System.Drawing.Point(56, 121);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(49, 13);
             this.label2.TabIndex = 16;
@@ -149,7 +149,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(55, 146);
+            this.label3.Location = new System.Drawing.Point(56, 151);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(50, 13);
             this.label3.TabIndex = 17;
@@ -176,7 +176,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(197, 152);
+            this.label6.Location = new System.Drawing.Point(197, 151);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(66, 13);
             this.label6.TabIndex = 20;
@@ -185,7 +185,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(331, 124);
+            this.label7.Location = new System.Drawing.Point(332, 121);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(66, 13);
             this.label7.TabIndex = 20;
@@ -203,7 +203,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(359, 152);
+            this.label10.Location = new System.Drawing.Point(359, 151);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(52, 13);
             this.label10.TabIndex = 26;
@@ -211,7 +211,7 @@
             // 
             // tbServicePrice
             // 
-            this.tbServicePrice.Location = new System.Drawing.Point(417, 149);
+            this.tbServicePrice.Location = new System.Drawing.Point(417, 148);
             this.tbServicePrice.Name = "tbServicePrice";
             this.tbServicePrice.Size = new System.Drawing.Size(83, 20);
             this.tbServicePrice.TabIndex = 6;
@@ -239,7 +239,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(519, 147);
+            this.label11.Location = new System.Drawing.Point(519, 146);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(43, 26);
             this.label11.TabIndex = 32;
@@ -248,7 +248,7 @@
             // 
             // tbFirmPrice
             // 
-            this.tbFirmPrice.Location = new System.Drawing.Point(568, 149);
+            this.tbFirmPrice.Location = new System.Drawing.Point(568, 148);
             this.tbFirmPrice.Name = "tbFirmPrice";
             this.tbFirmPrice.Size = new System.Drawing.Size(83, 20);
             this.tbFirmPrice.TabIndex = 7;
@@ -288,9 +288,9 @@
             this.cbSeller.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cbSeller.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbSeller.FormattingEnabled = true;
-            this.cbSeller.Location = new System.Drawing.Point(404, 90);
+            this.cbSeller.Location = new System.Drawing.Point(403, 90);
             this.cbSeller.Name = "cbSeller";
-            this.cbSeller.Size = new System.Drawing.Size(247, 21);
+            this.cbSeller.Size = new System.Drawing.Size(248, 21);
             this.cbSeller.TabIndex = 1;
             this.cbSeller.DropDown += new System.EventHandler(this.cbSeller_DropDown);
             this.cbSeller.SelectedIndexChanged += new System.EventHandler(this.cbSeller_SelectedIndexChanged);
@@ -346,7 +346,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(11, 93);
+            this.label12.Location = new System.Drawing.Point(12, 93);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(93, 13);
             this.label12.TabIndex = 38;
@@ -429,6 +429,26 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Фото";
             // 
+            // btnClearPhoto
+            // 
+            this.btnClearPhoto.Location = new System.Drawing.Point(3, 273);
+            this.btnClearPhoto.Name = "btnClearPhoto";
+            this.btnClearPhoto.Size = new System.Drawing.Size(296, 23);
+            this.btnClearPhoto.TabIndex = 21;
+            this.btnClearPhoto.Text = "Очистить";
+            this.btnClearPhoto.UseVisualStyleBackColor = true;
+            this.btnClearPhoto.Click += new System.EventHandler(this.btnClearPhoto_Click);
+            // 
+            // btnBrowsePhoto
+            // 
+            this.btnBrowsePhoto.Location = new System.Drawing.Point(3, 243);
+            this.btnBrowsePhoto.Name = "btnBrowsePhoto";
+            this.btnBrowsePhoto.Size = new System.Drawing.Size(296, 23);
+            this.btnBrowsePhoto.TabIndex = 20;
+            this.btnBrowsePhoto.Text = "Назначить";
+            this.btnBrowsePhoto.UseVisualStyleBackColor = true;
+            this.btnBrowsePhoto.Click += new System.EventHandler(this.btnBrowsePhoto_Click);
+            // 
             // btnImg5
             // 
             this.btnImg5.Location = new System.Drawing.Point(262, 213);
@@ -478,26 +498,6 @@
             this.btnImg1.Text = "1";
             this.btnImg1.UseVisualStyleBackColor = true;
             this.btnImg1.Click += new System.EventHandler(this.btnImg_Click);
-            // 
-            // btnBrowsePhoto
-            // 
-            this.btnBrowsePhoto.Location = new System.Drawing.Point(3, 243);
-            this.btnBrowsePhoto.Name = "btnBrowsePhoto";
-            this.btnBrowsePhoto.Size = new System.Drawing.Size(296, 23);
-            this.btnBrowsePhoto.TabIndex = 20;
-            this.btnBrowsePhoto.Text = "Назначить";
-            this.btnBrowsePhoto.UseVisualStyleBackColor = true;
-            this.btnBrowsePhoto.Click += new System.EventHandler(this.btnBrowsePhoto_Click);
-            // 
-            // btnClearPhoto
-            // 
-            this.btnClearPhoto.Location = new System.Drawing.Point(3, 273);
-            this.btnClearPhoto.Name = "btnClearPhoto";
-            this.btnClearPhoto.Size = new System.Drawing.Size(296, 23);
-            this.btnClearPhoto.TabIndex = 21;
-            this.btnClearPhoto.Text = "Очистить";
-            this.btnClearPhoto.UseVisualStyleBackColor = true;
-            this.btnClearPhoto.Click += new System.EventHandler(this.btnClearPhoto_Click);
             // 
             // pbPhoto
             // 

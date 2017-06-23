@@ -187,7 +187,7 @@ namespace SparesBase
                         "0, " +
                         "{17}," +
                         "{18}," +
-                        "{19})";
+                        " {19})";
                 else
                     query = "UPDATE Items SET " +
                         "Main_Category_Id = {0}, " +
@@ -227,7 +227,7 @@ namespace SparesBase
                     DatabaseWorker.SqlQuery("UPDATE ItemsCounters SET Counter = " + inventNumber + " WHERE(OrganizationId = " + EnteredUser.OrganizationId + ")");
                 }
 
-                 
+
 
                 // Вставка данных о предмете в стороку запроса
                 query = string.Format(query,
@@ -250,7 +250,7 @@ namespace SparesBase
                     chbSearchAllowed.Checked ? "1" : "0",
                     cbStatus.SelectedValue,
                     inventNumber,
-                    tbSerial.Text);
+                    tbSerial.Text != "" ? tbSerial.Text : " 0");
 
                 // Выполнение запроса
                 DatabaseWorker.SqlQuery(query);
@@ -296,7 +296,7 @@ namespace SparesBase
             chbSearchAllowed.Checked = item.SearchAllowed;
             cbStatus.Text = item.Status;
             lInventNumber.Text = "Инвентарный номер: " + item.InventNumber.ToString();
-            tbSerial.Text = item.SerialNumber.ToString();
+            tbSerial.Text = item.SerialNumber <= 0 ? "" : item.SerialNumber.ToString();
             FillCategoriesInfo();
         }
 
