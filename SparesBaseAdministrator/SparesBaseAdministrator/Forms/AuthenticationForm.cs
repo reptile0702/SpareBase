@@ -66,7 +66,7 @@ namespace SparesBaseAdministrator
 
             WebClient webcl = new WebClient();
             webcl.DownloadFileCompleted += Webcl_DownloadFileCompleted;
-            webcl.DownloadFileAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru//SparesBase/Admin/Versions/CurrentVersion/Version.xml"), "Version.xml");
+            webcl.DownloadFileAsync(new Uri("ftp://u0183148:W5iLVaY9@server137.hosting.reg.ru/www/xn--29-nmcu.xn--p1ai/SparesBase/Admin/Versions/CurrentVersion/Version.xml"), "Version.xml");
         }
 
         private void Webcl_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)

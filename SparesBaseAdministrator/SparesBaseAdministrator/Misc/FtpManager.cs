@@ -16,11 +16,11 @@ namespace SparesBaseAdministrator
         // Данные об FTP сервере
         static int timeout = 30000;
         static int port = 21;
-        static string server = "status.nvhost.ru";
-        static string username = "sh61018001";
-        static string password = "lfybkrf";
-        static string photosPath = "SparesBase/Photos/";
-        static string remotePath = "SparesBase/";
+        static string server = "server137.hosting.reg.ru";
+        static string username = "u0183148";
+        static string password = "W5iLVaY9";
+        static string photosPath = "www/xn--29-nmcu.xn--p1ai/SparesBase/Photos/";
+        static string remotePath = "www/xn--29-nmcu.xn--p1ai/SparesBase/";
         static FtpClient client;
         static string photosString = "Photos/";
 
@@ -243,13 +243,13 @@ namespace SparesBaseAdministrator
         {
             // Загрузка Banners.xml
             WebClient wcBanners = new WebClient();
-            wcBanners.DownloadFile(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Banners/Banners.xml"), "Banners.xml");
+            wcBanners.DownloadFile(new Uri("ftp://u0183148:W5iLVaY9@server137.hosting.reg.ru/www/xn--29-nmcu.xn--p1ai/SparesBase/Banners/Banners.xml"), "Banners.xml");
         }
 
         public static Image DownloadBannerImage(string bannerName)
         {
             WebClient wcBanner = new WebClient();
-            byte[] imageBytes = wcBanner.DownloadData(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Banners/" + bannerName));
+            byte[] imageBytes = wcBanner.DownloadData(new Uri("ftp://u0183148:W5iLVaY9@server137.hosting.reg.ru/www/xn--29-nmcu.xn--p1ai/SparesBase/Banners/" + bannerName));
             MemoryStream ms = new MemoryStream(imageBytes);
             return Image.FromStream(ms);
         }
@@ -268,7 +268,7 @@ namespace SparesBaseAdministrator
             {
                 MemoryStream ms = new MemoryStream();
                 banner.Image.Save(ms, ImageFormat.Jpeg);
-                wcBanners.UploadData(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Banners/" + banner.PhotoName), ms.GetBuffer());
+                wcBanners.UploadData(new Uri("ftp://u0183148:W5iLVaY9@server137.hosting.reg.ru/www/xn--29-nmcu.xn--p1ai/SparesBase/Banners/" + banner.PhotoName), ms.GetBuffer());
             }
 
             XmlDocument bannersDoc = new XmlDocument();
@@ -298,7 +298,7 @@ namespace SparesBaseAdministrator
             MemoryStream xmlMs = new MemoryStream();
             bannersDoc.Save(xmlMs);
 
-            wcBanners.UploadData(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Banners/Banners.xml"), xmlMs.GetBuffer());
+            wcBanners.UploadData(new Uri("ftp://u0183148:W5iLVaY9@server137.hosting.reg.ru/www/xn--29-nmcu.xn--p1ai/SparesBase/Banners/Banners.xml"), xmlMs.GetBuffer());
         }
 
         #endregion Баннеры

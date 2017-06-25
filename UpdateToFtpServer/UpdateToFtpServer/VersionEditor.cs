@@ -33,11 +33,12 @@ namespace UpdateToFtpServer
         private void btnUpload_Click(object sender, EventArgs e)
         {
             UploadVersion();
+            Close();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-
+            Close();
         }
     }
 }

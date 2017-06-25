@@ -690,7 +690,7 @@ namespace SparesBase
                 if (FtpManager.PreviewExists(SelectedItem.Id))
                 {
                     WebClient webclient = new WebClient();
-                    byte[] imageBytes = webclient.DownloadData(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Photos/item_" + SelectedItem.Id + "/preview.jpg"));
+                    byte[] imageBytes = webclient.DownloadData(new Uri("ftp://u0183148:W5iLVaY9@server137.hosting.reg.ru/www/xn--29-nmcu.xn--p1ai/SparesBase/Photos/item_" + SelectedItem.Id + "/preview.jpg"));
                     MemoryStream ms = new MemoryStream(imageBytes);
                     pbPreview.SizeMode = PictureBoxSizeMode.Zoom;
                     pbPreview.Image = Image.FromStream(ms);

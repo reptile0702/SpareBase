@@ -164,12 +164,12 @@ namespace SparesBase.Forms
             // Загрузка Version.xml
             WebClient wcVersion = new WebClient();
             wcVersion.DownloadFileCompleted += WcVersion_DownloadFileCompleted;
-            wcVersion.DownloadFileAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Client/Versions/CurrentVersion/Version.xml"), "Version.xml");
+            wcVersion.DownloadFileAsync(new Uri("ftp://u0183148:W5iLVaY9@server137.hosting.reg.ru/www/xn--29-nmcu.xn--p1ai/SparesBase/Client/Versions/CurrentVersion/Version.xml"), "Version.xml");
             
             // Загрузка Banners.xml
             WebClient wcBanners = new WebClient();
             wcBanners.DownloadFileCompleted += WcBanners_DownloadFileCompleted;
-            wcBanners.DownloadFileAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Banners/Banners.xml"), "Banners/Banners.xml");
+            wcBanners.DownloadFileAsync(new Uri("ftp://u0183148:W5iLVaY9@server137.hosting.reg.ru/www/xn--29-nmcu.xn--p1ai/SparesBase/Banners/Banners.xml"), "Banners/Banners.xml");
         }
 
         // Вызывается, когда загрузится файл Banners.xml
@@ -194,7 +194,7 @@ namespace SparesBase.Forms
                 if (!FolderBannerCheck(img))
                 {
                     WebClient webclient = new WebClient();
-                    webclient.DownloadFileAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Banners/" + img), "Banners/" + img);
+                    webclient.DownloadFileAsync(new Uri("ftp://u0183148:W5iLVaY9@server137.hosting.reg.ru/www/xn--29-nmcu.xn--p1ai/SparesBase/Banners/" + img), "Banners/" + img);
                 }                
             }
         }
@@ -220,6 +220,14 @@ namespace SparesBase.Forms
             {
                 UpdateProgramForm upf = new UpdateProgramForm(xRoot["Version"].InnerText, xRoot["Date"].InnerText, xRoot["ChangeLog"].InnerText);
                 upf.ShowDialog();
+            }
+            else
+            {
+                if (File.Exists("Updater.exe"))
+                {
+                    File.Delete("Updater.exe");
+                }
+               
             }
         }
 

@@ -27,26 +27,26 @@ namespace SparesBase
         #region Методы
         
         // Заполнение организаций
-        private void FillOrganizations()
+        private void FillCities()
         {
             DataTable dt = new DataTable();
             dt.Columns.Add("id");
-            dt.Columns.Add("Name");
-            dt.Rows.Add("0", "Все организации");
+            dt.Columns.Add("City");
+            dt.Rows.Add("0", "Все города");
 
-            DataTable dt2 = DatabaseWorker.SqlSelectQuery("SELECT id, Name FROM Organizations");
+            DataTable dt2 = DatabaseWorker.SqlSelectQuery("SELECT id, City FROM Cities");
             foreach (DataRow row in dt2.Rows)
             {
                 dt.Rows.Add(row.ItemArray[0], row.ItemArray[1]);
             }
 
-            cbOrganizations.ValueMember = "id";
-            cbOrganizations.DisplayMember = "Name";
-            cbOrganizations.DataSource = dt;
+            cbСities.ValueMember = "id";
+            cbСities.DisplayMember = "City";
+            cbСities.DataSource = dt;
         }
 
         // Поиск
-        private void Search(string searchStr, int organizationId)
+        private void Search(string searchStr, int organizationId, int cityId)
         {
             string where = "WHERE(";
             string[] searchWords = searchStr.Split(' ');
@@ -62,7 +62,8 @@ namespace SparesBase
                 where = where.Remove(where.Length - 3, 3) + ") AND";
 
             where += organizationId != 0 ? " (i.OrganizationId = " + organizationId + ") AND" : "";
-            where += " (i.SearchAllowed = 1) AND (i.Residue > 0) AND (i.Deleted <> 1))";
+            where += " (i.SearchAllowed = 1) AND (i.Residue > 0) AND (i.Deleted <> 1)";
+            where += cityId == -1 ? ")" : " AND (o.CityId = " + cityId + "))";
 
             Item[] items = dgv.FillItems(where);
             foreach (Item item in items)
@@ -141,22 +142,24 @@ namespace SparesBase
             dgv.Columns[5].Width = 130;
 #endif
 
-            FillOrganizations();
-            Search("", 0);   
+            FillCities();
+            Search("", 0, -1);   
         }
 
         // Нажатие на Enter на TextBox
         private void tbSearching_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
-                Search(tbSearching.Text, selectedOrganization);
+                Search(tbSearching.Text, selectedOrganization, int.Parse(cbСities.SelectedValue.ToString()));
         }
 
         // Смена организации
         private void cbOrganizations_SelectedIndexChanged(object sender, EventArgs e)
         {
+            cbSearchByOrganization.Checked = false;
             tbSearching.Text = "";
-            Search(tbSearching.Text, int.Parse(cbOrganizations.SelectedValue.ToString()));
+          
+            
         }
 
         // Двойной клик на предмет
@@ -215,12 +218,12 @@ namespace SparesBase
             {
                 Item item = (Item)dgv.CurrentRow.Tag;
                 selectedOrganization = item.Organization.Id;
-                Search(tbSearching.Text, selectedOrganization);
+                Search(tbSearching.Text, selectedOrganization, -1);
             }
             else
             {
                 selectedOrganization = 0;
-                Search(tbSearching.Text, selectedOrganization);
+                Search(tbSearching.Text, selectedOrganization, int.Parse(cbСities.SelectedValue.ToString()));
             }
         }
     }

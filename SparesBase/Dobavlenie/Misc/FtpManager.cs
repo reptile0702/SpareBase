@@ -12,11 +12,11 @@ namespace SparesBase
         // Данные об FTP сервере
         static int timeout = 30000;
         static int port = 21;
-        static string server = "status.nvhost.ru";
-        static string username = "sh61018001";
-        static string password = "lfybkrf";
-        static string photosPath = "SparesBase/Photos/";
-        static string remotePath = "SparesBase/";
+        static string server = "server137.hosting.reg.ru";
+        static string username = "u0183148";
+        static string password = "W5iLVaY9";
+        static string photosPath = "www/xn--29-nmcu.xn--p1ai/SparesBase/Photos/";
+        static string remotePath = "www/xn--29-nmcu.xn--p1ai/SparesBase/";
         static FtpClient client;
         static string photosString = "Photos/";
 

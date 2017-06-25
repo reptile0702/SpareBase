@@ -55,7 +55,7 @@ namespace SparesBaseAdministrator
             {
                 WebClient webclient = new WebClient();
                 webclient.DownloadDataCompleted += Webclient_DownloadDataCompleted;
-                webclient.DownloadDataAsync(new Uri("ftp://sh61018001:lfybkrf@status.nvhost.ru/SparesBase/Photos/" + "item_" + id + "/" + photo), photo);
+                webclient.DownloadDataAsync(new Uri("ftp://u0183148:W5iLVaY9@server137.hosting.reg.ru/www/xn--29-nmcu.xn--p1ai/SparesBase/Photos/" + "item_" + id + "/" + photo), photo);
             }
         }
 
