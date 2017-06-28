@@ -207,7 +207,7 @@ namespace SparesBase
                     row.ItemArray[53].ToString() == "1" ? true : false,
                     row.ItemArray[55].ToString(),
                     int.Parse(row.ItemArray[56].ToString()),
-                    int.Parse(row.ItemArray[57].ToString()));
+                    row.ItemArray[57].ToString());
 
                 resItems.Add(item);
             }

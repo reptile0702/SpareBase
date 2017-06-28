@@ -26,7 +26,7 @@
             bool searchAllowed,
             string status,
             int inventNumber,
-            int serialNumber)
+            string serialNumber)
         {
             Id = id;
 
@@ -99,6 +99,6 @@
 
         public int InventNumber { get; set; }
 
-        public int SerialNumber { get; set; }
+        public string SerialNumber { get; set; }
     }
 }

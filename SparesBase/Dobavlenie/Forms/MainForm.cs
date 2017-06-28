@@ -331,7 +331,15 @@ namespace SparesBase
         {
             EditForm form = new EditForm(FormCategories());
             form.ShowDialog();
-            FillItemsByCategory();
+            if (tbSearch.Text == "Поиск" || tbSearch.Text.Trim() == "")
+            {
+                FillItemsByCategory();
+            }
+            else
+            {
+                SearchItems(tbSearch.Text);
+            }
+            
         }
 
         // Редактировать предмет
@@ -339,7 +347,14 @@ namespace SparesBase
         {
             EditForm form = new EditForm(SelectedItem, FormCategories());
             form.ShowDialog();
-            FillItemsByCategory();
+            if (tbSearch.Text == "Поиск" || tbSearch.Text.Trim() == "")
+            {
+                FillItemsByCategory();
+            }
+            else
+            {
+                SearchItems(tbSearch.Text);
+            }
         }
 
         // Удалить предмет
@@ -349,7 +364,14 @@ namespace SparesBase
             DatabaseWorker.SqlQuery("UPDATE Items SET Deleted = 1 WHERE(id = " + SelectedItem.Id + ")");
             FtpManager.DeleteItemImages(SelectedItem.Id);
             DatabaseWorker.InsertAction(3, SelectedItem.Id);
-            FillItemsByCategory();
+            if (tbSearch.Text == "Поиск" || tbSearch.Text.Trim() == "")
+            {
+                FillItemsByCategory();
+            }
+            else
+            {
+                SearchItems(tbSearch.Text);
+            }
         }
 
         // Обновляет информацию о выделенном предмете в панели информации
@@ -404,7 +426,7 @@ namespace SparesBase
             string where = "WHERE(";
             if (cbSerial.Checked)
             {
-                where += "i.SerialNumber LIKE'%" + tbSearch.Text + "%' AND i.OrganizationId = " + EnteredUser.id + ")";
+                where += "i.SerialNumber LIKE'%" + tbSearch.Text + "%' AND i.OrganizationId = " + EnteredUser.OrganizationId + ")";
                 items = dgv.FillItems(where);
             }
             else
@@ -431,6 +453,7 @@ namespace SparesBase
 #if DEBUG
                 dgv.Rows.Add(
                     item.Id,
+                    item.InventNumber,
                     item.Name,
                     item.Seller.Name,
                     item.PurchasePrice,
@@ -448,7 +471,8 @@ namespace SparesBase
 
 
 #else
-                dgv.Rows.Add(                    
+                dgv.Rows.Add(
+                    item.InventNumber,                    
                     item.Name,
                     item.Seller.Name,
                     item.PurchasePrice,
@@ -676,8 +700,6 @@ namespace SparesBase
             {
                 previewThread.Abort();
             }
-
-
 
 
 

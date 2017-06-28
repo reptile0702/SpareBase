@@ -34,7 +34,7 @@ namespace SparesBase
             InitializeComponent();
 
             this.categories = categories;
-
+            images = new Image[5];
             // Выключение кнопок: В заказ, продажа, брак
             btnInOrder.Enabled = false;
             btnDefect.Enabled = false;
@@ -187,7 +187,7 @@ namespace SparesBase
                         "0, " +
                         "{17}," +
                         "{18}," +
-                        " {19})";
+                        " '{19}')";
                 else
                     query = "UPDATE Items SET " +
                         "Main_Category_Id = {0}, " +
@@ -209,7 +209,7 @@ namespace SparesBase
                         "SearchAllowed={16}, " +
                         "ChangeDate = NOW(), " +
                         "StatusId = {17}, " +
-                        "SerialNumber = {19} " +
+                        "SerialNumber = '{19}' " +
                         "WHERE id = " + updateId;
 
                 int inventNumber = 0;
@@ -250,7 +250,7 @@ namespace SparesBase
                     chbSearchAllowed.Checked ? "1" : "0",
                     cbStatus.SelectedValue,
                     inventNumber,
-                    tbSerial.Text != "" ? tbSerial.Text : " 0");
+                    tbSerial.Text.Trim() != "" ? tbSerial.Text : "");
 
                 // Выполнение запроса
                 DatabaseWorker.SqlQuery(query);
@@ -296,7 +296,7 @@ namespace SparesBase
             chbSearchAllowed.Checked = item.SearchAllowed;
             cbStatus.Text = item.Status;
             lInventNumber.Text = "Инвентарный номер: " + item.InventNumber.ToString();
-            tbSerial.Text = item.SerialNumber <= 0 ? "" : item.SerialNumber.ToString();
+            tbSerial.Text = item.SerialNumber.Trim() == "" ? "" : item.SerialNumber.ToString();
             FillCategoriesInfo();
         }
 
@@ -578,7 +578,7 @@ namespace SparesBase
                 
                 Image img = Image.FromFile(ofd.FileName);
                 string fileExtension = Path.GetExtension(ofd.FileName);
-                img.Tag = "Photos/item_" + item.Id + "/" + selectedImage + fileExtension;
+                //img.Tag = "Photos/item_" + item.Id + "/" + selectedImage + fileExtension;
                 images[selectedImage] = img;
                 pbPhoto.Image = img;
                 imagesEdited = true;
