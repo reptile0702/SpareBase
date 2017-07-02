@@ -26,7 +26,7 @@ namespace SparesBase
 
         #region Методы
         
-        // Заполнение организаций
+        // Заполнение городов
         private void FillCities()
         {
             DataTable dt = new DataTable();
@@ -43,6 +43,10 @@ namespace SparesBase
             cbСities.ValueMember = "id";
             cbСities.DisplayMember = "City";
             cbСities.DataSource = dt;
+
+            int userCity = int.Parse(DatabaseWorker.SqlScalarQuery("SELECT CityId FROM Organizations WHERE(id = " + EnteredUser.OrganizationId + ")").ToString());
+            cbСities.SelectedValue = userCity;
+            Search("", 0, userCity);
         }
 
         // Поиск
@@ -68,16 +72,6 @@ namespace SparesBase
             Item[] items = dgv.FillItems(where);
             foreach (Item item in items)
             {
-#if DEBUG
-                dgv.Rows.Add(
-                    item.Id,
-                    item.Name,
-                    item.RetailPrice,
-                    item.ServicePrice,
-                    item.Quantity,
-                    item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay,
-                    item.ChangeDate.Date.ToShortDateString() + " " + item.ChangeDate.TimeOfDay);
-#else
                 dgv.Rows.Add(
                     item.Name,
                     item.RetailPrice,
@@ -85,7 +79,6 @@ namespace SparesBase
                     item.Quantity,
                     item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay,
                     item.ChangeDate.Date.ToShortDateString() + " " + item.ChangeDate.TimeOfDay);
-#endif
 
                 dgv.Rows[dgv.Rows.Count - 1].Tag = item;
             }
@@ -114,9 +107,6 @@ namespace SparesBase
             // Задержка перед загрузкой баннеров
             loadBannersDelay.Start();
 
-#if DEBUG
-            dgv.Columns.Add("Id", "ID");
-#endif
             dgv.Columns.Add("Name", "Наименование");
             dgv.Columns.Add("Retail", "Розница");
             dgv.Columns.Add("Service", "Сервисы");
@@ -124,26 +114,15 @@ namespace SparesBase
             dgv.Columns.Add("date", "Дата добавления");
             dgv.Columns.Add("changeDate", "Дата изменения");
 
-#if DEBUG
-
-            dgv.Columns[0].Width = 50;
-            dgv.Columns[1].Width = 150;
-            dgv.Columns[2].Width = 80;
-            dgv.Columns[3].Width = 80;
-            dgv.Columns[4].Width = 80;
-            dgv.Columns[5].Width = 130;
-            dgv.Columns[6].Width = 130;
-#else
             dgv.Columns[0].Width = 150;
             dgv.Columns[1].Width = 80;
             dgv.Columns[2].Width = 80;
             dgv.Columns[3].Width = 80;
             dgv.Columns[4].Width = 130;
             dgv.Columns[5].Width = 130;
-#endif
 
             FillCities();
-            Search("", 0, -1);   
+            
         }
 
         // Нажатие на Enter на TextBox

@@ -51,9 +51,6 @@ namespace SparesBase
             treeView.FillCategories(EnteredUser.OrganizationId, cmsCategory);
             InitializeDataGridView();
             ClearInfoAboutItem();
-
-
-
         }
 
 
@@ -87,31 +84,10 @@ namespace SparesBase
 
             foreach (Item item in items)
             {
-#if DEBUG
-                dgv.Rows.Add(
-                    item.Id,
-                    item.InventNumber,
-                    item.Name,
-                    item.Seller.Name,
-                    item.PurchasePrice,
-                    item.RetailPrice,
-                    item.WholesalePrice,
-                    item.ServicePrice,
-                    item.FirmPrice,
-                    item.Storage,
-                    item.Quantity,
-                    item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay,
-                    item.ChangeDate.Date.ToShortDateString() + " " + item.ChangeDate.TimeOfDay,
-                    item.Residue,
-                    item.Status);
-
-
-
-#else
                 dgv.Rows.Add(
                     item.InventNumber,
                     item.Name,                    
-                    item.Seller.Name,
+                    item.Seller != null ? item.Seller.Name : "Без поставщика",
                     item.PurchasePrice,
                     item.RetailPrice,
                     item.WholesalePrice,
@@ -123,7 +99,6 @@ namespace SparesBase
                     item.ChangeDate.Date.ToShortDateString() + " " + item.ChangeDate.TimeOfDay,
                     item.Residue,
                     item.Status);
-#endif
 
                 dgv.Rows[dgv.Rows.Count - 1].Tag = item;
                 if (dgv.RowCount == 1)
@@ -185,23 +160,6 @@ namespace SparesBase
             dgv.Columns.Add("residue", "Остаток");
             dgv.Columns.Add("status", "Статус");
 
-#if DEBUG
-            dgv.Columns[0].Width = 50;
-            dgv.Columns[1].Width = 50;
-            dgv.Columns[2].Width = 150;
-            dgv.Columns[3].Width = 120;
-            dgv.Columns[4].Width = 90;
-            dgv.Columns[5].Width = 90;
-            dgv.Columns[6].Width = 90;
-            dgv.Columns[7].Width = 90;
-            dgv.Columns[8].Width = 90;
-            dgv.Columns[9].Width = 90;
-            dgv.Columns[10].Width = 90;
-            dgv.Columns[11].Width = 120;
-            dgv.Columns[12].Width = 120;
-            dgv.Columns[13].Width = 70;
-            dgv.Columns[14].Width = 90;
-#else
             dgv.Columns[0].Width = 50;
             dgv.Columns[1].Width = 150;
             dgv.Columns[2].Width = 120;
@@ -216,7 +174,6 @@ namespace SparesBase
             dgv.Columns[11].Width = 120;
             dgv.Columns[12].Width = 70;
             dgv.Columns[13].Width = 90;
-#endif
         }
 
         // Поиск и выделение нода по пути
@@ -378,7 +335,7 @@ namespace SparesBase
         private void InsertInfoAboutItem(Item selItem)
         {
             lname.Text = "Имя: " + selItem.Name;
-            lseller.Text = "Поставщик: " + selItem.Seller.Name;
+            lseller.Text = "Поставщик: " + (selItem.Seller != null ? selItem.Seller.Name : "Без поставщика");
             lpurchase.Text = "Закупка: " + selItem.PurchasePrice;
             lretail.Text = "Розница: " + selItem.RetailPrice;
             lwhole.Text = "Мелкий опт: " + selItem.WholesalePrice;
@@ -450,27 +407,6 @@ namespace SparesBase
 
             foreach (Item item in items)
             {
-#if DEBUG
-                dgv.Rows.Add(
-                    item.Id,
-                    item.InventNumber,
-                    item.Name,
-                    item.Seller.Name,
-                    item.PurchasePrice,
-                    item.RetailPrice,
-                    item.WholesalePrice,
-                    item.ServicePrice,
-                    item.FirmPrice,
-                    item.Storage,
-                    item.Quantity,
-                    item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay,
-                    item.ChangeDate.Date.ToShortDateString() + " " + item.ChangeDate.TimeOfDay,
-                    item.Residue,
-                    item.Status);
-
-
-
-#else
                 dgv.Rows.Add(
                     item.InventNumber,                    
                     item.Name,
@@ -486,7 +422,6 @@ namespace SparesBase
                     item.ChangeDate.Date.ToShortDateString() + " " + item.ChangeDate.TimeOfDay,
                     item.Residue,
                     item.Status);
-#endif
 
                 dgv.Rows[dgv.Rows.Count - 1].Tag = item;
             }

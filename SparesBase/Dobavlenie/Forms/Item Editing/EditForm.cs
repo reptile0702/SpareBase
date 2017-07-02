@@ -237,7 +237,7 @@ namespace SparesBase
                     categories[3],
                     categories[4],
                     tbItemName.Text,
-                    DatabaseWorker.SqlScalarQuery("SELECT id FROM Sellers WHERE(id=" + id + ")"),
+                    id,
                     tbPurchasePrice.Text,
                     tbRetailPrice.Text,
                     tbWholesalePrice.Text,
@@ -284,7 +284,7 @@ namespace SparesBase
         private void GetItemData(Item item)
         {
             tbItemName.Text = item.Name;
-            cbSeller.SelectedValue = item.Seller.Id;
+            cbSeller.SelectedValue = item.Seller != null ? item.Seller.Id : -2;
             tbPurchasePrice.Text = item.PurchasePrice;
             tbRetailPrice.Text = item.RetailPrice;
             tbWholesalePrice.Text = item.WholesalePrice;
@@ -340,19 +340,24 @@ namespace SparesBase
         // Заполнение ComboBox'а с поставщиками
         private void FillSellersComboBox()
         {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("id");
+            dt.Columns.Add("name");
+            dt.Rows.Add("-2", "Без поставщика");
+
             int selectedId = 0;
             if (cbSeller.SelectedValue != null)
                 selectedId = int.Parse(cbSeller.SelectedValue.ToString());
 
-            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT id, name FROM Sellers WHERE(OrganizationId=" + EnteredUser.OrganizationId + ") ORDER BY name");
+            DataTable sellers = DatabaseWorker.SqlSelectQuery("SELECT id, name FROM Sellers WHERE(OrganizationId=" + EnteredUser.OrganizationId + ") ORDER BY name");
             DataTable source = new DataTable();
             source.Columns.Add("id");
             source.Columns.Add("name");
 
             bool flag = false;
-            foreach (DataRow row in dt.Rows)
+            foreach (DataRow row in sellers.Rows)
             {
-                source.Rows.Add(row[0].ToString(), row[1].ToString());
+                dt.Rows.Add(row[0].ToString(), row[1].ToString());
 
                 if (selectedId != 0 && !flag)
                 {
@@ -365,7 +370,7 @@ namespace SparesBase
 
             source.Rows.Add("-1", "Добавить нового поставщика...");
 
-            cbSeller.DataSource = source;
+            cbSeller.DataSource = dt;
             cbSeller.DisplayMember = "name";
             cbSeller.ValueMember = "id";
 

@@ -147,17 +147,21 @@ namespace SparesBase
                         int.Parse(row.ItemArray[19].ToString()));
                 }
 
+                Seller seller = null;
 
-                // Поставщик
-                Seller seller = new Seller(
-                        int.Parse(row.ItemArray[21].ToString()),
-                        row.ItemArray[22].ToString(),
-                        row.ItemArray[23].ToString(),
-                        row.ItemArray[24].ToString(),
-                        row.ItemArray[25].ToString(),
-                        row.ItemArray[26].ToString(),
-                        row.ItemArray[27].ToString(),
-                        int.Parse(row.ItemArray[28].ToString()));
+                if (row.ItemArray[21].ToString() != "")
+                {
+                    // Поставщик
+                    seller = new Seller(
+                            int.Parse(row.ItemArray[21].ToString()),
+                            row.ItemArray[22].ToString(),
+                            row.ItemArray[23].ToString(),
+                            row.ItemArray[24].ToString(),
+                            row.ItemArray[25].ToString(),
+                            row.ItemArray[26].ToString(),
+                            row.ItemArray[27].ToString(),
+                            int.Parse(row.ItemArray[28].ToString()));
+                }
 
                 // Организация
                 Organization organization = new Organization(
