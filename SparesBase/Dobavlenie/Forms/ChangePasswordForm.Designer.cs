@@ -40,7 +40,7 @@
             // 
             // btnChangePassword
             // 
-            this.btnChangePassword.Location = new System.Drawing.Point(71, 110);
+            this.btnChangePassword.Location = new System.Drawing.Point(71, 112);
             this.btnChangePassword.Name = "btnChangePassword";
             this.btnChangePassword.Size = new System.Drawing.Size(134, 23);
             this.btnChangePassword.TabIndex = 0;
@@ -54,6 +54,7 @@
             this.tbOldPassword.Name = "tbOldPassword";
             this.tbOldPassword.Size = new System.Drawing.Size(154, 20);
             this.tbOldPassword.TabIndex = 1;
+            this.tbOldPassword.UseSystemPasswordChar = true;
             // 
             // tbNewPassword
             // 
@@ -61,6 +62,7 @@
             this.tbNewPassword.Name = "tbNewPassword";
             this.tbNewPassword.Size = new System.Drawing.Size(154, 20);
             this.tbNewPassword.TabIndex = 2;
+            this.tbNewPassword.UseSystemPasswordChar = true;
             // 
             // tbRepeatPassword
             // 
@@ -68,6 +70,7 @@
             this.tbRepeatPassword.Name = "tbRepeatPassword";
             this.tbRepeatPassword.Size = new System.Drawing.Size(154, 20);
             this.tbRepeatPassword.TabIndex = 3;
+            this.tbRepeatPassword.UseSystemPasswordChar = true;
             // 
             // label1
             // 
@@ -98,6 +101,7 @@
             // 
             // ChangePasswordForm
             // 
+            this.AcceptButton = this.btnChangePassword;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 147);

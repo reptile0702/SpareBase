@@ -8,6 +8,8 @@ namespace SparesBase
 {
     class ItemsDataGridView : DataGridView
     {
+        #region Конструкторы
+        
         // Конструктор
         public ItemsDataGridView()
         {
@@ -16,6 +18,11 @@ namespace SparesBase
             RowsRemoved += ItemsDataGridView_RowsRemoved;
         }
 
+        #endregion Конструкторы
+
+
+
+        #region Методы
 
         // Заполнение предметов
         public Item[] FillItems(string where)
@@ -97,7 +104,6 @@ namespace SparesBase
                     "LEFT JOIN Cities oac ON oac.id = oa.CityId " +
                     "LEFT JOIN ItemStatus status ON status.id = i.StatusId " + where);
           
-
             foreach (DataRow row in items.Rows)
             {
                 // Категории
@@ -147,30 +153,24 @@ namespace SparesBase
                         int.Parse(row.ItemArray[19].ToString()));
                 }
 
-                Seller seller = null;
-
-                if (row.ItemArray[21].ToString() != "")
-                {
-                    // Поставщик
-                    seller = new Seller(
-                            int.Parse(row.ItemArray[21].ToString()),
-                            row.ItemArray[22].ToString(),
-                            row.ItemArray[23].ToString(),
-                            row.ItemArray[24].ToString(),
-                            row.ItemArray[25].ToString(),
-                            row.ItemArray[26].ToString(),
-                            row.ItemArray[27].ToString(),
-                            int.Parse(row.ItemArray[28].ToString()));
-                }
+                Seller seller = new Seller(
+                    int.Parse(row.ItemArray[21].ToString()),
+                    row.ItemArray[22].ToString(),
+                    row.ItemArray[23].ToString(),
+                    row.ItemArray[24].ToString(),
+                    row.ItemArray[25].ToString(),
+                    row.ItemArray[26].ToString(),
+                    row.ItemArray[27].ToString(),
+                    int.Parse(row.ItemArray[28].ToString()));
 
                 // Организация
                 Organization organization = new Organization(
-                        int.Parse(row.ItemArray[39].ToString()),
-                        row.ItemArray[40].ToString(),
-                        row.ItemArray[41].ToString(),
-                        row.ItemArray[42].ToString(),
-                        row.ItemArray[43].ToString(),
-                        null);
+                    int.Parse(row.ItemArray[39].ToString()),
+                    row.ItemArray[40].ToString(),
+                    row.ItemArray[41].ToString(),
+                    row.ItemArray[42].ToString(),
+                    row.ItemArray[43].ToString(),
+                    null);
 
                 // Аккаунт админа
                 Account adminAccount = new Account(
@@ -179,11 +179,11 @@ namespace SparesBase
                     row.ItemArray[46].ToString(),
                     row.ItemArray[47].ToString(),
                     row.ItemArray[48].ToString(),
+                    organization,
                     row.ItemArray[49].ToString(),
                     row.ItemArray[50].ToString(),
                     row.ItemArray[51].ToString(),
-                    row.ItemArray[52].ToString() == "1" ? true : false,
-                    organization);
+                    row.ItemArray[52].ToString() == "1" ? true : false);
 
                 organization.Admin = adminAccount;
 
@@ -219,7 +219,13 @@ namespace SparesBase
             return resItems.ToArray();
         }
 
+        #endregion Методы
 
+
+
+        #region События
+        
+        // Строки удалены
         private void ItemsDataGridView_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
         {
             for (int i = 0; i < Rows.Count; i++)
@@ -227,6 +233,7 @@ namespace SparesBase
                     Rows[i].DefaultCellStyle.BackColor = Color.LightGray;
         }
 
+        // Строки добавлены
         private void ItemsDataGridView_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
             for (int i = 0; i < Rows.Count; i++)
@@ -234,6 +241,7 @@ namespace SparesBase
                     Rows[i].DefaultCellStyle.BackColor = Color.LightGray;
         }
 
+        // Строки отсортированы
         private void ItemsDataGridView_Sorted(object sender, EventArgs e)
         {
             for (int i = 0; i < Rows.Count; i++)
@@ -242,5 +250,7 @@ namespace SparesBase
                 else
                     Rows[i].DefaultCellStyle.BackColor = Color.White;
         }
+
+        #endregion События
     }
 }

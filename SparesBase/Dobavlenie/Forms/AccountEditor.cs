@@ -6,16 +6,28 @@ namespace SparesBase
 {
     public partial class AccountEditor : Form
     {
+        #region Поля
+        
         private Account account;
+
+        #endregion Поля
+
+
+
+        #region Конструктор
 
         // Конструктор
         public AccountEditor(Account account)
         {
             InitializeComponent();
             this.account = account;
-            FillComboBoxes();
-            FillData();
+            FillCities();
+            FillAccountData();
         }
+
+        #endregion Конструктор
+
+
 
         #region Методы
 
@@ -26,23 +38,24 @@ namespace SparesBase
             if (tbName.Text == "" ||
                 tbLastName.Text == "" ||
                 tbSecondName.Text == "" ||
-                tbLogIn.Text == "")
+                tbLogin.Text == "")
             {
                 MessageBox.Show("Не все поля были заполнены");
                 return;
             }
 
             // Проверка на допустимые символы
-            if (!StringValidation.IsValid(tbLogIn.Text))
+            if (!StringValidation.IsValid(tbLogin.Text))
             {
                 MessageBox.Show("Были введены недопустимые символы.\nРазрешены: латинские буквы, цифры _ - . @");
                 return;
             }
 
-            if (account.Login != tbLogIn.Text)
+            // Проверка на изменение логина
+            if (account.Login != tbLogin.Text)
             {
                 // Проверка на существование введенного логина в базе
-                if (DatabaseWorker.SqlScalarQuery("SELECT Login FROM Accounts WHERE(Login='" + tbLogIn.Text + "')") != null)
+                if (DatabaseWorker.SqlScalarQuery("SELECT Login FROM Accounts WHERE(Login='" + tbLogin.Text + "')") != null)
                 {
                     MessageBox.Show("Пользователь с таким логином уже зарегистрирован");
                     return;
@@ -50,26 +63,32 @@ namespace SparesBase
             }
             
             // Изменение аккаунта
-            DatabaseWorker.SqlQuery("UPDATE Accounts SET FirstName='" + tbName.Text + "', LastName='" + tbLastName.Text + "', SecondName='" + tbSecondName.Text + "', Login='" + tbLogIn.Text.Trim() + "', CityId=" + (cbCity.SelectedIndex + 1) + ", Phone='" + tbPhone.Text + "', Email='" + tbMail.Text + "' WHERE(id=" + account.Id + ")");
+            DatabaseWorker.SqlQuery("UPDATE Accounts SET " +
+                "FirstName = '" + tbName.Text + "', " +
+                "LastName = '" + tbLastName.Text + "', " +
+                "SecondName = '" + tbSecondName.Text + "', " +
+                "Login = '" + tbLogin.Text.Trim() + "', " +
+                "CityId = " + cbCity.SelectedValue + ", " +
+                "Phone = '" + tbPhone.Text + "', " +
+                "Email = '" + tbMail.Text + "' " +
+                "WHERE(id = " + account.Id + ")");
 
             Close();
         }
 
-        // Заполнение ComboBox'а с городами
-        private void FillComboBoxes()
+        // Заполнение гродов
+        private void FillCities()
         {
-            // Города
-            DataTable cities = DatabaseWorker.SqlSelectQuery("SELECT City FROM Cities");
-            foreach (DataRow row in cities.Rows)
-                cbCity.Items.Add(row.ItemArray[0]);
-
-            cbCity.SelectedIndex = 0;
+            DataTable cities = DatabaseWorker.SqlSelectQuery("SELECT id, City FROM Cities");
+            cbCity.DataSource = cities;
+            cbCity.ValueMember = "id";
+            cbCity.DisplayMember = "City";
         }
 
         // Заполнение данных об аккаунте
-        private void FillData()
+        private void FillAccountData()
         {
-            tbLogIn.Text = account.Login;
+            tbLogin.Text = account.Login;
             tbName.Text = account.FirstName;
             tbLastName.Text = account.LastName;
             tbSecondName.Text = account.SecondName;

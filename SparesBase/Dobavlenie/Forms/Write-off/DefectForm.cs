@@ -5,17 +5,19 @@ namespace SparesBase
 {
     public partial class DefectForm : Form
     {
+        int itemId;
         int quantity;
-        int id;
 
         // Конструктор
-        public DefectForm(int quantity, int id)
+        public DefectForm(int quantity, int itemId)
         {
             InitializeComponent();
             this.quantity = quantity;
-            this.id = id;
+            this.itemId = itemId;
         }
 
+        #region Методы
+        
         // Заполнение ComboBox с количеством
         private void FillQuantity()
         {
@@ -25,18 +27,28 @@ namespace SparesBase
             cbQuantityOfDefect.SelectedIndex = 0;
         }
 
-        // Добавление дефекта в таблицу
+        // Добавление дефекта в базу
         private void AddDefect()
         {
             // Проверка на введенность полей
             if (tbWhoIdentified.Text != "" &&
                 tbNote.Text != "")
             {
-                DatabaseWorker.SqlQuery("INSERT INTO Defect VALUES (''," + id + ", " + cbQuantityOfDefect.Text + ", '" + tbWhoIdentified.Text + "', '" + tbNote.Text + "')");
-                DatabaseWorker.InsertAction(6, id);
+                DatabaseWorker.SqlQuery("INSERT INTO Defect VALUES ('', " +
+                    "" + itemId + ", " +
+                    "" + cbQuantityOfDefect.Text + ", " +
+                    "'" + tbWhoIdentified.Text + "', " +
+                    "'" + tbNote.Text + "')");
+
+                DatabaseWorker.InsertAction(6, itemId);
             }
         }
 
+        #endregion Методы
+
+
+
+        #region События
 
         // Загрузка формы
         private void DefectForm_Load(object sender, EventArgs e)
@@ -57,5 +69,7 @@ namespace SparesBase
         {
             Close();
         }
+
+        #endregion События
     }
 }

@@ -45,16 +45,20 @@
             this.tsmiAddItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiEditItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDeleteItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiSearch = new System.Windows.Forms.ToolStripMenuItem();
             this.деревоToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiExpand = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiCollapse = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiLogs = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiActionLogs = new System.Windows.Forms.ToolStripMenuItem();
             this.организацияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiUsers = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiEmployees = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSellers = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiSearch = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiSettings = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiHelp = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.treeView = new SparesBase.CategoriesTreeView();
             this.cmsMainCategory = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmsAddMainCategory = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsExpandAllNodes = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,13 +66,28 @@
             this.tbSearch = new System.Windows.Forms.TextBox();
             this.cbSerial = new System.Windows.Forms.CheckBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.dgv = new SparesBase.ItemsDataGridView();
+            this.inventNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.seller = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.purchasePrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.retailPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.wholesalePrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.servicePrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.firmPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.storage = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.quantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.uploadDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.changeDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.residue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.status = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cmsItem = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmsAddItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsEditItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsDeleteItem = new System.Windows.Forms.ToolStripMenuItem();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.lMainCat = new System.Windows.Forms.Label();
+            this.lCategories = new System.Windows.Forms.Label();
             this.lresidue = new System.Windows.Forms.Label();
             this.lquantity = new System.Windows.Forms.Label();
             this.lnote = new System.Windows.Forms.Label();
@@ -81,6 +100,7 @@
             this.lseller = new System.Windows.Forms.Label();
             this.lname = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnLoadImage = new System.Windows.Forms.Button();
             this.pbPreview = new System.Windows.Forms.PictureBox();
             this.cmsCategory = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmsAddSubCategory = new System.Windows.Forms.ToolStripMenuItem();
@@ -93,10 +113,6 @@
             this.cmsDefect = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsInOrder = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsReserve = new System.Windows.Forms.ToolStripMenuItem();
-            this.treeView = new SparesBase.CategoriesTreeView();
-            this.dgv = new SparesBase.ItemsDataGridView();
-            this.tsmiHelp = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -107,6 +123,7 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
             this.cmsItem.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -114,7 +131,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).BeginInit();
             this.cmsCategory.SuspendLayout();
             this.cmsWriteOff.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -123,14 +139,15 @@
             this.tsmiAccount,
             this.категорииToolStripMenuItem,
             this.предметыToolStripMenuItem,
+            this.tsmiSearch,
             this.деревоToolStripMenuItem,
             this.tsmiLogs,
             this.организацияToolStripMenuItem,
-            this.tsmiSearch,
+            this.tsmiSettings,
             this.tsmiHelp});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(1354, 24);
+            this.menuStrip.Size = new System.Drawing.Size(1444, 24);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -235,6 +252,13 @@
             this.tsmiDeleteItem.Text = "Удалить предмет";
             this.tsmiDeleteItem.Click += new System.EventHandler(this.DeleteItem_Click);
             // 
+            // tsmiSearch
+            // 
+            this.tsmiSearch.Name = "tsmiSearch";
+            this.tsmiSearch.Size = new System.Drawing.Size(54, 20);
+            this.tsmiSearch.Text = "Поиск";
+            this.tsmiSearch.Click += new System.EventHandler(this.tsmiSearch_Click);
+            // 
             // деревоToolStripMenuItem
             // 
             this.деревоToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -276,18 +300,18 @@
             // организацияToolStripMenuItem
             // 
             this.организацияToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiUsers,
+            this.tsmiEmployees,
             this.tsmiSellers});
             this.организацияToolStripMenuItem.Name = "организацияToolStripMenuItem";
             this.организацияToolStripMenuItem.Size = new System.Drawing.Size(91, 20);
             this.организацияToolStripMenuItem.Text = "Организация";
             // 
-            // tsmiUsers
+            // tsmiEmployees
             // 
-            this.tsmiUsers.Name = "tsmiUsers";
-            this.tsmiUsers.Size = new System.Drawing.Size(153, 22);
-            this.tsmiUsers.Text = "Сотрудники...";
-            this.tsmiUsers.Click += new System.EventHandler(this.tsmiUsers_Click);
+            this.tsmiEmployees.Name = "tsmiEmployees";
+            this.tsmiEmployees.Size = new System.Drawing.Size(153, 22);
+            this.tsmiEmployees.Text = "Сотрудники...";
+            this.tsmiEmployees.Click += new System.EventHandler(this.tsmiEmployees_Click);
             // 
             // tsmiSellers
             // 
@@ -296,12 +320,27 @@
             this.tsmiSellers.Text = "Поставщики...";
             this.tsmiSellers.Click += new System.EventHandler(this.tsmiSellers_Click);
             // 
-            // tsmiSearch
+            // tsmiSettings
             // 
-            this.tsmiSearch.Name = "tsmiSearch";
-            this.tsmiSearch.Size = new System.Drawing.Size(54, 20);
-            this.tsmiSearch.Text = "Поиск";
-            this.tsmiSearch.Click += new System.EventHandler(this.tsmiSearch_Click);
+            this.tsmiSettings.Name = "tsmiSettings";
+            this.tsmiSettings.Size = new System.Drawing.Size(79, 20);
+            this.tsmiSettings.Text = "Настройки";
+            this.tsmiSettings.Click += new System.EventHandler(this.tsmiSettings_Click);
+            // 
+            // tsmiHelp
+            // 
+            this.tsmiHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiAbout});
+            this.tsmiHelp.Name = "tsmiHelp";
+            this.tsmiHelp.Size = new System.Drawing.Size(65, 20);
+            this.tsmiHelp.Text = "Справка";
+            // 
+            // tsmiAbout
+            // 
+            this.tsmiAbout.Name = "tsmiAbout";
+            this.tsmiAbout.Size = new System.Drawing.Size(158, 22);
+            this.tsmiAbout.Text = "О программе...";
+            this.tsmiAbout.Click += new System.EventHandler(this.tsmiAbout_Click);
             // 
             // splitContainer1
             // 
@@ -318,9 +357,22 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(1354, 520);
-            this.splitContainer1.SplitterDistance = 170;
+            this.splitContainer1.Size = new System.Drawing.Size(1444, 520);
+            this.splitContainer1.SplitterDistance = 181;
             this.splitContainer1.TabIndex = 1;
+            // 
+            // treeView
+            // 
+            this.treeView.AllowDrop = true;
+            this.treeView.ContextMenuStrip = this.cmsMainCategory;
+            this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeView.Location = new System.Drawing.Point(0, 37);
+            this.treeView.Name = "treeView";
+            this.treeView.Size = new System.Drawing.Size(181, 483);
+            this.treeView.TabIndex = 2;
+            this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
+            this.treeView.DragDrop += new System.Windows.Forms.DragEventHandler(this.treeView_DragDrop);
+            this.treeView.DragEnter += new System.Windows.Forms.DragEventHandler(this.treeView_DragEnter);
             // 
             // cmsMainCategory
             // 
@@ -358,7 +410,7 @@
             this.tbSearch.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.tbSearch.Location = new System.Drawing.Point(0, 17);
             this.tbSearch.Name = "tbSearch";
-            this.tbSearch.Size = new System.Drawing.Size(170, 20);
+            this.tbSearch.Size = new System.Drawing.Size(181, 20);
             this.tbSearch.TabIndex = 1;
             this.tbSearch.Enter += new System.EventHandler(this.tbSearch_Enter);
             this.tbSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbSearch_KeyDown);
@@ -371,7 +423,7 @@
             this.cbSerial.Location = new System.Drawing.Point(0, 0);
             this.cbSerial.Name = "cbSerial";
             this.cbSerial.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.cbSerial.Size = new System.Drawing.Size(170, 17);
+            this.cbSerial.Size = new System.Drawing.Size(181, 17);
             this.cbSerial.TabIndex = 3;
             this.cbSerial.Text = "Серийный номер";
             this.cbSerial.UseVisualStyleBackColor = true;
@@ -392,9 +444,152 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.flowLayoutPanel1);
-            this.splitContainer2.Size = new System.Drawing.Size(1180, 520);
+            this.splitContainer2.Size = new System.Drawing.Size(1259, 520);
             this.splitContainer2.SplitterDistance = 319;
             this.splitContainer2.TabIndex = 1;
+            // 
+            // dgv
+            // 
+            this.dgv.AllowUserToAddRows = false;
+            this.dgv.AllowUserToDeleteRows = false;
+            this.dgv.AllowUserToResizeRows = false;
+            this.dgv.BackgroundColor = System.Drawing.Color.White;
+            this.dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.inventNumber,
+            this.name,
+            this.seller,
+            this.purchasePrice,
+            this.retailPrice,
+            this.wholesalePrice,
+            this.servicePrice,
+            this.firmPrice,
+            this.storage,
+            this.quantity,
+            this.uploadDate,
+            this.changeDate,
+            this.residue,
+            this.status});
+            this.dgv.ContextMenuStrip = this.cmsItem;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv.DefaultCellStyle = dataGridViewCellStyle1;
+            this.dgv.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgv.Location = new System.Drawing.Point(0, 0);
+            this.dgv.MultiSelect = false;
+            this.dgv.Name = "dgv";
+            this.dgv.ReadOnly = true;
+            this.dgv.RowTemplate.Height = 30;
+            this.dgv.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgv.Size = new System.Drawing.Size(1259, 319);
+            this.dgv.TabIndex = 0;
+            this.dgv.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellClick);
+            this.dgv.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.EditItem_Click);
+            this.dgv.MouseMove += new System.Windows.Forms.MouseEventHandler(this.dgv_MouseMove);
+            // 
+            // inventNumber
+            // 
+            this.inventNumber.HeaderText = "Номер";
+            this.inventNumber.Name = "inventNumber";
+            this.inventNumber.ReadOnly = true;
+            this.inventNumber.Width = 50;
+            // 
+            // name
+            // 
+            this.name.HeaderText = "Наименование";
+            this.name.Name = "name";
+            this.name.ReadOnly = true;
+            this.name.Width = 250;
+            // 
+            // seller
+            // 
+            this.seller.HeaderText = "Поставщик";
+            this.seller.Name = "seller";
+            this.seller.ReadOnly = true;
+            this.seller.Width = 120;
+            // 
+            // purchasePrice
+            // 
+            this.purchasePrice.HeaderText = "Закупка";
+            this.purchasePrice.Name = "purchasePrice";
+            this.purchasePrice.ReadOnly = true;
+            this.purchasePrice.Width = 80;
+            // 
+            // retailPrice
+            // 
+            this.retailPrice.HeaderText = "Розница";
+            this.retailPrice.Name = "retailPrice";
+            this.retailPrice.ReadOnly = true;
+            this.retailPrice.Width = 80;
+            // 
+            // wholesalePrice
+            // 
+            this.wholesalePrice.HeaderText = "Мелкий опт";
+            this.wholesalePrice.Name = "wholesalePrice";
+            this.wholesalePrice.ReadOnly = true;
+            this.wholesalePrice.Width = 50;
+            // 
+            // servicePrice
+            // 
+            this.servicePrice.HeaderText = "Сервисы";
+            this.servicePrice.Name = "servicePrice";
+            this.servicePrice.ReadOnly = true;
+            this.servicePrice.Width = 70;
+            // 
+            // firmPrice
+            // 
+            this.firmPrice.HeaderText = "Цена фирмы";
+            this.firmPrice.Name = "firmPrice";
+            this.firmPrice.ReadOnly = true;
+            this.firmPrice.Width = 50;
+            // 
+            // storage
+            // 
+            this.storage.HeaderText = "Хранение";
+            this.storage.Name = "storage";
+            this.storage.ReadOnly = true;
+            this.storage.Width = 90;
+            // 
+            // quantity
+            // 
+            this.quantity.HeaderText = "Количество";
+            this.quantity.Name = "quantity";
+            this.quantity.ReadOnly = true;
+            this.quantity.Width = 70;
+            // 
+            // uploadDate
+            // 
+            this.uploadDate.HeaderText = "Добавлен";
+            this.uploadDate.Name = "uploadDate";
+            this.uploadDate.ReadOnly = true;
+            this.uploadDate.Width = 70;
+            // 
+            // changeDate
+            // 
+            this.changeDate.HeaderText = "Изменен";
+            this.changeDate.Name = "changeDate";
+            this.changeDate.ReadOnly = true;
+            this.changeDate.Width = 70;
+            // 
+            // residue
+            // 
+            this.residue.HeaderText = "Остаток";
+            this.residue.Name = "residue";
+            this.residue.ReadOnly = true;
+            this.residue.Width = 70;
+            // 
+            // status
+            // 
+            this.status.HeaderText = "Статус";
+            this.status.Name = "status";
+            this.status.ReadOnly = true;
+            this.status.Width = 90;
             // 
             // cmsItem
             // 
@@ -434,13 +629,13 @@
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1180, 197);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1259, 197);
             this.flowLayoutPanel1.TabIndex = 1;
             this.flowLayoutPanel1.WrapContents = false;
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.lMainCat);
+            this.groupBox1.Controls.Add(this.lCategories);
             this.groupBox1.Controls.Add(this.lresidue);
             this.groupBox1.Controls.Add(this.lquantity);
             this.groupBox1.Controls.Add(this.lnote);
@@ -459,14 +654,14 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Предмет";
             // 
-            // lMainCat
+            // lCategories
             // 
-            this.lMainCat.AutoSize = true;
-            this.lMainCat.Location = new System.Drawing.Point(12, 16);
-            this.lMainCat.Name = "lMainCat";
-            this.lMainCat.Size = new System.Drawing.Size(87, 13);
-            this.lMainCat.TabIndex = 16;
-            this.lMainCat.Text = "Глав.Категория";
+            this.lCategories.AutoSize = true;
+            this.lCategories.Location = new System.Drawing.Point(12, 16);
+            this.lCategories.Name = "lCategories";
+            this.lCategories.Size = new System.Drawing.Size(60, 13);
+            this.lCategories.TabIndex = 16;
+            this.lCategories.Text = "Категории";
             // 
             // lresidue
             // 
@@ -571,6 +766,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.btnLoadImage);
             this.groupBox2.Controls.Add(this.pbPreview);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Left;
             this.groupBox2.Location = new System.Drawing.Point(553, 3);
@@ -578,7 +774,17 @@
             this.groupBox2.Size = new System.Drawing.Size(254, 188);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Превью-фото";
+            this.groupBox2.Text = "Фото";
+            // 
+            // btnLoadImage
+            // 
+            this.btnLoadImage.Location = new System.Drawing.Point(6, 19);
+            this.btnLoadImage.Name = "btnLoadImage";
+            this.btnLoadImage.Size = new System.Drawing.Size(242, 163);
+            this.btnLoadImage.TabIndex = 1;
+            this.btnLoadImage.Text = "Загрузить картинку";
+            this.btnLoadImage.UseVisualStyleBackColor = true;
+            this.btnLoadImage.Click += new System.EventHandler(this.btnLoadImage_Click);
             // 
             // pbPreview
             // 
@@ -674,69 +880,11 @@
             this.cmsReserve.Text = "В резерв";
             this.cmsReserve.Click += new System.EventHandler(this.cmsReserve_Click);
             // 
-            // treeView
-            // 
-            this.treeView.AllowDrop = true;
-            this.treeView.ContextMenuStrip = this.cmsMainCategory;
-            this.treeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeView.Location = new System.Drawing.Point(0, 37);
-            this.treeView.Name = "treeView";
-            this.treeView.Size = new System.Drawing.Size(170, 483);
-            this.treeView.TabIndex = 2;
-            this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
-            this.treeView.DragDrop += new System.Windows.Forms.DragEventHandler(this.treeView_DragDrop);
-            this.treeView.DragEnter += new System.Windows.Forms.DragEventHandler(this.treeView_DragEnter);
-            // 
-            // dgv
-            // 
-            this.dgv.AllowUserToAddRows = false;
-            this.dgv.AllowUserToDeleteRows = false;
-            this.dgv.AllowUserToResizeRows = false;
-            this.dgv.BackgroundColor = System.Drawing.Color.White;
-            this.dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv.ContextMenuStrip = this.cmsItem;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv.DefaultCellStyle = dataGridViewCellStyle1;
-            this.dgv.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv.Location = new System.Drawing.Point(0, 0);
-            this.dgv.MultiSelect = false;
-            this.dgv.Name = "dgv";
-            this.dgv.ReadOnly = true;
-            this.dgv.RowTemplate.Height = 30;
-            this.dgv.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv.Size = new System.Drawing.Size(1180, 319);
-            this.dgv.TabIndex = 0;
-            this.dgv.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellClick);
-            this.dgv.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.EditItem_Click);
-            this.dgv.MouseMove += new System.Windows.Forms.MouseEventHandler(this.dgv_MouseMove);
-            // 
-            // tsmiHelp
-            // 
-            this.tsmiHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiAbout});
-            this.tsmiHelp.Name = "tsmiHelp";
-            this.tsmiHelp.Size = new System.Drawing.Size(65, 20);
-            this.tsmiHelp.Text = "Справка";
-            // 
-            // tsmiAbout
-            // 
-            this.tsmiAbout.Name = "tsmiAbout";
-            this.tsmiAbout.Size = new System.Drawing.Size(158, 22);
-            this.tsmiAbout.Text = "О программе...";
-            this.tsmiAbout.Click += new System.EventHandler(this.tsmiAbout_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1354, 544);
+            this.ClientSize = new System.Drawing.Size(1444, 544);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -758,6 +906,7 @@
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv)).EndInit();
             this.cmsItem.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
@@ -766,7 +915,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).EndInit();
             this.cmsCategory.ResumeLayout(false);
             this.cmsWriteOff.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgv)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -823,10 +971,10 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiChangeAccount;
         private System.Windows.Forms.ToolStripMenuItem tsmiExit;
         private System.Windows.Forms.ToolStripMenuItem организацияToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem tsmiUsers;
+        private System.Windows.Forms.ToolStripMenuItem tsmiEmployees;
         private System.Windows.Forms.ToolStripMenuItem tsmiSearch;
         private System.Windows.Forms.ToolStripMenuItem tsmiSellers;
-        private System.Windows.Forms.Label lMainCat;
+        private System.Windows.Forms.Label lCategories;
         private ItemsDataGridView dgv;
         private CategoriesTreeView treeView;
         private System.Windows.Forms.ContextMenuStrip cmsWriteOff;
@@ -840,5 +988,21 @@
         private System.Windows.Forms.PictureBox pbPreview;
         private System.Windows.Forms.ToolStripMenuItem tsmiHelp;
         private System.Windows.Forms.ToolStripMenuItem tsmiAbout;
+        private System.Windows.Forms.ToolStripMenuItem tsmiSettings;
+        private System.Windows.Forms.Button btnLoadImage;
+        private System.Windows.Forms.DataGridViewTextBoxColumn inventNumber;
+        private System.Windows.Forms.DataGridViewTextBoxColumn name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn seller;
+        private System.Windows.Forms.DataGridViewTextBoxColumn purchasePrice;
+        private System.Windows.Forms.DataGridViewTextBoxColumn retailPrice;
+        private System.Windows.Forms.DataGridViewTextBoxColumn wholesalePrice;
+        private System.Windows.Forms.DataGridViewTextBoxColumn servicePrice;
+        private System.Windows.Forms.DataGridViewTextBoxColumn firmPrice;
+        private System.Windows.Forms.DataGridViewTextBoxColumn storage;
+        private System.Windows.Forms.DataGridViewTextBoxColumn quantity;
+        private System.Windows.Forms.DataGridViewTextBoxColumn uploadDate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn changeDate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn residue;
+        private System.Windows.Forms.DataGridViewTextBoxColumn status;
     }
 }

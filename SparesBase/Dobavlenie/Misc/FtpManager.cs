@@ -9,6 +9,10 @@ namespace SparesBase
 {
     class FtpManager
     {
+        #region Поля
+        
+        public static string FtpConnectString = "ftp://u0183148:W5iLVaY9@server137.hosting.reg.ru/www/xn--29-nmcu.xn--p1ai/SparesBase/";
+
         // Данные об FTP сервере
         static int timeout = 30000;
         static int port = 21;
@@ -20,6 +24,12 @@ namespace SparesBase
         static FtpClient client;
         static string photosString = "Photos/";
 
+        #endregion Поля
+
+
+
+        #region Методы
+
         // Коннект к серверу
         private static void Connect()
         {
@@ -28,9 +38,6 @@ namespace SparesBase
             client.Connect(timeout, server, port);
             client.Login(timeout, username, password);
         }
-
-
-        #region Методы
 
         // Загрузка фото на сервер
         public static void UploadImages(Image[] images, int id)
@@ -114,8 +121,8 @@ namespace SparesBase
             }
         }
 
-        // Загрузка фото с сервера
-        public static string[] DownloadImages(int id)
+        // Получение списка картинок, которые есть у предмета
+        public static string[] GetItemImagesList(int itemId)
         {
             string folderName = "";
             List<string> images = new List<string>();
@@ -123,9 +130,10 @@ namespace SparesBase
             // Проверка на существование папки предмета.
             string[] names = GetFilesFromServer(photosString);
             for (int i = 0; i < names.Length; i++)
-                if (names[i] == "item_" + id)
+                if (names[i] == "item_" + itemId)
                     folderName = names[i];
 
+            // Если папка существует, то происходит получение списка всех картинок, исключая превью-фото
             if (folderName != "")
             {
                 Connect();
@@ -133,20 +141,9 @@ namespace SparesBase
                 string[] imgName = GetFilesFromServer(photosString + folderName); 
 
                 for (int i = 0; i < imgName.Length; i++)
-                {
                     if (imgName[i] != "preview.jpg")
-                    {
                         images.Add(imgName[i]);
 
-
-                        //byte[] imageBytes = client.GetFile(timeout, photosPath + folderName + "/" + imgName[i]);
-                        //MemoryStream memoryStream = new MemoryStream(imageBytes);
-                        //Image img = Image.FromStream(memoryStream);
-                        //string imageIndex = imgName[i][0].ToString();
-                        //img.Tag = photosPath + folderName + "/" + imgName[i];
-                        //images[int.Parse(imageIndex) - 1] = img;
-                    }
-                }
                 client.Disconnect(timeout);
                 return images.ToArray();
             }
@@ -154,45 +151,7 @@ namespace SparesBase
                 return images.ToArray();
         }
 
-        // Загрузка превью-фото
-        public static Image DownloadPreviewImage(int id)
-        {
-            Connect();
-
-            // поиск папки предмета
-            string[] folders = GetFilesFromServer(photosString);
-            string folder = "";
-            for (int i = 0; i < folders.Length; i++)
-                if (folders[i] == "item_" + id)
-                {
-                    folder = folders[i];
-                    break;
-                }
-
-            if (folder != "")
-            {
-                string[] files = GetFilesFromServer(photosString + folder);
-                string file = "";
-                for (int i = 0; i < files.Length; i++)
-                {
-                    if (files[i] == "preview.jpg")
-                    {
-                        file = files[i];
-                        break;
-                    }
-                }
-
-                if (file != "")
-                {
-                    byte[] imageBytes = client.GetFile(timeout, photosPath + folder + "/" + file);
-                    MemoryStream memoryStream = new MemoryStream(imageBytes);
-                    return Image.FromStream(memoryStream);
-                }
-            }
-
-            return null;
-        }
-
+        // Проверка на существование превью-фото у предмета
         public static bool PreviewExists(int itemid)
         {
             string[] folders = GetFilesFromServer("Photos/");
@@ -248,13 +207,9 @@ namespace SparesBase
             client.Disconnect(timeout);
             List<string> names = new List<string>();
             for (int i = 0; i < files.Length; i++)
-            {
                 if (files[i].Name != "." && files[i].Name != "..")
-                {
                     names.Add(files[i].Name);
-                }
 
-            }
             return names.ToArray();
         }
 

@@ -7,8 +7,16 @@ namespace SparesBase
 {
     public static class DatabaseWorker
     {
+        #region Поля
+        
         static MySqlDataAdapter adapter;
         static MySqlConnection connection;
+
+        #endregion Поля
+
+
+
+        #region Конструкторы
 
         // Конструктор
         static DatabaseWorker()
@@ -16,6 +24,12 @@ namespace SparesBase
             Connect();
         }
 
+        #endregion Конструкторы
+
+
+
+        #region Методы
+        
         // Коннект к базе
         private static void Connect()
         {
@@ -107,9 +121,18 @@ namespace SparesBase
             }
         }
 
+        // Запись действия в базу
         public static void InsertAction(int actionId, int itemId)
         {
-            SqlQuery("INSERT INTO ActionLogs VALUES('', " + actionId + ", " + EnteredUser.id + ", " + EnteredUser.OrganizationId + ", " + itemId + ", NOW())");
+            SqlQuery("INSERT INTO ActionLogs VALUES(" +
+                "'', " +
+                actionId + ", " +
+                EnteredUser.Id + ", " +
+                EnteredUser.Organization.Id + ", " +
+                itemId + ", " +
+                "NOW())");
         }
+
+        #endregion Методы
     }
 }

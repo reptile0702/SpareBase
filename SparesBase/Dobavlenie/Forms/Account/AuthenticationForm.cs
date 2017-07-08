@@ -1,10 +1,10 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Data;
 using System.IO;
 using System.Net;
 using System.Windows.Forms;
 using System.Xml;
+using Microsoft.Win32;
 
 namespace SparesBase.Forms
 {
@@ -14,15 +14,20 @@ namespace SparesBase.Forms
         public AuthenticationForm()
         {
             InitializeComponent();
+
+            // Настройки
+            Settings.CreateConfigsFile();
+            Settings.LoadSettings();
+
+            // Записывание последнего логина из реестра
             RegistryKey currentUserKey = Registry.CurrentUser;
             RegistryKey lastUserKey = currentUserKey.OpenSubKey("SparesBase");
             if (lastUserKey != null)
             {
-                tbLogIn.Text = lastUserKey.GetValue("Login").ToString();
+                tbLogin.Text = lastUserKey.GetValue("Login").ToString();
                 lastUserKey.Close();
                 tbPassword.Select();
             }
-           
         }
 
         #region Методы
@@ -31,18 +36,38 @@ namespace SparesBase.Forms
         private void Authentification()
         {
             // Проверка на допустимые символы
-            if (!StringValidation.IsValid(tbLogIn.Text))
+            if (!StringValidation.IsValid(tbLogin.Text))
             {
                 MessageBox.Show("Были введены недопустимые символы.\nРазрешены: латинские буквы, цифры _ - . @");
                 return;
             }
 
-            DataTable dr = DatabaseWorker.SqlSelectQuery("SELECT id, Login, Password, OrganizationId, Admin FROM Accounts WHERE(Login='" + tbLogIn.Text + "')");
+            DataTable account = DatabaseWorker.SqlSelectQuery("SELECT " +
+                "a.id, " +
+                "a.FirstName, " +
+                "a.LastName, " +
+                "a.SecondName, " +
+                "a.Login, " +
+                "a.Password, " +
+                "o.id, " +
+                "o.Name, " +
+                "o.Site, " +
+                "o.Telephone, " +
+                "oc.City, " +
+                "ac.City, " +
+                "a.Phone, " +
+                "a.Email, " +
+                "a.Admin " +
+                "FROM Accounts a " +
+                "LEFT JOIN Organizations o ON o.id = a.OrganizationId " +
+                "LEFT JOIN Cities ac ON ac.id = a.CityId " +
+                "LEFT JOIN Cities oc ON oc.id = o.CityId " +
+                "WHERE(Login = '" + tbLogin.Text + "')");
 
             // Проверка на существование введенного логина в базе
-            if (dr.Rows.Count != 0)
+            if (account.Rows.Count != 0)
             {
-                if (dr.Rows[0].ItemArray[1].ToString() != tbLogIn.Text.Trim())
+                if (account.Rows[0].ItemArray[4].ToString() != tbLogin.Text.Trim())
                 {
                     MessageBox.Show("Пользователь с таким логином не зарегистрирован");
                     return;
@@ -55,14 +80,14 @@ namespace SparesBase.Forms
             }
 
             // Проверка пароля
-            if (!MD5hash.VerifyMD5Hash(tbPassword.Text.Trim(), dr.Rows[0].ItemArray[2].ToString()))
+            if (!MD5hash.VerifyMD5Hash(tbPassword.Text.Trim(), account.Rows[0].ItemArray[5].ToString()))
             {
-                MessageBox.Show("Не верно введён пароль");
+                MessageBox.Show("Неверно введён пароль");
                 return;
             }
 
-            // зарегистрирован ли данный аккаунт в какой-либо организации
-            if (dr.Rows[0].ItemArray[3].ToString() == "0")
+            // Проверка на привязку аккаунта к какой либо организации
+            if (account.Rows[0].ItemArray[3].ToString() == "0")
             {
                 MessageBox.Show("Данный аккаунт не зарегистрирован ни в одной из организаций.");
                 return;
@@ -70,25 +95,51 @@ namespace SparesBase.Forms
 
             // Инициализация аккаунта
             InitializeAccount(
-                int.Parse(dr.Rows[0].ItemArray[0].ToString()),
-                dr.Rows[0].ItemArray[1].ToString(),
-                int.Parse(dr.Rows[0].ItemArray[3].ToString()),
-                int.Parse(dr.Rows[0].ItemArray[4].ToString()) == 0 ? false : true);
+                new Account(
+                    int.Parse(account.Rows[0].ItemArray[0].ToString()),
+                    account.Rows[0].ItemArray[1].ToString(),
+                    account.Rows[0].ItemArray[2].ToString(),
+                    account.Rows[0].ItemArray[3].ToString(),
+                    account.Rows[0].ItemArray[4].ToString(),
+                    new Organization(
+                        int.Parse(account.Rows[0].ItemArray[6].ToString()),
+                        account.Rows[0].ItemArray[7].ToString(),
+                        account.Rows[0].ItemArray[8].ToString(),
+                        account.Rows[0].ItemArray[9].ToString(),
+                        account.Rows[0].ItemArray[10].ToString(),
+                        null),
+                    account.Rows[0].ItemArray[11].ToString(),
+                    account.Rows[0].ItemArray[12].ToString(),
+                    account.Rows[0].ItemArray[13].ToString(),
+                    account.Rows[0].ItemArray[14].ToString() == "1" ? true : false));  
         }
 
         // Инициализация аккаунта
-        public void InitializeAccount(int id, string login, int organizationId, bool admin)
+        public void InitializeAccount(Account account)
         {
-            EnteredUser.id = id;
-            EnteredUser.LogIn = login;
-            EnteredUser.OrganizationId = organizationId;
-            EnteredUser.Admin = admin;
+            // Инициализация полей для статического класса
+            EnteredUser.Id = account.Id;
 
+            EnteredUser.FirstName = account.FirstName;
+            EnteredUser.LastName = account.LastName;
+            EnteredUser.SecondName = account.SecondName;
+
+            EnteredUser.Login = account.Login;
+            EnteredUser.Organization = account.Organization;
+
+            EnteredUser.City = account.City;
+            EnteredUser.Phone = account.Phone;
+            EnteredUser.Email = account.Email;
+
+            EnteredUser.Admin = account.Admin;
+
+            // Записывание введенного логина в реестр
             RegistryKey currentUserKey = Registry.CurrentUser;
             RegistryKey lastUserKey = currentUserKey.CreateSubKey("SparesBase");
-            lastUserKey.SetValue("Login", EnteredUser.LogIn);
+            lastUserKey.SetValue("Login", EnteredUser.Login);
             lastUserKey.Close();
 
+            // Открытие главной формы
             MainForm mf = new MainForm(this);
             mf.Show();
             Hide();
@@ -97,14 +148,38 @@ namespace SparesBase.Forms
         // Выход из аккаунта
         public void AccountExit()
         {
-            tbLogIn.Clear();
+            tbLogin.Clear();
             tbPassword.Clear();
-            tbLogIn.Select();
+            tbLogin.Select();
 
-            EnteredUser.id = 0;
-            EnteredUser.LogIn = "";
-            EnteredUser.OrganizationId = 0;
+            EnteredUser.Id = 0;
+
+            EnteredUser.FirstName = "";
+            EnteredUser.LastName = "";
+            EnteredUser.SecondName = "";
+
+            EnteredUser.Login = "";
+            EnteredUser.Organization = null;
+
+            EnteredUser.City = "";
+            EnteredUser.Phone = "";
+            EnteredUser.Email = "";
+
             EnteredUser.Admin = false;
+        }
+
+        // Загрузка файлов XML для проверки версий и баннеров
+        private void LoadXml()
+        {
+            // Загрузка Version.xml
+            WebClient wcVersion = new WebClient();
+            wcVersion.DownloadFileCompleted += WcVersion_DownloadFileCompleted;
+            wcVersion.DownloadFileAsync(new Uri(FtpManager.FtpConnectString + "Client/Versions/CurrentVersion/Version.xml"), "Version.xml");
+
+            // Загрузка Banners.xml
+            WebClient wcBanners = new WebClient();
+            wcBanners.DownloadFileCompleted += WcBanners_DownloadFileCompleted;
+            wcBanners.DownloadFileAsync(new Uri(FtpManager.FtpConnectString + "Banners/Banners.xml"), "Banners/Banners.xml");
         }
 
         #endregion Методы
@@ -147,29 +222,16 @@ namespace SparesBase.Forms
         // Загрузка формы
         private void AuthenticationForm_Load(object sender, EventArgs e)
         {
-            bwUpdater.RunWorkerAsync();
+            // Удаление файла версии
+            File.Delete("Version.xml");
+
+            LoadXml();
         }
 
         // Клик на кнопку "Вход"
         private void btnEnter_Click(object sender, EventArgs e)
         {
             Authentification();
-        }
-
-        // Отдельный поток
-        private void bwUpdater_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
-        {
-            File.Delete("Version.xml");
-
-            // Загрузка Version.xml
-            WebClient wcVersion = new WebClient();
-            wcVersion.DownloadFileCompleted += WcVersion_DownloadFileCompleted;
-            wcVersion.DownloadFileAsync(new Uri("ftp://u0183148:W5iLVaY9@server137.hosting.reg.ru/www/xn--29-nmcu.xn--p1ai/SparesBase/Client/Versions/CurrentVersion/Version.xml"), "Version.xml");
-            
-            // Загрузка Banners.xml
-            WebClient wcBanners = new WebClient();
-            wcBanners.DownloadFileCompleted += WcBanners_DownloadFileCompleted;
-            wcBanners.DownloadFileAsync(new Uri("ftp://u0183148:W5iLVaY9@server137.hosting.reg.ru/www/xn--29-nmcu.xn--p1ai/SparesBase/Banners/Banners.xml"), "Banners/Banners.xml");
         }
 
         // Вызывается, когда загрузится файл Banners.xml
@@ -193,42 +255,33 @@ namespace SparesBase.Forms
             {
                 if (!FolderBannerCheck(img))
                 {
-                    WebClient webclient = new WebClient();
-                    webclient.DownloadFileAsync(new Uri("ftp://u0183148:W5iLVaY9@server137.hosting.reg.ru/www/xn--29-nmcu.xn--p1ai/SparesBase/Banners/" + img), "Banners/" + img);
+                    WebClient wcBanner = new WebClient();
+                    wcBanner.DownloadFileAsync(new Uri(FtpManager.FtpConnectString + "Banners/" + img), "Banners/" + img);
                 }                
             }
-        }
-
-        private void Webclient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
-        {
-            if (e.Error != null)
-                MessageBox.Show(e.Error.Message);   
         }
 
         // Вызывается, когда загрузится файл Version.xml
         private void WcVersion_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
         {
+            // Чтение файла Version.xml
             XmlDocument xDoc = new XmlDocument();
             xDoc.Load("Version.xml");
             XmlElement xRoot = xDoc.DocumentElement;
 
+            // Удаление файла Version.xml
             File.Delete("Version.xml");
 
-            double remoteVersion = Convert.ToDouble(xRoot["Version"].InnerText.Replace(".", ""));
-            double thisVersion = Convert.ToDouble(Application.ProductVersion.Replace(".", ""));
-            if (thisVersion < remoteVersion)
+            // Сравнение версий
+            Version remoteVersion = new Version(xRoot["Version"].InnerText);
+            Version localVersion = new Version(Application.ProductVersion);
+            if (localVersion < remoteVersion)
             {
                 UpdateProgramForm upf = new UpdateProgramForm(xRoot["Version"].InnerText, xRoot["Date"].InnerText, xRoot["ChangeLog"].InnerText);
                 upf.ShowDialog();
             }
-            else
-            {
-                if (File.Exists("Updater.exe"))
-                {
-                    File.Delete("Updater.exe");
-                }
-               
-            }
+            else if (File.Exists("Updater.exe"))
+                File.Delete("Updater.exe");
         }
 
         #endregion События

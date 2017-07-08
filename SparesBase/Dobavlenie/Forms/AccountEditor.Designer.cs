@@ -38,7 +38,7 @@
             this.tbPhone = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnChangePassword = new System.Windows.Forms.Button();
-            this.tbLogIn = new System.Windows.Forms.TextBox();
+            this.tbLogin = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tbName = new System.Windows.Forms.TextBox();
@@ -122,7 +122,7 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.btnChangePassword);
-            this.groupBox2.Controls.Add(this.tbLogIn);
+            this.groupBox2.Controls.Add(this.tbLogin);
             this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Location = new System.Drawing.Point(12, 12);
             this.groupBox2.Name = "groupBox2";
@@ -141,12 +141,12 @@
             this.btnChangePassword.UseVisualStyleBackColor = true;
             this.btnChangePassword.Click += new System.EventHandler(this.btnChangePassword_Click);
             // 
-            // tbLogIn
+            // tbLogin
             // 
-            this.tbLogIn.Location = new System.Drawing.Point(115, 19);
-            this.tbLogIn.Name = "tbLogIn";
-            this.tbLogIn.Size = new System.Drawing.Size(158, 20);
-            this.tbLogIn.TabIndex = 1;
+            this.tbLogin.Location = new System.Drawing.Point(115, 19);
+            this.tbLogin.Name = "tbLogin";
+            this.tbLogin.Size = new System.Drawing.Size(158, 20);
+            this.tbLogin.TabIndex = 1;
             // 
             // label10
             // 
@@ -278,7 +278,7 @@
         private System.Windows.Forms.TextBox tbPhone;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnChangePassword;
-        private System.Windows.Forms.TextBox tbLogIn;
+        private System.Windows.Forms.TextBox tbLogin;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox tbName;

@@ -2,7 +2,15 @@
 {
     public class Seller
     {
-        public Seller(int id, string name, string site, string telephone, string contactFirstName, string contactLastName, string contactSecondName, int organizationId)
+        public Seller(
+            int id, 
+            string name, 
+            string site, 
+            string telephone, 
+            string contactFirstName, 
+            string contactLastName, 
+            string contactSecondName,
+            int organizationId)
         {
             Id = id;
             Name = name;

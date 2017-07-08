@@ -108,7 +108,6 @@
             this.Name = "SellingForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Продажа";
-            this.Load += new System.EventHandler(this.SellingForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

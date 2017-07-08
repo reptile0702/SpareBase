@@ -12,7 +12,6 @@ namespace SparesBase
             InitializeComponent();
             this.ef = ef;
             tvCategories.FillCategories(organizationId, null);
-            //tvCategories.ExpandAll();
         }
 
         // Двойной клик на нод

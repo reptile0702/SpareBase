@@ -4,12 +4,12 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Net;
 using System.IO;
-using System.Threading;
 
 namespace SparesBase
 {
     public partial class EditForm : Form
     {
+        #region Поля
         
         // Предмет
         Item item;
@@ -23,8 +23,13 @@ namespace SparesBase
         int counter = 1;
         int imagesCount = 0;
         int selectedImage = 0;
+
         // Остаток
         int residue = 0;
+
+        #endregion Поля
+
+
 
         #region Конструкторы
 
@@ -35,14 +40,18 @@ namespace SparesBase
 
             this.categories = categories;
             images = new Image[5];
+
             // Выключение кнопок: В заказ, продажа, брак
             btnInOrder.Enabled = false;
             btnDefect.Enabled = false;
             btnSell.Enabled = false;
 
+            // Текст на форме
             Text = "Добавление предмета";
             btnEdit.Text = "Добавить предмет";
-            FillSellersComboBox();
+
+            // Заполнение элементов данными
+            FillSellers();
             FillStatuses();
         }
 
@@ -55,75 +64,29 @@ namespace SparesBase
             this.item = item;
             this.categories = categories;
 
+            // Текст на форме
             Text = "Изменение предмета";
             btnEdit.Text = "Изменить предмет";
-            FillSellersComboBox();
+
+            // Заполнение элементов данными
+            FillSellers();
             FillStatuses();
             GetItemData(item);
-            DownloadPictures();
 
-            //pbPhoto.Image = FtpManager.DownloadPreviewImage(item.Id);
-            //if (FtpManager.PreviewExists(item.Id))
-            //{
-            //    pbPhoto.SizeMode = PictureBoxSizeMode.CenterImage;
-            //    pbPhoto.Image = Properties.Resources.LoadGif;
-            //    WebClient webclient = new WebClient();
-            //    webclient.DownloadDataCompleted += Webclient_DownloadDataCompleted;
-            //    webclient.DownloadDataAsync(new Uri("ftp://u0183148:W5iLVaY9@server137.hosting.reg.ru/www/xn--29-nmcu.xn--p1ai/SparesBase/Photos/item_" + item.Id + "/preview.jpg"));
-
-            //}
-        }
-        private void DownloadPictures()
-        {
-            string[] photos = FtpManager.DownloadImages(item.Id);
-
-            counter = 0;
-            imagesCount = photos.Length;
-            if (imagesCount > 0)
+            if (Settings.AutoLoadItemImages)
             {
-                pbPhoto.SizeMode = PictureBoxSizeMode.CenterImage;
-                pbPhoto.Image = Properties.Resources.LoadGif;
+                DownloadPictures();
+                btnLoadImages.Visible = false;
+            }
+            else
+            {
+                btnLoadImages.Visible = true;
                 btnImg1.Enabled = false;
                 btnImg2.Enabled = false;
                 btnImg3.Enabled = false;
                 btnImg4.Enabled = false;
                 btnImg5.Enabled = false;
-                btnClearPhoto.Enabled = false;
-                btnBrowsePhoto.Enabled = false;
-
-            }
-
-            foreach (string photo in photos)
-            {
-                WebClient webclient = new WebClient();
-                webclient.DownloadDataCompleted += Webclient_DownloadDataCompleted;
-                webclient.DownloadDataAsync(new Uri("ftp://u0183148:W5iLVaY9@server137.hosting.reg.ru/www/xn--29-nmcu.xn--p1ai/SparesBase/Photos/" + "item_" + item.Id + "/" + photo), photo);
-            }
-        }
-
-        private void Webclient_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
-        {
-            MemoryStream memoryStream = new MemoryStream(e.Result);
-            Image img = Image.FromStream(memoryStream);
-            string imageIndex = e.UserState.ToString()[0].ToString();
-            img.Tag = "SparesBase/Photos/" + "item_" + item.Id + "/" + e.UserState.ToString();
-            images[int.Parse(imageIndex) - 1] = img;
-            counter++;
-            if (counter == imagesCount)
-            {
-                pbPhoto.SizeMode = PictureBoxSizeMode.Zoom;
-                btnImg1.Enabled = true;
-                btnImg2.Enabled = true;
-                btnImg3.Enabled = true;
-                btnImg4.Enabled = true;
-                btnImg5.Enabled = true;
-                btnClearPhoto.Enabled = true;
-                btnBrowsePhoto.Enabled = true;
-
-                pbPhoto.Image = images[0];
-                btnImg1.BackColor = Color.Green;
-            }
-
+            }   
         }
 
         #endregion Конструкторы
@@ -153,104 +116,93 @@ namespace SparesBase
                 tbPurchasePrice.Text != "" &&
                 tbRetailPrice.Text != "" &&
                 tbServicePrice.Text != "" &&
-                tbQuantity.Text != "" &&
-                cbSeller.SelectedValue != null)
+                tbQuantity.Text != "")
             {
+                // Проверка на правильность введенного поставщика
+                if (cbSeller.SelectedValue == null)
+                {
+                    MessageBox.Show("Введенный поставщик не существует");
+                    return;
+                }
+
+                // Проверка выбранность поставщика
+                if (cbSeller.SelectedValue.ToString() == "-2")
+                {
+                    MessageBox.Show("Не выбран поставщик");
+                    return;
+                }
 
                 // Идентификатор поставщика
-                int id = int.Parse(cbSeller.SelectedValue.ToString());
+                int sellerId = int.Parse(cbSeller.SelectedValue.ToString());
+
+                // Инвентарный номер
+                int inventNumber = 0;
+
+                // Подсчет остатка и инвентарного номера
+                if (item != null)
+                {
+                    CalcResidue();
+                    inventNumber = int.Parse(DatabaseWorker.SqlScalarQuery("SELECT Counter FROM ItemsCounters WHERE(OrganizationId = " + EnteredUser.Organization.Id + ")").ToString());
+                }
+                else
+                {
+                    residue = int.Parse(tbQuantity.Text);
+                    inventNumber = int.Parse(DatabaseWorker.SqlScalarQuery("SELECT Counter FROM ItemsCounters WHERE(OrganizationId = " + EnteredUser.Organization.Id + ")").ToString()) + 1;
+                    DatabaseWorker.SqlQuery("UPDATE ItemsCounters SET Counter = " + inventNumber + " WHERE(OrganizationId = " + EnteredUser.Organization.Id + ")");
+                }
 
                 // Формирование запроса
                 string query = "";
                 if (operation == "INSERT")
                     query = "INSERT INTO Items VALUES(" +
                         "'', " +
-                        "{0}, " +
-                        "{1}, " +
-                        "{2}, " +
-                        "{3}, " +
-                        "{4}, " +
-                        "'{5}', " +
-                        "{6}, " +
-                        "'{7}', " +
-                        "'{8}', " +
-                        "'{9}', " +
-                        "'{10}', " +
-                        "'{11}', " +
-                        "'{12}', " +
-                        "'{13}', " +
-                        "{14}, " +
-                        "NOW(), NOW(), " +
-                        "{15}, " +
-                        EnteredUser.OrganizationId + ", " +
-                        "{16}, " +
+                        categories[0] + ", " +
+                        categories[1] + ", " +
+                        categories[2] + ", " +
+                        categories[3] + ", " +
+                        categories[4] + ", " +
+                        "'" + tbItemName.Text + "', " +
+                        "" + sellerId + ", " +
+                        "'" + tbPurchasePrice.Text + "', " +
+                        "'" + tbRetailPrice.Text + "', " +
+                        "'" + tbWholesalePrice.Text + "', " +
+                        "'" + tbServicePrice.Text + "', " +
+                        "'" + tbFirmPrice.Text + "', " +
+                        "'" + tbStorage.Text + "', " +
+                        "'" + tbNote.Text + "', " +
+                        "" + int.Parse(tbQuantity.Text) + ", " +
+                        "NOW(), " +
+                        "NOW(), " +
+                        "" + residue + ", " +
+                        EnteredUser.Organization.Id + ", " +
+                        "" + (chbSearchAllowed.Checked ? "1" : "0") + ", " +
                         "0, " +
-                        "{17}," +
-                        "{18}," +
-                        " '{19}')";
+                        "" + cbStatus.SelectedValue + "," +
+                        "" + inventNumber + "," +
+                        " '" + (tbSerial.Text.Trim() != "" ? tbSerial.Text : "") + "')";
                 else
                     query = "UPDATE Items SET " +
-                        "Main_Category_Id = {0}, " +
-                        "Sub_Category_1_Id = {1}, " +
-                        "Sub_Category_2_Id = {2}, " +
-                        "Sub_Category_3_Id = {3}, " +
-                        "Sub_Category_4_Id = {4}, " +
-                        "Item_Name='{5}', " +
-                        "Seller_Id={6}, " +
-                        "Purchase_Price='{7}', " +
-                        "Retail_Price='{8}', " +
-                        "Wholesale_Price='{9}', " +
-                        "Service_Price='{10}', " +
-                        "FirmPrice='{11}', " +
-                        "Storage='{12}', " +
-                        "Note='{13}', " +
-                        "Quantity={14}, " +
-                        "Residue={15} , " +
-                        "SearchAllowed={16}, " +
+                        "Main_Category_Id = " + categories[0] + ", " +
+                        "Sub_Category_1_Id = " + categories[1] + ", " +
+                        "Sub_Category_2_Id = " + categories[2] + ", " +
+                        "Sub_Category_3_Id = " + categories[3] + ", " +
+                        "Sub_Category_4_Id = " + categories[4] + ", " +
+                        "Item_Name = '" + tbItemName.Text + "', " +
+                        "Seller_Id = " + sellerId + ", " +
+                        "Purchase_Price = '" + tbPurchasePrice.Text + "', " +
+                        "Retail_Price = '" + tbRetailPrice.Text + "', " +
+                        "Wholesale_Price = '" + tbWholesalePrice.Text + "', " +
+                        "Service_Price = '" + tbServicePrice.Text + "', " +
+                        "FirmPrice = '" + tbFirmPrice.Text + "', " +
+                        "Storage = '" + tbStorage.Text + "', " +
+                        "Note = '" + tbNote.Text + "', " +
+                        "Quantity = " + int.Parse(tbQuantity.Text) + ", " +
+                        "Residue = " + residue + " , " +
+                        "SearchAllowed = " + (chbSearchAllowed.Checked ? "1" : "0") + ", " +
                         "ChangeDate = NOW(), " +
-                        "StatusId = {17}, " +
-                        "SerialNumber = '{19}' " +
+                        "StatusId = " + cbStatus.SelectedValue + ", " +
+                        "SerialNumber = '" + (tbSerial.Text.Trim() != "" ? tbSerial.Text : "") + "' " +
                         "WHERE id = " + updateId;
-
-                int inventNumber = 0;
-
-                // Подсчет остатка 
-                if (item != null)
-                {
-                    CalcResidue();
-                    inventNumber = int.Parse(DatabaseWorker.SqlScalarQuery("SELECT Counter FROM ItemsCounters WHERE(OrganizationId = " + EnteredUser.OrganizationId + ")").ToString());
-                }
-                else
-                {
-                    residue = int.Parse(tbQuantity.Text);
-                    inventNumber = int.Parse(DatabaseWorker.SqlScalarQuery("SELECT Counter FROM ItemsCounters WHERE(OrganizationId = " + EnteredUser.OrganizationId + ")").ToString()) + 1;
-                    DatabaseWorker.SqlQuery("UPDATE ItemsCounters SET Counter = " + inventNumber + " WHERE(OrganizationId = " + EnteredUser.OrganizationId + ")");
-                }
-
-
-
-                // Вставка данных о предмете в стороку запроса
-                query = string.Format(query,
-                    categories[0],
-                    categories[1],
-                    categories[2],
-                    categories[3],
-                    categories[4],
-                    tbItemName.Text,
-                    id,
-                    tbPurchasePrice.Text,
-                    tbRetailPrice.Text,
-                    tbWholesalePrice.Text,
-                    tbServicePrice.Text,
-                    tbFirmPrice.Text,
-                    tbStorage.Text,
-                    tbNote.Text,
-                    int.Parse(tbQuantity.Text),
-                    residue,
-                    chbSearchAllowed.Checked ? "1" : "0",
-                    cbStatus.SelectedValue,
-                    inventNumber,
-                    tbSerial.Text.Trim() != "" ? tbSerial.Text : "");
 
                 // Выполнение запроса
                 DatabaseWorker.SqlQuery(query);
@@ -280,7 +232,7 @@ namespace SparesBase
                 MessageBox.Show("Введены не все поля");
         }
 
-        // Поиск предмета в базе по выделенному ID и запись данных в панель информации
+        // Заполнение данных о предмете
         private void GetItemData(Item item)
         {
             tbItemName.Text = item.Name;
@@ -338,7 +290,7 @@ namespace SparesBase
         #region Заполнение элеметов данными
 
         // Заполнение ComboBox'а с поставщиками
-        private void FillSellersComboBox()
+        private void FillSellers()
         {
             DataTable dt = new DataTable();
             dt.Columns.Add("id");
@@ -349,10 +301,7 @@ namespace SparesBase
             if (cbSeller.SelectedValue != null)
                 selectedId = int.Parse(cbSeller.SelectedValue.ToString());
 
-            DataTable sellers = DatabaseWorker.SqlSelectQuery("SELECT id, name FROM Sellers WHERE(OrganizationId=" + EnteredUser.OrganizationId + ") ORDER BY name");
-            DataTable source = new DataTable();
-            source.Columns.Add("id");
-            source.Columns.Add("name");
+            DataTable sellers = DatabaseWorker.SqlSelectQuery("SELECT id, name FROM Sellers WHERE(OrganizationId=" + EnteredUser.Organization.Id + ") ORDER BY name");
 
             bool flag = false;
             foreach (DataRow row in sellers.Rows)
@@ -368,7 +317,7 @@ namespace SparesBase
                 }
             }
 
-            source.Rows.Add("-1", "Добавить нового поставщика...");
+            dt.Rows.Add("-1", "Добавить нового поставщика...");
 
             cbSeller.DataSource = dt;
             cbSeller.DisplayMember = "name";
@@ -380,12 +329,59 @@ namespace SparesBase
                 cbSeller.SelectedIndex = 0;
         }
 
+        // Заполнение списка статусов предмета
         private void FillStatuses()
         {
             DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT id, Status FROM ItemStatus ORDER BY Status");
-            cbStatus.DataSource = dt;
             cbStatus.DisplayMember = "Status";
             cbStatus.ValueMember = "id";
+            cbStatus.DataSource = dt;
+        }
+
+        // Загрузка картинок предмета
+        private void DownloadPictures()
+        {
+            // Получение списка картинок, которые есть у предмета
+            string[] photos = FtpManager.GetItemImagesList(item.Id);
+
+            counter = 0;
+            imagesCount = photos.Length;
+            if (imagesCount > 0)
+            {
+                // Изменение картинки на гифку загрузки и отключение функионала фотографий
+                pbPhoto.SizeMode = PictureBoxSizeMode.CenterImage;
+                pbPhoto.Image = Properties.Resources.LoadGif;
+                btnImg1.Enabled = false;
+                btnImg2.Enabled = false;
+                btnImg3.Enabled = false;
+                btnImg4.Enabled = false;
+                btnImg5.Enabled = false;
+                btnClearPhoto.Enabled = false;
+                btnBrowsePhoto.Enabled = false;
+
+                // Загрузка каждой фотографии
+                foreach (string photo in photos)
+                {
+                    WebClient wcPhotos = new WebClient();
+                    wcPhotos.DownloadDataCompleted += WcPhotos_DownloadDataCompleted;
+                    wcPhotos.DownloadDataAsync(new Uri(FtpManager.FtpConnectString + "Photos/" + "item_" + item.Id + "/" + photo), photo);
+                }
+            }
+            else
+            {
+                // Картинок у предмета нет
+                pbPhoto.SizeMode = PictureBoxSizeMode.Zoom;
+                btnImg1.Enabled = true;
+                btnImg2.Enabled = true;
+                btnImg3.Enabled = true;
+                btnImg4.Enabled = true;
+                btnImg5.Enabled = true;
+                btnClearPhoto.Enabled = true;
+                btnBrowsePhoto.Enabled = true;
+
+                pbPhoto.Image = images[0];
+                btnImg1.BackColor = Color.Green;
+            }
         }
 
         #endregion Заполнение элеметов данными
@@ -425,7 +421,6 @@ namespace SparesBase
                 // Занесение остатка в базу
                 DatabaseWorker.SqlQuery("UPDATE Items SET Residue = " + residue + " WHERE(id = " + item.Id + ")");
             }
-
         }
 
         // Получение остатка из базы
@@ -454,41 +449,10 @@ namespace SparesBase
             if (cbSeller.Text == "Добавить нового поставщика...")
             {
                 SellerEdit sf = new SellerEdit();
-                if (sf.ShowForm() == SellerState.Insert)
+                if (sf.ShowDialog() == DialogResult.OK)
                 {
-                    FillSellersComboBox();
+                    FillSellers();
                     cbSeller.SelectedValue = sf.sellerId;
-                }
-            }
-        }
-
-        // Открытие ComboBox'а с поставщиками
-        private void cbSeller_DropDown(object sender, EventArgs e)
-        {
-            FillSellersComboBox();
-        }
-
-        // Просмотр фотографий предмета
-        private void btnPhoto_Click(object sender, EventArgs e)
-        {
-            PhotoEditor pe = null;
-            if (item == null)
-                pe = new PhotoEditor();
-            else
-                pe = new PhotoEditor(item.Id);
-
-            if (pe.ShowDialog() == DialogResult.OK)
-            {
-                imagesEdited = true;
-                images = pe.Images;
-                pbPhoto.Image = null;
-                foreach (Image image in images)
-                {
-                    if (image != null)
-                    {
-                        pbPhoto.Image = image;
-                        break;
-                    }
                 }
             }
         }
@@ -501,6 +465,19 @@ namespace SparesBase
             else
                 UpdateItem(item.Id);
         }
+
+        // Смена категорий
+        private void btnChangeCategories_Click(object sender, EventArgs e)
+        {
+            ChangeCategoriesForm ccf = new ChangeCategoriesForm(this, item.Organization.Id);
+            ccf.ShowDialog();
+        }
+
+        #endregion Разные события
+
+
+
+        #region События списания предмета
 
         // Продажа
         private void btnSell_Click(object sender, EventArgs e)
@@ -544,20 +521,44 @@ namespace SparesBase
                 MessageBox.Show("Остаток данного предмета равен нулю");
         }
 
-        // Смена категорий
-        private void btnChangeCategories_Click(object sender, EventArgs e)
+        #endregion События списания предмета
+
+
+
+        #region События фотографий
+
+        // Вывается, когда фотография предмета загрузилась
+        private void WcPhotos_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
         {
-            ChangeCategoriesForm ccf = new ChangeCategoriesForm(this, item.Organization.Id);
-            ccf.ShowDialog();
+            // Преобразование загруженных байтов в картинку
+            MemoryStream memoryStream = new MemoryStream(e.Result);
+            Image img = Image.FromStream(memoryStream);
+
+            // Получение индекса картинки и записывание её на нужное место в массиве
+            string imageIndex = e.UserState.ToString()[0].ToString();
+            images[int.Parse(imageIndex) - 1] = img;
+
+            counter++;
+            if (counter == imagesCount)
+            {
+                // При загрузке всех картинок предмета, происходит загрузка на элемент первой фотографии и включение функционала фотографий
+                pbPhoto.SizeMode = PictureBoxSizeMode.Zoom;
+                btnImg1.Enabled = true;
+                btnImg2.Enabled = true;
+                btnImg3.Enabled = true;
+                btnImg4.Enabled = true;
+                btnImg5.Enabled = true;
+                btnClearPhoto.Enabled = true;
+                btnBrowsePhoto.Enabled = true;
+
+                pbPhoto.Image = images[0];
+                btnImg1.BackColor = Color.Green;
+            }
         }
 
-
-        #endregion Разные события
-
+        // Клик на одну из кнопок выбора фотографии
         private void btnImg_Click(object sender, EventArgs e)
         {
-           
-
             btnImg1.BackColor = SystemColors.Control;
             btnImg2.BackColor = SystemColors.Control;
             btnImg3.BackColor = SystemColors.Control;
@@ -570,34 +571,38 @@ namespace SparesBase
             pbPhoto.Image = images[int.Parse(but.Text) - 1];
 
             selectedImage = int.Parse(but.Text) - 1;
-            
         }
 
+        // Назначение фото с компьютера
         private void btnBrowsePhoto_Click(object sender, EventArgs e)
         {
-
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "Файлы изображений| *.jpg; *.jpeg; *.png";
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                
                 Image img = Image.FromFile(ofd.FileName);
                 string fileExtension = Path.GetExtension(ofd.FileName);
-                //img.Tag = "Photos/item_" + item.Id + "/" + selectedImage + fileExtension;
                 images[selectedImage] = img;
                 pbPhoto.Image = img;
                 imagesEdited = true;
-              
             }
         }
 
+        // Очистка выделенного фото
         private void btnClearPhoto_Click(object sender, EventArgs e)
         {
-           
             images[selectedImage] = null;
             pbPhoto.Image = null;
-            imagesEdited = true;
-            
+            imagesEdited = true;   
         }
+
+        // Клик на кнопку "Загрузка фотографий"
+        private void btnLoadImages_Click(object sender, EventArgs e)
+        {
+            btnLoadImages.Visible = false;
+            DownloadPictures();
+        }
+
+        #endregion События фотографий
     }
 }

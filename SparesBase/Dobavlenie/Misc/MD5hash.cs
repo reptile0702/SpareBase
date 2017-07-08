@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Security.Cryptography;
 
 namespace SparesBase
 {
     class MD5hash
     {
-
+        // Получение хеша
         public static string GetMD5Hash(string input)
         {
             MD5 hash = MD5.Create();
@@ -20,22 +17,18 @@ namespace SparesBase
 
             hash.Clear();
             return builder.ToString();
-            
         }
 
+        // Проверка хеша
         public static bool VerifyMD5Hash(string input, string hash)
         {
             string hashOfInput = GetMD5Hash(input);
+
             StringComparer comparer = StringComparer.OrdinalIgnoreCase;
             if (comparer.Compare(hashOfInput, hash) == 0)
-            {
                 return true;
-            }
             else
-            {
                 return false;
-            }
-            
         }
     }
 }

@@ -23,7 +23,7 @@ namespace SparesBase
 
         #region Заполнение данных
         
-        // Получение данных о выделенном поставщике из базы и вывод данных во все TextBox'ы
+        // Заполнение данных о поставщике
         private void FillSellerData()
         {
             Seller selectedSeller = (Seller)tvSellers.SelectedNode.Tag;
@@ -40,11 +40,10 @@ namespace SparesBase
         {
             tvSellers.Nodes.Clear();
 
-            string where = "WHERE(OrganizationId = " + EnteredUser.OrganizationId + ")";
-            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT * FROM Sellers " + where);
+            DataTable sellers = DatabaseWorker.SqlSelectQuery("SELECT * FROM Sellers WHERE(OrganizationId = " + EnteredUser.Organization.Id + ")");
 
             Seller seller = null;
-            foreach (DataRow row in dt.Rows)
+            foreach (DataRow row in sellers.Rows)
             {
                 seller = new Seller(
                     int.Parse(row.ItemArray[0].ToString()),
@@ -94,7 +93,7 @@ namespace SparesBase
         // Удаление поставщика
         private void DeleteSeller()
         {
-            DatabaseWorker.SqlQuery("DELETE FROM Sellers WHERE(id=" + SelectedSeller.Id + ")");
+            DatabaseWorker.SqlQuery("DELETE FROM Sellers WHERE(id = " + SelectedSeller.Id + ")");
             tvSellers.Nodes.Remove(tvSellers.SelectedNode);
         }
 

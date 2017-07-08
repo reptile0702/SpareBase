@@ -5,21 +5,25 @@ namespace SparesBase
 {
     public partial class SellingForm : Form
     {
+        int itemId;
         int quantity, retailPrice, wholesalePrice, servicePrice;
-        int id;
         
         // Конструктор
-        public SellingForm(int quantity, int retailPrice, int wholesalePrice, int servicePrice, int id)
+        public SellingForm(int quantity, int retailPrice, int wholesalePrice, int servicePrice, int itemId)
         {
             InitializeComponent();
             this.quantity = quantity;
             this.retailPrice = retailPrice;
             this.wholesalePrice = wholesalePrice;
             this.servicePrice = servicePrice;
-            this.id = id;
+            this.itemId = itemId;
+
+            FillPrices();
+            FillQuantity();
         }
 
-
+        #region Методы
+        
         // Заполнение количества
         private void FillQuantity()
         {
@@ -41,18 +45,19 @@ namespace SparesBase
         // Добавление продажи в базу
         private void AddSell()
         {
-            DatabaseWorker.SqlQuery("INSERT INTO Selling VALUES (''," + cbQuantity.Text + "," + cbPrice.Text.Remove(0, cbPrice.Text.IndexOf(':') + 2) + ", " + id + ")");
-            DatabaseWorker.InsertAction(5, id);
+            DatabaseWorker.SqlQuery("INSERT INTO Selling VALUES ('', " +
+                "" + cbQuantity.Text + ", " +
+                "" + cbPrice.Text.Remove(0, cbPrice.Text.IndexOf(':') + 2) + ", " +
+                "" + itemId + ")");
+            DatabaseWorker.InsertAction(5, itemId);
         }
 
+        #endregion Методы
 
-        // Загрузка формы
-        private void SellingForm_Load(object sender, EventArgs e)
-        {
-            FillPrices();
-            FillQuantity();
-        }
-  
+
+
+        #region События
+
         // Клик на ОК
         private void btnOK_Click(object sender, EventArgs e)
         {
@@ -66,5 +71,7 @@ namespace SparesBase
         {
             Close();
         }
+
+        #endregion События
     }
 }

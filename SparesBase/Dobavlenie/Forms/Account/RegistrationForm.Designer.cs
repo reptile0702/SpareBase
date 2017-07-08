@@ -45,7 +45,7 @@
             this.tbPhone = new System.Windows.Forms.TextBox();
             this.tbMail = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.tbLogIn = new System.Windows.Forms.TextBox();
+            this.tbLogin = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -144,7 +144,7 @@
             this.btnFinishRegistration.Name = "btnFinishRegistration";
             this.btnFinishRegistration.Size = new System.Drawing.Size(293, 23);
             this.btnFinishRegistration.TabIndex = 11;
-            this.btnFinishRegistration.Text = "Зарегистрироваться";
+            this.btnFinishRegistration.Text = "Зарегистрировать";
             this.btnFinishRegistration.UseVisualStyleBackColor = true;
             this.btnFinishRegistration.Click += new System.EventHandler(this.btnFinishRegistration_Click);
             // 
@@ -199,12 +199,12 @@
             this.label9.TabIndex = 22;
             this.label9.Text = "E-mail";
             // 
-            // tbLogIn
+            // tbLogin
             // 
-            this.tbLogIn.Location = new System.Drawing.Point(115, 19);
-            this.tbLogIn.Name = "tbLogIn";
-            this.tbLogIn.Size = new System.Drawing.Size(158, 20);
-            this.tbLogIn.TabIndex = 1;
+            this.tbLogin.Location = new System.Drawing.Point(115, 19);
+            this.tbLogin.Name = "tbLogin";
+            this.tbLogin.Size = new System.Drawing.Size(158, 20);
+            this.tbLogin.TabIndex = 1;
             // 
             // label10
             // 
@@ -232,7 +232,7 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.tbLogIn);
+            this.groupBox2.Controls.Add(this.tbLogin);
             this.groupBox2.Controls.Add(this.tbPassword);
             this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Controls.Add(this.tbSecondPassword);
@@ -284,7 +284,7 @@
             this.MaximizeBox = false;
             this.Name = "RegistrationForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Регистрация";
+            this.Text = "Регистрация сотрудника";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -314,7 +314,7 @@
         private System.Windows.Forms.TextBox tbPhone;
         private System.Windows.Forms.TextBox tbMail;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox tbLogIn;
+        private System.Windows.Forms.TextBox tbLogin;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;

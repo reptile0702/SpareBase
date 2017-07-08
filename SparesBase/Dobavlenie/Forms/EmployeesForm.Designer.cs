@@ -28,18 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EmployeesForm));
             this.dgv = new System.Windows.Forms.DataGridView();
             this.lastName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.firstName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.secondName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.сотрудникToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiAdd = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsEmployee = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmsAddEmployee = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsEditEmployee = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsDeleteEmployee = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
-            this.menuStrip1.SuspendLayout();
+            this.menuStrip.SuspendLayout();
+            this.cmsEmployee.SuspendLayout();
             this.SuspendLayout();
             // 
             // dgv
@@ -55,6 +61,7 @@
             this.lastName,
             this.firstName,
             this.secondName});
+            this.dgv.ContextMenuStrip = this.cmsEmployee;
             this.dgv.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgv.Location = new System.Drawing.Point(0, 24);
             this.dgv.MultiSelect = false;
@@ -83,15 +90,15 @@
             this.secondName.Name = "secondName";
             this.secondName.ReadOnly = true;
             // 
-            // menuStrip1
+            // menuStrip
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.сотрудникToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(360, 24);
-            this.menuStrip1.TabIndex = 2;
-            this.menuStrip1.Text = "menuStrip1";
+            this.menuStrip.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(360, 24);
+            this.menuStrip.TabIndex = 2;
+            this.menuStrip.Text = "menuStrip1";
             // 
             // сотрудникToolStripMenuItem
             // 
@@ -108,21 +115,51 @@
             this.tsmiAdd.Name = "tsmiAdd";
             this.tsmiAdd.Size = new System.Drawing.Size(154, 22);
             this.tsmiAdd.Text = "Добавить";
-            this.tsmiAdd.Click += new System.EventHandler(this.tsmiAdd_Click);
+            this.tsmiAdd.Click += new System.EventHandler(this.Add_Click);
             // 
             // tsmiEdit
             // 
             this.tsmiEdit.Name = "tsmiEdit";
             this.tsmiEdit.Size = new System.Drawing.Size(154, 22);
             this.tsmiEdit.Text = "Редактировать";
-            this.tsmiEdit.Click += new System.EventHandler(this.tsmiEdit_Click);
+            this.tsmiEdit.Click += new System.EventHandler(this.Edit_Click);
             // 
             // tsmiDelete
             // 
             this.tsmiDelete.Name = "tsmiDelete";
             this.tsmiDelete.Size = new System.Drawing.Size(154, 22);
             this.tsmiDelete.Text = "Удалить";
-            this.tsmiDelete.Click += new System.EventHandler(this.tsmiDelete_Click);
+            this.tsmiDelete.Click += new System.EventHandler(this.Delete_Click);
+            // 
+            // cmsEmployee
+            // 
+            this.cmsEmployee.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmsAddEmployee,
+            this.cmsEditEmployee,
+            this.cmsDeleteEmployee});
+            this.cmsEmployee.Name = "contextMenuStrip1";
+            this.cmsEmployee.Size = new System.Drawing.Size(221, 92);
+            // 
+            // cmsAddEmployee
+            // 
+            this.cmsAddEmployee.Name = "cmsAddEmployee";
+            this.cmsAddEmployee.Size = new System.Drawing.Size(220, 22);
+            this.cmsAddEmployee.Text = "Добавить сотрудника";
+            this.cmsAddEmployee.Click += new System.EventHandler(this.Add_Click);
+            // 
+            // cmsEditEmployee
+            // 
+            this.cmsEditEmployee.Name = "cmsEditEmployee";
+            this.cmsEditEmployee.Size = new System.Drawing.Size(220, 22);
+            this.cmsEditEmployee.Text = "Редактировать сотрудника";
+            this.cmsEditEmployee.Click += new System.EventHandler(this.Edit_Click);
+            // 
+            // cmsDeleteEmployee
+            // 
+            this.cmsDeleteEmployee.Name = "cmsDeleteEmployee";
+            this.cmsDeleteEmployee.Size = new System.Drawing.Size(220, 22);
+            this.cmsDeleteEmployee.Text = "Удалить сотрудника";
+            this.cmsDeleteEmployee.Click += new System.EventHandler(this.Delete_Click);
             // 
             // EmployeesForm
             // 
@@ -130,15 +167,16 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(360, 383);
             this.Controls.Add(this.dgv);
-            this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.menuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MainMenuStrip = this.menuStrip1;
+            this.MainMenuStrip = this.menuStrip;
             this.Name = "EmployeesForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Сотрудники";
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).EndInit();
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
+            this.menuStrip.ResumeLayout(false);
+            this.menuStrip.PerformLayout();
+            this.cmsEmployee.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -150,10 +188,14 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn lastName;
         private System.Windows.Forms.DataGridViewTextBoxColumn firstName;
         private System.Windows.Forms.DataGridViewTextBoxColumn secondName;
-        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem сотрудникToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmiAdd;
         private System.Windows.Forms.ToolStripMenuItem tsmiEdit;
         private System.Windows.Forms.ToolStripMenuItem tsmiDelete;
+        private System.Windows.Forms.ContextMenuStrip cmsEmployee;
+        private System.Windows.Forms.ToolStripMenuItem cmsAddEmployee;
+        private System.Windows.Forms.ToolStripMenuItem cmsEditEmployee;
+        private System.Windows.Forms.ToolStripMenuItem cmsDeleteEmployee;
     }
 }

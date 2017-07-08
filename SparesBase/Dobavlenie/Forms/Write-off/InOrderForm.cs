@@ -5,20 +5,27 @@ namespace SparesBase
 {
     public partial class InOrder : Form
     {
-        private int quant = 0;
+        private int quantity = 0;
         private int itemId = 0;
-        private int price = 0;
+        private int firmPrice = 0;
 
         // Конструктор
-        public InOrder(int itemId, int quant, int price)
+        public InOrder(int itemId, int quantity, int firmPrice)
         {
             InitializeComponent();
 
             this.itemId = itemId;
-            this.quant = quant;
-            this.price = price;
+            this.quantity = quantity;
+            this.firmPrice = firmPrice;
+
+            FillQuantity();
+
+            tbPrice.Text = firmPrice.ToString();
+            tbTotal.Text = (int.Parse(cbQuantity.Text) * firmPrice).ToString();
         }
 
+
+        #region Методы
 
         // Добавление заказа в таблицу
         private void AddInOrder()
@@ -33,18 +40,19 @@ namespace SparesBase
                 MessageBox.Show("Введите номер заказа");
         }
 
-
-        // Загрузка формы
-        private void InOrder_Load(object sender, EventArgs e)
+        // Заполнение ComboBox'а с количеством
+        private void FillQuantity()
         {
-            // Заполнение ComboBox'а с количеством
-            for (int i = 0; i < quant; i++)         
-                cbQuantity.Items.Add(i+1);
+            for (int i = 0; i < quantity; i++)
+                cbQuantity.Items.Add(i + 1);
             cbQuantity.SelectedIndex = 0;
-
-            tbPrice.Text = price.ToString();
-            tbTotal.Text = (int.Parse(cbQuantity.Text) * price).ToString();      
         }
+
+        #endregion Методы
+
+
+
+        #region События
 
         // Клик на OK
         private void btnOK_Click(object sender, EventArgs e)
@@ -64,7 +72,9 @@ namespace SparesBase
         private void cbQuantity_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbQuantity.Text != "")          
-                tbTotal.Text = (int.Parse(cbQuantity.Text) * price).ToString();
+                tbTotal.Text = (int.Parse(cbQuantity.Text) * firmPrice).ToString();
         }
+
+        #endregion События
     }
 }

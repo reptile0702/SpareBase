@@ -40,6 +40,8 @@ namespace SparesBase
         }
 
 
+        #region События
+
         // Клик на "Карточка администратора"
         private void btnAdminCard_Click(object sender, System.EventArgs e)
         {
@@ -52,5 +54,7 @@ namespace SparesBase
         {
             Process.Start(lSiteLink.Text);
         }
+
+        #endregion События
     }
 }

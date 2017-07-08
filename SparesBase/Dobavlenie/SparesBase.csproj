@@ -70,7 +70,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CryptographyClass.cs" />
+    <Compile Include="Misc\Settings.cs" />
+    <Compile Include="Forms\SettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SettingsForm.Designer.cs">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -154,10 +160,10 @@
     <Compile Include="Forms\Write-off\DefectForm.Designer.cs">
       <DependentUpon>DefectForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\EditCategory.cs">
+    <Compile Include="Forms\Item Editing\EditCategory.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\EditCategory.Designer.cs">
+    <Compile Include="Forms\Item Editing\EditCategory.Designer.cs">
       <DependentUpon>EditCategory.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Write-off\InOrderForm.cs">
@@ -217,6 +223,9 @@
       <DependentUpon>SellerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Misc\StringValidation.cs" />
+    <EmbeddedResource Include="Forms\SettingsForm.resx">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -253,7 +262,7 @@
     <EmbeddedResource Include="Forms\Write-off\DefectForm.resx">
       <DependentUpon>DefectForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\EditCategory.resx">
+    <EmbeddedResource Include="Forms\Item Editing\EditCategory.resx">
       <DependentUpon>EditCategory.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Write-off\InOrderForm.resx">

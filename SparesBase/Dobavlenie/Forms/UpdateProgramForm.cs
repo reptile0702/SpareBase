@@ -9,6 +9,8 @@ namespace SparesBase
 {
     public partial class UpdateProgramForm : Form
     {
+        #region Конструкторы
+        
         // Конструктор
         public UpdateProgramForm(string version, string date, string changeLog)
         {
@@ -18,30 +20,43 @@ namespace SparesBase
             rtbChangeLog.Text += "Изменения:\n" + changeLog;
         }
 
-        // Ок
+        #endregion Конструкторы
+
+
+
+        #region События
+
+        // Клик на кнопку ОК
         private void btnOk_Click(object sender, EventArgs e)
         {
             WebClient webcl = new WebClient();
             webcl.DownloadFileCompleted += Webcl_DownloadFileCompleted;
+
+            // Загрузка файла Updater.exe если его нет на компьютере
             if (!File.Exists("Updater.exe"))
-            {
-                webcl.DownloadFile(new Uri("ftp://u0183148:W5iLVaY9@server137.hosting.reg.ru/www/xn--29-nmcu.xn--p1ai/SparesBase/Updater.exe"), "Updater.exe");
-            }
+                webcl.DownloadFile(new Uri(FtpManager.FtpConnectString + "Updater.exe"), "Updater.exe");
            
-            webcl.DownloadFileAsync(new Uri("ftp://u0183148:W5iLVaY9@server137.hosting.reg.ru/www/xn--29-nmcu.xn--p1ai/SparesBase/Client/Versions/CurrentVersion/SparesBase.exe"), "SparesBase.update");
+            // Загрузка новой версии программы
+            webcl.DownloadFileAsync(new Uri(FtpManager.FtpConnectString + "Client/Versions/CurrentVersion/SparesBase.exe"), "SparesBase.update");
         }
 
         // Загрузка новой версии программы завершена
         private void Webcl_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
+            // Запуск программы обновления
             Process.Start("Updater.exe", "SparesBase.exe SparesBase.update");
+
+            // Закрытие текущего процесса
             Process.GetCurrentProcess().Kill();
         }
 
         // Закрытие формы
         private void UpdateProgramForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            // Обновление обязательно, так что при закрытии данной формы закроется и вся программа
             Application.Exit();
         }
+
+        #endregion События
     }
 }

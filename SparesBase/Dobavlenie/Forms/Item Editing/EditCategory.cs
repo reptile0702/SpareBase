@@ -5,11 +5,17 @@ namespace SparesBase
 {
     public partial class EditCategory : Form
     {
+        #region Поля
+        
         MainForm mf;
         int id;
         int nodeCount;
         bool rename;
         string oldName;
+
+        #endregion Поля
+
+
 
         #region Конструкторы
 
@@ -74,6 +80,7 @@ namespace SparesBase
                 else
                     mf.AddCategory(nodeCount, id, tbCategory.Text);
             }
+
             DialogResult = DialogResult.OK;
             Close();
         }

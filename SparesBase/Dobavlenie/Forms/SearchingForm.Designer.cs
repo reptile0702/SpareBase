@@ -40,11 +40,21 @@
             this.pbBanner = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.dgv = new SparesBase.ItemsDataGridView();
+            this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.retail = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.service = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.quantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.addDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.changeDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.loadBannersDelay = new System.Windows.Forms.Timer(this.components);
+            this.pbPreview = new System.Windows.Forms.PictureBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.btnLoadImage = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbBanner)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).BeginInit();
             this.SuspendLayout();
             // 
             // tbSearching
@@ -76,6 +86,9 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btnLoadImage);
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.pbPreview);
             this.panel1.Controls.Add(this.lPhoneSC);
             this.panel1.Controls.Add(this.lNameSC);
             this.panel1.Controls.Add(this.cbSearchByOrganization);
@@ -121,7 +134,7 @@
             // 
             // pbBanner
             // 
-            this.pbBanner.Location = new System.Drawing.Point(15, 169);
+            this.pbBanner.Location = new System.Drawing.Point(15, 340);
             this.pbBanner.Name = "pbBanner";
             this.pbBanner.Size = new System.Drawing.Size(150, 250);
             this.pbBanner.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -146,6 +159,13 @@
             this.dgv.AllowUserToResizeRows = false;
             this.dgv.BackgroundColor = System.Drawing.Color.White;
             this.dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.name,
+            this.retail,
+            this.service,
+            this.quantity,
+            this.addDate,
+            this.changeDate});
             this.dgv.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgv.Location = new System.Drawing.Point(184, 0);
             this.dgv.MultiSelect = false;
@@ -157,6 +177,48 @@
             this.dgv.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellClick);
             this.dgv.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgv_CellMouseDoubleClick);
             // 
+            // name
+            // 
+            this.name.HeaderText = "Наименование";
+            this.name.Name = "name";
+            this.name.ReadOnly = true;
+            this.name.Width = 150;
+            // 
+            // retail
+            // 
+            this.retail.HeaderText = "Розница";
+            this.retail.Name = "retail";
+            this.retail.ReadOnly = true;
+            this.retail.Width = 80;
+            // 
+            // service
+            // 
+            this.service.HeaderText = "Сервисы";
+            this.service.Name = "service";
+            this.service.ReadOnly = true;
+            this.service.Width = 80;
+            // 
+            // quantity
+            // 
+            this.quantity.HeaderText = "Количество";
+            this.quantity.Name = "quantity";
+            this.quantity.ReadOnly = true;
+            this.quantity.Width = 80;
+            // 
+            // addDate
+            // 
+            this.addDate.HeaderText = "Дата добавления";
+            this.addDate.Name = "addDate";
+            this.addDate.ReadOnly = true;
+            this.addDate.Width = 130;
+            // 
+            // changeDate
+            // 
+            this.changeDate.HeaderText = "Дата изменения";
+            this.changeDate.Name = "changeDate";
+            this.changeDate.ReadOnly = true;
+            this.changeDate.Width = 130;
+            // 
             // timer
             // 
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
@@ -165,6 +227,34 @@
             // 
             this.loadBannersDelay.Interval = 3000;
             this.loadBannersDelay.Tick += new System.EventHandler(this.loadBannersDelay_Tick);
+            // 
+            // pbPreview
+            // 
+            this.pbPreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbPreview.Location = new System.Drawing.Point(15, 194);
+            this.pbPreview.Name = "pbPreview";
+            this.pbPreview.Size = new System.Drawing.Size(150, 140);
+            this.pbPreview.TabIndex = 10;
+            this.pbPreview.TabStop = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 178);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(35, 13);
+            this.label3.TabIndex = 11;
+            this.label3.Text = "Фото";
+            // 
+            // btnLoadImage
+            // 
+            this.btnLoadImage.Location = new System.Drawing.Point(15, 194);
+            this.btnLoadImage.Name = "btnLoadImage";
+            this.btnLoadImage.Size = new System.Drawing.Size(150, 140);
+            this.btnLoadImage.TabIndex = 12;
+            this.btnLoadImage.Text = "Загрузить\r\n фотографию";
+            this.btnLoadImage.UseVisualStyleBackColor = true;
+            this.btnLoadImage.Click += new System.EventHandler(this.btnLoadImage_Click);
             // 
             // SearchingForm
             // 
@@ -182,6 +272,7 @@
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbBanner)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -200,5 +291,14 @@
         private System.Windows.Forms.Label lPhoneSC;
         private System.Windows.Forms.Label lNameSC;
         private System.Windows.Forms.CheckBox cbSearchByOrganization;
+        private System.Windows.Forms.DataGridViewTextBoxColumn name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn retail;
+        private System.Windows.Forms.DataGridViewTextBoxColumn service;
+        private System.Windows.Forms.DataGridViewTextBoxColumn quantity;
+        private System.Windows.Forms.DataGridViewTextBoxColumn addDate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn changeDate;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.PictureBox pbPreview;
+        private System.Windows.Forms.Button btnLoadImage;
     }
 }

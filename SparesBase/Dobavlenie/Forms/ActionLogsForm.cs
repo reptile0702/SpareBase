@@ -6,11 +6,17 @@ namespace SparesBase
 {
     public partial class ActionLogsForm : Form
     {
+        #region Конструкторы
+        
         // Конструктор
         public ActionLogsForm()
         {
             InitializeComponent();
         }
+
+        #endregion Конструкторы
+
+
 
         #region Методы
 
@@ -25,16 +31,25 @@ namespace SparesBase
 
             // Формирование условия по фильтрам
             string where = "";
-            where = " WHERE(((ActionLogs.OrganizationId=" + EnteredUser.OrganizationId + ") AND (Date BETWEEN '" + dateFrom + "' AND '" + dateTo + "')) AND";
+            where = " WHERE(((al.OrganizationId=" + EnteredUser.Organization.Id + ") AND (al.Date BETWEEN '" + dateFrom + "' AND '" + dateTo + "')) AND";
             if (actionId != 0 || accountId != 0)
             {
-                where += actionId != 0 ? " ActionLogs.ActionId= " + actionId + " AND " : "";               
-                where += accountId != 0 ? " ActionLogs.AccountId=" + accountId + " AND " : "";  
+                where += actionId != 0 ? " al.ActionId= " + actionId + " AND " : "";               
+                where += accountId != 0 ? " al.AccountId=" + accountId + " AND " : "";  
             }
-            where = where.Remove(where.Length - 4, 4) + ") ORDER BY ActionLogs.Date";
+            where = where.Remove(where.Length - 4, 4) + ") ORDER BY al.Date";
 
             // Получение логов
-            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT ActionLogs.ActionId, Accounts.LastName, Accounts.FirstName, Accounts.SecondName, Items.Item_Name, ActionLogs.Date FROM ActionLogs LEFT JOIN Accounts ON ActionLogs.AccountId=Accounts.id LEFT JOIN Items ON ActionLogs.ItemId=Items.id " + where);
+            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT " +
+                "al.ActionId, " +
+                "a.LastName, " +
+                "a.FirstName, " +
+                "a.SecondName, " +
+                "i.Item_Name, " +
+                "al.Date " +
+                "FROM ActionLogs al " +
+                "LEFT JOIN Accounts a ON al.AccountId = a.id " +
+                "LEFT JOIN Items i ON al.ItemId = i.id " + where);
 
             // Запись в ListBox
             foreach (DataRow row in dt.Rows)
@@ -64,8 +79,8 @@ namespace SparesBase
             }
         }
 
-        // Заполнение ComboBox'ов действий и аккаунтов
-        private void FillComboboxes()
+        // Заполнение действий
+        private void FillActions()
         {
             // Действия
             DataTable actions = new DataTable();
@@ -73,25 +88,36 @@ namespace SparesBase
             actions.Columns.Add("Action");
             actions.Rows.Add("0", "Все действия");
 
-            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT * FROM Actions");
-            foreach (DataRow row in dt.Rows)
+            DataTable queryActions = DatabaseWorker.SqlSelectQuery("SELECT * FROM Actions");
+            foreach (DataRow row in queryActions.Rows)
                 actions.Rows.Add(row.ItemArray[0], row.ItemArray[1]);
 
             cbAction.ValueMember = "id";
             cbAction.DisplayMember = "Action";
             cbAction.DataSource = actions;
             cbAction.SelectedIndexChanged += cbAction_SelectedIndexChanged;
+        }
 
+        // Заполнение аккаунтов
+        private void FillAccounts()
+        {
             // Аккаунты
             DataTable accounts = new DataTable();
             accounts.Columns.Add("id");
             accounts.Columns.Add("FIO");
             accounts.Rows.Add("0", "Все аккаунты");
 
-            
-            dt = DatabaseWorker.SqlSelectQuery("SELECT id, LastName, FirstName, SecondName FROM Accounts WHERE(OrganizationId=" + EnteredUser.OrganizationId + ")");
-            foreach (DataRow row in dt.Rows)
-                accounts.Rows.Add(row.ItemArray[0], row.ItemArray[1] + " " + row.ItemArray[2] + " " + row.ItemArray[3]);
+            DataTable queryAccounts = DatabaseWorker.SqlSelectQuery("SELECT " +
+                "id, " +
+                "LastName, " +
+                "FirstName, " +
+                "SecondName " +
+                "FROM Accounts " +
+                "WHERE(OrganizationId = " + EnteredUser.Organization.Id + ")");
+            foreach (DataRow row in queryAccounts.Rows)
+                accounts.Rows.Add(
+                    row.ItemArray[0], 
+                    row.ItemArray[1] + " " + row.ItemArray[2] + " " + row.ItemArray[3]);
             
             cbAccount.ValueMember = "id";
             cbAccount.DisplayMember = "FIO";
@@ -108,7 +134,8 @@ namespace SparesBase
         // Загрузка формы
         private void ActionLogsForm_Load(object sender, EventArgs e)
         {
-            FillComboboxes();
+            FillAccounts();
+            FillActions();
             GetLogs(0, 0);
         }
 

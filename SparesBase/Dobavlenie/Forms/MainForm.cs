@@ -13,45 +13,67 @@ namespace SparesBase
     public partial class MainForm : Form
     {
         // TODO: Добавть журнал поисков  ???
-        // TODO: Проверить на существование введенного поставщика
-        // TODO: в "поиске по организациям", буду его Глобальным дальше называть, поле ID уменьшить, за счёт него расширить наименование
-        // TODO: шаблоны для цветов на ячейки статуса
+
+        // TODO: Придумать систему обновления через загрузку всех файлов программы с сервера и установку их на компьютер
+
+
+        #region Поля
+
         AuthenticationForm au;
-        WebClient webclient;
         Thread previewThread;
+
+        #endregion Поля
+
+
+
+        #region Свойства
+
         // Выбранная категория в TreeView
         public Category SelectedCategory { get { return (Category)treeView.SelectedNode.Tag; } }
 
         // Выбранный предмет в DataGridView
         public Item SelectedItem { get { return (Item)dgv.CurrentRow.Tag; } }
 
+        #endregion Свойства
+
+
+
+        #region Конструкторы
+
         // Конструктор
         public MainForm(AuthenticationForm au)
         {
             InitializeComponent();
             this.au = au;
-            webclient = new WebClient();
-            webclient.DownloadDataCompleted += Webclient_DownloadDataCompleted;
 
             // Заполнение заголовка формы именем пользовалеля и названием организации
-            DataTable dt = DatabaseWorker.SqlSelectQuery("SELECT Accounts.LastName, Accounts.FirstName, Accounts.SecondName, Organizations.Name, Accounts.Admin FROM Accounts LEFT JOIN Organizations ON Organizations.id = Accounts.OrganizationId WHERE(Accounts.id=" + EnteredUser.id + ")");
-            Text = "База запчастей - " + dt.Rows[0].ItemArray[0] + " " + dt.Rows[0].ItemArray[1] + " " + dt.Rows[0].ItemArray[2] + " - " + dt.Rows[0].ItemArray[3];
-            if (dt.Rows[0].ItemArray[4].ToString() != "1")
+            Text = "База запчастей - " +
+                EnteredUser.LastName +
+                " " + EnteredUser.FirstName +
+                " " + EnteredUser.SecondName +
+                " - " + EnteredUser.Organization.Name;
+
+            if (!EnteredUser.Admin)
                 tsmiLogs.Visible = false;
 
             if (!EnteredUser.Admin)
             {
                 tsmiLogs.Visible = false;
-                tsmiUsers.Visible = false;
+                tsmiEmployees.Visible = false;
             }
+
+            if (Settings.AutoLoadItemImages)
+                btnLoadImage.Visible = false;
 
             tbSearch.Text = "Поиск";
             tbSearch.ForeColor = Color.Gray;
 
-            treeView.FillCategories(EnteredUser.OrganizationId, cmsCategory);
-            InitializeDataGridView();
+            treeView.FillCategories(EnteredUser.Organization.Id, cmsCategory);
             ClearInfoAboutItem();
         }
+
+        #endregion Конструкторы
+
 
 
         #region Заполнение данных
@@ -72,63 +94,15 @@ namespace SparesBase
                 if (i == 4) where += " AND i.Sub_Category_4_Id=(SELECT id FROM Sub_Category_4 WHERE(id=" + selectedCategories[i] + "))";
             }
             where += ") AND (i.Residue > 0) AND (i.Deleted <> 1))";
+
+            // Запоминание выбранной строки, если она есть
             Item selectedItem = null;
             if (dgv.CurrentRow != null)
-            {
                 selectedItem = (Item)dgv.CurrentRow.Tag;
-            }
 
-
+            // Получение предметов из базы
             Item[] items = dgv.FillItems(where);
-
-
-            foreach (Item item in items)
-            {
-                dgv.Rows.Add(
-                    item.InventNumber,
-                    item.Name,                    
-                    item.Seller != null ? item.Seller.Name : "Без поставщика",
-                    item.PurchasePrice,
-                    item.RetailPrice,
-                    item.WholesalePrice,
-                    item.ServicePrice,
-                    item.FirmPrice,
-                    item.Storage,
-                    item.Quantity,
-                    item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay,
-                    item.ChangeDate.Date.ToShortDateString() + " " + item.ChangeDate.TimeOfDay,
-                    item.Residue,
-                    item.Status);
-
-                dgv.Rows[dgv.Rows.Count - 1].Tag = item;
-                if (dgv.RowCount == 1)
-                {
-                    dgv.ClearSelection();
-                }
-                if (selectedItem != null)
-                {
-                    if (item.Id == selectedItem.Id)
-                    {
-                        dgv.Rows[dgv.Rows.Count - 1].Selected = true;
-                    }
-                }
-
-            }
-            if (dgv.Rows.Count > 0)
-            {
-                ClearInfoAboutItem();
-                InsertInfoAboutItem((Item)dgv.Rows[0].Tag);
-            }
-            else
-            {
-                ClearInfoAboutItem();
-            }
-
-            foreach (DataGridViewRow row in dgv.Rows)
-            {
-                row.Cells[12].ContextMenuStrip = cmsWriteOff;
-            }
-
+            FillRows(items);
         }
 
         #endregion Заполнение данных
@@ -136,45 +110,6 @@ namespace SparesBase
 
 
         #region Вспомогательные методы
-
-        // Инициализация DataGridView
-        private void InitializeDataGridView()
-        {
-            dgv.Columns.Clear();
-
-#if DEBUG
-            dgv.Columns.Add("id", "ID");
-#endif
-            dgv.Columns.Add("inventNumber", "Номер");
-            dgv.Columns.Add("name", "Наименование");
-            dgv.Columns.Add("seller", "Поставщик");
-            dgv.Columns.Add("purchasePrice", "Закупка");
-            dgv.Columns.Add("retailPrice", "Розница");
-            dgv.Columns.Add("wholesalePrice", "Мелкий опт");
-            dgv.Columns.Add("servicePrice", "Сервисы");
-            dgv.Columns.Add("firmPrice", "Цена фирмы");
-            dgv.Columns.Add("storage", "Хранение");
-            dgv.Columns.Add("quantity", "Количество");
-            dgv.Columns.Add("uploadDate", "Дата добавления");
-            dgv.Columns.Add("changeDate", "Дата изменения");
-            dgv.Columns.Add("residue", "Остаток");
-            dgv.Columns.Add("status", "Статус");
-
-            dgv.Columns[0].Width = 50;
-            dgv.Columns[1].Width = 150;
-            dgv.Columns[2].Width = 120;
-            dgv.Columns[3].Width = 50;
-            dgv.Columns[4].Width = 50;
-            dgv.Columns[5].Width = 50;
-            dgv.Columns[6].Width = 50;
-            dgv.Columns[7].Width = 50;
-            dgv.Columns[8].Width = 90;
-            dgv.Columns[9].Width = 50;
-            dgv.Columns[10].Width = 120;
-            dgv.Columns[11].Width = 120;
-            dgv.Columns[12].Width = 70;
-            dgv.Columns[13].Width = 90;
-        }
 
         // Поиск и выделение нода по пути
         private void Find(TreeNodeCollection nodes, string path)
@@ -199,7 +134,6 @@ namespace SparesBase
 
             while (parent != null)
             {
-
                 Category category = (Category)parent.Tag;
                 cats.Add(category.Id);
                 parent = parent.Parent;
@@ -245,9 +179,9 @@ namespace SparesBase
             return categories;
         }
 
+        // Подсчет остатка
         private void CalcResidue(int quantity, int itemId)
         {
-
             int purchase = 0;
             int selling = 0;
             int defect = 0;
@@ -273,8 +207,95 @@ namespace SparesBase
 
             // Занесение остатка в базу
             DatabaseWorker.SqlQuery("UPDATE Items SET Residue = " + residue + " WHERE(id = " + itemId + ")");
+        }
 
+        // Заполнение строчек предметов
+        private void FillRows(Item[] items)
+        {
+            // Запоминание выбранной строки, если она есть
+            Item selectedItem = null;
+            if (dgv.CurrentRow != null)
+                selectedItem = (Item)dgv.CurrentRow.Tag;
 
+            foreach (Item item in items)
+            {
+                dgv.Rows.Add(
+                item.InventNumber,
+                item.Name,
+                item.Seller.Name,
+                item.PurchasePrice,
+                item.RetailPrice,
+                item.WholesalePrice,
+                item.ServicePrice,
+                item.FirmPrice,
+                item.Storage,
+                item.Quantity,
+                item.UploadDate.Date.ToShortDateString(),
+                item.ChangeDate.Date.ToShortDateString(),
+                item.Residue,
+                item.Status);
+
+                dgv.Rows[dgv.Rows.Count - 1].Tag = item;
+
+                // Выделение ранее выделенного предмета, если таковой существует
+                if (selectedItem != null)
+                    if (item.Id == selectedItem.Id)
+                        dgv.Rows[dgv.Rows.Count - 1].Selected = true;
+            }
+
+            // Очистка информации о предыдущем предмете
+            if (dgv.Rows.Count > 0)
+            {
+                ClearInfoAboutItem();
+                InsertInfoAboutItem((Item)dgv.Rows[0].Tag);
+            }
+            else
+                ClearInfoAboutItem();
+
+            for (int i = 0; i < dgv.Rows.Count; i++)
+            {
+                // Определение цвета статуса предмета
+                if (dgv["status", i].Value.ToString() == "В наличии")
+                    dgv["status", i].Style.BackColor = Color.Aqua;
+                else if (dgv["status", i].Value.ToString() == "Доставка")
+                    dgv["status", i].Style.BackColor = Color.Bisque;
+                else if (dgv["status", i].Value.ToString() == "Транзит")
+                    dgv["status", i].Style.BackColor = Color.CadetBlue;
+
+                // Назначение контекстного меню списания на все соответствующие ячейки
+                dgv["residue", i].ContextMenuStrip = cmsWriteOff;
+            }
+        }
+
+        // Загрузка превью-фотографии
+        private void DownloadPreview()
+        {
+            pbPreview.Image = null;
+
+            if (previewThread != null)
+                previewThread.Abort();
+
+            // Загрузка превью-фотографии в отдельном потоке
+            previewThread = new Thread(() =>
+            {
+                pbPreview.SizeMode = PictureBoxSizeMode.CenterImage;
+                pbPreview.Image = Properties.Resources.LoadGif;
+
+                // Проверка на существование превью-фотографии
+                if (FtpManager.PreviewExists(SelectedItem.Id))
+                {
+                    // Загрузка превью-фотографии
+                    WebClient wcPreview = new WebClient();
+                    wcPreview.DownloadDataCompleted += WcPreview_DownloadDataCompleted;
+                    byte[] imageBytes = wcPreview.DownloadData(new Uri(FtpManager.FtpConnectString + "Photos/item_" + SelectedItem.Id + "/preview.jpg"));
+                    MemoryStream ms = new MemoryStream(imageBytes);
+                    pbPreview.SizeMode = PictureBoxSizeMode.Zoom;
+                    pbPreview.Image = Image.FromStream(ms);
+                }
+                else
+                    pbPreview.Image = null;
+            });
+            previewThread.Start();
         }
 
         #endregion Вспомогательные методы
@@ -289,14 +310,9 @@ namespace SparesBase
             EditForm form = new EditForm(FormCategories());
             form.ShowDialog();
             if (tbSearch.Text == "Поиск" || tbSearch.Text.Trim() == "")
-            {
                 FillItemsByCategory();
-            }
             else
-            {
                 SearchItems(tbSearch.Text);
-            }
-            
         }
 
         // Редактировать предмет
@@ -305,30 +321,21 @@ namespace SparesBase
             EditForm form = new EditForm(SelectedItem, FormCategories());
             form.ShowDialog();
             if (tbSearch.Text == "Поиск" || tbSearch.Text.Trim() == "")
-            {
                 FillItemsByCategory();
-            }
             else
-            {
                 SearchItems(tbSearch.Text);
-            }
         }
 
         // Удалить предмет
         private void DeleteItem()
         {
-
             DatabaseWorker.SqlQuery("UPDATE Items SET Deleted = 1 WHERE(id = " + SelectedItem.Id + ")");
             FtpManager.DeleteItemImages(SelectedItem.Id);
             DatabaseWorker.InsertAction(3, SelectedItem.Id);
             if (tbSearch.Text == "Поиск" || tbSearch.Text.Trim() == "")
-            {
                 FillItemsByCategory();
-            }
             else
-            {
                 SearchItems(tbSearch.Text);
-            }
         }
 
         // Обновляет информацию о выделенном предмете в панели информации
@@ -346,19 +353,20 @@ namespace SparesBase
             lquantity.Text = "Количество: " + selItem.Quantity;
             lresidue.Text = "Остаток: " + selItem.Residue;
 
-            lMainCat.Text = "Категории: " + selItem.MainCategory.Name;
+            lCategories.Text = "Категории: " + selItem.MainCategory.Name;
             if (selItem.SubCategory1 != null)
-                lMainCat.Text += " => " + selItem.SubCategory1.Name;
+                lCategories.Text += " => " + selItem.SubCategory1.Name;
             if (selItem.SubCategory2 != null)
-                lMainCat.Text += " => " + selItem.SubCategory2.Name;
+                lCategories.Text += " => " + selItem.SubCategory2.Name;
             if (selItem.SubCategory3 != null)
-                lMainCat.Text += " => : " + selItem.SubCategory3.Name;
+                lCategories.Text += " => : " + selItem.SubCategory3.Name;
             if (selItem.SubCategory4 != null)
-                lMainCat.Text += " => : " + selItem.SubCategory4.Name;
+                lCategories.Text += " => : " + selItem.SubCategory4.Name;
         }
+
+        // Очищение информации о предмете
         private void ClearInfoAboutItem()
         {
-
             lname.Text = "Имя: ";
             lseller.Text = "Поставщик: ";
             lpurchase.Text = "Закупка: ";
@@ -370,10 +378,7 @@ namespace SparesBase
             lnote.Text = "Описание: \n";
             lquantity.Text = "Количество: ";
             lresidue.Text = "Остаток: ";
-
-            lMainCat.Text = "Категория: ";
-
-
+            lCategories.Text = "Категория: ";
         }
 
         // Поиск предмета
@@ -383,11 +388,13 @@ namespace SparesBase
             string where = "WHERE(";
             if (cbSerial.Checked)
             {
-                where += "i.SerialNumber LIKE'%" + tbSearch.Text + "%' AND i.OrganizationId = " + EnteredUser.OrganizationId + ")";
+                // Поиск предмета по серийному номеру
+                where += "i.SerialNumber LIKE'%" + tbSearch.Text + "%' AND i.OrganizationId = " + EnteredUser.Organization.Id + ")";
                 items = dgv.FillItems(where);
             }
             else
             {
+                // Поиск предмета по словам
                 string[] searchWords = tbSearch.Text.Split(' ');
                 if (tbSearch.Text != "")
                     where += "(";
@@ -399,32 +406,12 @@ namespace SparesBase
                 if (tbSearch.Text != "")
                     where = where.Remove(where.Length - 3, 3) + ") AND";
 
-                where += " (i.OrganizationId = " + EnteredUser.OrganizationId + ") AND";
+                where += " (i.OrganizationId = " + EnteredUser.Organization.Id + ") AND";
                 where += " (i.Residue > 0) AND (i.Deleted <> 1))";
                 items = dgv.FillItems(where);
             }
 
-
-            foreach (Item item in items)
-            {
-                dgv.Rows.Add(
-                    item.InventNumber,                    
-                    item.Name,
-                    item.Seller.Name,
-                    item.PurchasePrice,
-                    item.RetailPrice,
-                    item.WholesalePrice,
-                    item.ServicePrice,
-                    item.FirmPrice,
-                    item.Storage,
-                    item.Quantity,
-                    item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay,
-                    item.ChangeDate.Date.ToShortDateString() + " " + item.ChangeDate.TimeOfDay,
-                    item.Residue,
-                    item.Status);
-
-                dgv.Rows[dgv.Rows.Count - 1].Tag = item;
-            }
+            FillRows(items);
         }
 
         #endregion Предметы
@@ -439,27 +426,29 @@ namespace SparesBase
             string id = "";
             if (nodeCount == 0)
             {
-                DatabaseWorker.SqlQuery("INSERT INTO Main_Category VALUES('', '" + category + "', " + EnteredUser.OrganizationId + ")");
+                // Главная категория
+                DatabaseWorker.SqlQuery("INSERT INTO Main_Category VALUES('', '" + category + "', " + EnteredUser.Organization.Id + ")");
                 id = DatabaseWorker.SqlScalarQuery("SELECT id FROM Main_Category WHERE(id=LAST_INSERT_ID())").ToString();
 
                 Category cat = new Category(
                     int.Parse(id),
                     category,
                     selectedIdNode,
-                    EnteredUser.OrganizationId);
+                    EnteredUser.Organization.Id);
 
                 treeView.Nodes.Add(new TreeNode() { Text = category, Tag = cat, ContextMenuStrip = cmsCategory });
             }
             else
             {
-                DatabaseWorker.SqlQuery("INSERT INTO Sub_Category_" + nodeCount + " VALUES('', '" + category + "', " + selectedIdNode + ", " + EnteredUser.OrganizationId + ")");
+                // Подкатегория
+                DatabaseWorker.SqlQuery("INSERT INTO Sub_Category_" + nodeCount + " VALUES('', '" + category + "', " + selectedIdNode + ", " + EnteredUser.Organization.Id + ")");
                 id = DatabaseWorker.SqlScalarQuery("SELECT id FROM Sub_Category_" + nodeCount + " WHERE(id=LAST_INSERT_ID())").ToString();
 
                 Category cat = new Category(
                     int.Parse(id),
                     category,
                     selectedIdNode,
-                    EnteredUser.OrganizationId);
+                    EnteredUser.Organization.Id);
 
                 treeView.SelectedNode.Nodes.Add(new TreeNode() { Text = category, Tag = cat, ContextMenuStrip = cmsCategory });
             }
@@ -502,7 +491,13 @@ namespace SparesBase
         // Смена категории
         private void ChangeCategories(int[] categories, int itemId)
         {
-            DatabaseWorker.SqlQuery("UPDATE Items Set Main_Category_Id=" + categories[0] + ",  Sub_Category_1_Id=" + categories[1] + ", Sub_Category_2_Id=" + categories[2] + ", Sub_Category_3_Id=" + categories[3] + ", Sub_Category_4_Id=" + categories[4] + " WHERE(id=" + itemId + ")");
+            DatabaseWorker.SqlQuery("UPDATE Items Set " +
+                "Main_Category_Id = " + categories[0] + ", " +
+                "Sub_Category_1_Id = " + categories[1] + ", " +
+                "Sub_Category_2_Id = " + categories[2] + ", " +
+                "Sub_Category_3_Id = " + categories[3] + ", " +
+                "Sub_Category_4_Id = " + categories[4] + " " +
+                "WHERE(id = " + itemId + ")");
         }
 
         #endregion Категории
@@ -516,7 +511,7 @@ namespace SparesBase
         // Загрузка формы
         private void MainForm_Load(object sender, EventArgs e)
         {
-            treeView.FillCategories(EnteredUser.OrganizationId, cmsCategory);
+            treeView.FillCategories(EnteredUser.Organization.Id, cmsCategory);
         }
 
         // Закрытие формы
@@ -539,6 +534,7 @@ namespace SparesBase
             alf.ShowDialog();
         }
 
+        // Смена аккаунта
         private void tsmiChangeAccount_Click(object sender, EventArgs e)
         {
             au.AccountExit();
@@ -546,20 +542,56 @@ namespace SparesBase
             Close();
         }
 
+        // Выход из программы
         private void tsmiExit_Click(object sender, EventArgs e)
         {
             Close();
         }
 
-        private void tsmiUsers_Click(object sender, EventArgs e)
+        // Сотрудники
+        private void tsmiEmployees_Click(object sender, EventArgs e)
         {
             EmployeesForm employees = new EmployeesForm();
             employees.ShowDialog();
         }
 
+        // Поставщики
         private void tsmiSellers_Click(object sender, EventArgs e)
         {
             SellerForm sf = new SellerForm();
+            sf.ShowDialog();
+        }
+
+        // Информация об аккаунте
+        private void tsmiAccountInfo_Click(object sender, EventArgs e)
+        {
+            Account account = new Account(
+                    EnteredUser.Id,
+                    EnteredUser.FirstName,
+                    EnteredUser.LastName,
+                    EnteredUser.SecondName,
+                    EnteredUser.Login,
+                    EnteredUser.Organization,
+                    EnteredUser.City,
+                    EnteredUser.Phone,
+                    EnteredUser.Email,
+                    EnteredUser.Admin);
+
+            AccountEditor ae = new AccountEditor(account);
+            ae.ShowDialog();
+        }
+
+        // О программе
+        private void tsmiAbout_Click(object sender, EventArgs e)
+        {
+            AboutForm about = new AboutForm();
+            about.Show();
+        }
+
+        // Настройки
+        private void tsmiSettings_Click(object sender, EventArgs e)
+        {
+            SettingsForm sf = new SettingsForm();
             sf.ShowDialog();
         }
 
@@ -622,45 +654,34 @@ namespace SparesBase
             DeleteItem();
         }
 
+        // Загрузить превью-фотографию
+        private void btnLoadImage_Click(object sender, EventArgs e)
+        {
+            btnLoadImage.Visible = false;
+            DownloadPreview();
+        }
+
+        // Смена выделенного предмета
         private void dgv_CellClick(object sender, EventArgs e)
         {
             if (SelectedItem != null)
                 InsertInfoAboutItem(SelectedItem);
 
-            pbPreview.Image = null;
-            // webclient.CancelAsync();
-            // webclient.Dispose();
-
-            if (previewThread != null)
+            // Загрузка превью-фотографии
+            if (Settings.AutoLoadItemImages)
             {
-                previewThread.Abort();
+                btnLoadImage.Visible = false;
+                DownloadPreview();
             }
-
-
-
-            previewThread = new Thread(() =>
+            else
             {
-                pbPreview.SizeMode = PictureBoxSizeMode.CenterImage;
-                pbPreview.Image = Properties.Resources.LoadGif;
-
-
-                if (FtpManager.PreviewExists(SelectedItem.Id))
-                {
-                    WebClient webclient = new WebClient();
-                    byte[] imageBytes = webclient.DownloadData(new Uri("ftp://u0183148:W5iLVaY9@server137.hosting.reg.ru/www/xn--29-nmcu.xn--p1ai/SparesBase/Photos/item_" + SelectedItem.Id + "/preview.jpg"));
-                    MemoryStream ms = new MemoryStream(imageBytes);
-                    pbPreview.SizeMode = PictureBoxSizeMode.Zoom;
-                    pbPreview.Image = Image.FromStream(ms);
-                }
-                else
-                {
-                    pbPreview.Image = null;
-                }
-            });
-            previewThread.Start();
+                pbPreview.Image = null;
+                btnLoadImage.Visible = true;
+            }
         }
 
-        private void Webclient_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
+        // Окончание загрузки превью-фотографии
+        private void WcPreview_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
         {
             if (e.Error == null)
             {
@@ -669,10 +690,7 @@ namespace SparesBase
                 pbPreview.Image = Image.FromStream(ms);
             }
             else
-            {
                 pbPreview.Image = null;
-            }
-
         }
 
         #endregion Предметы
@@ -728,30 +746,80 @@ namespace SparesBase
 
         private void dgv_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
-                if (dgv.CurrentRow != null)
-                    if (dgv.HitTest(e.X, e.Y).RowIndex != -1)
-
-                        dgv.DoDragDrop(dgv.CurrentRow.Cells[0].Value.ToString(), DragDropEffects.Copy);
-
+            if (e.Button == MouseButtons.Left &&
+                dgv.CurrentRow != null &&
+                dgv.HitTest(e.X, e.Y).RowIndex != -1)
+            {
+                Item item = (Item)dgv.CurrentRow.Tag;
+                dgv.DoDragDrop(item.Id.ToString(), DragDropEffects.Copy);
+            }
         }
 
         #endregion Drag'n'Drop
 
+        #region Списания
+
+        // Продажа
+        private void cmsSelling_Click(object sender, EventArgs e)
+        {
+            Item item = SelectedItem;
+            SellingForm sel = new SellingForm(item.Quantity, int.Parse(item.RetailPrice), int.Parse(item.WholesalePrice), int.Parse(item.ServicePrice), item.Id);
+            if (sel.ShowDialog() == DialogResult.OK)
+            {
+                CalcResidue(item.Quantity, item.Id);
+                FillItemsByCategory();
+            }
+        }
+
+        // Дефект
+        private void cmsDefect_Click(object sender, EventArgs e)
+        {
+            Item item = SelectedItem;
+            DefectForm defect = new DefectForm(item.Quantity, item.Id);
+            if (defect.ShowDialog() == DialogResult.OK)
+            {
+                CalcResidue(item.Quantity, item.Id);
+                FillItemsByCategory();
+            }
+        }
+
+        // В заказ
+        private void cmsInOrder_Click(object sender, EventArgs e)
+        {
+            Item item = SelectedItem;
+            InOrder inorder = new InOrder(item.Id, item.Quantity, int.Parse(item.FirmPrice));
+            if (inorder.ShowDialog() == DialogResult.OK)
+            {
+                CalcResidue(item.Quantity, item.Id);
+                FillItemsByCategory();
+            }
+        }
+
+        // В резерв ???
+        private void cmsReserve_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        #endregion Списания
+
         #region Поиск
 
+        // Нажатие Enter при поиске
         private void tbSearch_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
                 SearchItems(tbSearch.Text);
         }
 
+        // Поиск по организациям
         private void tsmiSearch_Click(object sender, EventArgs e)
         {
             SearchingForm sf = new SearchingForm();
             sf.ShowDialog();
         }
 
+        // Выделение поля для поиска
         private void tbSearch_Enter(object sender, EventArgs e)
         {
             if (tbSearch.Text == "Поиск")
@@ -761,6 +829,7 @@ namespace SparesBase
             }
         }
 
+        // Снятие выделения поля для поиска
         private void tbSearch_Leave(object sender, EventArgs e)
         {
             if (tbSearch.Text == "")
@@ -773,101 +842,5 @@ namespace SparesBase
         #endregion Поиск
 
         #endregion События
-
-
-        private void cmsSelling_Click(object sender, EventArgs e)
-        {
-            Item item = SelectedItem;
-            SellingForm sel = new SellingForm(item.Quantity, int.Parse(item.RetailPrice), int.Parse(item.WholesalePrice), int.Parse(item.ServicePrice), item.Id);
-            if (sel.ShowDialog() == DialogResult.OK)
-            {
-                CalcResidue(item.Quantity, item.Id);
-                FillItemsByCategory();
-            }
-
-
-        }
-
-        private void cmsDefect_Click(object sender, EventArgs e)
-        {
-            Item item = SelectedItem;
-            DefectForm defect = new DefectForm(item.Quantity, item.Id);
-            if (defect.ShowDialog() == DialogResult.OK)
-            {
-                CalcResidue(item.Quantity, item.Id);
-                FillItemsByCategory();
-            }
-        }
-
-        private void cmsInOrder_Click(object sender, EventArgs e)
-        {
-            Item item = SelectedItem;
-            InOrder inorder = new InOrder(item.Id, item.Quantity, int.Parse(item.FirmPrice));
-            if (inorder.ShowDialog() == DialogResult.OK)
-            {
-                CalcResidue(item.Quantity, item.Id);
-                FillItemsByCategory();
-            }
-        }
-
-        private void cmsReserve_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tsmiAccountInfo_Click(object sender, EventArgs e)
-        {
-            DataTable employees = DatabaseWorker.SqlSelectQuery("SELECT " +
-                "a.id, " +
-                "a.FirstName, " +
-                "a.LastName, " +
-                "a.SecondName, " +
-                "a.Login, " +
-                "c.City, " +
-                "a.Phone, " +
-                "a.Email, " +
-                "a.Admin, " +
-                "o.id, " +
-                "o.Name, " +
-                "o.Site, " +
-                "o.Telephone, " +
-                "oc.City " +
-                "FROM Accounts a " +
-                "LEFT JOIN Cities c ON c.id = a.CityId " +
-                "LEFT JOIN Organizations o ON o.id = a.OrganizationId " +
-                "LEFT JOIN Cities oc ON oc.id = o.CityId " +
-                "WHERE(a.id = " + EnteredUser.id + ")");
-
-            Account account = new Account(
-                    int.Parse(employees.Rows[0].ItemArray[0].ToString()),
-                    employees.Rows[0].ItemArray[1].ToString(),
-                    employees.Rows[0].ItemArray[2].ToString(),
-                    employees.Rows[0].ItemArray[3].ToString(),
-                    employees.Rows[0].ItemArray[4].ToString(),
-                    employees.Rows[0].ItemArray[5].ToString(),
-                    employees.Rows[0].ItemArray[6].ToString(),
-                    employees.Rows[0].ItemArray[7].ToString(),
-                    employees.Rows[0].ItemArray[8].ToString() == "1" ? true : false,
-                    null);
-
-            Organization org = new Organization(
-                int.Parse(employees.Rows[0].ItemArray[9].ToString()),
-                employees.Rows[0].ItemArray[10].ToString(),
-                employees.Rows[0].ItemArray[11].ToString(),
-                employees.Rows[0].ItemArray[12].ToString(),
-                employees.Rows[0].ItemArray[13].ToString(),
-                account);
-
-            account.Organization = org;
-
-            AccountEditor ae = new AccountEditor(account);
-            ae.ShowDialog();
-        }
-
-        private void tsmiAbout_Click(object sender, EventArgs e)
-        {
-            AboutForm about = new AboutForm();
-            about.Show();
-        }
     }
 }

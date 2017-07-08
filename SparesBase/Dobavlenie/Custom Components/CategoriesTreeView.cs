@@ -1,14 +1,21 @@
-﻿using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace SparesBase
 {
     class CategoriesTreeView : TreeView
     {
+        #region Конструкторы
+        
         // Конструктор
         public CategoriesTreeView() { }
 
+        #endregion Конструкторы
+
+
+
+        #region Методы
 
         // Заполнение категорий
         public void FillCategories(int organizationId, ContextMenuStrip cmsCategory)
@@ -202,6 +209,7 @@ namespace SparesBase
             return categories;
         }
 
+        // Получает все категории предмета по выделенному ноду
         public Category[] GetCategories()
         {
             List<Category> categories = new List<Category>();
@@ -231,5 +239,7 @@ namespace SparesBase
 
             return reversedCategories;
         }
+
+        #endregion Методы
     }
 }

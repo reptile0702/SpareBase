@@ -37,7 +37,7 @@ namespace SparesBase
             this.id = id;
             images = new Image[5];
             
-            string[] photos = FtpManager.DownloadImages(id);
+            string[] photos = FtpManager.GetItemImagesList(id);
 
             counter = 0;
             imagesCount = photos.Length;

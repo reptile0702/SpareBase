@@ -72,6 +72,7 @@
             this.btnImg2 = new System.Windows.Forms.Button();
             this.btnImg1 = new System.Windows.Forms.Button();
             this.pbPhoto = new System.Windows.Forms.PictureBox();
+            this.btnLoadImages = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -255,7 +256,7 @@
             // 
             // btnSell
             // 
-            this.btnSell.Location = new System.Drawing.Point(684, 323);
+            this.btnSell.Location = new System.Drawing.Point(687, 323);
             this.btnSell.Name = "btnSell";
             this.btnSell.Size = new System.Drawing.Size(302, 23);
             this.btnSell.TabIndex = 10;
@@ -265,7 +266,7 @@
             // 
             // btnInOrder
             // 
-            this.btnInOrder.Location = new System.Drawing.Point(684, 382);
+            this.btnInOrder.Location = new System.Drawing.Point(687, 382);
             this.btnInOrder.Name = "btnInOrder";
             this.btnInOrder.Size = new System.Drawing.Size(302, 23);
             this.btnInOrder.TabIndex = 12;
@@ -275,7 +276,7 @@
             // 
             // btnDefect
             // 
-            this.btnDefect.Location = new System.Drawing.Point(684, 353);
+            this.btnDefect.Location = new System.Drawing.Point(687, 353);
             this.btnDefect.Name = "btnDefect";
             this.btnDefect.Size = new System.Drawing.Size(302, 23);
             this.btnDefect.TabIndex = 11;
@@ -292,12 +293,11 @@
             this.cbSeller.Name = "cbSeller";
             this.cbSeller.Size = new System.Drawing.Size(248, 21);
             this.cbSeller.TabIndex = 1;
-            this.cbSeller.DropDown += new System.EventHandler(this.cbSeller_DropDown);
             this.cbSeller.SelectedIndexChanged += new System.EventHandler(this.cbSeller_SelectedIndexChanged);
             // 
             // btnChangeCategories
             // 
-            this.btnChangeCategories.Location = new System.Drawing.Point(684, 440);
+            this.btnChangeCategories.Location = new System.Drawing.Point(687, 440);
             this.btnChangeCategories.Name = "btnChangeCategories";
             this.btnChangeCategories.Size = new System.Drawing.Size(302, 23);
             this.btnChangeCategories.TabIndex = 34;
@@ -371,7 +371,7 @@
             // button1
             // 
             this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(684, 411);
+            this.button1.Location = new System.Drawing.Point(687, 411);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(302, 23);
             this.button1.TabIndex = 42;
@@ -414,6 +414,7 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.btnLoadImages);
             this.groupBox4.Controls.Add(this.btnClearPhoto);
             this.groupBox4.Controls.Add(this.btnBrowsePhoto);
             this.groupBox4.Controls.Add(this.btnImg5);
@@ -510,12 +511,22 @@
             this.pbPhoto.TabIndex = 14;
             this.pbPhoto.TabStop = false;
             // 
+            // btnLoadImages
+            // 
+            this.btnLoadImages.Location = new System.Drawing.Point(6, 19);
+            this.btnLoadImages.Name = "btnLoadImages";
+            this.btnLoadImages.Size = new System.Drawing.Size(290, 188);
+            this.btnLoadImages.TabIndex = 22;
+            this.btnLoadImages.Text = "Загрузить картинки";
+            this.btnLoadImages.UseVisualStyleBackColor = true;
+            this.btnLoadImages.Click += new System.EventHandler(this.btnLoadImages_Click);
+            // 
             // EditForm
             // 
             this.AcceptButton = this.btnEdit;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1005, 471);
+            this.ClientSize = new System.Drawing.Size(1005, 474);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.button1);
@@ -586,6 +597,7 @@
         private System.Windows.Forms.Button btnImg1;
         private System.Windows.Forms.Button btnClearPhoto;
         private System.Windows.Forms.Button btnBrowsePhoto;
+        private System.Windows.Forms.Button btnLoadImages;
     }
 }
 

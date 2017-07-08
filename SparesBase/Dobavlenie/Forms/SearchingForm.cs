@@ -6,14 +6,25 @@ using System.Drawing;
 using System.Xml;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
+using System.Net;
 
 namespace SparesBase
 {
     public partial class SearchingForm : Form
     {
+        #region Поля
+        
         List<Banner> banners;
         int bannerCounter;
         int selectedOrganization;
+        Thread previewThread;
+
+        #endregion Поля
+
+
+
+        #region Конструкторы
 
         // Конструктор
         public SearchingForm()
@@ -22,29 +33,41 @@ namespace SparesBase
             banners = new List<Banner>();
             bannerCounter = 0;
             selectedOrganization = 0;
+
+            FillCities();
+
+            if (Settings.AutoLoadItemImages)
+                btnLoadImage.Visible = false;
+            else
+                btnLoadImage.Visible = true;
         }
 
+        #endregion Конструкторы
+
+
+
         #region Методы
-        
+
         // Заполнение городов
         private void FillCities()
         {
-            DataTable dt = new DataTable();
-            dt.Columns.Add("id");
-            dt.Columns.Add("City");
-            dt.Rows.Add("0", "Все города");
+            DataTable cities = new DataTable();
+            cities.Columns.Add("id");
+            cities.Columns.Add("City");
+            cities.Rows.Add("0", "Все города");
 
-            DataTable dt2 = DatabaseWorker.SqlSelectQuery("SELECT id, City FROM Cities");
-            foreach (DataRow row in dt2.Rows)
-            {
-                dt.Rows.Add(row.ItemArray[0], row.ItemArray[1]);
-            }
+            DataTable queryCities = DatabaseWorker.SqlSelectQuery("SELECT id, City FROM Cities");
+            foreach (DataRow row in queryCities.Rows)
+                cities.Rows.Add(row.ItemArray[0], row.ItemArray[1]);
 
             cbСities.ValueMember = "id";
             cbСities.DisplayMember = "City";
-            cbСities.DataSource = dt;
+            cbСities.DataSource = cities;
 
-            int userCity = int.Parse(DatabaseWorker.SqlScalarQuery("SELECT CityId FROM Organizations WHERE(id = " + EnteredUser.OrganizationId + ")").ToString());
+            int userCity = int.Parse(DatabaseWorker.SqlScalarQuery("SELECT CityId " +
+                "FROM Organizations " +
+                "WHERE(id = " + EnteredUser.Organization.Id + ")").ToString());
+
             cbСities.SelectedValue = userCity;
             Search("", 0, userCity);
         }
@@ -52,6 +75,7 @@ namespace SparesBase
         // Поиск
         private void Search(string searchStr, int organizationId, int cityId)
         {
+            // Формирование условия по строке поиска, организации, городу
             string where = "WHERE(";
             string[] searchWords = searchStr.Split(' ');
 
@@ -69,6 +93,7 @@ namespace SparesBase
             where += " (i.SearchAllowed = 1) AND (i.Residue > 0) AND (i.Deleted <> 1)";
             where += cityId == -1 ? ")" : " AND (o.CityId = " + cityId + "))";
 
+            // Поиск предметов
             Item[] items = dgv.FillItems(where);
             foreach (Item item in items)
             {
@@ -90,9 +115,45 @@ namespace SparesBase
             XmlDocument doc = new XmlDocument();
             doc.Load("Banners/Banners.xml");
             XmlElement element = doc.DocumentElement;
+
             foreach (XmlNode node in element.ChildNodes)
                 if (File.Exists("Banners/" + node["PhotoName"].Attributes["value"].Value))
-                banners.Add(new Banner(node["Link"].Attributes["value"].Value, Image.FromFile("Banners/" + node["PhotoName"].Attributes["value"].Value)));
+                banners.Add(new Banner(
+                    node["Link"].Attributes["value"].Value, 
+                    Image.FromFile("Banners/" + node["PhotoName"].Attributes["value"].Value)));
+        }
+
+        // Загрузка превью-фотографии
+        private void DownloadPreview()
+        {
+            pbPreview.Image = null;
+
+            if (previewThread != null)
+                previewThread.Abort();
+
+            // Загрузка превью-фотографии в отдельном потоке
+            previewThread = new Thread(() =>
+            {
+                Item item = (Item)dgv.CurrentRow.Tag;
+
+                pbPreview.SizeMode = PictureBoxSizeMode.CenterImage;
+                pbPreview.Image = Properties.Resources.LoadGif;
+
+                // Проверка на существование превью-фотографии
+                if (FtpManager.PreviewExists(item.Id))
+                {
+                    // Загрузка превью-фотографии
+                    WebClient wcPreview = new WebClient();
+                    wcPreview.DownloadDataCompleted += WcPreview_DownloadDataCompleted; ;
+                    byte[] imageBytes = wcPreview.DownloadData(new Uri(FtpManager.FtpConnectString + "Photos/item_" + item.Id + "/preview.jpg"));
+                    MemoryStream ms = new MemoryStream(imageBytes);
+                    pbPreview.SizeMode = PictureBoxSizeMode.Zoom;
+                    pbPreview.Image = Image.FromStream(ms);
+                }
+                else
+                    pbPreview.Image = null;
+            });
+            previewThread.Start();
         }
 
         #endregion Методы
@@ -106,23 +167,6 @@ namespace SparesBase
         {
             // Задержка перед загрузкой баннеров
             loadBannersDelay.Start();
-
-            dgv.Columns.Add("Name", "Наименование");
-            dgv.Columns.Add("Retail", "Розница");
-            dgv.Columns.Add("Service", "Сервисы");
-            dgv.Columns.Add("Quantity", "Количество");
-            dgv.Columns.Add("date", "Дата добавления");
-            dgv.Columns.Add("changeDate", "Дата изменения");
-
-            dgv.Columns[0].Width = 150;
-            dgv.Columns[1].Width = 80;
-            dgv.Columns[2].Width = 80;
-            dgv.Columns[3].Width = 80;
-            dgv.Columns[4].Width = 130;
-            dgv.Columns[5].Width = 130;
-
-            FillCities();
-            
         }
 
         // Нажатие на Enter на TextBox
@@ -136,9 +180,7 @@ namespace SparesBase
         private void cbOrganizations_SelectedIndexChanged(object sender, EventArgs e)
         {
             cbSearchByOrganization.Checked = false;
-            tbSearching.Text = "";
-          
-            
+            tbSearching.Text = "";  
         }
 
         // Двойной клик на предмет
@@ -178,8 +220,7 @@ namespace SparesBase
                 Process.Start(pbBanner.Tag.ToString());
         }
 
-        #endregion События
-
+        // Клик на ячейку
         private void dgv_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (dgv.CurrentRow != null)
@@ -188,9 +229,14 @@ namespace SparesBase
                 lNameSC.Text = "Название СЦ:\n" + item.Organization.Name;
                 lPhoneSC.Text = "Телефон СЦ: " + item.Organization.Telephone;
 
+                if (Settings.AutoLoadItemImages)
+                    DownloadPreview();
+                else
+                    btnLoadImage.Visible = true;
             }
         }
 
+        // Клик на "Поиск по организации"
         private void cbSearchByOrganization_CheckedChanged(object sender, EventArgs e)
         {
             if (cbSearchByOrganization.Checked)
@@ -205,5 +251,20 @@ namespace SparesBase
                 Search(tbSearching.Text, selectedOrganization, int.Parse(cbСities.SelectedValue.ToString()));
             }
         }
+
+        // Загрузить фотографию
+        private void btnLoadImage_Click(object sender, EventArgs e)
+        {
+            btnLoadImage.Visible = false;
+            DownloadPreview();
+        }
+
+        // Превью-фото загружено
+        private void WcPreview_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
+        {
+
+        }
+
+        #endregion События
     }
 }

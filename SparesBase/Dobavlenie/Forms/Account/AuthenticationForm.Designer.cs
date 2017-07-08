@@ -29,20 +29,19 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AuthenticationForm));
-            this.tbLogIn = new System.Windows.Forms.TextBox();
+            this.tbLogin = new System.Windows.Forms.TextBox();
             this.tbPassword = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.btnEnter = new System.Windows.Forms.Button();
-            this.bwUpdater = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
-            // tbLogIn
+            // tbLogin
             // 
-            this.tbLogIn.Location = new System.Drawing.Point(51, 25);
-            this.tbLogIn.Name = "tbLogIn";
-            this.tbLogIn.Size = new System.Drawing.Size(183, 20);
-            this.tbLogIn.TabIndex = 0;
+            this.tbLogin.Location = new System.Drawing.Point(51, 25);
+            this.tbLogin.Name = "tbLogin";
+            this.tbLogin.Size = new System.Drawing.Size(183, 20);
+            this.tbLogin.TabIndex = 0;
             // 
             // tbPassword
             // 
@@ -80,10 +79,6 @@
             this.btnEnter.UseVisualStyleBackColor = true;
             this.btnEnter.Click += new System.EventHandler(this.btnEnter_Click);
             // 
-            // bwUpdater
-            // 
-            this.bwUpdater.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwUpdater_DoWork);
-            // 
             // AuthenticationForm
             // 
             this.AcceptButton = this.btnEnter;
@@ -94,7 +89,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tbPassword);
-            this.Controls.Add(this.tbLogIn);
+            this.Controls.Add(this.tbLogin);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -109,11 +104,10 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox tbLogIn;
+        private System.Windows.Forms.TextBox tbLogin;
         private System.Windows.Forms.TextBox tbPassword;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnEnter;
-        private System.ComponentModel.BackgroundWorker bwUpdater;
     }
 }
