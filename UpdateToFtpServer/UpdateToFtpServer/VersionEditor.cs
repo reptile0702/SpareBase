@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
 namespace UpdateToFtpServer
 {
@@ -27,7 +28,7 @@ namespace UpdateToFtpServer
 
         private void UploadVersion()
         {
-            FtpManager.UploadNewVersion(programType, new ProgramVersion(tbVersion.Text, tbDate.Text, rtbChangeLog.Text, true), newFileVersionPath);
+            FtpManager.UploadNewVersion(programType, new ProgramVersion(tbVersion.Text, tbDate.Text, rtbChangeLog.Text, true), newFileVersionPath);            
         }
 
         private void btnUpload_Click(object sender, EventArgs e)

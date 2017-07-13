@@ -99,7 +99,18 @@ namespace UpdateToFtpServer
 
             byte[] fileBytes = File.ReadAllBytes(newVersionFilePath);
             MemoryStream str = new MemoryStream(fileBytes);
-            client.PutFile(timeout, remotePath + path + "CurrentVersion/" + (programType == "Client" ? "SparesBase.exe" : "SparesBaseAdministrator.exe"), str);
+
+            string destPath = remotePath + path + "CurrentVersion/" + (programType == "Client" ? "SparesBase.exe" : "SparesBaseAdministrator.exe");
+            //DatabaseWorker.SqlQuery("INSERT INTO FileHashes VALUES('', " +
+            //    "'" + destPath + "', " +
+            //    "'" + Md5.ComputeMD5Checksum(newVersionFilePath) + "')");
+
+            //DatabaseWorker.SqlQuery("UPDATE FileHashes SET " +
+            //    "FilePath = '" + destPath + "', " +
+            //    "Hash = '" + Md5.ComputeMD5Checksum(newVersionFilePath) + "' " +
+            //    "WHERE()");
+
+            client.PutFile(timeout, destPath, str);
             client.Disconnect(timeout);
         }
 

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Data;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace SparesBase
@@ -6,6 +7,7 @@ namespace SparesBase
     public partial class OrganizationCardForm : Form
     {
         Organization organization;
+        Account admin;
 
         // Конструктор
         public OrganizationCardForm(Organization organization)
@@ -25,11 +27,29 @@ namespace SparesBase
             lTelephone.Text = "Телефон: " + organization.Telephone;
             lCity.Text = "Город: " + organization.City;
 
-            if (organization.Admin != null)
+            DataTable queryAdmin = DatabaseWorker.SqlSelectQuery("SELECT * FROM Accounts " +
+                "LEFT JOIN Cities ON CityId = Cities.id " +
+                "WHERE(OrganizationId = " + organization.Id + " AND Admin = 1)");
+            if (queryAdmin.Rows.Count == 0)
+                admin = null;
+            else
+                admin = new Account(
+                    int.Parse(queryAdmin.Rows[0]["id"].ToString()),
+                    queryAdmin.Rows[0]["FirstName"].ToString(),
+                    queryAdmin.Rows[0]["LastName"].ToString(),
+                    queryAdmin.Rows[0]["SecondName"].ToString(),
+                    queryAdmin.Rows[0]["Login"].ToString(),
+                    organization,
+                    queryAdmin.Rows[0]["City"].ToString(),
+                    queryAdmin.Rows[0]["Phone"].ToString(),
+                    queryAdmin.Rows[0]["Email"].ToString(),
+                    queryAdmin.Rows[0]["Admin"].ToString() == "1" ? true : false);
+
+            if (admin != null)
             {
-                lAdminFirstName.Text = "Имя: " + organization.Admin.FirstName;
-                lAdminLastName.Text = "Фамилия: " + organization.Admin.LastName;
-                lAdminSecondName.Text = "Отчество: " + organization.Admin.SecondName;
+                lAdminFirstName.Text = "Имя: " + admin.FirstName;
+                lAdminLastName.Text = "Фамилия: " + admin.LastName;
+                lAdminSecondName.Text = "Отчество: " + admin.SecondName;
             }
             else
             {
@@ -45,7 +65,7 @@ namespace SparesBase
         // Клик на "Карточка администратора"
         private void btnAdminCard_Click(object sender, System.EventArgs e)
         {
-            AccountCardForm acf = new AccountCardForm(organization.Admin);
+            AccountCardForm acf = new AccountCardForm(admin);
             acf.ShowDialog();
         }
 

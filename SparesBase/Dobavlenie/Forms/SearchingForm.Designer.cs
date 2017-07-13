@@ -34,6 +34,10 @@
             this.cbСities = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.ckbShowLimit = new System.Windows.Forms.CheckBox();
+            this.btnLoadImage = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.pbPreview = new System.Windows.Forms.PictureBox();
             this.lPhoneSC = new System.Windows.Forms.Label();
             this.lNameSC = new System.Windows.Forms.Label();
             this.cbSearchByOrganization = new System.Windows.Forms.CheckBox();
@@ -44,17 +48,15 @@
             this.retail = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.service = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.quantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.status = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.addDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.changeDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.loadBannersDelay = new System.Windows.Forms.Timer(this.components);
-            this.pbPreview = new System.Windows.Forms.PictureBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.btnLoadImage = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbBanner)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).BeginInit();
             this.SuspendLayout();
             // 
             // tbSearching
@@ -86,6 +88,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.ckbShowLimit);
             this.panel1.Controls.Add(this.btnLoadImage);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.pbPreview);
@@ -100,13 +103,54 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(184, 602);
+            this.panel1.Size = new System.Drawing.Size(184, 641);
             this.panel1.TabIndex = 5;
+            // 
+            // ckbShowLimit
+            // 
+            this.ckbShowLimit.AutoSize = true;
+            this.ckbShowLimit.Checked = true;
+            this.ckbShowLimit.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbShowLimit.Location = new System.Drawing.Point(15, 115);
+            this.ckbShowLimit.Name = "ckbShowLimit";
+            this.ckbShowLimit.Size = new System.Drawing.Size(140, 30);
+            this.ckbShowLimit.TabIndex = 13;
+            this.ckbShowLimit.Text = "Показать первые 100 \r\nпредметов";
+            this.ckbShowLimit.UseVisualStyleBackColor = true;
+            this.ckbShowLimit.CheckedChanged += new System.EventHandler(this.ckbShowLimit_CheckedChanged);
+            // 
+            // btnLoadImage
+            // 
+            this.btnLoadImage.Location = new System.Drawing.Point(15, 229);
+            this.btnLoadImage.Name = "btnLoadImage";
+            this.btnLoadImage.Size = new System.Drawing.Size(150, 140);
+            this.btnLoadImage.TabIndex = 12;
+            this.btnLoadImage.Text = "Загрузить\r\n фотографию";
+            this.btnLoadImage.UseVisualStyleBackColor = true;
+            this.btnLoadImage.Click += new System.EventHandler(this.btnLoadImage_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 213);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(35, 13);
+            this.label3.TabIndex = 11;
+            this.label3.Text = "Фото";
+            // 
+            // pbPreview
+            // 
+            this.pbPreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbPreview.Location = new System.Drawing.Point(15, 229);
+            this.pbPreview.Name = "pbPreview";
+            this.pbPreview.Size = new System.Drawing.Size(150, 140);
+            this.pbPreview.TabIndex = 10;
+            this.pbPreview.TabStop = false;
             // 
             // lPhoneSC
             // 
             this.lPhoneSC.AutoSize = true;
-            this.lPhoneSC.Location = new System.Drawing.Point(12, 143);
+            this.lPhoneSC.Location = new System.Drawing.Point(12, 185);
             this.lPhoneSC.Name = "lPhoneSC";
             this.lPhoneSC.Size = new System.Drawing.Size(73, 13);
             this.lPhoneSC.TabIndex = 9;
@@ -115,7 +159,7 @@
             // lNameSC
             // 
             this.lNameSC.AutoSize = true;
-            this.lNameSC.Location = new System.Drawing.Point(12, 114);
+            this.lNameSC.Location = new System.Drawing.Point(12, 156);
             this.lNameSC.Name = "lNameSC";
             this.lNameSC.Size = new System.Drawing.Size(78, 13);
             this.lNameSC.TabIndex = 8;
@@ -134,7 +178,7 @@
             // 
             // pbBanner
             // 
-            this.pbBanner.Location = new System.Drawing.Point(15, 340);
+            this.pbBanner.Location = new System.Drawing.Point(15, 375);
             this.pbBanner.Name = "pbBanner";
             this.pbBanner.Size = new System.Drawing.Size(150, 250);
             this.pbBanner.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -164,6 +208,7 @@
             this.retail,
             this.service,
             this.quantity,
+            this.status,
             this.addDate,
             this.changeDate});
             this.dgv.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -172,7 +217,7 @@
             this.dgv.Name = "dgv";
             this.dgv.ReadOnly = true;
             this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv.Size = new System.Drawing.Size(747, 602);
+            this.dgv.Size = new System.Drawing.Size(820, 641);
             this.dgv.TabIndex = 6;
             this.dgv.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellClick);
             this.dgv.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgv_CellMouseDoubleClick);
@@ -182,7 +227,7 @@
             this.name.HeaderText = "Наименование";
             this.name.Name = "name";
             this.name.ReadOnly = true;
-            this.name.Width = 150;
+            this.name.Width = 250;
             // 
             // retail
             // 
@@ -205,19 +250,25 @@
             this.quantity.ReadOnly = true;
             this.quantity.Width = 80;
             // 
+            // status
+            // 
+            this.status.HeaderText = "Статус";
+            this.status.Name = "status";
+            this.status.ReadOnly = true;
+            // 
             // addDate
             // 
-            this.addDate.HeaderText = "Дата добавления";
+            this.addDate.HeaderText = "Добавлен";
             this.addDate.Name = "addDate";
             this.addDate.ReadOnly = true;
-            this.addDate.Width = 130;
+            this.addDate.Width = 70;
             // 
             // changeDate
             // 
-            this.changeDate.HeaderText = "Дата изменения";
+            this.changeDate.HeaderText = "Изменен";
             this.changeDate.Name = "changeDate";
             this.changeDate.ReadOnly = true;
-            this.changeDate.Width = 130;
+            this.changeDate.Width = 70;
             // 
             // timer
             // 
@@ -228,39 +279,11 @@
             this.loadBannersDelay.Interval = 3000;
             this.loadBannersDelay.Tick += new System.EventHandler(this.loadBannersDelay_Tick);
             // 
-            // pbPreview
-            // 
-            this.pbPreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbPreview.Location = new System.Drawing.Point(15, 194);
-            this.pbPreview.Name = "pbPreview";
-            this.pbPreview.Size = new System.Drawing.Size(150, 140);
-            this.pbPreview.TabIndex = 10;
-            this.pbPreview.TabStop = false;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 178);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(35, 13);
-            this.label3.TabIndex = 11;
-            this.label3.Text = "Фото";
-            // 
-            // btnLoadImage
-            // 
-            this.btnLoadImage.Location = new System.Drawing.Point(15, 194);
-            this.btnLoadImage.Name = "btnLoadImage";
-            this.btnLoadImage.Size = new System.Drawing.Size(150, 140);
-            this.btnLoadImage.TabIndex = 12;
-            this.btnLoadImage.Text = "Загрузить\r\n фотографию";
-            this.btnLoadImage.UseVisualStyleBackColor = true;
-            this.btnLoadImage.Click += new System.EventHandler(this.btnLoadImage_Click);
-            // 
             // SearchingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(931, 602);
+            this.ClientSize = new System.Drawing.Size(1004, 641);
             this.Controls.Add(this.dgv);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -270,9 +293,9 @@
             this.Load += new System.EventHandler(this.SearchingForm_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbBanner)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -291,14 +314,16 @@
         private System.Windows.Forms.Label lPhoneSC;
         private System.Windows.Forms.Label lNameSC;
         private System.Windows.Forms.CheckBox cbSearchByOrganization;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.PictureBox pbPreview;
+        private System.Windows.Forms.Button btnLoadImage;
         private System.Windows.Forms.DataGridViewTextBoxColumn name;
         private System.Windows.Forms.DataGridViewTextBoxColumn retail;
         private System.Windows.Forms.DataGridViewTextBoxColumn service;
         private System.Windows.Forms.DataGridViewTextBoxColumn quantity;
+        private System.Windows.Forms.DataGridViewTextBoxColumn status;
         private System.Windows.Forms.DataGridViewTextBoxColumn addDate;
         private System.Windows.Forms.DataGridViewTextBoxColumn changeDate;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.PictureBox pbPreview;
-        private System.Windows.Forms.Button btnLoadImage;
+        private System.Windows.Forms.CheckBox ckbShowLimit;
     }
 }

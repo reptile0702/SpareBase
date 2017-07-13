@@ -15,7 +15,7 @@ namespace SparesBase
         // TODO: Добавть журнал поисков  ???
 
         // TODO: Придумать систему обновления через загрузку всех файлов программы с сервера и установку их на компьютер
-
+        // TODO: Сделать проверку хеш суммы файлов для закачки на компьютер. Хеш суммы хранить в базе данных. Хранить там хеши баннеров и файлов обновления
 
         #region Поля
 
@@ -32,7 +32,16 @@ namespace SparesBase
         public Category SelectedCategory { get { return (Category)treeView.SelectedNode.Tag; } }
 
         // Выбранный предмет в DataGridView
-        public Item SelectedItem { get { return (Item)dgv.CurrentRow.Tag; } }
+        public Item SelectedItem
+        {
+            get
+            {
+                if (dgv.CurrentRow != null)
+                    return (Item)dgv.CurrentRow.Tag;
+                else
+                    return null;
+            }
+        }
 
         #endregion Свойства
 
@@ -281,6 +290,8 @@ namespace SparesBase
                 pbPreview.SizeMode = PictureBoxSizeMode.CenterImage;
                 pbPreview.Image = Properties.Resources.LoadGif;
 
+                Thread.Sleep(400);
+
                 // Проверка на существование превью-фотографии
                 if (FtpManager.PreviewExists(SelectedItem.Id))
                 {
@@ -318,7 +329,7 @@ namespace SparesBase
         // Редактировать предмет
         private void EditItem()
         {
-            EditForm form = new EditForm(SelectedItem, FormCategories());
+            EditForm form = new EditForm(SelectedItem);
             form.ShowDialog();
             if (tbSearch.Text == "Поиск" || tbSearch.Text.Trim() == "")
                 FillItemsByCategory();
@@ -664,19 +675,42 @@ namespace SparesBase
         // Смена выделенного предмета
         private void dgv_CellClick(object sender, EventArgs e)
         {
+            
+        }
+
+
+
+        private void dgv_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter && SelectedItem != null)
+            {
+                EditItem();
+            }
+        }
+
+        private void dgv_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                e.Handled = true;
+        }
+
+        private void dgv_RowEnter(object sender, DataGridViewCellEventArgs e)
+        {
             if (SelectedItem != null)
+            {
                 InsertInfoAboutItem(SelectedItem);
 
-            // Загрузка превью-фотографии
-            if (Settings.AutoLoadItemImages)
-            {
-                btnLoadImage.Visible = false;
-                DownloadPreview();
-            }
-            else
-            {
-                pbPreview.Image = null;
-                btnLoadImage.Visible = true;
+                // Загрузка превью-фотографии
+                if (Settings.AutoLoadItemImages)
+                {
+                    btnLoadImage.Visible = false;
+                    DownloadPreview();
+                }
+                else
+                {
+                    pbPreview.Image = null;
+                    btnLoadImage.Visible = true;
+                }
             }
         }
 

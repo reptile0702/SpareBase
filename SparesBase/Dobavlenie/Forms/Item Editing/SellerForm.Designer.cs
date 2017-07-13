@@ -46,6 +46,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tvSellers = new System.Windows.Forms.TreeView();
+            this.btnHideSeller = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -114,7 +115,7 @@
             // 
             // btnDelete
             // 
-            this.btnDelete.Location = new System.Drawing.Point(12, 340);
+            this.btnDelete.Location = new System.Drawing.Point(12, 369);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(169, 23);
             this.btnDelete.TabIndex = 9;
@@ -223,11 +224,22 @@
             this.tvSellers.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvSellers_AfterSelect);
             this.tvSellers.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvSellers_NodeMouseDoubleClick);
             // 
+            // btnHideSeller
+            // 
+            this.btnHideSeller.Location = new System.Drawing.Point(12, 340);
+            this.btnHideSeller.Name = "btnHideSeller";
+            this.btnHideSeller.Size = new System.Drawing.Size(169, 23);
+            this.btnHideSeller.TabIndex = 25;
+            this.btnHideSeller.Text = "Скрыть поставщика";
+            this.btnHideSeller.UseVisualStyleBackColor = true;
+            this.btnHideSeller.Click += new System.EventHandler(this.btnHideSeller_Click);
+            // 
             // SellerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(489, 378);
+            this.ClientSize = new System.Drawing.Size(489, 403);
+            this.Controls.Add(this.btnHideSeller);
             this.Controls.Add(this.tvSellers);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -266,5 +278,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TreeView tvSellers;
+        private System.Windows.Forms.Button btnHideSeller;
     }
 }

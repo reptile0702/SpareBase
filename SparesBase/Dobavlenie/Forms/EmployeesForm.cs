@@ -54,20 +54,16 @@ namespace SparesBase.Forms
                     row.ItemArray[2].ToString(),
                     row.ItemArray[3].ToString(),
                     row.ItemArray[4].ToString(),
-                    null,
-                    row.ItemArray[11].ToString(),
-                    row.ItemArray[12].ToString(),
-                    row.ItemArray[13].ToString(),
-                    row.ItemArray[14].ToString() == "1" ? true : false);
-
-                Organization org = new Organization(
+                    new Organization(
                         int.Parse(row.ItemArray[6].ToString()),
                         row.ItemArray[7].ToString(),
                         row.ItemArray[8].ToString(),
                         row.ItemArray[9].ToString(),
-                        row.ItemArray[10].ToString(),
-                        null);
-                account.Organization = org;
+                        row.ItemArray[10].ToString()),
+                    row.ItemArray[11].ToString(),
+                    row.ItemArray[12].ToString(),
+                    row.ItemArray[13].ToString(),
+                    row.ItemArray[14].ToString() == "1" ? true : false);
 
                 dgv.Rows.Add(account.LastName, account.FirstName, account.SecondName);
                 dgv.Rows[dgv.Rows.Count - 1].Tag = account;

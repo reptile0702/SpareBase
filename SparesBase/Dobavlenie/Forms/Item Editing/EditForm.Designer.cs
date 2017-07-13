@@ -64,6 +64,7 @@
             this.label9 = new System.Windows.Forms.Label();
             this.cbStatus = new System.Windows.Forms.ComboBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.btnLoadImages = new System.Windows.Forms.Button();
             this.btnClearPhoto = new System.Windows.Forms.Button();
             this.btnBrowsePhoto = new System.Windows.Forms.Button();
             this.btnImg5 = new System.Windows.Forms.Button();
@@ -72,7 +73,6 @@
             this.btnImg2 = new System.Windows.Forms.Button();
             this.btnImg1 = new System.Windows.Forms.Button();
             this.pbPhoto = new System.Windows.Forms.PictureBox();
-            this.btnLoadImages = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -84,42 +84,42 @@
             this.tbItemName.Location = new System.Drawing.Point(111, 64);
             this.tbItemName.Name = "tbItemName";
             this.tbItemName.Size = new System.Drawing.Size(540, 20);
-            this.tbItemName.TabIndex = 0;
+            this.tbItemName.TabIndex = 7;
             // 
             // tbPurchasePrice
             // 
             this.tbPurchasePrice.Location = new System.Drawing.Point(111, 118);
             this.tbPurchasePrice.Name = "tbPurchasePrice";
             this.tbPurchasePrice.Size = new System.Drawing.Size(169, 20);
-            this.tbPurchasePrice.TabIndex = 2;
+            this.tbPurchasePrice.TabIndex = 11;
             // 
             // tbQuantity
             // 
             this.tbQuantity.Location = new System.Drawing.Point(403, 118);
             this.tbQuantity.Name = "tbQuantity";
             this.tbQuantity.Size = new System.Drawing.Size(248, 20);
-            this.tbQuantity.TabIndex = 3;
+            this.tbQuantity.TabIndex = 12;
             // 
             // tbRetailPrice
             // 
             this.tbRetailPrice.Location = new System.Drawing.Point(111, 148);
             this.tbRetailPrice.Name = "tbRetailPrice";
             this.tbRetailPrice.Size = new System.Drawing.Size(83, 20);
-            this.tbRetailPrice.TabIndex = 4;
+            this.tbRetailPrice.TabIndex = 13;
             // 
             // tbWholesalePrice
             // 
             this.tbWholesalePrice.Location = new System.Drawing.Point(269, 148);
             this.tbWholesalePrice.Name = "tbWholesalePrice";
             this.tbWholesalePrice.Size = new System.Drawing.Size(83, 20);
-            this.tbWholesalePrice.TabIndex = 5;
+            this.tbWholesalePrice.TabIndex = 14;
             // 
             // tbStorage
             // 
             this.tbStorage.Location = new System.Drawing.Point(111, 28);
             this.tbStorage.Name = "tbStorage";
             this.tbStorage.Size = new System.Drawing.Size(540, 20);
-            this.tbStorage.TabIndex = 8;
+            this.tbStorage.TabIndex = 0;
             // 
             // tbNote
             // 
@@ -127,7 +127,7 @@
             this.tbNote.Multiline = true;
             this.tbNote.Name = "tbNote";
             this.tbNote.Size = new System.Drawing.Size(540, 103);
-            this.tbNote.TabIndex = 9;
+            this.tbNote.TabIndex = 2;
             // 
             // label1
             // 
@@ -198,7 +198,7 @@
             this.label8.Location = new System.Drawing.Point(332, 93);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(65, 13);
-            this.label8.TabIndex = 21;
+            this.label8.TabIndex = 0;
             this.label8.Text = "Поставщик";
             // 
             // label10
@@ -215,14 +215,14 @@
             this.tbServicePrice.Location = new System.Drawing.Point(417, 148);
             this.tbServicePrice.Name = "tbServicePrice";
             this.tbServicePrice.Size = new System.Drawing.Size(83, 20);
-            this.tbServicePrice.TabIndex = 6;
+            this.tbServicePrice.TabIndex = 15;
             // 
             // btnEdit
             // 
             this.btnEdit.Location = new System.Drawing.Point(12, 440);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(669, 23);
-            this.btnEdit.TabIndex = 13;
+            this.btnEdit.TabIndex = 4;
             this.btnEdit.Text = "ДОБАВИТЬ / ИЗМЕНИТЬ";
             this.btnEdit.UseVisualStyleBackColor = true;
             this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
@@ -233,7 +233,7 @@
             this.chbSearchAllowed.Location = new System.Drawing.Point(541, 163);
             this.chbSearchAllowed.Name = "chbSearchAllowed";
             this.chbSearchAllowed.Size = new System.Drawing.Size(110, 17);
-            this.chbSearchAllowed.TabIndex = 32;
+            this.chbSearchAllowed.TabIndex = 4;
             this.chbSearchAllowed.Text = "Разрешён поиск";
             this.chbSearchAllowed.UseVisualStyleBackColor = true;
             // 
@@ -252,7 +252,7 @@
             this.tbFirmPrice.Location = new System.Drawing.Point(568, 148);
             this.tbFirmPrice.Name = "tbFirmPrice";
             this.tbFirmPrice.Size = new System.Drawing.Size(83, 20);
-            this.tbFirmPrice.TabIndex = 7;
+            this.tbFirmPrice.TabIndex = 16;
             // 
             // btnSell
             // 
@@ -292,7 +292,7 @@
             this.cbSeller.Location = new System.Drawing.Point(403, 90);
             this.cbSeller.Name = "cbSeller";
             this.cbSeller.Size = new System.Drawing.Size(248, 21);
-            this.cbSeller.TabIndex = 1;
+            this.cbSeller.TabIndex = 10;
             this.cbSeller.SelectedIndexChanged += new System.EventHandler(this.cbSeller_SelectedIndexChanged);
             // 
             // btnChangeCategories
@@ -311,7 +311,7 @@
             this.lMainCategory.Location = new System.Drawing.Point(42, 37);
             this.lMainCategory.Name = "lMainCategory";
             this.lMainCategory.Size = new System.Drawing.Size(63, 13);
-            this.lMainCategory.TabIndex = 35;
+            this.lMainCategory.TabIndex = 11;
             this.lMainCategory.Text = "Категории:";
             // 
             // groupBox1
@@ -339,7 +339,7 @@
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(669, 210);
-            this.groupBox1.TabIndex = 40;
+            this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Информация о предмете";
             // 
@@ -357,7 +357,7 @@
             this.tbSerial.Location = new System.Drawing.Point(111, 90);
             this.tbSerial.Name = "tbSerial";
             this.tbSerial.Size = new System.Drawing.Size(169, 20);
-            this.tbSerial.TabIndex = 37;
+            this.tbSerial.TabIndex = 8;
             // 
             // lInventNumber
             // 
@@ -390,7 +390,7 @@
             this.groupBox3.Location = new System.Drawing.Point(12, 225);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(669, 209);
-            this.groupBox3.TabIndex = 42;
+            this.groupBox3.TabIndex = 3;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Дополнительная информация";
             // 
@@ -410,7 +410,7 @@
             this.cbStatus.Location = new System.Drawing.Point(111, 161);
             this.cbStatus.Name = "cbStatus";
             this.cbStatus.Size = new System.Drawing.Size(121, 21);
-            this.cbStatus.TabIndex = 33;
+            this.cbStatus.TabIndex = 3;
             // 
             // groupBox4
             // 
@@ -429,6 +429,16 @@
             this.groupBox4.TabIndex = 42;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Фото";
+            // 
+            // btnLoadImages
+            // 
+            this.btnLoadImages.Location = new System.Drawing.Point(6, 19);
+            this.btnLoadImages.Name = "btnLoadImages";
+            this.btnLoadImages.Size = new System.Drawing.Size(290, 188);
+            this.btnLoadImages.TabIndex = 22;
+            this.btnLoadImages.Text = "Загрузить картинки";
+            this.btnLoadImages.UseVisualStyleBackColor = true;
+            this.btnLoadImages.Click += new System.EventHandler(this.btnLoadImages_Click);
             // 
             // btnClearPhoto
             // 
@@ -511,19 +521,8 @@
             this.pbPhoto.TabIndex = 14;
             this.pbPhoto.TabStop = false;
             // 
-            // btnLoadImages
-            // 
-            this.btnLoadImages.Location = new System.Drawing.Point(6, 19);
-            this.btnLoadImages.Name = "btnLoadImages";
-            this.btnLoadImages.Size = new System.Drawing.Size(290, 188);
-            this.btnLoadImages.TabIndex = 22;
-            this.btnLoadImages.Text = "Загрузить картинки";
-            this.btnLoadImages.UseVisualStyleBackColor = true;
-            this.btnLoadImages.Click += new System.EventHandler(this.btnLoadImages_Click);
-            // 
             // EditForm
             // 
-            this.AcceptButton = this.btnEdit;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1005, 474);

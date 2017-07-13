@@ -10,7 +10,8 @@
             string contactFirstName, 
             string contactLastName, 
             string contactSecondName,
-            int organizationId)
+            int organizationId,
+            bool hidden)
         {
             Id = id;
             Name = name;
@@ -20,6 +21,7 @@
             ContactLastName = contactLastName;
             ContactSecondName = contactSecondName;
             OrganizationId = organizationId;
+            Hidden = hidden;
         }
 
         public int Id { get; set; }
@@ -30,5 +32,6 @@
         public string ContactLastName { get; set; }
         public string ContactSecondName { get; set; }
         public int OrganizationId { get; set; }
+        public bool Hidden { get; set; }
     }
 }

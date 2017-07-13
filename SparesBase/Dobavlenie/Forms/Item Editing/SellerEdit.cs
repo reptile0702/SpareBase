@@ -65,6 +65,7 @@ namespace SparesBase
                 tbLastName.Text != "")
             {
                 DatabaseWorker.SqlQuery(query);
+                DialogResult = DialogResult.OK;
                 Close();
             }
             else
@@ -89,7 +90,8 @@ namespace SparesBase
                     "'" + tbFirstName.Text + "', " +
                     "'" + tbLastName.Text + "', " +
                     "'" + tbSecondName.Text + "', " +
-                    "" + EnteredUser.Organization.Id + ")");
+                    "" + EnteredUser.Organization.Id + ", " +
+                    "0)");
 
                 sellerId = int.Parse(DatabaseWorker.SqlScalarQuery("SELECT id FROM Sellers WHERE(id = LAST_INSERT_ID())").ToString());
             }

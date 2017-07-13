@@ -35,6 +35,9 @@
     <Reference Include="BytesRoad.Net.Ftp">
       <HintPath>..\..\..\..\библиотечки\BytesRoad.NetSuit_2_0\Bin\BytesRoad.Net.Ftp.dll</HintPath>
     </Reference>
+    <Reference Include="mysql.data">
+      <HintPath>..\..\..\..\..\..\YandexDisk\C# Libraries\MySQL Connector 6.0.7\mysql.data.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -48,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DatabaseWorker.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -55,6 +59,7 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="FtpManager.cs" />
+    <Compile Include="Md5.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProgramVersion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

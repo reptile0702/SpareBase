@@ -53,16 +53,17 @@ namespace SparesBase
             // Заполнение элементов данными
             FillSellers();
             FillStatuses();
+
+            btnLoadImages.Visible = false;
         }
 
         // Конструктор для изменения предмета
-        public EditForm(Item item, int[] categories)
+        public EditForm(Item item)
         {
             InitializeComponent();
 
             images = new Image[5];
             this.item = item;
-            this.categories = categories;
 
             // Текст на форме
             Text = "Изменение предмета";
@@ -156,11 +157,11 @@ namespace SparesBase
                 if (operation == "INSERT")
                     query = "INSERT INTO Items VALUES(" +
                         "'', " +
-                        categories[0] + ", " +
-                        categories[1] + ", " +
-                        categories[2] + ", " +
-                        categories[3] + ", " +
-                        categories[4] + ", " +
+                        item.MainCategory.Id + ", " +
+                        (item.SubCategory1 != null ? item.SubCategory1.Id.ToString() : "0") + ", " +
+                        (item.SubCategory2 != null ? item.SubCategory2.Id.ToString() : "0") + ", " +
+                        (item.SubCategory3 != null ? item.SubCategory3.Id.ToString() : "0") + ", " +
+                        (item.SubCategory4 != null ? item.SubCategory4.Id.ToString() : "0") + ", " +
                         "'" + tbItemName.Text + "', " +
                         "" + sellerId + ", " +
                         "'" + tbPurchasePrice.Text + "', " +
@@ -182,11 +183,11 @@ namespace SparesBase
                         " '" + (tbSerial.Text.Trim() != "" ? tbSerial.Text : "") + "')";
                 else
                     query = "UPDATE Items SET " +
-                        "Main_Category_Id = " + categories[0] + ", " +
-                        "Sub_Category_1_Id = " + categories[1] + ", " +
-                        "Sub_Category_2_Id = " + categories[2] + ", " +
-                        "Sub_Category_3_Id = " + categories[3] + ", " +
-                        "Sub_Category_4_Id = " + categories[4] + ", " +
+                        "Main_Category_Id = " + item.MainCategory.Id + ", " +
+                        "Sub_Category_1_Id = " + (item.SubCategory1 != null ? item.SubCategory1.Id.ToString() : "0") + ", " +
+                        "Sub_Category_2_Id = " + (item.SubCategory2 != null ? item.SubCategory2.Id.ToString() : "0") + ", " +
+                        "Sub_Category_3_Id = " + (item.SubCategory3 != null ? item.SubCategory3.Id.ToString() : "0") + ", " +
+                        "Sub_Category_4_Id = " + (item.SubCategory4 != null ? item.SubCategory4.Id.ToString() : "0") + ", " +
                         "Item_Name = '" + tbItemName.Text + "', " +
                         "Seller_Id = " + sellerId + ", " +
                         "Purchase_Price = '" + tbPurchasePrice.Text + "', " +
@@ -270,9 +271,9 @@ namespace SparesBase
         // Смена категорий
         public void ChangeCategories(Category[] categories)
         {
-            for (int i = 0; i < this.categories.Length; i++)
-                if (categories[i] != null)
-                    this.categories[i] = categories[i].Id;
+            //for (int i = 0; i < this.categories.Length; i++)
+            //    if (categories[i] != null)
+            //        this.categories[i] = categories[i].Id;
 
             item.MainCategory = categories[0];
             item.SubCategory1 = categories[1];
@@ -301,7 +302,12 @@ namespace SparesBase
             if (cbSeller.SelectedValue != null)
                 selectedId = int.Parse(cbSeller.SelectedValue.ToString());
 
-            DataTable sellers = DatabaseWorker.SqlSelectQuery("SELECT id, name FROM Sellers WHERE(OrganizationId=" + EnteredUser.Organization.Id + ") ORDER BY name");
+            DataTable sellers = DatabaseWorker.SqlSelectQuery("SELECT " +
+                "id, " +
+                "name " +
+                "FROM Sellers " +
+                "WHERE(OrganizationId = " + EnteredUser.Organization.Id + " AND (Hidden <> 1 OR id = " + item.Seller.Id + ")) " +
+                "ORDER BY name");
 
             bool flag = false;
             foreach (DataRow row in sellers.Rows)

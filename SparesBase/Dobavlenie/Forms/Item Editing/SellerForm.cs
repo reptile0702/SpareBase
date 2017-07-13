@@ -53,9 +53,10 @@ namespace SparesBase
                     row.ItemArray[4].ToString(),
                     row.ItemArray[5].ToString(),
                     row.ItemArray[6].ToString(),
-                    int.Parse(row.ItemArray[7].ToString()));
+                    int.Parse(row.ItemArray[7].ToString()),
+                    row.ItemArray[8].ToString() == "1" ? true : false);
 
-                TreeNode sellerNode = new TreeNode(seller.Name);
+                TreeNode sellerNode = new TreeNode(!seller.Hidden ? seller.Name : seller.Name + " (Скрытый)");
                 sellerNode.Tag = seller;
 
                 tvSellers.Nodes.Add(sellerNode);
@@ -90,6 +91,14 @@ namespace SparesBase
                 FillSellers();
         }
 
+        // Скрытие поставщика
+        private void HideSeller()
+        {
+            DatabaseWorker.SqlQuery("UPDATE Sellers SET Hidden = 1 WHERE(id = " + SelectedSeller.Id + ")");
+            tvSellers.SelectedNode.Text += " (Скрытый)";
+            SelectedSeller.Hidden = true;
+        }
+
         // Удаление поставщика
         private void DeleteSeller()
         {
@@ -119,6 +128,25 @@ namespace SparesBase
         private void tvSellers_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             EditSeller();
+        }
+
+        // Скрытие поставщика
+        private void btnHideSeller_Click(object sender, EventArgs e)
+        {
+            if (!SelectedSeller.Hidden)
+            {
+                if (MessageBox.Show("Вы уверены, что хотите скрыть поставщика \"" + SelectedSeller.Name + "\"?\n" +
+                    "В дальнейшем вы не сможете выбрать его при добавлении или изменении предмета.",
+                    "Скрытие поставщика",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question) == DialogResult.Yes)
+                    HideSeller();
+            }
+            else
+                MessageBox.Show("Этот поставщик уже скрыт.",
+                    "Скрытие поставщика",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
         }
 
         // Удаление поставщика

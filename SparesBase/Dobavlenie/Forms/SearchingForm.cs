@@ -92,6 +92,7 @@ namespace SparesBase
             where += organizationId != 0 ? " (i.OrganizationId = " + organizationId + ") AND" : "";
             where += " (i.SearchAllowed = 1) AND (i.Residue > 0) AND (i.Deleted <> 1)";
             where += cityId == -1 ? ")" : " AND (o.CityId = " + cityId + "))";
+            where += ckbShowLimit.Checked ? " LIMIT 100" : "";
 
             // Поиск предметов
             Item[] items = dgv.FillItems(where);
@@ -102,8 +103,9 @@ namespace SparesBase
                     item.RetailPrice,
                     item.ServicePrice,
                     item.Quantity,
-                    item.UploadDate.Date.ToShortDateString() + " " + item.UploadDate.TimeOfDay,
-                    item.ChangeDate.Date.ToShortDateString() + " " + item.ChangeDate.TimeOfDay);
+                    item.Status,
+                    item.UploadDate.Date.ToShortDateString(),
+                    item.ChangeDate.Date.ToShortDateString());
 
                 dgv.Rows[dgv.Rows.Count - 1].Tag = item;
             }
@@ -139,12 +141,13 @@ namespace SparesBase
                 pbPreview.SizeMode = PictureBoxSizeMode.CenterImage;
                 pbPreview.Image = Properties.Resources.LoadGif;
 
+                Thread.Sleep(400);
+
                 // Проверка на существование превью-фотографии
                 if (FtpManager.PreviewExists(item.Id))
                 {
                     // Загрузка превью-фотографии
                     WebClient wcPreview = new WebClient();
-                    wcPreview.DownloadDataCompleted += WcPreview_DownloadDataCompleted; ;
                     byte[] imageBytes = wcPreview.DownloadData(new Uri(FtpManager.FtpConnectString + "Photos/item_" + item.Id + "/preview.jpg"));
                     MemoryStream ms = new MemoryStream(imageBytes);
                     pbPreview.SizeMode = PictureBoxSizeMode.Zoom;
@@ -252,6 +255,12 @@ namespace SparesBase
             }
         }
 
+        // Клик на "Показать первые 100 предметов"
+        private void ckbShowLimit_CheckedChanged(object sender, EventArgs e)
+        {
+            Search(tbSearching.Text, selectedOrganization, int.Parse(cbСities.SelectedValue.ToString()));
+        }
+
         // Загрузить фотографию
         private void btnLoadImage_Click(object sender, EventArgs e)
         {
@@ -259,12 +268,6 @@ namespace SparesBase
             DownloadPreview();
         }
 
-        // Превью-фото загружено
-        private void WcPreview_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
-        {
-
-        }
-
-        #endregion События
+        #endregion События   
     }
 }
