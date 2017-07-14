@@ -302,12 +302,16 @@ namespace SparesBase
             if (cbSeller.SelectedValue != null)
                 selectedId = int.Parse(cbSeller.SelectedValue.ToString());
 
-            DataTable sellers = DatabaseWorker.SqlSelectQuery("SELECT " +
+            string query =
+                "SELECT " +
                 "id, " +
                 "name " +
-                "FROM Sellers " +
-                "WHERE(OrganizationId = " + EnteredUser.Organization.Id + " AND (Hidden <> 1 OR id = " + item.Seller.Id + ")) " +
-                "ORDER BY name");
+                "FROM Sellers ";
+            query += "WHERE(OrganizationId = " + EnteredUser.Organization.Id + " AND (Hidden <> 1";
+            query += item != null ? " OR id = " + item.Seller.Id + ")) " : ")) ";
+            query += "ORDER BY name";
+
+            DataTable sellers = DatabaseWorker.SqlSelectQuery(query);
 
             bool flag = false;
             foreach (DataRow row in sellers.Rows)

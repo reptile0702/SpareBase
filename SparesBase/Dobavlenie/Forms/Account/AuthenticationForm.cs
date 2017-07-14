@@ -5,6 +5,7 @@ using System.Net;
 using System.Windows.Forms;
 using System.Xml;
 using Microsoft.Win32;
+using System.Collections.Generic;
 
 namespace SparesBase.Forms
 {
@@ -188,13 +189,14 @@ namespace SparesBase.Forms
         #region Вспомогательные методы
 
         // Проверка: есть ли фото с данным именем в папке Banners
-        private bool FolderBannerCheck(string fileName)
+        private bool FolderBannerCheck(string checksum)
         {
             DirectoryInfo di = new DirectoryInfo("Banners");
             FileInfo[] files = di.GetFiles();
             foreach (FileInfo file in files)
-                if (file.Name == fileName)
-                    return true;
+                if (file.Name != "Banners.xml")
+                    if (MD5hash.VerifyMD5FileChecksum(file.OpenRead(), checksum))
+                        return true;
 
             return false;
         }
@@ -206,7 +208,7 @@ namespace SparesBase.Forms
             xDoc.Load("Banners/Banners.xml");
             XmlElement xRoot = xDoc.DocumentElement;
             foreach (XmlNode node in xRoot.ChildNodes)
-                if (node["PhotoName"].Attributes["value"].Value == fileName)
+                if (node["Checksum"].Attributes["value"].Value == MD5hash.GetMD5FileChecksum("Banners/" + fileName))
                     return true;
 
             return false;
@@ -248,15 +250,21 @@ namespace SparesBase.Forms
                     if (!FileChecking(file.Name) || file.Length <= 0)
                         file.Delete();
 
+
             // Загрузка баннеров, которых нет на компьютере
-            string[] images = FtpManager.GetFilesFromServer("Banners");
-            foreach (string img in images)
+            XmlDocument xDoc = new XmlDocument();
+            xDoc.Load("Banners/Banners.xml");
+            XmlElement xRoot = xDoc.DocumentElement;
+
+            List<string> imagesToDownload = new List<string>();
+            foreach (XmlNode node in xRoot.ChildNodes)
+                if (!FolderBannerCheck(node["Checksum"].Attributes["value"].Value))
+                    imagesToDownload.Add(node["PhotoName"].Attributes["value"].Value);           
+
+            foreach (string image in imagesToDownload)
             {
-                if (!FolderBannerCheck(img))
-                {
-                    WebClient wcBanner = new WebClient();
-                    wcBanner.DownloadFileAsync(new Uri(FtpManager.FtpConnectString + "Banners/" + img), "Banners/" + img);
-                }                
+                WebClient wcBanner = new WebClient();
+                wcBanner.DownloadFileAsync(new Uri(FtpManager.FtpConnectString + "Banners/" + image), "Banners/" + image);
             }
         }
 
@@ -276,7 +284,7 @@ namespace SparesBase.Forms
             Version localVersion = new Version(Application.ProductVersion);
             if (localVersion < remoteVersion)
             {
-                UpdateProgramForm upf = new UpdateProgramForm(xRoot["Version"].InnerText, xRoot["Date"].InnerText, xRoot["ChangeLog"].InnerText);
+                UpdateProgramForm upf = new UpdateProgramForm(xRoot["Version"].InnerText, xRoot["Date"].InnerText, xRoot["ChangeLog"].InnerText, xRoot["FileChecksum"].InnerText);
                 upf.ShowDialog();
             }
             else if (File.Exists("Updater.exe"))

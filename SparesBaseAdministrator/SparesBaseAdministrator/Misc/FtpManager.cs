@@ -288,8 +288,14 @@ namespace SparesBaseAdministrator
                 bannerLinkAttr.Value = banner.Link;
                 bannerLink.Attributes.Append(bannerLinkAttr);
 
+                XmlElement bannerChecksum = bannersDoc.CreateElement("Checksum");
+                XmlAttribute bannerChecksumAttr = bannersDoc.CreateAttribute("value");
+                bannerChecksumAttr.Value = banner.Checksum;
+                bannerChecksum.Attributes.Append(bannerChecksumAttr);
+
                 bannerElement.AppendChild(bannerName);
                 bannerElement.AppendChild(bannerLink);
+                bannerElement.AppendChild(bannerChecksum);
 
                 bannersRoot.AppendChild(bannerElement);
             }

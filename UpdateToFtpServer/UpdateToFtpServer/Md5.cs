@@ -8,7 +8,7 @@ namespace UpdateToFtpServer
     {
         public static string ComputeMD5Checksum(string path)
         {
-            using (FileStream fs = System.IO.File.OpenRead(path))
+            using (FileStream fs = File.OpenRead(path))
             {
                 MD5 md5 = new MD5CryptoServiceProvider();
                 byte[] fileData = new byte[fs.Length];

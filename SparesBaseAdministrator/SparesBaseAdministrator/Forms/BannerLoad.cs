@@ -25,7 +25,7 @@ namespace SparesBaseAdministrator
             OpenFileDialog open = new OpenFileDialog();
             if (open.ShowDialog() == DialogResult.OK)
             {
-                Banner banner = new Banner(open.SafeFileName, "", Image.FromFile(open.FileName));
+                Banner banner = new Banner(open.SafeFileName, "", Image.FromFile(open.FileName), MD5hash.GetMD5FileChecksum(open.FileName));
                 TreeNode node = new TreeNode(banner.PhotoName);
                 node.Tag = banner;
                 tvBanners.Nodes.Add(node);
@@ -50,7 +50,7 @@ namespace SparesBaseAdministrator
             XmlElement element = banners.DocumentElement;
             foreach (XmlNode node in element.ChildNodes)
             {
-                Banner ban = new Banner(node["PhotoName"].Attributes["value"].Value, node["Link"].Attributes["value"].Value, FtpManager.DownloadBannerImage(node["PhotoName"].Attributes["value"].Value));
+                Banner ban = new Banner(node["PhotoName"].Attributes["value"].Value, node["Link"].Attributes["value"].Value, FtpManager.DownloadBannerImage(node["PhotoName"].Attributes["value"].Value), node["Checksum"].Attributes["value"].Value);
                 TreeNode tn = new TreeNode(ban.PhotoName);
                 tn.Tag = ban;
                 tvBanners.Nodes.Add(tn);

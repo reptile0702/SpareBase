@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Misc\MD5hash.cs" />
     <Compile Include="Misc\Banner.cs" />
     <Compile Include="Custom Components\CategoriesTreeView.cs">
       <SubType>Component</SubType>

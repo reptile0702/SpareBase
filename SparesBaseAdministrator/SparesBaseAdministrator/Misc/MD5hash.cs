@@ -3,7 +3,7 @@ using System.Text;
 using System.Security.Cryptography;
 using System.IO;
 
-namespace SparesBase
+namespace SparesBaseAdministrator
 {
     class MD5hash
     {
@@ -46,33 +46,10 @@ namespace SparesBase
             }
         }
 
-        // Вычисление хеша файла по его пути
-        public static string GetMD5FileChecksum(FileStream stream)
-        {
-                MD5 md5 = new MD5CryptoServiceProvider();
-                byte[] fileData = new byte[stream.Length];
-                stream.Read(fileData, 0, (int)stream.Length);
-                byte[] checkSum = md5.ComputeHash(fileData);
-                string result = BitConverter.ToString(checkSum).Replace("-", String.Empty);
-                return result;
-        }
-
         // Проверка хеша
         public static bool VerifyMD5FileChecksum(string path, string hash)
         {
             string checksumOfFile = GetMD5FileChecksum(path);
-
-            StringComparer comparer = StringComparer.OrdinalIgnoreCase;
-            if (comparer.Compare(checksumOfFile, hash) == 0)
-                return true;
-            else
-                return false;
-        }
-
-        // Проверка хеша
-        public static bool VerifyMD5FileChecksum(FileStream stream, string hash)
-        {
-            string checksumOfFile = GetMD5FileChecksum(stream);
 
             StringComparer comparer = StringComparer.OrdinalIgnoreCase;
             if (comparer.Compare(checksumOfFile, hash) == 0)

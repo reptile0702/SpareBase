@@ -91,6 +91,10 @@ namespace UpdateToFtpServer
             changeLogNode.InnerText = programVersion.ChangeLog;
             newVersionRoot.AppendChild(changeLogNode);
 
+            XmlNode checksumNode = newVersionXml.CreateElement("FileChecksum");
+            checksumNode.InnerText = Md5.ComputeMD5Checksum(newVersionFilePath);
+            newVersionRoot.AppendChild(checksumNode);
+
             newVersionXml.AppendChild(newVersionRoot);
 
             newVersionXml.Save("Version.xml");
@@ -101,14 +105,6 @@ namespace UpdateToFtpServer
             MemoryStream str = new MemoryStream(fileBytes);
 
             string destPath = remotePath + path + "CurrentVersion/" + (programType == "Client" ? "SparesBase.exe" : "SparesBaseAdministrator.exe");
-            //DatabaseWorker.SqlQuery("INSERT INTO FileHashes VALUES('', " +
-            //    "'" + destPath + "', " +
-            //    "'" + Md5.ComputeMD5Checksum(newVersionFilePath) + "')");
-
-            //DatabaseWorker.SqlQuery("UPDATE FileHashes SET " +
-            //    "FilePath = '" + destPath + "', " +
-            //    "Hash = '" + Md5.ComputeMD5Checksum(newVersionFilePath) + "' " +
-            //    "WHERE()");
 
             client.PutFile(timeout, destPath, str);
             client.Disconnect(timeout);
