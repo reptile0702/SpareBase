@@ -34,35 +34,42 @@ namespace SparesBase
            
             // Выполнение запроса
             items = DatabaseWorker.SqlSelectQuery("SELECT " +
-                "i.id, " +
-                "mc.id, " +
-                "mc.Name, " +
-                "mc.OrganizationId, " +
-                "sc1.id, " +
-                "sc1.Name, " +
+                "i.id AS ItemId, " +
+
+                "mc.id AS MainCategoryId, " +
+                "mc.Name AS MainCategoryName, " +
+                "mc.OrganizationId AS MainCategoryOrgId, " +
+
+                "sc1.id AS SubCategory1Id, " +
+                "sc1.Name AS SubCategory1Name, " +
                 "sc1.MainCatId, " +
-                "sc1.OrganizationId, " +
-                "sc2.id, " +
-                "sc2.Name, " +
+                "sc1.OrganizationId AS SubCategory1OrgId, " +
+
+                "sc2.id AS SubCategory2Id, " +
+                "sc2.Name AS SubCategory2Name, " +
                 "sc2.SubCat1Id, " +
-                "sc2.OrganizationId, " +
-                "sc3.id, " +
-                "sc3.Name, " +
+                "sc2.OrganizationId AS SubCategory2OrgId, " +
+
+                "sc3.id AS SubCategory3Id, " +
+                "sc3.Name AS SubCategory3Name, " +
                 "sc3.SubCat2Id, " +
-                "sc3.OrganizationId, " +
-                "sc4.id, " +
-                "sc4.Name, " +
+                "sc3.OrganizationId AS SubCategory3OrgId, " +
+
+                "sc4.id AS SubCategory4Id, " +
+                "sc4.Name AS SubCategory4Name, " +
                 "sc4.SubCat3Id, " +
-                "sc4.OrganizationId, " +
-                "s.id, " +
-                "s.name, " +
-                "s.site, " +
-                "s.telephone, " +
-                "s.contactFirstName, " +
-                "s.contactLastName, " +
-                "s.contactSecondName, " +
-                "s.OrganizationId," +
-                "s.Hidden, " +
+                "sc4.OrganizationId AS SubCategory4OrgId, " +
+
+                "s.id AS SellerId, " +
+                "s.name AS SellerName, " +
+                "s.site AS SellerSite, " +
+                "s.telephone AS SellerTelephone, " +
+                "s.contactFirstName AS SellerContactFN, " +
+                "s.contactLastName AS SellerContactLN, " +
+                "s.contactSecondName AS SellerContactSN, " +
+                "s.OrganizationId AS SellerOrganizationId," +
+                "s.Hidden AS SellerHidden, " +
+
                 "i.Item_Name, " +
                 "i.Purchase_Price, " +
                 "i.Retail_Price, " +
@@ -74,16 +81,19 @@ namespace SparesBase
                 "i.Quantity, " +
                 "i.Residue, " +
                 "i.Upload_Date, " +
-                "o.id, " +
-                "o.Name, " +
-                "o.Site, " +
-                "o.Telephone, " +
+
+                "o.id AS OrgId, " +
+                "o.Name AS OrgName, " +
+                "o.Site AS OrgSite, " +
+                "o.Telephone AS OrgTelephone, " +
                 "oc.City, " +
+
                 "i.SearchAllowed, " +
                 "i.ChangeDate, " +
                 "status.Status," +
                 "i.InventNumber, " +
                 "i.SerialNumber " +
+
                 "FROM Items i " +
                 "LEFT JOIN Main_Category mc ON mc.id = i.Main_Category_Id " +
                 "LEFT JOIN Sub_Category_1 sc1 ON sc1.id = i.Sub_Category_1_Id " +
@@ -99,72 +109,72 @@ namespace SparesBase
             {
                 // Категории
                 Category mainCat = new Category(
-                        int.Parse(row["id1"].ToString()),
-                        row["Name"].ToString(),
+                        int.Parse(row["MainCategoryId"].ToString()),
+                        row["MainCategoryName"].ToString(),
                         0,
-                        int.Parse(row["OrganizationId"].ToString()));
+                        int.Parse(row["MainCategoryOrgId"].ToString()));
 
                 Category subCat1 = null;
-                if (row["id2"].ToString() != "")
+                if (row["SubCategory1Id"].ToString() != "")
                 {
                     subCat1 = new Category(
-                        int.Parse(row["id2"].ToString()),
-                        row["Name1"].ToString(),
+                        int.Parse(row["SubCategory1Id"].ToString()),
+                        row["SubCategory1Name"].ToString(),
                         int.Parse(row["MainCatId"].ToString()),
-                        int.Parse(row["OrganizationId1"].ToString()));
+                        int.Parse(row["SubCategory1OrgId"].ToString()));
                 }
 
                 Category subCat2 = null;
-                if (row["id3"].ToString() != "")
+                if (row["SubCategory2Id"].ToString() != "")
                 {
                     subCat2 = new Category(
-                        int.Parse(row["id3"].ToString()),
-                        row["Name2"].ToString(),
+                        int.Parse(row["SubCategory2Id"].ToString()),
+                        row["SubCategory2Name"].ToString(),
                         int.Parse(row["SubCat1Id"].ToString()),
-                        int.Parse(row["OrganizationId2"].ToString()));
+                        int.Parse(row["SubCategory2OrgId"].ToString()));
                 }
 
                 Category subCat3 = null;
-                if (row["id4"].ToString() != "")
+                if (row["SubCategory3Id"].ToString() != "")
                 {
                     subCat3 = new Category(
-                        int.Parse(row["id4"].ToString()),
-                        row["Name3"].ToString(),
+                        int.Parse(row["SubCategory3Id"].ToString()),
+                        row["SubCategory3Name"].ToString(),
                         int.Parse(row["SubCat2Id"].ToString()),
-                        int.Parse(row["OrganizationId3"].ToString()));
+                        int.Parse(row["SubCategory3OrgId"].ToString()));
                 }
 
                 Category subCat4 = null;
-                if (row["id5"].ToString() != "")
+                if (row["SubCategory4Id"].ToString() != "")
                 {
                     subCat4 = new Category(
-                        int.Parse(row["id5"].ToString()),
-                        row["Name4"].ToString(),
+                        int.Parse(row["SubCategory4Id"].ToString()),
+                        row["SubCategory4Name"].ToString(),
                         int.Parse(row["SubCat3Id"].ToString()),
-                        int.Parse(row["OrganizationId4"].ToString()));
+                        int.Parse(row["SubCategory4OrgId"].ToString()));
                 }
 
                 Seller seller = new Seller(
-                    int.Parse(row["id6"].ToString()),
-                    row["name5"].ToString(),
-                    row["site"].ToString(),
-                    row["telephone"].ToString(),
-                    row["contactFirstName"].ToString(),
-                    row["contactLastName"].ToString(),
-                    row["contactSecondName"].ToString(),
-                    int.Parse(row["OrganizationId5"].ToString()),
-                    row["Hidden"].ToString() == "1" ? true : false);
+                    int.Parse(row["SellerId"].ToString()),
+                    row["SellerName"].ToString(),
+                    row["SellerSite"].ToString(),
+                    row["SellerTelephone"].ToString(),
+                    row["SellerContactFN"].ToString(),
+                    row["SellerContactLN"].ToString(),
+                    row["SellerContactSN"].ToString(),
+                    int.Parse(row["SellerOrganizationId"].ToString()),
+                    row["SellerHidden"].ToString() == "1" ? true : false);
 
                 // Организация
                 Organization organization = new Organization(
-                    int.Parse(row["id7"].ToString()),
-                    row["Name6"].ToString(),
-                    row["Site"].ToString(),
-                    row["Telephone"].ToString(),
+                    int.Parse(row["OrgId"].ToString()),
+                    row["OrgName"].ToString(),
+                    row["OrgSite"].ToString(),
+                    row["OrgTelephone"].ToString(),
                     row["City"].ToString());
 
                 Item item = new Item(
-                    int.Parse(row["id"].ToString()),
+                    int.Parse(row["ItemId"].ToString()),
                     mainCat,
                     subCat1,
                     subCat2,

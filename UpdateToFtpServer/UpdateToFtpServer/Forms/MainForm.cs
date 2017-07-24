@@ -13,6 +13,7 @@ namespace UpdateToFtpServer
 
         private void GetVersionsOfPrograms()
         {
+            tvSparesBase.Nodes.Clear();
             ProgramVersion[] clientVersions = FtpManager.GetVersions("Client");
             foreach (ProgramVersion version in clientVersions)
             {
@@ -21,6 +22,7 @@ namespace UpdateToFtpServer
                 tvSparesBase.Nodes.Add(versionNode);
             }
 
+            tvAdmin.Nodes.Clear();
             ProgramVersion[] adminVersions = FtpManager.GetVersions("Admin");
             foreach (ProgramVersion version in adminVersions)
             {
@@ -44,6 +46,7 @@ namespace UpdateToFtpServer
                     ofd.FileName,
                     programType);
                 ve.ShowDialog();
+                GetVersionsOfPrograms();
             }
         }
 
@@ -51,6 +54,7 @@ namespace UpdateToFtpServer
         {
             VersionEditor ve = new VersionEditor((ProgramVersion)tvSparesBase.SelectedNode.Tag, "", programType);
             ve.ShowDialog();
+            GetVersionsOfPrograms();
         }
 
         private void Form1_Load(object sender, EventArgs e)

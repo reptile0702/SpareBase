@@ -157,11 +157,11 @@ namespace SparesBase
                 if (operation == "INSERT")
                     query = "INSERT INTO Items VALUES(" +
                         "'', " +
-                        item.MainCategory.Id + ", " +
-                        (item.SubCategory1 != null ? item.SubCategory1.Id.ToString() : "0") + ", " +
-                        (item.SubCategory2 != null ? item.SubCategory2.Id.ToString() : "0") + ", " +
-                        (item.SubCategory3 != null ? item.SubCategory3.Id.ToString() : "0") + ", " +
-                        (item.SubCategory4 != null ? item.SubCategory4.Id.ToString() : "0") + ", " +
+                        categories[0] + ", " +
+                        categories[1] + ", " +
+                        categories[2] + ", " +
+                        categories[3] + ", " +
+                        categories[4] + ", " +
                         "'" + tbItemName.Text + "', " +
                         "" + sellerId + ", " +
                         "'" + tbPurchasePrice.Text + "', " +

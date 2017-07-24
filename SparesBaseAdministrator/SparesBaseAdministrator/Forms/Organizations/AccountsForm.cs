@@ -38,33 +38,24 @@ namespace SparesBaseAdministrator
             tvOrganizations.Nodes.Clear();
             tvOrganizations.Nodes.Add("Без организации");
 
-            DataTable organizations = DatabaseWorker.SqlSelectQuery("SELECT o.id, o.Name, o.Site, o.Telephone, c.City, o.AdminAccountId, a.FirstName, a.LastName, a.SecondName, a.Login, ac.City, a.Phone, a.Email, a.Admin FROM Organizations o LEFT JOIN Cities c ON c.id = o.CityId LEFT JOIN Accounts a ON a.id = o.AdminAccountId LEFT JOIN Cities ac ON ac.id = a.CityId");
+            DataTable organizations = DatabaseWorker.SqlSelectQuery("SELECT " +
+                "o.id, " +
+                "o.Name, " +
+                "o.Site, " +
+                "o.Telephone, " +
+                "c.City " +
+                "FROM Organizations o " +
+                "LEFT JOIN Cities c ON c.id = o.CityId");
+
             foreach (DataRow row in organizations.Rows)
             {
-                Account adminAccount = null;
-                if (row.ItemArray[5].ToString() != "0")
-                    adminAccount = new Account(
-                        int.Parse(row.ItemArray[5].ToString()),
-                        row.ItemArray[6].ToString(),
-                        row.ItemArray[7].ToString(),
-                        row.ItemArray[8].ToString(),
-                        row.ItemArray[9].ToString(),
-                        row.ItemArray[10].ToString(),
-                        row.ItemArray[11].ToString(),
-                        row.ItemArray[12].ToString(),
-                        row.ItemArray[13].ToString() == "0" ? false : true,
-                        null);
-
                 Organization organization = new Organization(
                     int.Parse(row.ItemArray[0].ToString()),
                     row.ItemArray[1].ToString(),
                     row.ItemArray[2].ToString(),
                     row.ItemArray[3].ToString(),
                     row.ItemArray[4].ToString(),
-                    adminAccount);
-
-                if (adminAccount != null)
-                    organization.Admin.Organization = organization;
+                    null);
 
                 TreeNode organizationNode = new TreeNode(organization.Name);
                 organizationNode.Tag = organization;
@@ -83,7 +74,20 @@ namespace SparesBaseAdministrator
         private void FillAccounts()
         {
             dgvAccounts.Rows.Clear();
-            DataTable accounts = DatabaseWorker.SqlSelectQuery("SELECT a.id, a.FirstName, a.LastName, a.SecondName, a.Login, c.City, a.Phone, a.Email, a.Admin FROM Accounts a LEFT JOIN Cities c ON c.id = a.CityId WHERE(a.OrganizationId = 0)");
+            DataTable accounts = DatabaseWorker.SqlSelectQuery("SELECT " +
+                "a.id, " +
+                "a.FirstName, " +
+                "a.LastName, " +
+                "a.SecondName, " +
+                "a.Login, " +
+                "c.City, " +
+                "a.Phone, " +
+                "a.Email, " +
+                "a.Admin " +
+                "FROM Accounts a " +
+                "LEFT JOIN Cities c ON c.id = a.CityId " +
+                "WHERE(a.OrganizationId = 0)");
+
             foreach (DataRow row in accounts.Rows)
             {
                 Account account = new Account(
@@ -137,7 +141,20 @@ namespace SparesBaseAdministrator
         private void FillAccounts(Organization organization)
         {
             dgvAccounts.Rows.Clear();
-            DataTable accounts = DatabaseWorker.SqlSelectQuery("SELECT a.id, a.FirstName, a.LastName, a.SecondName, a.Login, c.City, a.Phone, a.Email, a.Admin FROM Accounts a LEFT JOIN Cities c ON c.id = a.CityId WHERE(a.OrganizationId = " + organization.Id + ")");
+            DataTable accounts = DatabaseWorker.SqlSelectQuery("SELECT " +
+                "a.id, " +
+                "a.FirstName, " +
+                "a.LastName, " +
+                "a.SecondName, " +
+                "a.Login, " +
+                "c.City, " +
+                "a.Phone, " +
+                "a.Email, " +
+                "a.Admin " +
+                "FROM Accounts a " +
+                "LEFT JOIN Cities c ON c.id = a.CityId " +
+                "WHERE(a.OrganizationId = " + organization.Id + ")");
+
             foreach (DataRow row in accounts.Rows)
             {
                 Account account = new Account(

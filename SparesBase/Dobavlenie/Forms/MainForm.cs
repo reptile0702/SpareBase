@@ -279,6 +279,9 @@ namespace SparesBase
         // Загрузка превью-фотографии
         private void DownloadPreview()
         {
+            if (SelectedItem == null)
+                return;
+
             pbPreview.Image = null;
 
             if (previewThread != null)
@@ -522,7 +525,7 @@ namespace SparesBase
         // Загрузка формы
         private void MainForm_Load(object sender, EventArgs e)
         {
-            treeView.FillCategories(EnteredUser.Organization.Id, cmsCategory);
+            //treeView.FillCategories(EnteredUser.Organization.Id, cmsCategory);
         }
 
         // Закрытие формы
@@ -672,29 +675,22 @@ namespace SparesBase
             DownloadPreview();
         }
 
-        // Смена выделенного предмета
-        private void dgv_CellClick(object sender, EventArgs e)
-        {
-            
-        }
-
-
-
+        // Нажатие на Enter
         private void dgv_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter && SelectedItem != null)
-            {
                 EditItem();
-            }
         }
 
+        // Предотвращение перехода на новую строчку при нажатии Enter
         private void dgv_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
                 e.Handled = true;
         }
 
-        private void dgv_RowEnter(object sender, DataGridViewCellEventArgs e)
+        // Смена выделенного предмета
+        private void dgv_CurrentCellChanged(object sender, EventArgs e)
         {
             if (SelectedItem != null)
             {

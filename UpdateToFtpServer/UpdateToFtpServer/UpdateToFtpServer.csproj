@@ -31,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Spare Parts 72px.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="BytesRoad.Net.Ftp">
       <HintPath>..\..\..\..\библиотечки\BytesRoad.NetSuit_2_0\Bin\BytesRoad.Net.Ftp.dll</HintPath>
@@ -51,25 +54,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DatabaseWorker.cs" />
-    <Compile Include="MainForm.cs">
+    <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="FtpManager.cs" />
-    <Compile Include="Md5.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="ProgramVersion.cs" />
+    <Compile Include="Classes\FtpManager.cs" />
+    <Compile Include="Classes\Md5.cs" />
+    <Compile Include="Classes\Program.cs" />
+    <Compile Include="Classes\ProgramVersion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VersionEditor.cs">
+    <Compile Include="Forms\VersionEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="VersionEditor.Designer.cs">
+    <Compile Include="Forms\VersionEditor.Designer.cs">
       <DependentUpon>VersionEditor.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -81,7 +83,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="VersionEditor.resx">
+    <EmbeddedResource Include="Forms\VersionEditor.resx">
       <DependentUpon>VersionEditor.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
@@ -96,6 +98,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Spare Parts 72px.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
