@@ -125,7 +125,7 @@
             // 
             // tbFirstName
             // 
-            this.tbFirstName.Location = new System.Drawing.Point(20, 41);
+            this.tbFirstName.Location = new System.Drawing.Point(20, 80);
             this.tbFirstName.Name = "tbFirstName";
             this.tbFirstName.ReadOnly = true;
             this.tbFirstName.Size = new System.Drawing.Size(241, 20);
@@ -133,7 +133,7 @@
             // 
             // tbLastName
             // 
-            this.tbLastName.Location = new System.Drawing.Point(20, 80);
+            this.tbLastName.Location = new System.Drawing.Point(20, 41);
             this.tbLastName.Name = "tbLastName";
             this.tbLastName.ReadOnly = true;
             this.tbLastName.Size = new System.Drawing.Size(241, 20);
@@ -150,7 +150,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(17, 25);
+            this.label5.Location = new System.Drawing.Point(17, 64);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(29, 13);
             this.label5.TabIndex = 15;
@@ -159,7 +159,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(17, 64);
+            this.label6.Location = new System.Drawing.Point(17, 25);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(56, 13);
             this.label6.TabIndex = 16;
@@ -187,9 +187,9 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.tbFirstName);
             this.groupBox1.Controls.Add(this.tbLastName);
             this.groupBox1.Controls.Add(this.tbSecondName);
+            this.groupBox1.Controls.Add(this.tbFirstName);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Location = new System.Drawing.Point(192, 168);

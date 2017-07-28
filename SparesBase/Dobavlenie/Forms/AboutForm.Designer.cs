@@ -58,9 +58,9 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(12, 91);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(154, 39);
+            this.label3.Size = new System.Drawing.Size(148, 26);
             this.label3.TabIndex = 2;
-            this.label3.Text = "Авторы: Ткаченко Дмиртрий\r\n               Михалев Даниил\r\n               ";
+            this.label3.Text = "Авторы: Ткаченко Дмитрий\r\n                Михалев Даниил";
             // 
             // btnOk
             // 

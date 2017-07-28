@@ -49,7 +49,7 @@ namespace SparesBase
                 "al.Date " +
                 "FROM ActionLogs al " +
                 "LEFT JOIN Accounts a ON al.AccountId = a.id " +
-                "LEFT JOIN Items i ON al.ItemId = i.id " + where);
+                "LEFT JOIN Items i ON al.ItemId = i.id " + where + " DESC");
 
             // Запись в ListBox
             foreach (DataRow row in dt.Rows)

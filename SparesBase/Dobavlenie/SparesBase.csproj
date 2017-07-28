@@ -70,6 +70,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database Classes\WriteOff\Defect.cs" />
+    <Compile Include="Database Classes\WriteOff\Order.cs" />
+    <Compile Include="Database Classes\WriteOff\Sell.cs" />
+    <Compile Include="Forms\Write-off\WriteOffListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Write-off\WriteOffListForm.Designer.cs">
+      <DependentUpon>WriteOffListForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Misc\Settings.cs" />
     <Compile Include="Forms\SettingsForm.cs">
       <SubType>Form</SubType>
@@ -282,6 +291,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Cards\OrganizationCardForm.resx">
       <DependentUpon>OrganizationCardForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Write-off\WriteOffListForm.resx">
+      <DependentUpon>WriteOffListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -66,7 +66,7 @@
             this.tbSearch = new System.Windows.Forms.TextBox();
             this.cbSerial = new System.Windows.Forms.CheckBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.dgv = new SparesBase.ItemsDataGridView();
+            this.dgvItems = new SparesBase.ItemsDataGridView();
             this.inventNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.seller = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -99,9 +99,9 @@
             this.lpurchase = new System.Windows.Forms.Label();
             this.lseller = new System.Windows.Forms.Label();
             this.lname = new System.Windows.Forms.Label();
+            this.btnWriteOffList = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnLoadImage = new System.Windows.Forms.Button();
-            this.pbPreview = new System.Windows.Forms.PictureBox();
             this.cmsCategory = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmsAddSubCategory = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsRenameCategory = new System.Windows.Forms.ToolStripMenuItem();
@@ -112,7 +112,7 @@
             this.cmsSelling = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsDefect = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsInOrder = new System.Windows.Forms.ToolStripMenuItem();
-            this.cmsReserve = new System.Windows.Forms.ToolStripMenuItem();
+            this.pbPreview = new System.Windows.Forms.PictureBox();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -123,14 +123,14 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).BeginInit();
             this.cmsItem.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).BeginInit();
             this.cmsCategory.SuspendLayout();
             this.cmsWriteOff.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -439,7 +439,7 @@
             // 
             // splitContainer2.Panel1
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.dgv);
+            this.splitContainer2.Panel1.Controls.Add(this.dgvItems);
             // 
             // splitContainer2.Panel2
             // 
@@ -448,14 +448,14 @@
             this.splitContainer2.SplitterDistance = 319;
             this.splitContainer2.TabIndex = 1;
             // 
-            // dgv
+            // dgvItems
             // 
-            this.dgv.AllowUserToAddRows = false;
-            this.dgv.AllowUserToDeleteRows = false;
-            this.dgv.AllowUserToResizeRows = false;
-            this.dgv.BackgroundColor = System.Drawing.Color.White;
-            this.dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgvItems.AllowUserToAddRows = false;
+            this.dgvItems.AllowUserToDeleteRows = false;
+            this.dgvItems.AllowUserToResizeRows = false;
+            this.dgvItems.BackgroundColor = System.Drawing.Color.White;
+            this.dgvItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvItems.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.inventNumber,
             this.name,
             this.seller,
@@ -470,7 +470,7 @@
             this.changeDate,
             this.residue,
             this.status});
-            this.dgv.ContextMenuStrip = this.cmsItem;
+            this.dgvItems.ContextMenuStrip = this.cmsItem;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -478,24 +478,24 @@
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv.DefaultCellStyle = dataGridViewCellStyle1;
-            this.dgv.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgv.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgv.Location = new System.Drawing.Point(0, 0);
-            this.dgv.MultiSelect = false;
-            this.dgv.Name = "dgv";
-            this.dgv.ReadOnly = true;
-            this.dgv.RowHeadersVisible = false;
-            this.dgv.RowTemplate.Height = 30;
-            this.dgv.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv.Size = new System.Drawing.Size(1259, 319);
-            this.dgv.TabIndex = 0;
-            this.dgv.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.EditItem_Click);
-            this.dgv.CurrentCellChanged += new System.EventHandler(this.dgv_CurrentCellChanged);
-            this.dgv.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgv_KeyDown);
-            this.dgv.KeyUp += new System.Windows.Forms.KeyEventHandler(this.dgv_KeyUp);
-            this.dgv.MouseMove += new System.Windows.Forms.MouseEventHandler(this.dgv_MouseMove);
+            this.dgvItems.DefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvItems.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvItems.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvItems.Location = new System.Drawing.Point(0, 0);
+            this.dgvItems.MultiSelect = false;
+            this.dgvItems.Name = "dgvItems";
+            this.dgvItems.ReadOnly = true;
+            this.dgvItems.RowHeadersVisible = false;
+            this.dgvItems.RowTemplate.Height = 30;
+            this.dgvItems.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvItems.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvItems.Size = new System.Drawing.Size(1259, 319);
+            this.dgvItems.TabIndex = 0;
+            this.dgvItems.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.EditItem_Click);
+            this.dgvItems.CurrentCellChanged += new System.EventHandler(this.dgv_CurrentCellChanged);
+            this.dgvItems.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgv_KeyDown);
+            this.dgvItems.KeyUp += new System.Windows.Forms.KeyEventHandler(this.dgv_KeyUp);
+            this.dgvItems.MouseMove += new System.Windows.Forms.MouseEventHandler(this.dgv_MouseMove);
             // 
             // inventNumber
             // 
@@ -639,6 +639,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnWriteOffList);
             this.groupBox1.Controls.Add(this.lCategories);
             this.groupBox1.Controls.Add(this.lresidue);
             this.groupBox1.Controls.Add(this.lquantity);
@@ -768,6 +769,16 @@
             this.lname.TabIndex = 5;
             this.lname.Text = "Название";
             // 
+            // btnWriteOffList
+            // 
+            this.btnWriteOffList.Location = new System.Drawing.Point(15, 154);
+            this.btnWriteOffList.Name = "btnWriteOffList";
+            this.btnWriteOffList.Size = new System.Drawing.Size(157, 28);
+            this.btnWriteOffList.TabIndex = 0;
+            this.btnWriteOffList.Text = "Списки списания предмета";
+            this.btnWriteOffList.UseVisualStyleBackColor = true;
+            this.btnWriteOffList.Click += new System.EventHandler(this.btnOrders_Click);
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.btnLoadImage);
@@ -789,15 +800,6 @@
             this.btnLoadImage.Text = "Загрузить картинку";
             this.btnLoadImage.UseVisualStyleBackColor = true;
             this.btnLoadImage.Click += new System.EventHandler(this.btnLoadImage_Click);
-            // 
-            // pbPreview
-            // 
-            this.pbPreview.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbPreview.Location = new System.Drawing.Point(3, 16);
-            this.pbPreview.Name = "pbPreview";
-            this.pbPreview.Size = new System.Drawing.Size(248, 169);
-            this.pbPreview.TabIndex = 0;
-            this.pbPreview.TabStop = false;
             // 
             // cmsCategory
             // 
@@ -850,10 +852,9 @@
             this.cmsWriteOff.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.cmsSelling,
             this.cmsDefect,
-            this.cmsInOrder,
-            this.cmsReserve});
+            this.cmsInOrder});
             this.cmsWriteOff.Name = "cmsItem";
-            this.cmsWriteOff.Size = new System.Drawing.Size(133, 92);
+            this.cmsWriteOff.Size = new System.Drawing.Size(133, 70);
             // 
             // cmsSelling
             // 
@@ -876,13 +877,14 @@
             this.cmsInOrder.Text = "В заказ";
             this.cmsInOrder.Click += new System.EventHandler(this.cmsInOrder_Click);
             // 
-            // cmsReserve
+            // pbPreview
             // 
-            this.cmsReserve.AccessibleDescription = "";
-            this.cmsReserve.Name = "cmsReserve";
-            this.cmsReserve.Size = new System.Drawing.Size(132, 22);
-            this.cmsReserve.Text = "В резерв";
-            this.cmsReserve.Click += new System.EventHandler(this.cmsReserve_Click);
+            this.pbPreview.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbPreview.Location = new System.Drawing.Point(3, 16);
+            this.pbPreview.Name = "pbPreview";
+            this.pbPreview.Size = new System.Drawing.Size(248, 169);
+            this.pbPreview.TabIndex = 0;
+            this.pbPreview.TabStop = false;
             // 
             // MainForm
             // 
@@ -910,15 +912,15 @@
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgv)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).EndInit();
             this.cmsItem.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).EndInit();
             this.cmsCategory.ResumeLayout(false);
             this.cmsWriteOff.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbPreview)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -979,13 +981,12 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiSearch;
         private System.Windows.Forms.ToolStripMenuItem tsmiSellers;
         private System.Windows.Forms.Label lCategories;
-        private ItemsDataGridView dgv;
+        private ItemsDataGridView dgvItems;
         private CategoriesTreeView treeView;
         private System.Windows.Forms.ContextMenuStrip cmsWriteOff;
         private System.Windows.Forms.ToolStripMenuItem cmsSelling;
         private System.Windows.Forms.ToolStripMenuItem cmsDefect;
         private System.Windows.Forms.ToolStripMenuItem cmsInOrder;
-        private System.Windows.Forms.ToolStripMenuItem cmsReserve;
         private System.Windows.Forms.ToolStripMenuItem tsmiAccountInfo;
         private System.Windows.Forms.CheckBox cbSerial;
         private System.Windows.Forms.GroupBox groupBox2;
@@ -1008,5 +1009,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn changeDate;
         private System.Windows.Forms.DataGridViewTextBoxColumn residue;
         private System.Windows.Forms.DataGridViewTextBoxColumn status;
+        private System.Windows.Forms.Button btnWriteOffList;
     }
 }

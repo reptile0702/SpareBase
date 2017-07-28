@@ -36,8 +36,8 @@ namespace SparesBase
         {
             get
             {
-                if (dgv.CurrentRow != null)
-                    return (Item)dgv.CurrentRow.Tag;
+                if (dgvItems.CurrentRow != null)
+                    return (Item)dgvItems.CurrentRow.Tag;
                 else
                     return null;
             }
@@ -106,11 +106,11 @@ namespace SparesBase
 
             // Запоминание выбранной строки, если она есть
             Item selectedItem = null;
-            if (dgv.CurrentRow != null)
-                selectedItem = (Item)dgv.CurrentRow.Tag;
+            if (dgvItems.CurrentRow != null)
+                selectedItem = (Item)dgvItems.CurrentRow.Tag;
 
             // Получение предметов из базы
-            Item[] items = dgv.FillItems(where);
+            Item[] items = dgvItems.FillItems(where);
             FillRows(items);
         }
 
@@ -223,12 +223,12 @@ namespace SparesBase
         {
             // Запоминание выбранной строки, если она есть
             Item selectedItem = null;
-            if (dgv.CurrentRow != null)
-                selectedItem = (Item)dgv.CurrentRow.Tag;
+            if (dgvItems.CurrentRow != null)
+                selectedItem = (Item)dgvItems.CurrentRow.Tag;
 
             foreach (Item item in items)
             {
-                dgv.Rows.Add(
+                dgvItems.Rows.Add(
                 item.InventNumber,
                 item.Name,
                 item.Seller.Name,
@@ -244,35 +244,38 @@ namespace SparesBase
                 item.Residue,
                 item.Status);
 
-                dgv.Rows[dgv.Rows.Count - 1].Tag = item;
+                dgvItems.Rows[dgvItems.Rows.Count - 1].Tag = item;
 
                 // Выделение ранее выделенного предмета, если таковой существует
                 if (selectedItem != null)
                     if (item.Id == selectedItem.Id)
-                        dgv.Rows[dgv.Rows.Count - 1].Selected = true;
+                        dgvItems.Rows[dgvItems.Rows.Count - 1].Selected = true;
             }
 
             // Очистка информации о предыдущем предмете
-            if (dgv.Rows.Count > 0)
+            if (dgvItems.Rows.Count > 0)
             {
                 ClearInfoAboutItem();
-                InsertInfoAboutItem((Item)dgv.Rows[0].Tag);
+                InsertInfoAboutItem((Item)dgvItems.Rows[0].Tag);
             }
             else
                 ClearInfoAboutItem();
 
-            for (int i = 0; i < dgv.Rows.Count; i++)
+            for (int i = 0; i < dgvItems.Rows.Count; i++)
             {
                 // Определение цвета статуса предмета
-                if (dgv["status", i].Value.ToString() == "В наличии")
-                    dgv["status", i].Style.BackColor = Color.Aqua;
-                else if (dgv["status", i].Value.ToString() == "Доставка")
-                    dgv["status", i].Style.BackColor = Color.Bisque;
-                else if (dgv["status", i].Value.ToString() == "Транзит")
-                    dgv["status", i].Style.BackColor = Color.CadetBlue;
+                if (dgvItems["status", i].Value.ToString() == "В наличии")
+                    dgvItems["status", i].Style.BackColor = Color.LightGreen;
+                else if (dgvItems["status", i].Value.ToString() == "Доставка")
+                {
+                    foreach (DataGridViewCell cell in dgvItems.Rows[i].Cells)
+                        cell.Style.BackColor = Color.Yellow;
+                }
+                else if (dgvItems["status", i].Value.ToString() == "Транзит")
+                    dgvItems["status", i].Style.BackColor = Color.CadetBlue;
 
                 // Назначение контекстного меню списания на все соответствующие ячейки
-                dgv["residue", i].ContextMenuStrip = cmsWriteOff;
+                dgvItems["residue", i].ContextMenuStrip = cmsWriteOff;
             }
         }
 
@@ -393,6 +396,7 @@ namespace SparesBase
             lquantity.Text = "Количество: ";
             lresidue.Text = "Остаток: ";
             lCategories.Text = "Категория: ";
+            pbPreview.Image = null;
         }
 
         // Поиск предмета
@@ -404,7 +408,7 @@ namespace SparesBase
             {
                 // Поиск предмета по серийному номеру
                 where += "i.SerialNumber LIKE'%" + tbSearch.Text + "%' AND i.OrganizationId = " + EnteredUser.Organization.Id + ")";
-                items = dgv.FillItems(where);
+                items = dgvItems.FillItems(where);
             }
             else
             {
@@ -422,7 +426,7 @@ namespace SparesBase
 
                 where += " (i.OrganizationId = " + EnteredUser.Organization.Id + ") AND";
                 where += " (i.Residue > 0) AND (i.Deleted <> 1))";
-                items = dgv.FillItems(where);
+                items = dgvItems.FillItems(where);
             }
 
             FillRows(items);
@@ -538,6 +542,7 @@ namespace SparesBase
         // Выделение нода в TreeView
         private void treeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            ClearInfoAboutItem();
             FillItemsByCategory();
         }
 
@@ -694,6 +699,7 @@ namespace SparesBase
         {
             if (SelectedItem != null)
             {
+                ClearInfoAboutItem();
                 InsertInfoAboutItem(SelectedItem);
 
                 // Загрузка превью-фотографии
@@ -777,11 +783,11 @@ namespace SparesBase
         private void dgv_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left &&
-                dgv.CurrentRow != null &&
-                dgv.HitTest(e.X, e.Y).RowIndex != -1)
+                dgvItems.CurrentRow != null &&
+                dgvItems.HitTest(e.X, e.Y).RowIndex != -1)
             {
-                Item item = (Item)dgv.CurrentRow.Tag;
-                dgv.DoDragDrop(item.Id.ToString(), DragDropEffects.Copy);
+                Item item = (Item)dgvItems.CurrentRow.Tag;
+                dgvItems.DoDragDrop(item.Id.ToString(), DragDropEffects.Copy);
             }
         }
 
@@ -825,8 +831,21 @@ namespace SparesBase
             }
         }
 
-        // В резерв ???
-        private void cmsReserve_Click(object sender, EventArgs e)
+        // Список заказов
+        private void btnOrders_Click(object sender, EventArgs e)
+        {
+            WriteOffListForm wolf = new WriteOffListForm(SelectedItem);
+            wolf.ShowDialog();
+        }
+
+        // Список продаж
+        private void btnSelling_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        // Список браков
+        private void btnDefects_Click(object sender, EventArgs e)
         {
 
         }
@@ -872,5 +891,7 @@ namespace SparesBase
         #endregion Поиск
 
         #endregion События
+
+        
     }
 }
